@@ -1,15 +1,8 @@
-
-[![Wakatime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=evgeniimatveev&theme=blueberry)](https://wakatime.com)
+---
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&lines=MLOps+Automation+is+Cool;Data+Science+%7C+SQL+%7C+GitHub+Actions;FastAPI+%2B+CI%2FCD+%3D+🔥)](https://git.io/typing-svg)
 
-![Bugs Fixed](https://img.shields.io/badge/Bugs%20fixed%20since-01%2F03%2F2025-brightgreen)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact)](https://github.com/evgeniimatveev/))
-
----
-
-![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&lines=MLOps+is+Automation!;SQL+for+ML+Experiments;Track+your+models+like+a+pro;MLOps+%2B+CI%2FCD+%3D+💙)
 
 ---
 
