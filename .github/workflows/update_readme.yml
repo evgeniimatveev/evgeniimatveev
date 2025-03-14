@@ -30,12 +30,12 @@ jobs:
         run: python update_readme.py
 
       # Step 5: Commit and push changes
-      - name: Commit and Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'github-actions@github.com'
-          git add README.md
-          git commit -m "Auto-update README" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.PAT }}@github.com/evgeniimatveev/evgeniimatveev.git main
+     - name: Commit and Push changes
+  env:
+    GITHUB_TOKEN: ${{ secrets.PAT }}
+  run: |
+    git config --global user.name 'GitHub Actions'
+    git config --global user.email 'github-actions@github.com'
+    git add README.md
+    git commit -m "Auto-update README" || echo "No changes to commit"
+    git push https://x-access-token:${{ secrets.PAT }}@github.com/evgeniimatveev/evgeniimatveev.git main
