@@ -60,8 +60,5 @@
 
 Last updated: 2025-03-14 20:35:08.322750 UTC
 
-
-
-
-![Commits Graph](https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=blueberry)
+---
 
