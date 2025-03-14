@@ -30,7 +30,7 @@ jobs:
         run: python update_readme.py
 
       # Step 5: Commit and push changes
-     - name: Commit and Push changes
+- name: Commit and Push changes
   env:
     GITHUB_TOKEN: ${{ secrets.PAT }}
   run: |
