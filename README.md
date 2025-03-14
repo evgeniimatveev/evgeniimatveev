@@ -65,6 +65,7 @@
 ## 🏆 **GitHub Trophies**  
 
 ---
+
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark&no-frame=true&margin-w=10)
 
 ---
@@ -73,7 +74,6 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 
 ---
 
-
 ### ⚡ GitHub Stats  
 ![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
 ![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
@@ -81,11 +81,3 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 
 ---
 
-### 🚀 **Tech Stack**  
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)  
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)  
-![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)  
-![Weights & Biases](https://img.shields.io/badge/Weights%20%26%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
-
----
