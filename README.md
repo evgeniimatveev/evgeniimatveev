@@ -38,14 +38,6 @@
 
 ---
 
-## 🔥 **GitHub Streak**  
-
----
-
-![GitHub Streak](https://streak-stats.demolab.com/?user=evgeniimatveev&theme=gruvbox)
-
----
-
 ## 📈 **Contribution Graph**  
 
 ---
