@@ -2,8 +2,8 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "0 */6 * * *" 
-  workflow_dispatch:
+    - cron: "0 0,6,12,18 * * *" 
+  workflow_dispatch:  
 
 jobs:
   update-readme:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,12 +26,15 @@ jobs:
       - name: Run update script
         run: python update_readme.py
 
-      - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
+      - name: Commit and Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
+        run: |
           git add README.md
           git commit -m "Auto-update README" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/evgeniimatveev/evgeniimatveev.git main
+          git push https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git HEAD:main
