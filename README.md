@@ -1,11 +1,4 @@
-# 🚀 Welcome to My GitHub Profile!
 
-### MLOps | Data Science | SQL | Automation | Experiment Tracking
-
-🚀 Passionate about **automating ML workflows** with **MLflow, W&B, SQL & CI/CD**.  
-Love working with **MLOps, Feature Engineering, and Experiment Tracking**.
-
----
 
 ## 📊 GitHub Stats  
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=gradient)
@@ -22,8 +15,10 @@ Love working with **MLOps, Feature Engineering, and Experiment Tracking**.
 ---
 
 ## 🚀 Tech Stack  
+
 <p align="center">
   <img src="https://skillicons.dev/icons?i=python,jupyter,postgresql,powerbi,tableau,vscode" />
+
 </p>
 
 ---
