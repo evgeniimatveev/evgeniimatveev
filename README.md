@@ -59,8 +59,3 @@
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark&no-frame=true&margin-w=10)
 
 ---
-
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=ТВОЙ_НИК&show_icons=true&theme=dark)
-
-
-![CI/CD](https://img.shields.io/github/actions/workflow/status/ТВОЙ_НИК/ТВОЙ_РЕПО/test.yml?branch=main)
