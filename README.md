@@ -63,7 +63,7 @@
 
 ---
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=blueberry_seconds=86400)
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=dark_seconds=86400)
 
 ---
 
