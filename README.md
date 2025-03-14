@@ -1,3 +1,43 @@
+🚀 Welcome to My GitHub Profile!
+
+MLOps | Data Science | SQL | Automation | Experiment Tracking
+
+🚀 Passionate about automating ML workflows with MLflow, W&B, SQL & CI/CD. Love working with MLOps, Feature Engineering, and Experiment Tracking.
+
+📊 GitHub Stats
+
+
+
+🔥 GitHub Streak
+
+
+
+📈 Contribution Graph
+
+
+
+🏆 GitHub Trophies
+
+
+
+⚙️ Tech Stack
+
+📫 Connect with me:
+
+GitHub: evgeniimatveev
+
+LinkedIn: evgeniimatveev
+
+Portfolio: datascienceportfolio
+
+
+
+
+
+
+
+
+
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=gradient)
 
 ![MLOps](https://img.shields.io/badge/MLOps-Automation-blue) 
