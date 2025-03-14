@@ -74,10 +74,11 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 ---
 
 ### ⚡ GitHub Stats  
-![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?style=social)  
-![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&style=social)  
-![GitHub Commit Activity](https://img.shields.io/github/commit-activity/y/evgeniimatveev?color=blue)  
-![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev)  
+### ⚡ GitHub Stats  
+![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
+![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
+![GitHub Commit Activity](https://img.shields.io/github/commit-activity/y/evgeniimatveev?color=green&logo=github&style=for-the-badge)  
+![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
 ---
 
