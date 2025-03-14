@@ -2,12 +2,13 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "0 11 * * *"  # Runs daily at 11 AM UTC
-  workflow_dispatch:  # Allows manual execution
+    - cron: "0 11 * * *"  
+  workflow_dispatch:  
 
 jobs:
   update-readme:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,7 +24,13 @@ jobs:
       - name: Run update script
         run: python update_readme.py
 
-      - name: Commit and Push changes
+      - name: Debug GitHub Token
+        run: |
+          echo "Checking authentication..."
+          git remote -v
+          echo "GitHub token: ${{ secrets.FINE_GRAINED_PAT }}"
+
+      - name: Push changes
         env:
           GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_PAT }}
         run: |
