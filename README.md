@@ -9,9 +9,6 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
 
-
-![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=evgeniimatveev&theme=gruvbox)
-
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark)
 
 ![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
