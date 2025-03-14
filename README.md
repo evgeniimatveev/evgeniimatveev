@@ -15,11 +15,13 @@
 - 🛠️ **Deploy models** via **FastAPI, Docker & GitHub Actions**.  
 
 ---
+![MLOps](https://img.shields.io/badge/MLOps-Automation-blue) 
+![Tracking](https://img.shields.io/badge/Tracking-MLflow%20%7C%20W%26B-orange) 
+![SQL](https://img.shields.io/badge/Database-PostgreSQL-blue) 
+![CI/CD](https://img.shields.io/badge/CI/CD-GitHub%20Actions-green) 
+![ML](https://img.shields.io/badge/Machine_Learning-Python-blue) 
+![Boosting](https://img.shields.io/badge/Boosting-XGBoost%20%7C%20LightGBM%20%7C%20CatBoost-orange)
 
-## 🔥 **Tech Stack**  
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=python,jupyter,postgresql,powerbi,tableau,vscode,docker,githubactions" />
-</p>
 
 ---
 
@@ -37,11 +39,3 @@
 
 ---
 
-## 📫 **Connect with me:**  
-- **GitHub**: [evgeniimatveev](https://github.com/evgeniimatveev)  
-- **LinkedIn**: [evgeniimatveev](https://www.linkedin.com/in/evgeniimatveev)  
-- **Portfolio**: [datascienceportfolio](https://www.datascienceportfolio.io/evgeniimatveev)  
-
----
-
-🚀 **Thanks for stopping by!** 🔥  
