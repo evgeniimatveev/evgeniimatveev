@@ -42,7 +42,7 @@
 
 ---
 
-![GitHub Snake Light](https://github.com/evgeniimatveev/evgeniimatveev/blob/output/github-contribution-grid-snake.svg)
+![GitHub Snake Dark](https://github.com/evgeniimatveev/evgeniimatveev/blob/output/github-contribution-grid-snake-dark.svg)
 
 ---
 
