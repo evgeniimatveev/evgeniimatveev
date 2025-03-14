@@ -42,7 +42,11 @@
 
 ---
 
-![GitHub Snake Dark](https://github.com/evgeniimatveev/evgeniimatveev/blob/output/github-contribution-grid-snake-dark.svg)
+
+![Most Used Languages](https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=github_dark)
+
+![Commit Graph](https://github-profile-summary-cards.vercel.app/api/cards/commit-per-day?username=evgeniimatveev&theme=github_dark)
+[![GitHub Skyline](https://skyline.github.com/evgeniimatveev/2024)](https://skyline.github.com/evgeniimatveev/2024)
 
 ---
 
