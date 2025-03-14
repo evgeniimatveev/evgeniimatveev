@@ -62,3 +62,4 @@ Last updated: 2025-03-14 20:35:08.322750 UTC
 
 ---
 
+[![GitHub Streak](https://streak-stats.demolab.com/?user=evgeniimatveev&theme=dark)](https://git.io/streak-stats)
