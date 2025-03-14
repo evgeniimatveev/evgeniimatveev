@@ -56,19 +56,6 @@ Last updated: 2025-03-14 20:35:08.322750 UTC
 
 
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=blueberry)
-
-
-
-
-
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=blueberry)
-
 
 ![Commits Graph](https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=blueberry)
 
-![Profile Views](https://komarev.com/ghpvc/?username=evgeniimatveev&color=blue)
-
-![Quote](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=blueberry)
-
-![Repo Stats](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=evgeniimatveev&theme=blueberry)
