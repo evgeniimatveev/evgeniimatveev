@@ -25,7 +25,8 @@
 ![CI/CD](https://img.shields.io/badge/CI/CD-GitHub%20Actions-green) 
 ![ML](https://img.shields.io/badge/Machine_Learning-Python-blue) 
 ![Boosting](https://img.shields.io/badge/Boosting-XGBoost%20%7C%20LightGBM%20%7C%20CatBoost-orange)
-
+![Status](https://img.shields.io/badge/Status-Active-brightgreen) 
+![License](https://img.shields.io/badge/License-MIT-lightgrey)  
 
 ---
 
