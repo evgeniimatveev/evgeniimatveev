@@ -9,8 +9,6 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=dracula)
-
 
 ![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=evgeniimatveev&theme=gruvbox)
 
