@@ -59,15 +59,3 @@
 
 ---
 
-![Profile Views](https://komarev.com/ghpvc/?username=evgeniimatveev&color=blue&style=flat)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=dracula)
-
-![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=evgeniimatveev&theme=gruvbox)
-
-![GitHub Activity](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=github)
-
-![ML Engineer](https://img.shields.io/badge/Machine_Learning-Engineer-blue?style=for-the-badge)
-![SQL Guru](https://img.shields.io/badge/SQL-Guru-blueviolet?style=for-the-badge)
-
-![GitHub Snake](https://github.com/evgeniimatveev/evgeniimatveev/blob/output/github-contribution-grid-snake.svg)
