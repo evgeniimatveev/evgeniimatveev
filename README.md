@@ -1,11 +1,7 @@
+---
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&size=24&center=true&vCenter=true&width=800&lines=🚀+MLOps+Automation+%7C+AI+Ops+🔧;📊+SQL+for+ML+Experiments+🔍;⚡+Track+your+models+like+a+pro+🔥;🛠️+MLOps+%2B+CI%2FCD+%3D+💙;📡+Deploy+ML+models+with+FastAPI+🌐;📈+Monitor+metrics+with+W%26B+%7C+MLflow+🛠️)](https://git.io/typing-svg)
 
-
 ---
-
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&lines=MLOps+Automation+is+Cool;Data+Science+%7C+SQL+%7C+GitHub+Actions;FastAPI+%2B+CI%2FCD+%3D+🔥)](https://git.io/typing-svg)
-
-
 
 ---
 
