@@ -7,3 +7,14 @@
 ![ML](https://img.shields.io/badge/Machine_Learning-Python-blue)
 ![Boosting](https://img.shields.io/badge/Boosting-XGBoost%20%7C%20LightGBM%20%7C%20CatBoost-orange) 
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+
+
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=dracula)
+
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=gruvbox)
+
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=gradient)
+
+![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=evgeniimatveev&theme=gruvbox)
+
+![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark)
