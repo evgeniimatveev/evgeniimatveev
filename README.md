@@ -43,7 +43,11 @@
 
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=gruvbox)
 
+---
+
 ## 📈 **Contribution Graph**  
+
+---
 
 ![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
 
