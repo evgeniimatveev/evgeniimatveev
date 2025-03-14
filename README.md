@@ -95,9 +95,7 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)  
 ![Weights & Biases](https://img.shields.io/badge/Weights%20&%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Power_BI_logo.svg" alt="Power BI" width="120"/>  
-<img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Tableau_Logo.png" alt="Tableau" width="120"/>  
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VS Code" width="120"/>  
-<img src="https://avatars.githubusercontent.com/u/131495950?s=200&v=4" alt="Cursor" width="120"/>  
+![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)  
+
 
 ![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)  
