@@ -73,11 +73,10 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 
 ---
 
-### ⚡ GitHub Stats  
+
 ### ⚡ GitHub Stats  
 ![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
 ![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
-![GitHub Commit Activity](https://img.shields.io/github/commit-activity/y/evgeniimatveev?color=green&logo=github&style=for-the-badge)  
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
 ---
@@ -90,13 +89,3 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 ![Weights & Biases](https://img.shields.io/badge/Weights%20%26%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
 
 ---
-
-### 🔄 **CI/CD Status**  
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/ci.yml)  
-![GitHub Actions Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/auto-update-readme.yml)  
-
----
-
-### 📊 **Coding Stats**  
-![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=dark)  
-![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=evgeniimatveev&layout=compact&theme=dark)  
