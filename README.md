@@ -42,7 +42,7 @@
 
 ---
 
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=github-dark)
+![GitHub Snake Light](https://github.com/evgeniimatveev/evgeniimatveev/blob/output/github-contribution-grid-snake.svg)
 
 ---
 
