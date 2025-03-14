@@ -42,7 +42,7 @@
 
 ---
 
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=gruvbox)
+![GitHub Streak](streak.svg)
 
 ---
 
