@@ -6,9 +6,13 @@
 ![CI/CD](https://img.shields.io/badge/CI/CD-GitHub%20Actions-green) 
 ![ML](https://img.shields.io/badge/Machine_Learning-Python-blue)
 ![Boosting](https://img.shields.io/badge/Boosting-XGBoost%20%7C%20LightGBM%20%7C%20CatBoost-orange) 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
 
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark)
 
 ![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
+
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=python,postgresql,docker,githubactions,kubernetes,tensorflow,pytorch,linux" />
+</p>
