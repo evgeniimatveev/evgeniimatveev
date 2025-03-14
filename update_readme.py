@@ -4,64 +4,90 @@ import random
 # Path to the README file
 README_FILE = "README.md"
 
-# List of random MLOps-related phrases
-PHRASES = [
-    "🚀 MLOps is Automation!",
-    "📊 SQL for ML Experiments",
-    "⚡ Track your models like a pro!",
-    "🛠️ MLOps + CI/CD = 💙",
-    "📡 Deploy ML models with FastAPI 🌐",
-    "📈 Monitor metrics with W&B | MLflow 🛠️",
-    "🐍 Python | R | PostgreSQL for Data Science 📊",
-    "🦾 Automate ML Pipelines with GitHub Actions ⚡",
-    "🔄 Data Versioning with DVC | LakeFS 🌊",
-    "📦 Containerize ML Models with Docker 🐳",
-    "🔬 Hyperparameter Tuning with W&B Sweeps 🎯",
-    "🤖 Deploy AI Chatbots using LLMs 🛠️",
-    "💾 Feature Engineering for ML Success 🚀",
-    "🛡️ Secure ML Pipelines with MLOps Best Practices 🔒",
-    "📜 Automate SQL Queries for MLflow Tracking ⏳",
-    "💡 Optimize ML Experiments with Bayesian Tuning 🎯",
-    "🖥️ Build Interactive Dashboards in Tableau | Power BI 📊",
-    "🎭 Track and Compare Models with Experiment Versioning 📈",
+# Context-based phrases
+MORNING_QUOTES = [
+    "Time for some coffee and MLOps ☕",
+    "Start your morning with automation! 🛠️",
+    "Good morning! Let's optimize ML experiments! 🎯"
 ]
 
+AFTERNOON_QUOTES = [
+    "Keep pushing your MLOps pipeline forward! 🔧",
+    "Optimize, deploy, repeat! 🔄",
+    "Perfect time for CI/CD magic! ⚡"
+]
+
+EVENING_QUOTES = [
+    "Evening is the best time to track ML experiments 🌙",
+    "Relax and let automation handle your work 🤖",
+    "Wrap up the day with some Bayesian tuning 🎯"
+]
+
+DAY_OF_WEEK_QUOTES = {
+    "Monday": "Start your week strong! 🚀",
+    "Tuesday": "Keep up the momentum! 🔥",
+    "Wednesday": "Halfway to the weekend, keep automating! 🛠️",
+    "Thursday": "Test, iterate, deploy! 🚀",
+    "Friday": "Wrap it up like a pro! 🔥",
+    "Saturday": "Weekend automation vibes! 🎉",
+    "Sunday": "Prepare for an MLOps-filled week! ⏳"
+}
+
+EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️"]
+
+# Function to generate dynamic quote
+def get_dynamic_quote():
+    now = datetime.datetime.utcnow()
+    day_of_week = now.strftime("%A")
+    hour = now.hour
+
+    if 6 <= hour < 12:
+        selected_quote = random.choice(MORNING_QUOTES)
+    elif 12 <= hour < 18:
+        selected_quote = random.choice(AFTERNOON_QUOTES)
+    else:
+        selected_quote = random.choice(EVENING_QUOTES)
+
+    # Add a weekday-specific boost
+    selected_quote += f" | {DAY_OF_WEEK_QUOTES[day_of_week]}"
+
+    # Add a random emoji at the end for fun
+    selected_quote += f" {random.choice(EXTRA_EMOJIS)}"
+
+    return selected_quote
+
+# Generate updated content
 def generate_new_readme():
-    """
-    Reads the README file, updates the last updated timestamp, 
-    and adds a randomly selected MLOps phrase.
-    """
     with open(README_FILE, "r", encoding="utf-8") as file:
         content = file.readlines()
 
-    updated_content = []
-    timestamp_updated = False
-    phrase_updated = False
-    new_phrase = random.choice(PHRASES)  # Select a random phrase
+    now = datetime.datetime.utcnow()
+    dynamic_quote = get_dynamic_quote()
 
+    # Add or update timestamp and quote in README
+    updated_content = []
     for line in content:
         if line.startswith("Last updated:"):
-            # Update the timestamp
-            updated_content.append(f"Last updated: {datetime.datetime.utcnow()} UTC\n")
-            timestamp_updated = True
+            updated_content.append(f"Last updated: {now} UTC\n")
         elif line.startswith("🔥 MLOps Insight:"):
-            # Update the random phrase
-            updated_content.append(f"🔥 MLOps Insight: {new_phrase}\n")
-            phrase_updated = True
+            updated_content.append(f"🔥 MLOps Insight: 💡 {dynamic_quote}\n")
         else:
             updated_content.append(line)
 
-    # If no timestamp found, append it at the end
-    if not timestamp_updated:
-        updated_content.append(f"\nLast updated: {datetime.datetime.utcnow()} UTC\n")
+    # If no timestamp found, add it
+    if not any(line.startswith("Last updated:") for line in updated_content):
+        updated_content.append(f"\nLast updated: {now} UTC\n")
 
-    # If no phrase found, append it at the end
-    if not phrase_updated:
-        updated_content.append(f"\n🔥 MLOps Insight: {new_phrase}\n")
+    # If no MLOps insight found, add it
+    if not any(line.startswith("🔥 MLOps Insight:") for line in updated_content):
+        updated_content.append(f"\n🔥 MLOps Insight: 💡 {dynamic_quote}\n")
 
     with open(README_FILE, "w", encoding="utf-8") as file:
         file.writelines(updated_content)
 
+    print(f"✅ README successfully updated! ({now} UTC)")
+    print(f"📝 Selected Quote: {dynamic_quote}")
+
+# Run the update
 if __name__ == "__main__":
     generate_new_readme()
-    print("✅ README successfully updated!")
