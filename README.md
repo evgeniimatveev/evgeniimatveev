@@ -1,6 +1,10 @@
+---
+
 # Hey there! 👋 I'm Evgenii Matveev 🚀  
 
 ### **MLOps | Data Science | SQL | Experiment Tracking | Automation**  
+
+---
 
 🔬 Passionate about **Machine Learning Operations (MLOps), SQL, Data Science, and Experiment Tracking**.  
 ⚡ Love automating ML workflows with **MLflow, W&B, PostgreSQL & CI/CD**.  
@@ -26,12 +30,16 @@
 ---
 
 ## 📊 **GitHub Stats**  
+
 ---
 
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=blueberry)
 
+---
 
 ## 🔥 **GitHub Streak**  
+
+---
 
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=gruvbox)
 
@@ -39,7 +47,10 @@
 
 ![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
 
+---
 ## 🏆 **GitHub Trophies**  
+
+---
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark&no-frame=true&margin-w=10)
 
 ---
