@@ -3,7 +3,7 @@ name: Auto Update README
 on:
   schedule:
     - cron: "0 11 * * *" 
-  workflow_dispatch:  
+  workflow_dispatch:
 
 jobs:
   update-readme:
@@ -24,12 +24,19 @@ jobs:
       - name: Run update script
         run: python update_readme.py
 
+      - name: Debug GitHub Token (Optional)
+        run: |
+          echo "Checking authentication..."
+          git remote -v
+          echo "GitHub token is set."
+
       - name: Push changes using CLASSIC_PAT
-        env:
-          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add README.md
           git commit -m "Auto-update README" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/evgeniimatveev/evgeniimatveev.git main
+          git remote set-url origin https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/evgeniimatveev/evgeniimatveev.git
+          git push origin main
+        env:
+          CLASSIC_PAT: ${{ secrets.CLASSIC_PAT }}
