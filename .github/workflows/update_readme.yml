@@ -2,9 +2,8 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "0 11 * * *"  
+    - cron: "0 11 * * *"  #11:00 UTC (3:00 AM  LA)
   workflow_dispatch:  
-
 jobs:
   update-readme:
     runs-on: ubuntu-latest  
@@ -24,19 +23,18 @@ jobs:
       - name: Run update script
         run: python update_readme.py
 
-      - name: Debug GitHub Token
+      - name: Debug GitHub Token (Optional)
         run: |
           echo "Checking authentication..."
           git remote -v
-          echo "GitHub token: ${{ secrets.FINE_GRAINED_PAT }}"
+          echo "GitHub token: ${{ secrets.GITHUB_TOKEN }}" | sed 's/./& /g'
 
-      - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_PAT }}
+      - name: Push changes using GITHUB_TOKEN
         run: |
-          git config --global user.name 'GitHub Actions'
+          git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add README.md
           git commit -m "Auto-update README" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${{ secrets.FINE_GRAINED_PAT }}@github.com/evgeniimatveev/evgeniimatveev.git
           git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
