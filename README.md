@@ -1,6 +1,6 @@
 ---
 
-# Hey there! 👋 I'm Evgenii Matveev 🚀  
+# Hey there! 👋 I'm Evgenii Matveev 
 
 ### **MLOps | Data Science | SQL | Experiment Tracking | Automation | Lifelong Learner**  
 
