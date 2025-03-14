@@ -42,7 +42,7 @@
 
 ---
 
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
+![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=github-dark)
 
 ---
 
