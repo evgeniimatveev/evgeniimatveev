@@ -42,11 +42,18 @@
 
 ---
 
+![GitHub Snake](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/output/github-contribution-grid-snake.svg)
 
-![Most Used Languages](https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=github_dark)
+![GitHub Snake Dark](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/output/github-contribution-grid-snake-dark.svg)
 
-![Commit Graph](https://github-profile-summary-cards.vercel.app/api/cards/commit-per-day?username=evgeniimatveev&theme=github_dark)
-[![GitHub Skyline](https://skyline.github.com/evgeniimatveev/2024)](https://skyline.github.com/evgeniimatveev/2024)
+![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
+
+![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=github-dark)
+
+![GitHub Streak](https://streak-stats.demolab.com/?user=evgeniimatveev&theme=gruvbox)
+
+
+![GitHub Streak](https://streak-stats.demolab.com/?user=evgeniimatveev&theme=dark)
 
 ---
 
