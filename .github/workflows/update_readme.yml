@@ -38,4 +38,5 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add README.md
           git commit -m "Auto-update README" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.FINE_GRAINED_PAT }}@github.com/evgeniimatveev/evgeniimatveev.git main
+          git remote set-url origin https://x-access-token:${{ secrets.FINE_GRAINED_PAT }}@github.com/evgeniimatveev/evgeniimatveev.git
+          git push origin main
