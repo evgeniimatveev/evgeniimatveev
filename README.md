@@ -8,18 +8,9 @@
 ---
 
 ### 🚀 Tech Stack  
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
-![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)  
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)  
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)  
-![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)  
-![Weights & Biases](https://img.shields.io/badge/Weights%20%26%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
-![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=microsoft-power-bi&logoColor=black)  
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)  
-![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)  
-![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)  
-![Cursor](https://img.shields.io/badge/Cursor-2F2F2F?style=for-the-badge&logo=cursor&logoColor=white)  
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white) ![Weights & Biases](https://img.shields.io/badge/Weights%20&%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
 
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=microsoft-power-bi&logoColor=black) ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) ![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white) ![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 
 
 ---
@@ -47,6 +38,16 @@
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)  
 
 ---
+
+---
+
+### ⚡ GitHub Stats  
+![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
+![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
+![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
+
+---
+
 
 ## 📊 **Commit Activity Per Hour**  
 
@@ -81,28 +82,4 @@ Last updated: 2025-03-14 21:12:05.720180 UTC
 
 ---
 
-### ⚡ GitHub Stats  
-![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
-![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
-![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
----
-### 🚀 Tech Stack  
-### 🚀 Tech Stack  
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
-![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)  
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)  
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)  
-![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)  
-![Weights & Biases](https://img.shields.io/badge/Weights%20&%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
-![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=microsoft-power-bi&logoColor=black)  
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)  
-![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
-![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)  
-![Cursor](https://img.shields.io/badge/Cursor-2F2F2F?style=for-the-badge&logo=cursor&logoColor=white)  
-
-
-### 🚀 Tech Stack  
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white) ![Weights & Biases](https://img.shields.io/badge/Weights%20&%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
-
-![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=microsoft-power-bi&logoColor=black) ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) ![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white) ![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
