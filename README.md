@@ -42,18 +42,7 @@
 
 ---
 
-![GitHub Snake](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/output/github-contribution-grid-snake.svg)
-
-![GitHub Snake Dark](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/output/github-contribution-grid-snake-dark.svg)
-
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
-
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=github-dark)
-
 ![GitHub Streak](https://streak-stats.demolab.com/?user=evgeniimatveev&theme=gruvbox)
-
-
-![GitHub Streak](https://streak-stats.demolab.com/?user=evgeniimatveev&theme=dark)
 
 ---
 
