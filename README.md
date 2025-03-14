@@ -42,7 +42,7 @@
 
 ---
 
-![GitHub Streak](streak.svg)
+![GitHub Streak](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=gruvbox)
 
 ---
 
