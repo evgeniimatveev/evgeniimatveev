@@ -1,6 +1,5 @@
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=gradient)
 
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=gruvbox)
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=dracula)
 
