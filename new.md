@@ -1,10 +1,3 @@
-![GitHub Actions](https://img.shields.io/github/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Success&logo=github&logoColor=white&style=flat-square)
-![GitHub Actions Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs)
-![GitHub Actions Failing](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red)
-![GitHub Workflow Count](https://img.shields.io/github/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=CI/CD%20Runs)
-![GitHub Actions](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20CI/CD%20Run)
-
-
 ![CI/CD Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg)
 ![Total Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen)
 ![Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red)
