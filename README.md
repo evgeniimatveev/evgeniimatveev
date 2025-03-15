@@ -80,17 +80,11 @@
 
 ---
 
----
 
-![CI/CD Insights](https://github-readme-stats.vercel.app/api/pin/?username=evgeniimatveev&repo=evgeniimatveev&theme=dark)
-
----
-
-
-![CI/CD Insights](https://github-readme-stats.vercel.app/api/pin/?username=evgeniimatveev&repo=evgeniimatveev&theme=dark)
-
+![GitHub Actions Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs)
 
 ---
+
 
 
 Last updated: 2025-03-15 22:11:59.883514 UTC
