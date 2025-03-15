@@ -2,7 +2,5 @@
 ![Total Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen)
 ![Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red)
 ![Last Run](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20CI/CD%20Run&color=blue)
-![Success Rate](https://img.shields.io/badge/Success-90%25-brightgreen)
-![Avg Time](https://img.shields.io/badge/Avg%20Build%20Time-3m%2045s-blue)
-![Success Count](https://img.shields.io/badge/Success-45-green)
-![Failures Count](https://img.shields.io/badge/Failures-5-red)
+
+
