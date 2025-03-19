@@ -40,6 +40,11 @@ jobs:
           echo "Run ID: ${{ github.run_id }}" >> update_log.txt
           echo "Run number: ${{ github.run_number }}" >> update_log.txt
           echo "--------------------------------------" >> update_log.txt
+
+      - name: Trim log file (keep last 10 entries)
+        run: |
+          tail -n 70 update_log.txt > temp_log.txt  
+          mv temp_log.txt update_log.txt
           git add update_log.txt  # Stage the log file for commit
 
       - name: Commit and Push changes as user
