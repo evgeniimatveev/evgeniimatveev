@@ -31,10 +31,15 @@ jobs:
           git config --global user.name "evgeniimatveev"
           git config --global user.email "your-email@users.noreply.github.com"
 
-      - name: Update log file (to trigger contributions)
+      - name: Update log file with detailed info
         run: |
-          echo "Last updated on $(date)" > update_log.txt
-          git add update_log.txt
+          echo "--------------------------------------" >> update_log.txt
+          echo "Updated on: $(date)" >> update_log.txt
+          echo "Triggered by: ${{ github.event_name }}" >> update_log.txt
+          echo "Commit SHA: ${{ github.sha }}" >> update_log.txt
+          echo "Run ID: ${{ github.run_id }}" >> update_log.txt
+          echo "Run number: ${{ github.run_number }}" >> update_log.txt
+          echo "--------------------------------------" >> update_log.txt
 
       - name: Commit and Push changes as user
         env:
