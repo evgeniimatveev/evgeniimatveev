@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python  # Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"  # Use Python 3.9
+          python-version: "3.9"
 
       - name: Install dependencies  # Install required dependencies
         run: pip install requests pandas
@@ -26,15 +26,20 @@ jobs:
       - name: Run update script  # Execute the script to update README
         run: python update_readme.py
 
-      - name: Configure Git  # Set up Git user details for commits
+      - name: Configure Git with user details
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "evgeniimatveev"
+          git config --global user.email "your-email@users.noreply.github.com"
 
-      - name: Commit and Push changes  # Commit and push updates to the repository
+      - name: Update log file (to trigger contributions)
+        run: |
+          echo "Last updated on $(date)" > update_log.txt
+          git add update_log.txt
+
+      - name: Commit and Push changes as user
         env:
           GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}  # Use the stored token
         run: |
-          git add README.md  # Stage the README file for commit
-          git commit -m "Auto-update README" || echo "No changes to commit"  # Commit changes if any
-          git push https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git HEAD:main  # Push the commit to the main branch
+          git add README.md
+          git commit -m "Auto-update README by evgeniimatveev" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git HEAD:main
