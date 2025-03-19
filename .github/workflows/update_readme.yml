@@ -40,6 +40,7 @@ jobs:
           echo "Run ID: ${{ github.run_id }}" >> update_log.txt
           echo "Run number: ${{ github.run_number }}" >> update_log.txt
           echo "--------------------------------------" >> update_log.txt
+          git add update_log.txt  # Stage the log file for commit
 
       - name: Commit and Push changes as user
         env:
