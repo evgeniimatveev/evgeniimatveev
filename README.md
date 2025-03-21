@@ -6,6 +6,7 @@
 ## 🔧 I automate MLOps pipelines with SQL, MLflow & CI/CD
 
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
+[🔗 View My Portfolio](https://www.datascienceportfolio.io/evgeniimatveevusa)
 
  
 ---
