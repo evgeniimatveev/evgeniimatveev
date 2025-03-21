@@ -2,7 +2,7 @@
 
 ---
 
-# 👋 Hi, I'm Evgenii Matveev  
+#  Hi,👋 I'm Evgenii Matveev  
 ## 🔧 I automate MLOps pipelines with SQL, MLflow & CI/CD
 
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
