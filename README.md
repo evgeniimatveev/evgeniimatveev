@@ -16,13 +16,6 @@
 📌 **LinkedIn:** [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
 
 ---
-
-### 🚀 Tech Stack  
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white) ![Weights & Biases](https://img.shields.io/badge/Weights%20&%20Biases-FFCC33?style=for-the-badge&logo=weightsandbiases&logoColor=black)  
-
-![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=microsoft-power-bi&logoColor=black)  ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) ![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white) ![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white) ![DeepSeek Chat](https://img.shields.io/badge/DeepSeek_Chat-1DA1F2?style=for-the-badge&logo=ai&logoColor=white) ![AI Assistant](https://img.shields.io/badge/AI_Assistant-DeepSeek-9cf?style=for-the-badge&logo=ai)
-
-
 ## Tech Stack
 
 ### Languages & Databases
@@ -39,10 +32,8 @@
 ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
 
 ### AI Assistants
-![AI Assistant](https://img.shields.io/badge/AI_Assistant-DeepSeek-9cf?style=for-the-badge&logo=ai)
-
-![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
-
+![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
+![ChatGPT](https://img.shields.io/badge/AI_Assistant-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 
 
 ---
