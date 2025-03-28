@@ -59,6 +59,12 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen) 
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)  
 
+
+### **🛠️ Tech Stack**  
+![Python](https://img.shields.io/badge/Python-3.x%20%7C%20Pandas%20%7C%20Sklearn-blue)  
+![MLOps](https://img.shields.io/badge/MLOps-MLflow%20%7C%20Kubeflow%20%7C%20Airflow-orange)  
+![DB](https://img.shields.io/badge/Database-PostgreSQL%20%7C%20MongoDB-green) 
+
 ---
 
 ---
