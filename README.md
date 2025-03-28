@@ -43,11 +43,6 @@
 
 ![ChatGPT](https://img.shields.io/badge/ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 
-[![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
-
-[![DeepSeek Chat](https://img.shields.io/badge/DeepSeek_Chat-1DA1F2?style=flat-square&logo=ai&logoColor=white)](https://deepseek.com)
 
 
 ---
