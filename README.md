@@ -42,6 +42,40 @@
 ![DeepSeek Chat](https://img.shields.io/badge/DeepSeek_Chat-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
 
+[![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+
+[![DeepSeek Chat](https://img.shields.io/badge/DeepSeek_Chat-1DA1F2?style=flat-square&logo=ai&logoColor=white)](https://deepseek.com)
+
+## Tech Stack
+
+### 🔹 Core
+<p align="left">
+  <img src="https://img.icons8.com/color/48/python.png" alt="Python" title="Python"/>
+  <img src="https://img.icons8.com/color/48/postgresql.png" alt="PostgreSQL" title="PostgreSQL"/>
+  <img src="https://img.icons8.com/color/48/docker.png" alt="Docker" title="Docker"/>
+</p>
+
+### 🔹 MLOps
+<p align="left">
+  <img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/external-mlflow-an-open-source-platform-for-the-machine-learning-lifecycle-logo-shadow-tal-revivo.png" alt="MLflow"/>
+  <img src="https://img.icons8.com/color/48/weights-and-biases.png" alt="Weights & Biases"/>
+</p>
+
+### 🔹 AI Assistants
+<p align="left">
+  <img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/external-deepseek-chat-an-ai-powered-chatbot-platform-logo-shadow-tal-revivo.png" alt="DeepSeek" width="40"/>
+  <img src="https://img.icons8.com/color/48/openai.png" alt="OpenAI" width="40"/>
+</p>
+
+|----------------|----------------------------------------------------------------------------------------------|
+| **Languages**  | ![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white)           |
+| **Databases**  | ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-4169E1?logo=postgresql&logoColor=white)|
+| **MLOps**      | ![MLflow](https://img.shields.io/badge/-MLflow-0194E2?logo=mlflow) • ![W&B](https://img.shields.io/badge/-Weights_&_Biases-FFBE00?logo=weightsandbiases) |
+| **BI**         | ![Tableau](https://img.shields.io/badge/-Tableau-E97627?logo=tableau) • ![PowerBI](https://img.shields.io/badge/-PowerBI-F2C811?logo=powerbi) |
+| **AI Tools**   | ![DeepSeek](https://img.shields.io/badge/-DeepSeek-1DA1F2?logo=ai) • ![OpenAI](https://img.shields.io/badge/-OpenAI-412991?logo=openai) |
+
 ---
 
 🔬 Passionate about **Machine Learning Operations (MLOps), SQL, Data Science, and Experiment Tracking**.  
