@@ -42,6 +42,16 @@
 ![DeepSeek Chat](https://img.shields.io/badge/DeepSeek_Chat-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
 
+<div>
+  <img src="https://img.icons8.com/3d-fluency/94/python.png" alt="Python" width="50"/>
+  <img src="https://img.icons8.com/color/48/postgreesql.png" alt="PostgreSQL" width="50"/>
+  <img src="https://img.icons8.com/fluency/48/openai.png" alt="OpenAI" width="50"/>
+  <img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/external-deepseek-chat-an-ai-powered-chatbot-platform-logo-shadow-tal-revivo.png" alt="DeepSeek Chat" width="50"/>
+</div>
+
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
+![LangChain](https://img.shields.io/badge/LangChain-00A67E?style=for-the-badge&logo=langchain&logoColor=white)
 
 ---
 
