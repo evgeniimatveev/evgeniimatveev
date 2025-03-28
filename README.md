@@ -32,9 +32,8 @@
 ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
 
 ### AI Assistants
-![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 ![ChatGPT](https://img.shields.io/badge/AI_Assistant-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
-
+![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
 ---
 
