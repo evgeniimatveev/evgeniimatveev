@@ -50,6 +50,7 @@
 - 🛠️ **Deploy models** via **FastAPI, Docker & GitHub Actions**.  
 
 ---
+
 ![MLOps](https://img.shields.io/badge/MLOps-Automation-blue) 
 ![Tracking](https://img.shields.io/badge/Tracking-MLflow%20%7C%20W%26B-orange) 
 ![SQL](https://img.shields.io/badge/Database-PostgreSQL-blue) 
@@ -58,14 +59,6 @@
 ![Boosting](https://img.shields.io/badge/Boosting-XGBoost%20%7C%20LightGBM%20%7C%20CatBoost-orange)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen) 
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)  
-
-
-### **🛠️ Tech Stack**  
-![Python](https://img.shields.io/badge/Python-3.x%20%7C%20Pandas%20%7C%20Sklearn-blue)  
-![MLOps](https://img.shields.io/badge/MLOps-MLflow%20%7C%20Kubeflow%20%7C%20Airflow-orange)  
-![DB](https://img.shields.io/badge/Database-PostgreSQL%20%7C%20MongoDB-green) 
-
----
 
 ---
 
