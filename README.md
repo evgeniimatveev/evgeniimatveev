@@ -47,8 +47,6 @@
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
 
-![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)
-
 ---
 
 🔬 Passionate about **Machine Learning Operations (MLOps), SQL, Data Science, and Experiment Tracking**.  
