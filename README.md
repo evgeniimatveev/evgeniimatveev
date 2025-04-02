@@ -40,6 +40,11 @@
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automation-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev)  
 [![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
 
+[![CI: GitHub Workflows](https://img.shields.io/badge/CI-GitHub_Workflows-24292e?style=for-the-badge&logo=github&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)  
+[![Auto Checks](https://img.shields.io/badge/AutoLint-SQL%20%26%20Python-blue?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev)
+
+[![CI/CD Powered by GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
+
 ### AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
