@@ -37,12 +37,6 @@
 
 ### CI/CD & Automation  
 
-[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automation-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev)  
-
-[![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
-
-[![CI/CD Powered by GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
-
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-blue?style=for-the-badge&logo=githubactions&logoColor=white)
 ![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-black?style=for-the-badge&logo=github&logoColor=white)
 
