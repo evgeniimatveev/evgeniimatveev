@@ -24,8 +24,11 @@
 
 ### IDE & Workflow  
 ![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
-![Cursor](https://img.shields.io/badge/CURSOR-000000?style=for-the-badge&logo=cursor&logoColor=silver)
+![Cursor](https://img.shields.io/badge/CURSOR-444444?style=for-the-badge&logo=cursor&logoColor=silver)
 
+![Cursor](https://img.shields.io/badge/CURSOR-000000?style=for-the-badge&logo=cursor&logoColor=silver)
+![Cursor](https://img.shields.io/badge/CURSOR-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
+![Cursor](https://img.shields.io/badge/CURSOR-444444?style=for-the-badge&logo=cursor&logoColor=white)
 ### DevOps & MLOps
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
