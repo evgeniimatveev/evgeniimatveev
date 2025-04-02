@@ -44,6 +44,13 @@
 ![ChatGPT](https://img.shields.io/badge/AI_Assistant-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
+
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Cursor-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
+
+
+
 ---
 
 🔬 Passionate about **Machine Learning Operations (MLOps), SQL, Data Science, and Experiment Tracking**.  
