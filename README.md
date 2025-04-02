@@ -24,7 +24,7 @@
 
 ### IDE & Workflow  
 ![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
-![Cursor](https://img.shields.io/badge/AI_ASSISTANT-CURSOR-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Cursor-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
 
 ### DevOps & MLOps
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
@@ -41,14 +41,8 @@
 ![GitLab CI/CD](https://img.shields.io/badge/GitLab_CI/CD-FCA121?style=for-the-badge&logo=gitlab&logoColor=white)  
 
 ### AI Assistants
-![ChatGPT](https://img.shields.io/badge/AI_Assistant-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
-![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
-
-
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
-![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Cursor-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
-
 
 
 ---
