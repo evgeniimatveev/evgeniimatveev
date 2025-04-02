@@ -39,14 +39,14 @@
 
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-blue?style=for-the-badge&logo=githubactions&logoColor=white)
 ![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-black?style=for-the-badge&logo=github&logoColor=white)
-
-![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)
 ![AutoLint](https://img.shields.io/badge/AutoLint-SQL_&_Python-blue?style=for-the-badge&logo=github&logoColor=white)
 
 ### AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
+
+![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)
 
 ---
 
