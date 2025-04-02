@@ -28,9 +28,7 @@
 
 ### DevOps & MLOps
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-
 ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
-
 ![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
 
 ### BI Tools
@@ -40,7 +38,9 @@
 ### CI/CD & Automation  
 
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automation-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev)  
+
 [![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
+
 [![CI/CD Powered by GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
 
 
