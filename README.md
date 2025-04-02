@@ -39,6 +39,7 @@
 
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-blue?style=for-the-badge&logo=githubactions&logoColor=white)
 ![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-black?style=for-the-badge&logo=github&logoColor=white)
+
 ![AutoLint](https://img.shields.io/badge/AutoLint-SQL_&_Python-blue?style=for-the-badge&logo=github&logoColor=white)
 
 ### AI Assistants
