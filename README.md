@@ -24,7 +24,7 @@
 
 ### IDE & Workflow  
 ![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
-![Cursor](https://img.shields.io/badge/AI_Assistant–Cursor-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
+![Cursor](https://img.shields.io/badge/AI_ASSISTANT-CURSOR-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
 
 ### DevOps & MLOps
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
