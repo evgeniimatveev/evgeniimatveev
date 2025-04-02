@@ -45,10 +45,7 @@
 
 [![CI/CD Powered by GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
 
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-blue?style=for-the-badge&logo=githubactions&logoColor=white)
-![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-black?style=for-the-badge&logo=github&logoColor=white)
 
-![CI](https://img.shields.io/badge/GitHub_Workflows-CI-grey?style=for-the-badge&logo=github&logoColor=white)
 
 ### AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
