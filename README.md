@@ -39,8 +39,8 @@
 
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white&logoWidth=20)  
 ![GitLab CI/CD](https://img.shields.io/badge/GitLab_CI/CD-FCA121?style=for-the-badge&logo=gitlab&logoColor=white)  
-
-<! [![GitLab CI/CD](https://img.shields.io/badge/GitLab_CI/CD-FCA121?style=for-the-badge&logo=gitlab&logoColor=white)](https://gitlab.com/evgeniimatveev) -->
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automation-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/evgeniimatveev)  
+[![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/evgeniimatveev?tab=actions)
 
 ### AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
