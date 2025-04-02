@@ -35,12 +35,6 @@
 ![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
 
-### CI/CD & Automation  
-
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
-![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-2088FF?style=for-the-badge&logo=github&logoColor=white)
-
-![AutoLint](https://img.shields.io/badge/AutoLint-SQL_&_Python-blue?style=for-the-badge&logo=github&logoColor=white)
 
 ### CI/CD & Automation
 
