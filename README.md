@@ -22,6 +22,9 @@
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
+### IDE & Workflow
+![Visual Studio Code](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
+
 ### DevOps & MLOps
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
@@ -39,37 +42,6 @@
 ### AI Assistants
 ![ChatGPT](https://img.shields.io/badge/AI_Assistant-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
-
-
-## Tech Stack
-
-### Languages & Databases
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-
-### DevOps & MLOps
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
-![Weights & Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
-
-### BI Tools
-![Power BI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
-
-### CI/CD & Automation  
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)  
-![GitLab CI/CD](https://img.shields.io/badge/GitLab_CI/CD-FCA121?style=for-the-badge&logo=gitlab&logoColor=white)  
-
-### AI Assistants
-![ChatGPT](https://img.shields.io/badge/AI_Assistant-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
-![DeepSeek Chat](https://img.shields.io/badge/AI_Assistant-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
-
-### 💻 IDE & Workflow
-![Visual Studio Code](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
-
-
-
-
 
 ---
 
