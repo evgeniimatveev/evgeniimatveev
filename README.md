@@ -3,7 +3,7 @@
 ---
 
 #  Hi,👋 I'm Evgenii Matveev  
-## I 🔧 Building ML Pipelines at Scale — with SQL, CI/CD & My AI Co-Pilots
+## 🔧 I  help models move to production — with automation, MLOps & a bit of AI
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
 
  
