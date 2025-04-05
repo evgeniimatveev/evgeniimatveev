@@ -67,13 +67,13 @@
 
 ---
 ## 📌 **What I Do**
--🏆 Design and automate ML pipelines using best-in-class MLOps tools.
+🏆 Design and automate ML pipelines using best-in-class MLOps tools.
 
--📊 Query and visualize ML experiments using SQL, MLflow & W&B.
+📊 Query and visualize ML experiments using SQL, MLflow & W&B.
 
--📈 Build interactive dashboards with Tableau & Power BI for reporting and analysis.
+📈 Build interactive dashboards with Tableau & Power BI for reporting and analysis.
 
--🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
+🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
 
 ---
 
