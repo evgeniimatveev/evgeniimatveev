@@ -9,9 +9,9 @@
 
 ---
 # 📘 Learning Journey
-**🎓 Learning @ SuperDataScience**
-**🧠 Focus: MLOps| SQL| Automation| Experiment Tracking**  
-**⏱️ 1.7+ years of continuous learning**  
+🎓 Learning @ SuperDataScience
+🧠 Focus: MLOps| SQL| Automation| Experiment Tracking 
+⏱️ 1.7+ years of continuous learning 
 
 
 ---
@@ -57,9 +57,9 @@
 
 ---
 
-**🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.**
-**⚡ Experienced in automating end-to-end ML workflows using MLflow, Weights & Biases, PostgreSQL, and CI/CD pipelines.**
-**📊 Skilled in creating interactive dashboards and driving insights with Tableau, Power BI, and advanced SQL analysis.**
+🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
+⚡ Experienced in automating end-to-end ML workflows using MLflow, Weights & Biases, PostgreSQL, and CI/CD pipelines.
+📊 Skilled in creating interactive dashboards and driving insights with Tableau, Power BI, and advanced SQL analysis.
 
 ---
 ## 📌 **What I Do**
