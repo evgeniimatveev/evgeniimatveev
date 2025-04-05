@@ -6,7 +6,14 @@
 ## 🔧 I  help models move to production — with automation, MLOps & a bit of AI
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
 
- 
+
+---
+# 📘 Learning Journey
+**🎓 Learning @ SuperDataScience**
+**🧠 Focus: MLOps| SQL| Automation| Experiment Tracking**  
+**⏱️ 1.7+ years of continuous learning**  
+
+
 ---
 
 ## 📢 Stay Connected!  
@@ -50,17 +57,19 @@
 
 ---
 
-🔬 Passionate about **Machine Learning Operations (MLOps), SQL, Data Science, and Experiment Tracking**.  
-⚡ Love automating ML workflows with **MLflow, W&B, PostgreSQL & CI/CD**.  
-📊 Skilled in **Tableau, Power BI, SQL-based analysis, and real-world ML solutions**.
+**🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.**
+**⚡ Experienced in automating end-to-end ML workflows using MLflow, Weights & Biases, PostgreSQL, and CI/CD pipelines.**
+**📊 Skilled in creating interactive dashboards and driving insights with Tableau, Power BI, and advanced SQL analysis.**
 
 ---
-
 ## 📌 **What I Do**
-- 🏆 **Build and automate ML pipelines** using **MLOps best practices**.  
-- 📊 **Analyze ML experiments** with **SQL, MLflow & W&B**.  
-- 🚀 **Develop interactive dashboards** with **Tableau & Power BI**.  
-- 🛠️ **Deploy models** via **FastAPI, Docker & GitHub Actions**.  
+-🏆 Design and automate ML pipelines using best-in-class MLOps tools.
+
+-📊 Query and visualize ML experiments using SQL, MLflow & W&B.
+
+-📈 Build interactive dashboards with Tableau & Power BI for reporting and analysis.
+
+-🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
 
 ---
 
