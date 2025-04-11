@@ -6,7 +6,6 @@
 ## 🔧 I  help models move to production — with automation, MLOps & a bit of AI
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
 
-
 ---
 # 📘 Learning Journey
 🎓 Learning @ SuperDataScience
