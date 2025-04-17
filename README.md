@@ -51,12 +51,12 @@
 ![AutoLint](https://img.shields.io/badge/AutoLint-grey?style=for-the-badge&logo=github&logoColor=white)
 ![SQL & Python](https://img.shields.io/badge/SQL_&_Python-2088FF?style=for-the-badge)
 
-### AI Assistants
+### 🤖 AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
 ---
-### 🤖 AI Assistants
+🧠 Tools that assist me daily in writing code, debugging, and planning MLOps workflows:
 
 | Assistant   | Role                                  | Usage |
 |-------------|---------------------------------------|--------|
