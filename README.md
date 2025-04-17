@@ -56,6 +56,8 @@
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
 ---
+### 🤖 AI Assistants
+
 | Assistant   | Role                                  | Usage |
 |-------------|---------------------------------------|--------|
 | 🧠 ChatGPT  | Prompting, planning, architecture      | 75%    |
