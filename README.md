@@ -56,7 +56,7 @@
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
 ---
-### 🧠 Tools that assist me daily in writing code, debugging, and planning MLOps workflows:
+### 🛠 Everyday AI copilots I use to code, debug, and build production-grade MLOps workflows
 
 | Assistant   | Role                                  | Usage |
 |-------------|---------------------------------------|--------|
