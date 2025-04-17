@@ -55,7 +55,11 @@
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
-
+---
+| Assistant   | Role                   | Usage |
+|-------------|------------------------|--------|
+| 🧠 ChatGPT  | Prompting, planning     | 90%    |
+| 🔍 DeepSeek | Debugging, strict logic | 10%    |
 ---
 
 🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
