@@ -29,7 +29,7 @@
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
-### IDE & Workflow  
+### 🤖 IDE & Workflow  
 ![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Cursor-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
 
