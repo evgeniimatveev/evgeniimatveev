@@ -29,7 +29,7 @@
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
-### 🤖 IDE & Workflow  
+###  IDE & Workflow  
 ![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Cursor-C0C0C0?style=for-the-badge&logo=cursor&logoColor=000000)
 
@@ -51,7 +51,7 @@
 ![AutoLint](https://img.shields.io/badge/AutoLint-grey?style=for-the-badge&logo=github&logoColor=white)
 ![SQL & Python](https://img.shields.io/badge/SQL_&_Python-2088FF?style=for-the-badge)
 
-### 🤖 AI Assistants
+###  AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
