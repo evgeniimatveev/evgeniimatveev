@@ -43,7 +43,7 @@
 ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
 
 ### Testing Tools
-![DBeaver](https://img.shields.io/badge/DBeaver-Test%20&%20Analysis-grey?logo=dbeaver&logoColor=white)
+![DBeaver](https://img.shields.io/badge/DBeaver-Testing%20%26%20Analysis-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
 
 ### CI/CD & Automation
 
