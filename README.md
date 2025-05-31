@@ -42,6 +42,8 @@
 ![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
 
+### Testing Tools
+![DBeaver](https://img.shields.io/badge/DBeaver-Test%20&%20Analysis-grey?logo=dbeaver&logoColor=white)
 
 ### CI/CD & Automation
 
