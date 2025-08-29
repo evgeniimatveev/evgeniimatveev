@@ -12,7 +12,7 @@
 
 🧠 Focus: MLOps| SQL| Automation| Experiment Tracking 
 
-⏱️ 1.7+ years of continuous learning 
+⏱️ 1.9+ years of continuous learning 
 
 
 ---
