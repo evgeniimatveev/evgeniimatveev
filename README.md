@@ -58,14 +58,22 @@
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
 
 ---
-### 🛠 Everyday AI copilots I use to code, debug, and build production-grade MLOps workflows
+### 🧩 AI Copilot Ecosystem  
+Everyday copilots I use to code, debug, and build production-grade MLOps workflows.  
+Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️  
 
-| Assistant   | Role                                  | Usage |
-|-------------|---------------------------------------|--------|
-| 🧠 ChatGPT  | Prompting, planning, architecture      | 75%    |
-| 🪄 Cursor   | Inline code assist (powered by GPT)    | 15%    |
-| 🔬 DeepSeek | Debugging, strict logic, code analysis | 10%    |
+| Assistant        | Role / Specialty                                        | Usage |
+|------------------|---------------------------------------------------------|--------|
+| 🧠 **ChatGPT 5.0**       | Prompting, architecture design, documentation writing   | 50–60 % |
+| 🧩 **Claude Sonnet 4.5** | Long-context reasoning, agent orchestration, planning   | 30–40 % |
+| 🔬 **DeepSeek R1**       | Debugging, strict logic, code review & analysis         | 10-15 % |
+
 ---
+
+> 💡 *Note:* This ecosystem runs as a multi-copilot workflow.  
+> Each assistant has a unique role — **ChatGPT** leads architecture and reasoning, **Claude Sonnet** handles long-range automation and planning, and **DeepSeek** ensures rigorous code logic and debugging precision.  
+> Together, they form a continuous loop of **innovation → execution → validation** — my personal AI engineering stack. 🚀
+
 
 🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
 
