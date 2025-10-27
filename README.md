@@ -124,6 +124,10 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 
 ---
 
+## 🏆 **GitHub Trophies**  
+
+---
+
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=onedark&no-frame=true&margin-w=10)
 
 ---
