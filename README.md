@@ -91,21 +91,19 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
 
 ---
-
-### ⚡ GitHub Stats  
-![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
-![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
-![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
-
-
-
----
-## 🏆 **GitHub Trophies**  
+## 🏆 **GitHub Stats**  
 
 ---
 ![Trophies Alt](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
 
+---   
+![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
+![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
+![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
+---
+
+---
 
 ---
 ![CI/CD Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg)
