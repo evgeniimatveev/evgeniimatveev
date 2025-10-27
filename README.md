@@ -82,6 +82,7 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 
 ---
 ## 📌 **What I Do**
+
 🏆 Design and automate ML pipelines using best-in-class MLOps tools.
 
 📊 Query and visualize ML experiments using SQL, MLflow & W&B.
@@ -89,9 +90,6 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 📈 Build interactive dashboards with Tableau & Power BI for reporting and analysis.
 
 🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
-
----
-## 🏆 **GitHub Stats**  
 
 ---
 ![Trophies Alt](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
@@ -114,7 +112,6 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 
 
 ---
-
 
 Last updated: 2025-10-27 19:11:02.574498 UTC
 
