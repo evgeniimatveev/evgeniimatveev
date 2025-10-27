@@ -57,6 +57,7 @@
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude%20Sonnet%204.5-111111?style=for-the-badge&logo=anthropic&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude%20Sonnet%204.5-111111?style=for-the-badge&logo=anthropic&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude-232323?style=for-the-badge&logo=anthropic&logoColor=white)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude%20Sonnet%204.5-111111?style=for-the-badge&logo=anthropic&logoColor=white)
 
 ---
 ### 🧩 AI Copilot Ecosystem  
