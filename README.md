@@ -1,6 +1,6 @@
 ---
 <p align="center">
-  <img src="1111.gif" alt="MLOps Pixel Lab Banner" width="960">
+  <img src="1.gif" alt="MLOps Pixel Lab Banner" width="960">
 </p>
 
 ---
