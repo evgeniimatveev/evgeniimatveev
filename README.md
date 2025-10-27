@@ -1,6 +1,6 @@
 ---
 <p align="center">
-  <img src="assets/77.gif" alt="Pixel banner" width="800">
+  <img src="assets/7.gif" alt="Pixel banner" width="800">
 </p>
 
 ---
