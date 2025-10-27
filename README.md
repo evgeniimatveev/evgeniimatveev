@@ -98,33 +98,23 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
 ---
+<div align="center">
 
-## 📊 **Commit Activity Per Hour**  
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true)
 
-| ![Commit Graph](https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=blueberry) |  
+![GitHub Streak](https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true)
 
----
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&hide_border=true)
 
-## 📊 **GitHub Stats**  
-
----
-
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=blueberry&cache_seconds=21600)
+</div>
 
 ---
-
-## 📈 **Contribution Graph**  
-
----
-
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=react-dark)
-
----
-
 ## 🏆 **GitHub Trophies**  
 
 ---
 ![Trophies Alt](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
+
+
 
 ---
 ![CI/CD Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg)
