@@ -127,7 +127,8 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 ## 🏆 **GitHub Trophies**  
 
 ---
-![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=darkhub&no-bg=true&no-frame=true&margin-w=10&margin-h=10&title=Stars,Followers,Commits,Repositories,PullRequest)
+![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=darkhub&no-bg=true&no-frame=true&margin-w=10&margin-h=10&title=Stars,Followers,Commits,Repositories,PullRequest)\
+![Trophies Alt](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
 
 ---
 ![CI/CD Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg)
