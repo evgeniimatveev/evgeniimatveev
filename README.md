@@ -54,9 +54,9 @@
 ###  AI Assistants
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-ChatGPT-00A67E?style=for-the-badge&logo=openai&logoColor=white)
 ![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-DeepSeek-1DA1F2?style=for-the-badge&logo=ai&logoColor=white)
-![ChatGPT](https://img.shields.io/badge/ChatGPT-10A37F?logo=openai&logoColor=white)
-![Claude](https://img.shields.io/badge/Claude-111111?logo=anthropic&logoColor=white)
-![DeepSeek](https://img.shields.io/badge/DeepSeek-1B1F23?logo=matrix&logoColor=white)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude%20Sonnet%204.5-111111?style=for-the-badge&logo=anthropic&logoColor=white)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude%20Sonnet%204.5-111111?style=for-the-badge&logo=anthropic&logoColor=white)
+![AI Assistant](https://img.shields.io/badge/AI_ASSISTANT-Claude-232323?style=for-the-badge&logo=anthropic&logoColor=white)
 
 ---
 ### 🧩 AI Copilot Ecosystem  
