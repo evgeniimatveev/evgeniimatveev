@@ -55,6 +55,9 @@
 ![AI Assistant – ChatGPT](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=ChatGPT&color=00A67E&labelColor=555555&logo=openai&logoColor=white&style=for-the-badge)
 ![AI Assistant – DeepSeek](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=DeepSeek&labelColor=555555&color=1DA1F2&logo=postgresql&logoColor=white&logoWidth=22&style=for-the-badge)
 ![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
+![AI Assistant – DeepSeek](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=DeepSeek%20🐍🐘&labelColor=555555&color=1DA1F2&logo=python&logoColor=white&style=for-the-badge)
+![AI Assistant – DeepSeek](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=DeepSeek&labelColor=555555&color=1DA1F2&logo=python&logoColor=white&style=for-the-badge)
+![PostgreSQL](https://img.shields.io/static/v1?label=&message=&color=1DA1F2&logo=postgresql&logoColor=white&style=for-the-badge)
 
 
 
