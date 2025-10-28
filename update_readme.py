@@ -5,13 +5,57 @@ from pathlib import Path
 
 README_FILE = "README.md"
 
-# --------- ROTATING BANNER SETTINGS ---------
+# ============ ROTATING BANNER SETTINGS ============
 ASSETS = Path("assets")
-STATE = ASSETS / ".banner_state"
+STATE = ASSETS / ".banner_state"      # persists the last shown banner path
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
+# Banner selection mode: "sequential" | "random"
+BANNER_MODE = "sequential"
+
+# ---------- utils ----------
+def _natkey(p: Path):
+    """
+    Natural sort key: ensures 2.gif < 10.gif.
+    Splits string into digit/non-digit chunks and converts digits to int.
+    """
+    import re as _re
+    s = p.name.lower()
+    return [
+        (int(t) if t.isdigit() else t)
+        for t in _re.findall(r"\d+|\D+", s)
+    ]
+
+def _list_assets():
+    """
+    Return valid asset files (size + extension), naturally sorted.
+    Hidden files (starting with ".") are skipped.
+    """
+    files = []
+    if not ASSETS.exists():
+        return files
+    for p in ASSETS.iterdir():
+        if p.is_file() and p.suffix.lower() in EXTS and not p.name.startswith("."):
+            if p.stat().st_size <= MAX_MB * 1024 * 1024:
+                files.append(p)
+    return sorted(files, key=_natkey)
+# ---------------------------
+
+def pick_image_random():
+    """Pick a random asset, avoiding the last shown one when possible."""
+    files = _list_assets()
+    if not files:
+        return None
+    last = STATE.read_text().strip() if STATE.exists() else ""
+    paths = [f.as_posix() for f in files]
+    candidates = [p for p in paths if p != last] or paths
+    choice = random.choice(candidates)
+    STATE.write_text(choice)
+    return choice
+
 def pick_image_sequential():
+    """Pick the next asset in order (wraps around)."""
     files = _list_assets()
     if not files:
         return None
@@ -19,41 +63,81 @@ def pick_image_sequential():
     paths = [f.as_posix() for f in files]
     try:
         i = paths.index(last)
-        nxt = files[(i + 1) % len(files)]
+        nxt = paths[(i + 1) % len(paths)]
     except ValueError:
-        nxt = files[0]
-    STATE.write_text(nxt.as_posix())
-    return nxt.as_posix()
+        nxt = paths[0]
+    STATE.write_text(nxt)
+    return nxt
 
 def rotate_banner_in_md(md_text: str) -> str:
+    """
+    Replace/insert banner between:
+      <!-- BANNER:START --> ... <!-- BANNER:END -->
+    If block is missing, it will be inserted at the top of README.
+    """
     pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(pat, md_text, flags=re.S)
-    if not m:
+
+    files = _list_assets()
+    total = len(files)
+    if total == 0:
         return md_text
-    block = m.group(2)
-    img = pick_image_random()
+
+    # pick image
+    if BANNER_MODE == "sequential":
+        img = pick_image_sequential()
+    else:
+        img = pick_image_random()
     if not img:
         return md_text
-    new_block = re.sub(r'src="assets/[^"]+"', f'src="{img}"', block)
-    if new_block == block:
-        new_block = f'\n<p align="center">\n  <img src="{img}" alt="Banner" width="960">\n</p>\n'
-    return md_text[:m.start(2)] + new_block + md_text[m.end(2):]
-# --------------------------------------------
 
+    # cache buster (GitHub caches aggressively)
+    bust = int(datetime.datetime.utcnow().timestamp())
+    img_src = f'{img}?t={bust}'
+
+    # caption with position
+    try:
+        idx = [f.as_posix() for f in files].index(img) + 1
+    except ValueError:
+        idx = 0
+
+    banner_html = (
+        f'\n<p align="center">\n'
+        f'  <img src="{img_src}" alt="Banner" width="960">\n'
+        f'</p>\n'
+    )
+    caption_html = f'<p align="center"><sub>🖼️ Banner {idx}/{total}</sub></p>\n' if total and idx else ""
+    new_inner = banner_html + caption_html
+
+    if m:
+        block = m.group(2)
+        # try to replace the src only if an img tag exists
+        replaced = re.sub(r'src="assets/[^"]+"', f'src="{img_src}"', block)
+        if replaced != block:
+            return md_text[:m.start(2)] + replaced + md_text[m.end(2):]
+        # otherwise, overwrite the whole inner block
+        return md_text[:m.start(2)] + ("\n" + new_inner) + md_text[m.end(2):]
+    else:
+        # no banner block yet — prepend one
+        banner_block = f'<!-- BANNER:START -->\n{new_inner}<!-- BANNER:END -->\n'
+        return banner_block + md_text
+# ===================================================
+
+# --------- Dynamic Insight ---------
 MORNING_QUOTES = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
-    "Good morning! Let's optimize ML experiments! 🎯"
+    "Good morning! Let's optimize ML experiments! 🎯",
 ]
 AFTERNOON_QUOTES = [
     "Keep pushing your MLOps pipeline forward! 🔧",
     "Optimize, deploy, repeat! 🔄",
-    "Perfect time for CI/CD magic! ⚡"
+    "Perfect time for CI/CD magic! ⚡",
 ]
 EVENING_QUOTES = [
     "Evening is the best time to track ML experiments 🌙",
     "Relax and let automation handle your work 🤖",
-    "Wrap up the day with some Bayesian tuning 🎯"
+    "Wrap up the day with some Bayesian tuning 🎯",
 ]
 DAY_OF_WEEK_QUOTES = {
     "Monday": "Start your week strong! 🚀",
@@ -62,37 +146,43 @@ DAY_OF_WEEK_QUOTES = {
     "Thursday": "Test, iterate, deploy! 🚀",
     "Friday": "Wrap it up like a pro! 🔥",
     "Saturday": "Weekend automation vibes! 🎉",
-    "Sunday": "Prepare for an MLOps-filled week! ⏳"
+    "Sunday": "Prepare for an MLOps-filled week! ⏳",
 }
 EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️"]
 
 def get_dynamic_quote():
+    """Pick a time-of-day + weekday flavored quote with a random emoji."""
     now = datetime.datetime.utcnow()
     day_of_week = now.strftime("%A")
     hour = now.hour
+
     if 6 <= hour < 12:
-        selected_quote = random.choice(MORNING_QUOTES)
+        selected = random.choice(MORNING_QUOTES)
     elif 12 <= hour < 18:
-        selected_quote = random.choice(AFTERNOON_QUOTES)
+        selected = random.choice(AFTERNOON_QUOTES)
     else:
-        selected_quote = random.choice(EVENING_QUOTES)
-    selected_quote += f" | {DAY_OF_WEEK_QUOTES[day_of_week]}"
-    selected_quote += f" {random.choice(EXTRA_EMOJIS)}"
-    return selected_quote
+        selected = random.choice(EVENING_QUOTES)
+
+    selected += f" | {DAY_OF_WEEK_QUOTES[day_of_week]}"
+    selected += f" {random.choice(EXTRA_EMOJIS)}"
+    return selected
+# -----------------------------------
 
 def generate_new_readme():
     md = Path(README_FILE).read_text(encoding="utf-8")
 
-   
+    # 1) Rotate the banner
     md = rotate_banner_in_md(md)
 
-   
+    # 2) Update timestamp and insight line
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
 
     lines = md.splitlines(keepends=True)
     updated = []
-    saw_updated, saw_insight = False, False
+    saw_updated = False
+    saw_insight = False
+
     for line in lines:
         if line.startswith("Last updated:"):
             updated.append(f"Last updated: {now} UTC\n")
@@ -102,6 +192,7 @@ def generate_new_readme():
             saw_insight = True
         else:
             updated.append(line)
+
     if not saw_updated:
         updated.append(f"\nLast updated: {now} UTC\n")
     if not saw_insight:
@@ -109,6 +200,7 @@ def generate_new_readme():
 
     Path(README_FILE).write_text("".join(updated), encoding="utf-8")
     print(f"✅ README updated at {now} UTC")
+    print(f"🖼️ Banner mode: {BANNER_MODE}")
     print(f"📝 Quote: {dynamic_quote}")
 
 if __name__ == "__main__":
