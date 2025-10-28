@@ -11,19 +11,19 @@ STATE = ASSETS / ".banner_state"
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
-def pick_image_random():
-    files = []
-    for p in ASSETS.iterdir():
-        if p.is_file() and p.suffix.lower() in EXTS and not p.name.startswith("."):
-            if p.stat().st_size <= MAX_MB * 1024 * 1024:
-                files.append(p)
+def pick_image_sequential():
+    files = _list_assets()
     if not files:
         return None
     last = STATE.read_text().strip() if STATE.exists() else ""
-    candidates = [f for f in files if f.as_posix() != last] or files
-    choice = random.choice(candidates).as_posix()
-    STATE.write_text(choice)
-    return choice
+    paths = [f.as_posix() for f in files]
+    try:
+        i = paths.index(last)
+        nxt = files[(i + 1) % len(files)]
+    except ValueError:
+        nxt = files[0]
+    STATE.write_text(nxt.as_posix())
+    return nxt.as_posix()
 
 def rotate_banner_in_md(md_text: str) -> str:
     pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
