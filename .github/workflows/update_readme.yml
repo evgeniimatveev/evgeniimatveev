@@ -29,10 +29,7 @@ jobs:
         with:
           python-version: "3.10"
 
-      # Optional: clear state so the first scheduled run definitely rotates the banner
-      - name: Reset banner state (first-run helper)
-        run: |
-          rm -f assets/.banner_state || true
+  
 
       - name: Run updater (updates banner + timestamp + quote)
         run: python update_readme.py
