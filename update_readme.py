@@ -73,8 +73,10 @@ def rotate_banner_in_md(md_text: str) -> str:
     """
     Replace/insert the banner between:
       <!-- BANNER:START --> ... <!-- BANNER:END -->
-    Always overwrite the inner block so we don't depend on previous markup.
-    If the block is missing, insert it at the very top of the README.
+    - If a banner block exists, first try to replace only the image src
+      (works for both relative and absolute raw URLs).
+    - If no <img> is found inside, overwrite the whole inner block.
+    - If the block is missing, prepend a fresh block at the top.
     """
     pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(pat, md_text, flags=re.S)
@@ -83,16 +85,16 @@ def rotate_banner_in_md(md_text: str) -> str:
     if not files:
         return md_text
 
-    # pick next banner (sequential or random)
+    # Pick next banner (sequential or random)
     img = pick_image_sequential() if BANNER_MODE == "sequential" else pick_image_random()
     if not img:
         return md_text
 
-    # cache buster (GitHub caches aggressively)
+    # Cache buster (GitHub caches aggressively)
     bust = int(datetime.datetime.utcnow().timestamp())
     img_src = f'{img}?t={bust}'
 
-    # position / counter only for caption
+    # Position / counter for caption
     paths = [f.as_posix() for f in files]
     try:
         idx = paths.index(img) + 1
@@ -100,7 +102,7 @@ def rotate_banner_in_md(md_text: str) -> str:
         idx = 0
     caption = f'<p align="center"><sub>🖼️ Banner {idx}/{len(files)}</sub></p>\n' if idx else ""
 
-    # always rebuild the inner HTML
+    # Always prepare a fresh inner HTML we can fall back to
     new_inner = (
         f'\n<p align="center">\n'
         f'  <img src="{img_src}" alt="Banner" width="960">\n'
@@ -108,10 +110,23 @@ def rotate_banner_in_md(md_text: str) -> str:
     )
 
     if m:
-        # overwrite whatever is between START/END with our new block
+        block = m.group(2)
+
+        # Try to replace existing src (supports relative and absolute paths)
+        # Examples it will match:
+        #   src="assets/1.gif"
+        #   src="https://raw.githubusercontent.com/.../assets/1.gif"
+        replaced = re.sub(r'src="[^"]*/assets/[^"]+"', f'src="{img_src}"', block)
+
+        if replaced != block:
+            # Only src changed -> keep the rest of the user's markup intact
+            return md_text[:m.start(2)] + replaced + md_text[m.end(2):]
+
+        # If there's no <img> to patch, overwrite the entire inner block
         return md_text[:m.start(2)] + new_inner + md_text[m.end(2):]
+
     else:
-        # no banner block yet — prepend a fresh one
+        # No banner block yet — prepend a fresh one
         banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
         return banner_block + md_text
 # ===================================================
