@@ -83,10 +83,10 @@ def get_dynamic_quote():
 def generate_new_readme():
     md = Path(README_FILE).read_text(encoding="utf-8")
 
-    # 1) Повернуть баннер
+   
     md = rotate_banner_in_md(md)
 
-    # 2) Обновить таймстамп и инсайт
+   
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
 
