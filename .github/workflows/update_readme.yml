@@ -1,56 +1,68 @@
-name: Auto Update README  # GitHub Actions Workflow name
+name: Auto Update README
 
 on:
   schedule:
-    - cron: "0 */1 * * *"  # Runs every hour
-  workflow_dispatch:  # Allows manual triggering
+    - cron: "0 */1 * * *"     # Run every hour
+  workflow_dispatch:          # Allow manual runs from the Actions tab
+
+# Prevent concurrent runs of this workflow from racing on README changes
+concurrency:
+  group: auto-update-readme
+  cancel-in-progress: false
 
 jobs:
   update-readme:
-    runs-on: ubuntu-latest  # Runs on the latest Ubuntu version
+    runs-on: ubuntu-latest
+    env:
+      # Optional: if your Python script supports it, you can read this to switch modes
+      BANNER_MODE: sequential
 
     steps:
-      - name: Checkout repository  # Clone the repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false  # Disable automatic authentication
+          persist-credentials: false   # We'll push with PAT explicitly
+          fetch-depth: 0               # Needed so Git has history for commits
 
-      - name: Set up Python  # Install Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
 
-      - name: Install dependencies  # Install required dependencies
-        run: pip install requests pandas
+      # Optional: clear state so the first scheduled run definitely rotates the banner
+      - name: Reset banner state (first-run helper)
+        run: |
+          rm -f assets/.banner_state || true
 
-      - name: Run update script  # Execute the script to update README
+      - name: Run updater (updates banner + timestamp + quote)
         run: python update_readme.py
 
-      - name: Configure Git with user details
+      - name: Configure Git author
         run: |
           git config --global user.name "evgeniimatveev"
           git config --global user.email "your-email@users.noreply.github.com"
 
-      - name: Update log file with detailed info
+      - name: Append run metadata to log
         run: |
-          echo "--------------------------------------" >> update_log.txt
-          echo "Updated on: $(date)" >> update_log.txt
-          echo "Triggered by: ${{ github.event_name }}" >> update_log.txt
-          echo "Commit SHA: ${{ github.sha }}" >> update_log.txt
-          echo "Run ID: ${{ github.run_id }}" >> update_log.txt
-          echo "Run number: ${{ github.run_number }}" >> update_log.txt
-          echo "--------------------------------------" >> update_log.txt
+          {
+            echo "--------------------------------------"
+            echo "Updated on: $(date -u) (UTC)"
+            echo "Triggered by: ${{ github.event_name }}"
+            echo "Commit SHA: ${{ github.sha }}"
+            echo "Run ID: ${{ github.run_id }}"
+            echo "Run number: ${{ github.run_number }}"
+            echo "--------------------------------------"
+          } >> update_log.txt
 
-      - name: Trim log file (keep last 10 entries)
+      - name: Trim log (keep last ~70 lines)
         run: |
-          tail -n 70 update_log.txt > temp_log.txt  
-          mv temp_log.txt update_log.txt
-          git add update_log.txt  # Stage the log file for commit
+          tail -n 70 update_log.txt > temp_log.txt || true
+          mv temp_log.txt update_log.txt || true
 
-      - name: Commit and Push changes as user
+      - name: Commit & push changes
         env:
-          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}  # Use the stored token
+          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}   # Personal access token with 'repo' scope
         run: |
-          git add README.md
-          git commit -m "Auto-update README by evgeniimatveev" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git HEAD:main
+          git add README.md update_log.txt || true
+          git commit -m "Auto-update README (sequential rotation)" || echo "No changes to commit"
+          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
