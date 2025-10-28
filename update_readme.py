@@ -71,23 +71,20 @@ def pick_image_sequential():
 
 def rotate_banner_in_md(md_text: str) -> str:
     """
-    Replace/insert banner between:
+    Replace/insert the banner between:
       <!-- BANNER:START --> ... <!-- BANNER:END -->
-    If block is missing, it will be inserted at the top of README.
+    Always overwrite the inner block so we don't depend on previous markup.
+    If the block is missing, insert it at the very top of the README.
     """
     pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(pat, md_text, flags=re.S)
 
     files = _list_assets()
-    total = len(files)
-    if total == 0:
+    if not files:
         return md_text
 
-    # pick image
-    if BANNER_MODE == "sequential":
-        img = pick_image_sequential()
-    else:
-        img = pick_image_random()
+    # pick next banner (sequential or random)
+    img = pick_image_sequential() if BANNER_MODE == "sequential" else pick_image_random()
     if not img:
         return md_text
 
@@ -95,31 +92,27 @@ def rotate_banner_in_md(md_text: str) -> str:
     bust = int(datetime.datetime.utcnow().timestamp())
     img_src = f'{img}?t={bust}'
 
-    # caption with position
+    # position / counter only for caption
+    paths = [f.as_posix() for f in files]
     try:
-        idx = [f.as_posix() for f in files].index(img) + 1
+        idx = paths.index(img) + 1
     except ValueError:
         idx = 0
+    caption = f'<p align="center"><sub>🖼️ Banner {idx}/{len(files)}</sub></p>\n' if idx else ""
 
-    banner_html = (
+    # always rebuild the inner HTML
+    new_inner = (
         f'\n<p align="center">\n'
         f'  <img src="{img_src}" alt="Banner" width="960">\n'
-        f'</p>\n'
+        f'</p>\n' + caption
     )
-    caption_html = f'<p align="center"><sub>🖼️ Banner {idx}/{total}</sub></p>\n' if total and idx else ""
-    new_inner = banner_html + caption_html
 
     if m:
-        block = m.group(2)
-        # try to replace the src only if an img tag exists
-        replaced = re.sub(r'src="assets/[^"]+"', f'src="{img_src}"', block)
-        if replaced != block:
-            return md_text[:m.start(2)] + replaced + md_text[m.end(2):]
-        # otherwise, overwrite the whole inner block
-        return md_text[:m.start(2)] + ("\n" + new_inner) + md_text[m.end(2):]
+        # overwrite whatever is between START/END with our new block
+        return md_text[:m.start(2)] + new_inner + md_text[m.end(2):]
     else:
-        # no banner block yet — prepend one
-        banner_block = f'<!-- BANNER:START -->\n{new_inner}<!-- BANNER:END -->\n'
+        # no banner block yet — prepend a fresh one
+        banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
         return banner_block + md_text
 # ===================================================
 
