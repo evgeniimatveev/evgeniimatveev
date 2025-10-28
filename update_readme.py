@@ -1,18 +1,23 @@
+# update_readme.py
+# -*- coding: utf-8 -*-
+
+import os
+import re
 import datetime
 import random
-import re
 from pathlib import Path
 
 README_FILE = "README.md"
 
 # ============ ROTATING BANNER SETTINGS ============
 ASSETS = Path("assets")
-STATE = ASSETS / ".banner_state"      # persists the last shown banner path
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
 # Banner selection mode: "sequential" | "random"
-BANNER_MODE = "sequential"
+# Can be overridden from GitHub Actions via env BANNER_MODE
+BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
+
 
 # ---------- utils ----------
 def _natkey(p: Path):
@@ -20,12 +25,9 @@ def _natkey(p: Path):
     Natural sort key: ensures 2.gif < 10.gif.
     Splits string into digit/non-digit chunks and converts digits to int.
     """
-    import re as _re
     s = p.name.lower()
-    return [
-        (int(t) if t.isdigit() else t)
-        for t in _re.findall(r"\d+|\D+", s)
-    ]
+    return [(int(t) if t.isdigit() else t) for t in re.findall(r"\d+|\D+", s)]
+
 
 def _list_assets():
     """
@@ -40,96 +42,124 @@ def _list_assets():
             if p.stat().st_size <= MAX_MB * 1024 * 1024:
                 files.append(p)
     return sorted(files, key=_natkey)
-# ---------------------------
 
-def pick_image_random():
-    """Pick a random asset, avoiding the last shown one when possible."""
-    files = _list_assets()
-    if not files:
-        return None
-    last = STATE.read_text().strip() if STATE.exists() else ""
-    paths = [f.as_posix() for f in files]
-    candidates = [p for p in paths if p != last] or paths
-    choice = random.choice(candidates)
-    STATE.write_text(choice)
-    return choice
 
-def pick_image_sequential():
-    """Pick the next asset in order (wraps around)."""
-    files = _list_assets()
-    if not files:
+def _to_raw_url(rel_path: str) -> str:
+    """
+    Build a raw GitHub URL for this repo's current branch.
+    Works inside Actions; locally it will still produce a valid URL once pushed.
+    """
+    repo = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
+    # In Actions this is set; locally fallback to 'main'
+    branch = os.getenv("GITHUB_REF_NAME", "main")
+    return f"https://raw.githubusercontent.com/{repo}/{branch}/{rel_path}"
+
+
+def _extract_current_asset_from_md(md_text: str) -> str | None:
+    """
+    Try to find current <img src=".../assets/<file>"> inside the BANNER block (or anywhere).
+    Returns a relative 'assets/<file>' path or None if not found.
+    Handles raw URLs and query strings (?t=...).
+    """
+    # 1) Prefer within explicit banner block
+    block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
+    m = re.search(block_pat, md_text, flags=re.S)
+    scope = m.group(2) if m else md_text
+
+    # 2) Extract src that contains '/assets/' (raw URL or relative)
+    m2 = re.search(r'src="([^"]*?/assets/[^"?"]+)', scope, flags=re.I)
+    if not m2:
         return None
-    last = STATE.read_text().strip() if STATE.exists() else ""
-    paths = [f.as_posix() for f in files]
-    try:
-        i = paths.index(last)
+
+    url = m2.group(1)  # could be 'assets/1.gif' or 'https://.../assets/1.gif'
+    # Normalize to 'assets/<file>'
+    tail_match = re.search(r'/assets/([^/]+)$', url)
+    if tail_match:
+        return f'assets/{tail_match.group(1)}'
+
+    # or relative already
+    if url.startswith("assets/"):
+        return url
+
+    return None
+
+
+def _pick_next_asset(md_text: str, files: list[Path]) -> tuple[str, int]:
+    """
+    Stateless choice of next banner:
+    - If BANNER_MODE=='random': pick random, avoid current when possible.
+    - Else: sequential — find current in README and advance to next (wrap).
+    Returns (asset_rel_path, index_1based).
+    """
+    if not files:
+        raise RuntimeError("No valid assets found in 'assets/'.")
+
+    paths = [f.as_posix() for f in files]  # e.g. 'assets/1.gif'
+    current = _extract_current_asset_from_md(md_text)
+
+    if BANNER_MODE == "random":
+        candidates = paths.copy()
+        if current in candidates and len(candidates) > 1:
+            candidates.remove(current)
+        choice = random.choice(candidates)
+        idx = paths.index(choice) + 1
+        return choice, idx
+
+    # sequential
+    if current in paths:
+        i = paths.index(current)
         nxt = paths[(i + 1) % len(paths)]
-    except ValueError:
+    else:
         nxt = paths[0]
-    STATE.write_text(nxt)
-    return nxt
+    idx = paths.index(nxt) + 1
+    return nxt, idx
+
+
+# ---------------------------
 
 def rotate_banner_in_md(md_text: str) -> str:
     """
-    Replace/insert the banner between:
+    Insert/replace banner between:
       <!-- BANNER:START --> ... <!-- BANNER:END -->
-    - If a banner block exists, first try to replace only the image src
-      (works for both relative and absolute raw URLs).
-    - If no <img> is found inside, overwrite the whole inner block.
-    - If the block is missing, prepend a fresh block at the top.
+    - Stateless: finds current image in README and advances to next.
+    - Writes a raw.githubusercontent.com URL with cache-buster (?t=...).
+    - If block is missing, prepends it at the top.
     """
-    pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
-    m = re.search(pat, md_text, flags=re.S)
-
     files = _list_assets()
     if not files:
-        return md_text
+        return md_text  # nothing to do
 
-    # Pick next banner (sequential or random)
-    img = pick_image_sequential() if BANNER_MODE == "sequential" else pick_image_random()
-    if not img:
-        return md_text
+    # Pick next asset
+    next_rel, idx = _pick_next_asset(md_text, files)
 
     # Cache buster (GitHub caches aggressively)
     bust = int(datetime.datetime.utcnow().timestamp())
-    img_src = f'{img}?t={bust}'
+    img_src = f'{_to_raw_url(next_rel)}?t={bust}'
 
-    # Position / counter for caption
-    paths = [f.as_posix() for f in files]
-    try:
-        idx = paths.index(img) + 1
-    except ValueError:
-        idx = 0
-    caption = f'<p align="center"><sub>🖼️ Banner {idx}/{len(files)}</sub></p>\n' if idx else ""
+    caption = f'<p align="center"><sub>🖼️ Banner {idx}/{len(files)}</sub></p>\n'
 
-    # Always prepare a fresh inner HTML we can fall back to
     new_inner = (
         f'\n<p align="center">\n'
         f'  <img src="{img_src}" alt="Banner" width="960">\n'
         f'</p>\n' + caption
     )
 
+    pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
+    m = re.search(pat, md_text, flags=re.S)
+
     if m:
         block = m.group(2)
-
-        # Try to replace existing src (supports relative and absolute paths)
-        # Examples it will match:
-        #   src="assets/1.gif"
-        #   src="https://raw.githubusercontent.com/.../assets/1.gif"
-        replaced = re.sub(r'src="[^"]*/assets/[^"]+"', f'src="{img_src}"', block)
-
+        # Try a smart replace for existing src first (keeps user's extra markup if any)
+        replaced = re.sub(r'src="[^"]*?/assets/[^"?"]+[^"]*"', f'src="{img_src}"', block)
         if replaced != block:
-            # Only src changed -> keep the rest of the user's markup intact
             return md_text[:m.start(2)] + replaced + md_text[m.end(2):]
-
-        # If there's no <img> to patch, overwrite the entire inner block
+        # No <img> with assets found — overwrite inner block
         return md_text[:m.start(2)] + new_inner + md_text[m.end(2):]
 
-    else:
-        # No banner block yet — prepend a fresh one
-        banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
-        return banner_block + md_text
-# ===================================================
+    # No banner block yet — prepend a fresh one
+    banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
+    return banner_block + md_text
+
 
 # --------- Dynamic Insight ---------
 MORNING_QUOTES = [
@@ -158,6 +188,7 @@ DAY_OF_WEEK_QUOTES = {
 }
 EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️"]
 
+
 def get_dynamic_quote():
     """Pick a time-of-day + weekday flavored quote with a random emoji."""
     now = datetime.datetime.utcnow()
@@ -174,12 +205,15 @@ def get_dynamic_quote():
     selected += f" | {DAY_OF_WEEK_QUOTES[day_of_week]}"
     selected += f" {random.choice(EXTRA_EMOJIS)}"
     return selected
+
+
 # -----------------------------------
 
 def generate_new_readme():
-    md = Path(README_FILE).read_text(encoding="utf-8")
+    md_path = Path(README_FILE)
+    md = md_path.read_text(encoding="utf-8")
 
-    # 1) Rotate the banner
+    # 1) Rotate the banner (stateless)
     md = rotate_banner_in_md(md)
 
     # 2) Update timestamp and insight line
@@ -206,10 +240,11 @@ def generate_new_readme():
     if not saw_insight:
         updated.append(f"\n🔥 MLOps Insight: 💡 {dynamic_quote}\n")
 
-    Path(README_FILE).write_text("".join(updated), encoding="utf-8")
+    md_path.write_text("".join(updated), encoding="utf-8")
     print(f"✅ README updated at {now} UTC")
     print(f"🖼️ Banner mode: {BANNER_MODE}")
     print(f"📝 Quote: {dynamic_quote}")
+
 
 if __name__ == "__main__":
     generate_new_readme()
