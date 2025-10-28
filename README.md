@@ -1,7 +1,7 @@
 ---
 <!-- BANNER:START -->
 <p align="center">
-  <img src="assets/1.gif" alt="Banner" width="640">
+  <img src="assets/1.gif" alt="Banner" width="800">
 </p>
 <!-- BANNER:END -->
 
