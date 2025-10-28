@@ -119,44 +119,92 @@ def _pick_next_asset(md_text: str, files: list[Path]) -> tuple[str, int]:
 
 def rotate_banner_in_md(md_text: str) -> str:
     """
-    Insert/replace banner between:
-      <!-- BANNER:START --> ... <!-- BANNER:END -->
-    - Stateless: finds current image in README and advances to next.
-    - Writes a raw.githubusercontent.com URL with cache-buster (?t=...).
-    - If block is missing, prepends it at the top.
+    Stateless banner rotation:
+    - Detect the current <img src=".../assets/.."> in README (inside the banner block if present),
+      pick the *next* file from assets using natural ordering, and update the block.
+    - Uses raw.githubusercontent.com + cache-buster (?t=...) to avoid GitHub caching issues.
+    - Caption prefers the number parsed from the filename (e.g., '4.gif' -> 'Banner 4/Y').
+      If no number is found, falls back to the index in natural ordering (1-based).
+    - If the banner block is missing, a fresh one is prepended at the top.
+
+    Requirements:
+      - Helpers expected to exist in the module:
+        _list_assets()              -> List[Path]   # valid assets, naturally sorted
+        _pick_next_asset(md, files) -> (str, int)   # returns (relative_path 'assets/..', index_1based)
+        _to_raw_url(rel_path)       -> str          # raw github URL
     """
     files = _list_assets()
     if not files:
-        return md_text  # nothing to do
+        return md_text
 
-    # Pick next asset
-    next_rel, idx = _pick_next_asset(md_text, files)
+    # Choose the next asset (stateless: based on what's currently in README)
+    next_rel, idx_fallback = _pick_next_asset(md_text, files)
 
-    # Cache buster (GitHub caches aggressively)
+    # Build a cache-busted raw URL
     bust = int(datetime.datetime.utcnow().timestamp())
     img_src = f'{_to_raw_url(next_rel)}?t={bust}'
 
-    caption = f'<p align="center"><sub>🖼️ Banner {idx}/{len(files)}</sub></p>\n'
+    # --- Derive caption number from the filename when possible ---
+    # e.g., 'assets/4.gif' -> 4; 'assets/07.webp' -> 7
+    import os as _os
+    import re as _re
+    base = _os.path.basename(next_rel)
+    mnum = _re.match(r'(\d+)', base)  # leading number only
+    if mnum:
+        x_num = int(mnum.group(1))
+    else:
+        # fallback to the natural-order index returned by _pick_next_asset
+        x_num = idx_fallback
 
+    total = len(files)
+    caption_text = f'Banner {x_num}/{total}'
+    caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
+
+    # Fresh block content we can fall back to if patching fails
     new_inner = (
         f'\n<p align="center">\n'
         f'  <img src="{img_src}" alt="Banner" width="960">\n'
-        f'</p>\n' + caption
+        f'</p>\n' + caption_html
     )
 
-    pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
-    m = re.search(pat, md_text, flags=re.S)
+    # Try to patch an existing banner block first
+    block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
+    mblock = _re.search(block_pat, md_text, flags=_re.S)
 
-    if m:
-        block = m.group(2)
-        # Try a smart replace for existing src first (keeps user's extra markup if any)
-        replaced = re.sub(r'src="[^"]*?/assets/[^"?"]+[^"]*"', f'src="{img_src}"', block)
-        if replaced != block:
-            return md_text[:m.start(2)] + replaced + md_text[m.end(2):]
-        # No <img> with assets found — overwrite inner block
-        return md_text[:m.start(2)] + new_inner + md_text[m.end(2):]
+    if mblock:
+        inner = mblock.group(2)
 
-    # No banner block yet — prepend a fresh one
+        # 1) Update image src (handles relative and raw URLs that point into /assets/)
+        innerpatched = _re.sub(
+            r'src="[^"]*?/assets/[^"?"]+[^"]*"',
+            f'src="{img_src}"',
+            inner,
+            flags=_re.I
+        )
+
+        # 2) Update caption "Banner X/Y" (preserve or add the 🖼️ emoji)
+        innerpatched = _re.sub(
+            r'(?:🖼️\s*)?Banner\s+\d+/\d+',
+            f'🖼️ {caption_text}',
+            innerpatched,
+            flags=_re.I
+        )
+
+        # If there was no caption at all, append it under the image
+        if 'Banner' not in innerpatched:
+            # place after the closing </p> of the image if present; otherwise just append
+            after_img = _re.sub(r'(</p>\s*)$', r'\1' + caption_html, innerpatched, count=1)
+            if after_img == innerpatched:
+                innerpatched = innerpatched + caption_html
+
+        # If anything changed, return the patched block
+        if innerpatched != inner:
+            return md_text[:mblock.start(2)] + innerpatched + md_text[mblock.end(2):]
+
+        # If we couldn’t safely patch, overwrite inner with a fresh block
+        return md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
+
+    # No banner block yet — prepend a fresh one to the README
     banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
     return banner_block + md_text
 
