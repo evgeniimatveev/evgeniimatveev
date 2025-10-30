@@ -80,7 +80,7 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 
 > 💡 *Note:* This ecosystem runs as a multi-copilot workflow.  
 > Each assistant has a unique role — **ChatGPT** leads architecture and reasoning, **Claude Sonnet** handles long-range automation and planning, and **DeepSeek** ensures rigorous code logic and debugging precision.  
-> Together, they form a continuous loop of **innovation → execution → validation** — my personal AI engineering stack. 🚀
+> Together, they form a continuous loop of **innovation → execution → validation** — my personal AI engineering stack. 
 
 
 🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
