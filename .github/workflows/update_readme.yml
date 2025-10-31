@@ -60,32 +60,31 @@ jobs:
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      # Inject fixed badges (Schedule/Rotation/Commit/Event) between STATUS markers
-     - name: Update STATUS line in README
-  shell: bash
-  env:
-    SCHEDULE_BADGE: "6h_5m"   # keep your manual schedule label
-  run: |
-    short_sha="${GITHUB_SHA:0:7}"
+      # Inject badges (Updated/Schedule/Rotation/Commit/Event) between STATUS markers
+      - name: Update STATUS line in README
+        shell: bash
+        env:
+          SCHEDULE_BADGE: "6h_5m"   # keep your manual schedule label
+        run: |
+          short_sha="${GITHUB_SHA:0:7}"
+          # Build "Updated" badge text: e.g., "2025-10-31 22:21 UTC"
+          NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
+          # URL-encode spaces and colons for shields.io
+          NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
 
-    # Build "Updated" badge text: e.g. "2025-10-31 22:21 UTC"
-    NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
-    # URL-encode spaces and colons for shields.io
-    NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
+          STATUS="<p align=\"center\">
+            <img src=\"https://img.shields.io/badge/Updated-${NOW_BADGE}-0e8a16?cacheSeconds=60\" />
+            <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+            <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
+            <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
+            <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
+          </p>"
 
-    STATUS="<p align=\"center\">
-      <img src=\"https://img.shields.io/badge/Updated-${NOW_BADGE}-0e8a16?cacheSeconds=60\" />
-      <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
-      <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
-      <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
-      <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
-    </p>"
-
-    awk -v r="$STATUS" '
-      /<!-- STATUS:START -->/ {print; print r; f=1; next}
-      /<!-- STATUS:END -->/   {f=0}
-      !f
-    ' README.md > README.tmp && mv README.tmp README.md
+          awk -v r="$STATUS" '
+            /<!-- STATUS:START -->/ {print; print r; f=1; next}
+            /<!-- STATUS:END -->/   {f=0}
+            !f
+          ' README.md > README.tmp && mv README.tmp README.md
 
       # Commit & push with PAT
       - name: Commit & push changes
