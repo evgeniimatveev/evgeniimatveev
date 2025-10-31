@@ -2,7 +2,7 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "5 */6 * * *" #Run every 6 hours      # Run every hour  "0 */1 * * *"
+    - cron: "5 */6 * * *" # Run every 6 hours      # Run every hour  "0 */1 * * *"
   workflow_dispatch:          # Allow manual runs from the Actions tab
 
 # Prevent concurrent runs of this workflow from racing on README changes
