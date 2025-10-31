@@ -73,7 +73,6 @@ jobs:
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
 
           STATUS="<p align=\"center\">
-            <img src=\"https://img.shields.io/badge/Updated-${NOW_BADGE}-0e8a16?cacheSeconds=60\" />
             <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
             <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
             <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
