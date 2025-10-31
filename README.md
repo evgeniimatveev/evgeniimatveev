@@ -126,6 +126,10 @@ Last updated: 2025-10-31 06:36:30.782237 UTC
 
 ---
 
+<p align="center"><sub>🧠 Auto-updated by CI/CD workflow every 6h 5m · Latest run #{{run_number}}</sub></p>
+
+---
+
 🔥 MLOps Insight: 💡 Time for some coffee and MLOps ☕ | Wrap it up like a pro! 🔥 📈
 
 ---
