@@ -1,7 +1,7 @@
 ---
 <!-- BANNER:START -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/4.gif?t=1761892590" alt="Banner" height="600">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/4.gif?t=1761892590" alt="Banner" height="420">
 </p>
 <p align="center"><sub>🖼️ Banner 4/82</sub></p>
 <!-- BANNER:END -->
