@@ -56,7 +56,7 @@ jobs:
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      - name: Update STATUS line in README
+  - name: Update STATUS line in README
   shell: bash
   env:
     # keep this in sync with your `on.schedule.cron` above (GitHub doesn't expose it at runtime)
@@ -141,11 +141,3 @@ HTML
       /<!-- STATUS:END -->/   {skip=0}
       !skip
     ' README.md > README.tmp && mv README.tmp README.md
-     
-      - name: Commit & push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}   # Personal access token with 'repo' scope
-        run: |
-          git add README.md update_log.txt || true
-          git commit -m "Auto-update README (sequential rotation)" || echo "No changes to commit"
-          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
