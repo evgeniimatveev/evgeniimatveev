@@ -61,8 +61,11 @@ jobs:
         run: |
           short_sha="${GITHUB_SHA:0:7}"
           STATUS="<p align=\"center\"><sub>📟 Auto-updated every 6 h 5 m · Rotation #${GITHUB_RUN_NUMBER} · RunID ${GITHUB_RUN_ID} · Commit ${short_sha} · Event ${GITHUB_EVENT_NAME}</sub></p>"
-          perl -0777 -pe "s/<!-- STATUS:START -->.*?<!-- STATUS:END -->/<!-- STATUS:START -->\n$STATUS\n<!-- STATUS:END -->/s" README.md > README.tmp
-          mv README.tmp README.md
+          awk -v r="$STATUS" '
+            /<!-- STATUS:START -->/ {print; print r; f=1; next}
+            /<!-- STATUS:END -->/ {f=0}
+            !f
+          ' README.md > README.tmp && mv README.tmp README.md
 
       
       - name: Commit & push changes
