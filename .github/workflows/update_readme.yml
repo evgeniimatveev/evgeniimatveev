@@ -2,8 +2,8 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "5 */6 * * *"          # Run every 6 hours at minute 5
-  workflow_dispatch:                # Manual runs
+    - cron: "5 */6 * * *"        # Run every 6 hours (at minute 5)
+  workflow_dispatch:              # Allow manual runs from the Actions tab
 
 # Prevent concurrent runs of this workflow from racing on README changes
 concurrency:
@@ -14,36 +14,34 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
     env:
-      # read by your Python script to control rotation mode
+      # If your Python script supports it, you can read this to switch modes
       BANNER_MODE: sequential
-      # keep this in sync with the cron above (GitHub doesn't expose it at runtime)
-      CRON_EXPR: "5 */6 * * *"
 
     steps:
-      # --- Checkout with creds disabled (we will push with PAT) ---
+      # Checkout (we will push with PAT explicitly)
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false   # do NOT use GITHUB_TOKEN creds
-          fetch-depth: 0               # keep history for commits
+          persist-credentials: false
+          fetch-depth: 0
 
-      # --- Python for update_readme.py ---
+      # Python for update_readme.py
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      # --- Rotate banner + timestamp/quote in README ---
+      # Rotate banner + timestamp/quote
       - name: Run updater (updates banner + timestamp + quote)
         run: python update_readme.py
 
-      # --- Set git author (for commit) ---
+      # Configure author for commits
       - name: Configure Git author
         run: |
           git config --global user.name "evgeniimatveev"
           git config --global user.email "your-email@users.noreply.github.com"
 
-      # --- Append metadata to update_log.txt ---
+      # Append metadata to log
       - name: Append run metadata to log
         run: |
           {
@@ -56,84 +54,34 @@ jobs:
             echo "--------------------------------------"
           } >> update_log.txt
 
-      # --- Keep last ~70 lines of the log ---
+      # Keep last ~70 lines of the log
       - name: Trim log (keep last ~70 lines)
         run: |
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      # --- Build & inject STATUS badges between markers in README ---
+      # Inject fixed badges (Schedule/Rotation/Commit/Event) between STATUS markers
       - name: Update STATUS line in README
         shell: bash
         run: |
-          set -euo pipefail
-
-          # cron -> human label
-          cron_to_label () {
-            local expr="$CRON_EXPR"
-            local m h d mo w
-            read -r m h d mo w <<<"$expr"
-            shopt -s extglob
-
-            if [[ "$m" == "*/"+([0-9]) && "$h" == "*" ]]; then
-              echo "${m#*/}m"; return
-            fi
-            if [[ "$m" =~ ^[0-9]+$ && "$h" == "*" ]]; then
-              printf "1h_%dm" "$m"; return
-            fi
-            if [[ "$m" =~ ^[0-9]+$ && "$h" == "*/"+([0-9]) ]]; then
-              local H=${h#*/}
-              printf "%dh_%dm" "$H" "$m"; return
-            fi
-            if [[ "$m" =~ ^[0-9]+$ && "$h" =~ ^[0-9]+$ ]]; then
-              printf "24h_%02dh_%02dm" "$h" "$m"; return
-            fi
-            echo "custom"
-          }
-
-          SCHEDULE_LABEL="$(cron_to_label)"
-
-          # badges config
-          STYLE="flat-square"
-          LABEL_COLOR="#1F2328"
-          LOGO_COLOR="white"
-          CACHE_SECONDS=300
-
           short_sha="${GITHUB_SHA:0:7}"
-          label_hex="${LABEL_COLOR#\#}"
-
-          run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          commit_url="https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
-          events_url="https://github.com/${GITHUB_REPOSITORY}/actions"
-
-          badge_sched="https://img.shields.io/badge/Schedule-${SCHEDULE_LABEL}-2ea44f?style=${STYLE}&labelColor=${label_hex}&logo=clockify&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
-          badge_rot="https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?style=${STYLE}&labelColor=${label_hex}&logo=replit&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
-          badge_commit="https://img.shields.io/badge/Commit-${short_sha}-9cf?style=${STYLE}&labelColor=${label_hex}&logo=git&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
-          badge_event="https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?style=${STYLE}&labelColor=${label_hex}&logo=githubactions&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
-
-          STATUS=$(
-            cat <<HTML
-<p align="center">
-  <a href="${run_url}"><img alt="Schedule: ${SCHEDULE_LABEL}" src="${badge_sched}" /></a>
-  <a href="${run_url}"><img alt="Rotation: #${GITHUB_RUN_NUMBER}" src="${badge_rot}" /></a>
-  <a href="${commit_url}"><img alt="Commit: ${short_sha}" src="${badge_commit}" /></a>
-  <a href="${events_url}"><img alt="Event: ${GITHUB_EVENT_NAME}" src="${badge_event}" /></a>
-</p>
-HTML
-          )
-
-          # inject between markers
-          awk -v R="${STATUS}" '
-            /<!-- STATUS:START -->/ {print; print R; skip=1; next}
-            /<!-- STATUS:END -->/   {skip=0}
-            !skip
+          STATUS="<p align=\"center\">
+            <img src=\"https://img.shields.io/badge/Schedule-6h_5m-2ea44f\" />
+            <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb\" />
+            <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf\" />
+            <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2\" />
+          </p>"
+          awk -v r="$STATUS" '
+            /<!-- STATUS:START -->/ {print; print r; f=1; next}
+            /<!-- STATUS:END -->/   {f=0}
+            !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # --- Commit & push with CLASSIC_PAT ---
-      - name: Commit & push changes (CLASSIC_PAT)
+      # Commit & push with PAT
+      - name: Commit & push changes
         env:
-          CLASSIC_PAT: ${{ secrets.CLASSIC_PAT }}   # PAT with 'repo' scope
+          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}   # Personal access token with 'repo' scope
         run: |
           git add README.md update_log.txt || true
-          git commit -m "Auto-update README (status & banner)" || echo "No changes to commit"
-          git push "https://x-access-token:${CLASSIC_PAT}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+          git commit -m "Auto-update README (sequential rotation)" || echo "No changes to commit"
+          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
