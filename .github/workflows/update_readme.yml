@@ -141,3 +141,11 @@ HTML
       /<!-- STATUS:END -->/   {skip=0}
       !skip
     ' README.md > README.tmp && mv README.tmp README.md
+
+ - name: Commit & push changes (CLASSIC_PAT)
+        env:
+          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}   # PAT with 'repo' scope
+        run: |
+          git add README.md update_log.txt || true
+          git commit -m "Auto-update README (status & banner)" || echo "No changes to commit"
+          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
