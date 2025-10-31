@@ -5,7 +5,6 @@
 </p>
 <p align="center"><sub>🖼️ Banner 6/79</sub></p>
 <!-- BANNER:END -->
----
 <!-- STATUS:START -->
 <p align="center"><sub>📟 Auto-updated every 6 h 5 m · Rotation #0000</sub></p>
 <!-- STATUS:END -->
