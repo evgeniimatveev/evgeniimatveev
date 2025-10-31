@@ -57,16 +57,90 @@ jobs:
           mv temp_log.txt update_log.txt || true
 
       - name: Update STATUS line in README
-        shell: bash
-        run: |
-          short_sha="${GITHUB_SHA:0:7}"
-          STATUS="<p align=\"center\">
-            <img src=\"https://img.shields.io/badge/Schedule-6h_5m-2ea44f\" />
-            <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb\" />
-            <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf\" />
-            <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2\" />
-          </p>"
-          awk -v r="$STATUS" ' /<!-- STATUS:START -->/ {print; print r; f=1; next} /<!-- STATUS:END -->/ {f=0} !f ' README.md > README.tmp && mv README.tmp README.md
+  shell: bash
+  env:
+    # keep this in sync with your `on.schedule.cron` above (GitHub doesn't expose it at runtime)
+    CRON_EXPR: "5 */6 * * *"
+  run: |
+    set -euo pipefail
+
+    # -------- cron -> human label --------
+    cron_to_label () {
+      # Supports common patterns:
+      # 1) "*/N * * * *"              -> every N minutes         => "Nm"
+      # 2) "M * * * *"                -> every 1 hour at M min   => "1h_Mm"
+      # 3) "M */H * * *"              -> every H hours at M min  => "Hh_Mm"
+      # 4) "M H * * *" (numbers)      -> daily at H:M            => "24h_Hh_Mm"
+      # Fallback: "custom"
+      local expr="$1"
+      # split
+      local m h d mo w
+      read -r m h d mo w <<<"$expr"
+
+      shopt -s extglob
+
+      if [[ "$m" == "*/"+([0-9]) && "$h" == "*" ]]; then
+        # every N minutes
+        local N=${m#*/}
+        echo "${N}m"; return
+      fi
+
+      if [[ "$m" =~ ^[0-9]+$ && "$h" == "*" ]]; then
+        # every hour at minute M
+        printf "1h_%dm" "$m"; return
+      fi
+
+      if [[ "$m" =~ ^[0-9]+$ && "$h" == "*/"+([0-9]) ]]; then
+        # every H hours at minute M
+        local H=${h#*/}
+        printf "%dh_%dm" "$H" "$m"; return
+      fi
+
+      if [[ "$m" =~ ^[0-9]+$ && "$h" =~ ^[0-9]+$ ]]; then
+        # daily at H:M
+        printf "24h_%02dh_%02dm" "$h" "$m"; return
+      fi
+
+      echo "custom"
+    }
+
+    SCHEDULE_LABEL="$(cron_to_label "${CRON_EXPR}")"
+
+    # -------- badges config (uniform style & colors) --------
+    STYLE="flat-square"
+    LABEL_COLOR="#1F2328"   # good contrast in GitHub Dark
+    LOGO_COLOR="white"
+    CACHE_SECONDS=300
+
+    short_sha="${GITHUB_SHA:0:7}"
+    label_hex="${LABEL_COLOR#\#}"
+
+    run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+    commit_url="https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+    events_url="https://github.com/${GITHUB_REPOSITORY}/actions"
+
+    badge_sched="https://img.shields.io/badge/Schedule-${SCHEDULE_LABEL}-2ea44f?style=${STYLE}&labelColor=${label_hex}&logo=clockify&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
+    badge_rot="https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?style=${STYLE}&labelColor=${label_hex}&logo=replit&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
+    badge_commit="https://img.shields.io/badge/Commit-${short_sha}-9cf?style=${STYLE}&labelColor=${label_hex}&logo=git&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
+    badge_event="https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?style=${STYLE}&labelColor=${label_hex}&logo=githubactions&logoColor=${LOGO_COLOR}&cacheSeconds=${CACHE_SECONDS}"
+
+    STATUS=$(
+      cat <<HTML
+<p align="center">
+  <a href="${run_url}"><img alt="Schedule: ${SCHEDULE_LABEL}" src="${badge_sched}" /></a>
+  <a href="${run_url}"><img alt="Rotation: #${GITHUB_RUN_NUMBER}" src="${badge_rot}" /></a>
+  <a href="${commit_url}"><img alt="Commit: ${short_sha}" src="${badge_commit}" /></a>
+  <a href="${events_url}"><img alt="Event: ${GITHUB_EVENT_NAME}" src="${badge_event}" /></a>
+</p>
+HTML
+    )
+
+    # inject between markers
+    awk -v R="${STATUS}" '
+      /<!-- STATUS:START -->/ {print; print R; skip=1; next}
+      /<!-- STATUS:END -->/   {skip=0}
+      !skip
+    ' README.md > README.tmp && mv README.tmp README.md
      
       - name: Commit & push changes
         env:
