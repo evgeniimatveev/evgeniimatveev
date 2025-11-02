@@ -20,8 +20,7 @@ jobs:
     env:
       # ---- Controls for your updater script ----
       BANNER_MODE: sequential
-      # Toggle calendar-stable rotation if you want daily change even if a run was skipped:
-      # BANNER_CALENDAR_MODE: "true"
+      # BANNER_CALENDAR_MODE: "true"   # optional: force daily change even if a run was skipped
       # Shown in STATUS and Run Meta blocks:
       SCHEDULE_BADGE: "24h_5m"
 
@@ -72,8 +71,12 @@ jobs:
         shell: bash
         run: |
           echo "Last 10 JSONL lines:"
-          [ -f update_log.jsonl ] && tail -n 10 update_log.jsonl || echo "update_log.jsonl not found yet"
-      
+          if [ -f update_log.jsonl ]; then
+            tail -n 10 update_log.jsonl
+          else
+            echo "update_log.jsonl not found yet"
+          fi
+
       - name: Update STATUS line in README
         shell: bash
         run: |
@@ -98,12 +101,12 @@ jobs:
         shell: bash
         run: |
           set -e
-          git add README.md update_log.txt || true
+          git add README.md update_log.txt update_log.jsonl || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            git commit -m "Auto-update README (banner/status/insight rotation)"
+            git commit -m "Auto-update README (banner/status/insight rotation + logs)"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
@@ -116,12 +119,14 @@ jobs:
           for i in 1 2 3; do
             if git push; then
               echo "Pushed successfully"
-              break
+              exit 0
             fi
             echo "Push failed (attempt $i). Retrying in $((i*3))s..."
             sleep $((i*3))
             git pull --rebase || true
           done
+          echo "Push failed after 3 attempts"
+          exit 1
 
       - name: Write job summary
         shell: bash
@@ -132,7 +137,11 @@ jobs:
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
             echo "- **Schedule**: ${SCHEDULE_BADGE}"
-            echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
+            if [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
+              echo "- Pushed: ✅"
+            else
+              echo "- Pushed: —"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
