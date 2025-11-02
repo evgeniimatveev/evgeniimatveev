@@ -2,12 +2,11 @@ name: Auto Update README
 
 on:
   schedule:
-    # Run once a day at 09:05 UTC
-    - cron: "5 9 * * *"
+    - cron: "5 9 * * *"     # daily at 09:05 UTC
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # allow push via GITHUB_TOKEN
+  contents: write
 
 concurrency:
   group: auto-update-readme
@@ -18,10 +17,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # ---- Controls for your updater script ----
       BANNER_MODE: sequential
-      # BANNER_CALENDAR_MODE: "true"   # optional
-      # Shown in STATUS and Run Meta blocks:
+      # BANNER_CALENDAR_MODE: "true"
       SCHEDULE_BADGE: "24h_5m"
 
     steps:
@@ -42,11 +39,9 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      # Run the update script (rotates banner + timestamp + quote + RUNMETA)
       - name: Run updater
         run: python update_readme.py
 
-      # Append run metadata to a short log and keep it short
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -59,8 +54,6 @@ jobs:
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
-
-          # keep last ~70 lines
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
@@ -77,7 +70,6 @@ jobs:
           echo "Last JSONL line:"
           tail -n 1 update_log.jsonl || true
 
-      # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
         run: |
@@ -99,7 +91,6 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Only commit if there are actual changes
       - name: Commit changes (if any)
         id: commit
         shell: bash
@@ -114,7 +105,6 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # Push with a couple of retries to avoid rare race conditions
       - name: Push changes
         if: steps.commit.outputs.changed == 'true'
         env:
@@ -145,7 +135,7 @@ jobs:
       - name: Enrich job summary from JSONL
         shell: bash
         run: |
-          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          python - <<'PY' | tee -a "$GITHUB_STEP_SUMMARY"
 import json, pathlib, sys
 
 p = pathlib.Path("update_log.jsonl")
@@ -156,7 +146,7 @@ lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-5:
 if not lines:
     sys.exit(0)
 
-def esc(s):  # escape for Markdown table
+def esc(s):
     return str(s).replace("|", "\\|").replace("\n", " ").strip()
 
 print("### Updates (from JSON log)")
