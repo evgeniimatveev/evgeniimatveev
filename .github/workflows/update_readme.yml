@@ -2,9 +2,9 @@ name: Auto Update README
 
 on:
   schedule:
-    # Run once a day at 09:05 UTC 
+    # Run once a day at 09:05 UTC
     - cron: "5 9 * * *"
-  workflow_dispatch:: {}          # Allow manual runs from the Actions tab
+  workflow_dispatch: {}          # Allow manual runs from the Actions tab
 
 # Prevent concurrent runs of this workflow from racing on README changes
 concurrency:
@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BANNER_MODE: sequential
+      # Optional: map banner to day-of-year so it always changes even if a run is skipped
+      # BANNER_CALENDAR_MODE: "true"
 
     steps:
       # Checkout repository
@@ -31,17 +33,17 @@ jobs:
         with:
           python-version: "3.10"
 
-      # Run the update script
-      - name: Run updater (updates banner + timestamp + quote)
+      # Run the update script (rotates banner + timestamp + quote)
+      - name: Run updater
         run: python update_readme.py
 
-      # Configure Git author
+      # Configure Git author (for commit attribution)
       - name: Configure Git author
         run: |
           git config --global user.name "evgeniimatveev"
           git config --global user.email "your-email@users.noreply.github.com"
 
-      # Append metadata to update log
+      # Append run metadata to a short log
       - name: Append run metadata to log
         run: |
           {
@@ -54,21 +56,19 @@ jobs:
             echo "--------------------------------------"
           } >> update_log.txt
 
-      # Trim log (keep last 70 lines)
+      # Keep the log short (last ~70 lines)
       - name: Trim log (keep last ~70 lines)
         run: |
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      # Inject all badges between STATUS markers
+      # Refresh STATUS badges in README
       - name: Update STATUS line in README
         shell: bash
         env:
           SCHEDULE_BADGE: "24h_5m"
         run: |
           short_sha="${GITHUB_SHA:0:7}"
-
-          # Build "Updated" badge text: e.g., "2025-10-31 22:21 UTC"
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
 
@@ -86,7 +86,7 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Commit & push changes
+      # Commit & push changes (using PAT)
       - name: Commit & push changes
         env:
           GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
