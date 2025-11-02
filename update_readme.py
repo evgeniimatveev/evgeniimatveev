@@ -29,6 +29,12 @@ CAL_MODE = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1", "true"
 
 JSONL_FILE = Path("update_log.jsonl")
 
+# -------- Helpers --------
+def _resolve_insight(dynamic_quote: str) -> str:
+    """Single place to resolve final insight string."""
+    env = os.getenv("MLOPS_INSIGHT", "").strip()
+    return env if env else "💡 " + dynamic_quote
+
 # -------- Utils --------
 def _natkey(p: Path) -> List[object]:
     s = p.name.lower()
@@ -108,6 +114,7 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     """
     files = _list_assets()
     if not files:
+        print("[warn] no assets found in ./assets — banner rotation skipped")
         return md_text, (0, 0)
 
     next_rel, idx_fallback = _pick_next_asset(md_text, files)
@@ -323,7 +330,8 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int]) -> str:
     m = re.search(pat, md_text, flags=re.S)
     if m:
         return md_text[:m.start(2)] + "\n" + meta_md + "\n" + md_text[m.end(2):]
-    return md_text + "\n<!-- RUNMETA:START -->\n" + meta_md + "\n<!-- RUNMETA:END -->\n"
+    return (md_text.rstrip() + "\n\n"
+            "<!-- RUNMETA:START -->\n" + meta_md + "\n<!-- RUNMETA:END -->\n")
 
 # -------- JSONL append --------
 def _append_jsonl_line(path: Path, obj: Dict[str, Any]) -> None:
@@ -334,6 +342,15 @@ def _append_jsonl_line(path: Path, obj: Dict[str, Any]) -> None:
 # -------- Main driver --------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
+
+    # Scaffold README on first run
+    if not md_path.exists():
+        md_path.write_text(
+            "<!-- BANNER:START --><!-- BANNER:END -->\n"
+            "<!-- STATUS:START --><!-- STATUS:END -->\n",
+            encoding="utf-8"
+        )
+
     md = md_path.read_text(encoding="utf-8")
 
     # 1) Rotate banner
@@ -342,6 +359,7 @@ def generate_new_readme() -> None:
     # 2) Update timestamp + insight
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
+    resolved_insight = _resolve_insight(dynamic_quote)
 
     lines = md.splitlines(keepends=True)
     updated: List[str] = []
@@ -353,8 +371,7 @@ def generate_new_readme() -> None:
             updated.append("Last updated: {} UTC\n".format(now))
             saw_updated = True
         elif line.startswith("🔥 MLOps Insight:"):
-            insight = os.getenv("MLOPS_INSIGHT", "").strip() or "💡 " + dynamic_quote
-            updated.append("🔥 MLOps Insight: " + insight + "\n")
+            updated.append("🔥 MLOps Insight: " + resolved_insight + "\n")
             saw_insight = True
         else:
             updated.append(line)
@@ -362,8 +379,7 @@ def generate_new_readme() -> None:
     if not saw_updated:
         updated.append("\nLast updated: {} UTC\n".format(now))
     if not saw_insight:
-        insight = os.getenv("MLOPS_INSIGHT", "").strip() or "💡 " + dynamic_quote
-        updated.append("\n🔥 MLOps Insight: " + insight + "\n")
+        updated.append("\n🔥 MLOps Insight: " + resolved_insight + "\n")
 
     md = "".join(updated)
 
@@ -389,7 +405,7 @@ def generate_new_readme() -> None:
             "banner_total": banner_pos[1],
             "banner_file": banner_file,
             "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
-            "insight_preview": os.getenv("MLOPS_INSIGHT", "").strip() or dynamic_quote,
+            "insight_preview": resolved_insight,
         }
         _append_jsonl_line(JSONL_FILE, jsonl_row)
     except Exception as exc:
@@ -405,8 +421,7 @@ def generate_new_readme() -> None:
     print("\n" + bar)
     print("✅ README updated: " + now.strftime("%Y-%m-%d %H:%M:%S") + " UTC")
     print("🖼️ Banner mode: " + ("calendar" if CAL_MODE else BANNER_MODE) + "   🔢 Run: #{}   🔗 SHA: {}".format(run_no, short_sha))
-    env_insight = os.getenv("MLOPS_INSIGHT", "")
-    print("💬 Insight: " + (env_insight if env_insight else "(dynamic) " + dynamic_quote))
+    print("💬 Insight: " + resolved_insight)
     print("⏱️ Schedule: {}   ▶️ Next ETA: {}".format(schedule, next_eta))
     print(bar + "\n")
 
