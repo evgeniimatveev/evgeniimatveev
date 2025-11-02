@@ -1,24 +1,17 @@
 # update_readme.py
 # -*- coding: utf-8 -*-
 """
-Auto-rotate a banner in README.md + append runtime metadata.
+README auto-updater:
+- Rotates banner (stateless) with cache-busted raw URL
+- Updates "Last updated:" and "🔥 MLOps Insight:" lines
+- Injects/refreshes a <details> Run Meta block with links
+- Optional calendar-based banner rotation (stable per day of year)
 
-Adds/updates:
-- Banner block between <!-- BANNER:START --> ... <!-- BANNER:END -->
-- "Last updated: <UTC>" line
-- "🔥 MLOps Insight: 💡 ..." line
-- RUNMETA block between <!-- RUNMETA:START --> ... <!-- RUNMETA:END -->
-
-Environment knobs:
-- BANNER_MODE = "sequential" | "random"     (default: sequential)
-- SCHEDULE_BADGE (e.g., "24h_5m")           (default: 24h_5m)
-
-Reads standard GitHub Actions env when running in CI:
-GITHUB_REPOSITORY, GITHUB_REF_NAME, GITHUB_RUN_NUMBER, GITHUB_RUN_ID,
-GITHUB_SHA, GITHUB_WORKFLOW, GITHUB_EVENT_NAME, GITHUB_ACTOR, GITHUB_JOB.
-
-Optionally pass custom env from workflow (they are shown if present):
-RUN_OS, PY_VERSION
+Env vars:
+  BANNER_MODE = sequential | random           (default: sequential)
+  BANNER_CALENDAR_MODE = true/1/yes           (default: off)
+  GITHUB_* (provided by Actions)              (for links/metadata)
+  SCHEDULE_BADGE (optional)                   (for Run Meta display only)
 """
 
 from __future__ import annotations
@@ -36,19 +29,15 @@ ASSETS = Path("assets")
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
-# Banner selection mode: "sequential" | "random"
 BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
-
+CAL_MODE = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1", "true", "yes"}
 
 # -------- Utils --------
 def _natkey(p: Path) -> List[object]:
-    """Natural sort key so that 2.gif < 10.gif."""
     s = p.name.lower()
     return [(int(t) if t.isdigit() else t) for t in re.findall(r"\d+|\D+", s)]
 
-
 def _list_assets() -> List[Path]:
-    """Return valid assets (by ext & size), naturally sorted."""
     files: List[Path] = []
     if not ASSETS.exists():
         return files
@@ -64,19 +53,12 @@ def _list_assets() -> List[Path]:
         files.append(p)
     return sorted(files, key=_natkey)
 
-
 def _to_raw_url(rel_path: str) -> str:
-    """Build a raw GitHub URL for this repo/branch."""
     repo = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
     branch = os.getenv("GITHUB_REF_NAME", "main")
     return f"https://raw.githubusercontent.com/{repo}/{branch}/{rel_path}"
 
-
 def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
-    """
-    Find current <img src=".../assets/<file>"> (prefer banner block).
-    Return 'assets/<file>' or None.
-    """
     block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(block_pat, md_text, flags=re.S)
     scope = m.group(2) if m else md_text
@@ -93,18 +75,19 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
         return url
     return None
 
-
 def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
-    """
-    Stateless next banner:
-    - random mode avoids the current when possible
-    - sequential moves to next (wrap-around)
-    Returns (rel_path, index_1based_in_sorted_list).
-    """
+    """Return ('assets/<file>', 1-based-index) for next banner."""
     if not files:
         raise RuntimeError("No valid assets found in 'assets/'.")
-
     paths = [f.as_posix() for f in files]
+
+    # Calendar-stable mode has priority over others
+    if CAL_MODE:
+        doy = int(datetime.datetime.utcnow().strftime("%j"))  # 1..366
+        idx = (doy - 1) % len(paths)
+        choice = paths[idx]
+        return choice, idx + 1
+
     current = _extract_current_asset_from_md(md_text)
 
     if BANNER_MODE == "random":
@@ -114,6 +97,7 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         choice = random.choice(candidates)
         return choice, paths.index(choice) + 1
 
+    # sequential
     if current in paths:
         i = paths.index(current)
         nxt = paths[(i + 1) % len(paths)]
@@ -121,23 +105,23 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         nxt = paths[0]
     return nxt, paths.index(nxt) + 1
 
-
 # -------- Banner rotation --------
-def rotate_banner_in_md(md_text: str) -> str:
+def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int,int]]:
     """
-    Statelessly rotate the banner and keep a centered caption:
-    - raw.githubusercontent.com URL with cache-buster (?t=<unix>)
-    - caption "🖼️ Banner X/Y" (X prefers numeric prefix in filename)
+    Returns (new_md, (x,total)), where x/total is shown in caption and used in Run Meta.
     """
     files = _list_assets()
     if not files:
-        return md_text
+        return md_text, (0, 0)
 
+    # Choose next asset path and its index (1-based in sorted list)
     next_rel, idx_fallback = _pick_next_asset(md_text, files)
 
+    # Cache-busted raw URL
     bust = int(datetime.datetime.utcnow().timestamp())
     img_src = f'{_to_raw_url(next_rel)}?t={bust}'
 
+    # Determine X from filename if numeric prefix; else fallback index
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
@@ -148,7 +132,7 @@ def rotate_banner_in_md(md_text: str) -> str:
 
     new_inner = (
         f'\n<p align="center">\n'
-        f'  <img src="{img_src}" alt="Banner" width="960">\n'
+        f'  <img src="{img_src}" alt="Banner" style="max-width:960px;width:100%;">\n'
         f'</p>\n' + caption_html
     )
 
@@ -157,36 +141,34 @@ def rotate_banner_in_md(md_text: str) -> str:
 
     if mblock:
         inner = mblock.group(2)
-
         inner_patched = re.sub(
             r'src="[^"]*?/assets/[^"?"]+[^"]*"',
             f'src="{img_src}"',
             inner,
             flags=re.I
         )
-
         inner_patched2 = re.sub(
             r'(?:🖼️\s*)?Banner\s+\d+/\d+',
             f'🖼️ {caption_text}',
             inner_patched,
             flags=re.I
         )
-
         if 'Banner' not in inner_patched2:
             after_img = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
             if after_img == inner_patched2:
                 inner_patched2 = inner_patched2 + caption_html
 
         if inner_patched2 != inner:
-            return md_text[:mblock.start(2)] + inner_patched2 + md_text[mblock.end(2):]
-        return md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
+            new_md = md_text[:mblock.start(2)] + inner_patched2 + md_text[mblock.end(2):]
+        else:
+            new_md = md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
+        return new_md, (x_num, total)
 
-    # No banner block yet — prepend a fresh one
+    # If block absent — prepend a fresh one
     banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
-    return banner_block + md_text
+    return banner_block + md_text, (x_num, total)
 
-
-# -------- Insight generation --------
+# -------- Quotes & headline --------
 MORNING_QUOTES = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
@@ -234,66 +216,49 @@ DAY_OF_WEEK_QUOTES = {
 }
 SEASON_QUOTES = {
     "Spring": [
-        "Fresh start — time to grow 🌸",
-        "Refactor and bloom 🌼",
-        "Spring into automation! 🪴",
-        "Plant ideas, water pipelines 🌱",
-        "Rebuild with lighter dependencies 🌿",
-        "Nurture data quality from the root 🌷",
+        "Fresh start — time to grow 🌸", "Refactor and bloom 🌼",
+        "Spring into automation! 🪴", "Plant ideas, water pipelines 🌱",
+        "Rebuild with lighter dependencies 🌿", "Nurture data quality from the root 🌷",
     ],
     "Summer": [
-        "Keep shining and shipping ☀️",
-        "Hot pipelines, cool results 🔥",
-        "Sunny mindset, clean commits 😎",
-        "Scale up smart, throttle costs 🏖️",
-        "Ship value before the sunset 🌇",
-        "Heat-proof your infra with tests 🔥🧪",
+        "Keep shining and shipping ☀️", "Hot pipelines, cool results 🔥",
+        "Sunny mindset, clean commits 😎", "Scale up smart, throttle costs 🏖️",
+        "Ship value before the sunset 🌇", "Heat-proof your infra with tests 🔥🧪",
     ],
     "Autumn": [
-        "Reflect, refine, retrain 🍂",
-        "Collect insights like golden leaves 🍁",
-        "Harvest your best MLOps ideas 🌾",
-        "Prune legacy, keep essentials ✂️",
-        "Tune models, store wisdom 📦",
-        "Backtest decisions, bank learnings 🏦",
+        "Reflect, refine, retrain 🍂", "Collect insights like golden leaves 🍁",
+        "Harvest your best MLOps ideas 🌾", "Prune legacy, keep essentials ✂️",
+        "Tune models, store wisdom 📦", "Backtest decisions, bank learnings 🏦",
     ],
     "Winter": [
-        "Deep focus and model tuning ❄️",
-        "Hibernate and optimize 🧊",
-        "Great time for infra upgrades 🛠️",
-        "Keep the core warm and robust 🔧",
-        "Reduce noise, raise signal 📡",
-        "Plan roadmaps with calm clarity 🧭",
+        "Deep focus and model tuning ❄️", "Hibernate and optimize 🧊",
+        "Great time for infra upgrades 🛠️", "Keep the core warm and robust 🔧",
+        "Reduce noise, raise signal 📡", "Plan roadmaps with calm clarity 🧭",
     ],
 }
-EXTRA_EMOJIS = [
-    "🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🛰️",
-    "📡","📂","💾","📅","⏱️","⏳","⌛","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊",
-]
+EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊"]
 HEADLINE_TEMPLATES = [
-    "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING","SHIP SMALL, SHIP OFTEN",
-    "EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT","TRACK • TUNE • TRUST",
-    "REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE","LOW TOIL, HIGH LEVERAGE",
-    "METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
+    "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING",
+    "SHIP SMALL, SHIP OFTEN","EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT",
+    "TRACK • TUNE • TRUST","REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE",
+    "LOW TOIL, HIGH LEVERAGE","METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
 ]
 
 def _get_season_by_month(m: int) -> str:
-    if m in (3, 4, 5): return "Spring"
-    if m in (6, 7, 8): return "Summer"
-    if m in (9, 10, 11): return "Autumn"
+    if m in (3,4,5): return "Spring"
+    if m in (6,7,8): return "Summer"
+    if m in (9,10,11): return "Autumn"
     return "Winter"
 
 def _style_text(text: str) -> str:
-    """Randomly upper/title/keep (30/30/40)."""
     r = random.random()
     if r < 0.30:
         return text.upper()
     if r < 0.60:
         parts = []
+        keep_caps = ("🧪","🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","❄️","☀️","🍁","🌸","😎","🌙","📝","✅")
         for token in text.split(" "):
-            if any(ch.isalpha() for ch in token) and not token.isupper() and not token.startswith(
-                ("🧪","🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","❄️","☀️","🍁","🌸","😎","🌙","📝","✅")
-            ):
+            if any(ch.isalpha() for ch in token) and not token.isupper() and not token.startswith(keep_caps):
                 parts.append(token[:1].upper() + token[1:].lower())
             else:
                 parts.append(token)
@@ -301,17 +266,18 @@ def _style_text(text: str) -> str:
     return text
 
 def get_dynamic_quote() -> str:
-    """Seasonal + day-of-week + time-of-day + headline (+ RUN # in CI)."""
     now = datetime.datetime.utcnow()
     day = now.strftime("%A")
     hour = now.hour
     season = _get_season_by_month(now.month)
 
-    vibe = (
-        random.choice(MORNING_QUOTES) if 6 <= hour < 12 else
-        random.choice(AFTERNOON_QUOTES) if 12 <= hour < 18 else
-        random.choice(EVENING_QUOTES)
-    )
+    if 6 <= hour < 12:
+        vibe = random.choice(MORNING_QUOTES)
+    elif 12 <= hour < 18:
+        vibe = random.choice(AFTERNOON_QUOTES)
+    else:
+        vibe = random.choice(EVENING_QUOTES)
+
     season_line = random.choice(SEASON_QUOTES[season])
     day_line = DAY_OF_WEEK_QUOTES.get(day, "")
     tail_emoji = random.choice(EXTRA_EMOJIS)
@@ -321,101 +287,55 @@ def get_dynamic_quote() -> str:
 
     headline = _style_text(random.choice(HEADLINE_TEMPLATES))
     core = _style_text(f"{season_line} | {day_line} {vibe} {tail_emoji}")
+
     return f"{headline}{run_tag} — {core}"
 
+# -------- Run Meta block --------
+def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int,int]) -> str:
+    """Inject/refresh a <details> Run Meta block with links."""
+    run_no   = os.getenv("GITHUB_RUN_NUMBER", "")
+    run_id   = os.getenv("GITHUB_RUN_ID", "")
+    sha_full = os.getenv("GITHUB_SHA", "")
+    sha      = sha_full[:7] if sha_full else ""
+    repo     = os.getenv("GITHUB_REPOSITORY","")
+    schedule = os.getenv("SCHEDULE_BADGE","24h_5m")
+    actor    = os.getenv("GITHUB_ACTOR","")
+    event    = os.getenv("GITHUB_EVENT_NAME","")
+    now_utc  = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
 
-# -------- RUNMETA block --------
-def _extract_banner_numbers(md_text: str) -> Optional[Tuple[int, int]]:
-    """Try to read '🖼️ Banner X/Y' from the README (after rotation)."""
-    m = re.search(r'Banner\s+(\d+)\s*/\s*(\d+)', md_text, flags=re.I)
+    open_run    = f"https://github.com/{repo}/actions/runs/{run_id}" if run_id and repo else ""
+    open_commit = f"https://github.com/{repo}/commit/{sha_full}" if sha_full and repo else ""
+
+    meta_md = f"""
+<details>
+  <summary>🗒️ Run Meta (click to expand)</summary>
+
+- 🕒 Updated (UTC): **{now_utc}**
+- 🔢 Run: **#{run_no}** — {'[open run](' + open_run + ')' if open_run else '—'}
+- 🔗 Commit: **{sha}** — {'[open commit](' + open_commit + ')' if open_commit else '—'}
+- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**
+- 🪄 Event: **{event}** · 👤 Actor: **{actor}**
+- ⏱️ Schedule: **{schedule}**
+- 🖼️ Banner: **{banner_pos[0]}/{banner_pos[1]}**
+</details>
+""".strip()+"\n"
+
+    pat = r"(<!-- RUNMETA:START -->)(.*?)(<!-- RUNMETA:END -->)"
+    m = re.search(pat, md_text, flags=re.S)
     if m:
-        return int(m.group(1)), int(m.group(2))
-    return None
-
-def _render_runmeta_block(now_utc: datetime.datetime, next_eta_utc_str: str) -> str:
-    """Render the collapsible RUNMETA block with links & optional extras."""
-    repo      = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
-    branch    = os.getenv("GITHUB_REF_NAME", "main")
-    run_no    = os.getenv("GITHUB_RUN_NUMBER", "—")
-    run_id    = os.getenv("GITHUB_RUN_ID")
-    sha       = os.getenv("GITHUB_SHA", "")
-    short_sha = sha[:7] if sha else "—"
-    workflow  = os.getenv("GITHUB_WORKFLOW", "—")
-    event     = os.getenv("GITHUB_EVENT_NAME", "—")
-    actor     = os.getenv("GITHUB_ACTOR")
-    job       = os.getenv("GITHUB_JOB")
-
-    run_url   = f"https://github.com/{repo}/actions/runs/{run_id}" if run_id else None
-    commit_url= f"https://github.com/{repo}/commit/{sha}" if sha else None
-
-    schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
-    run_os    = os.getenv("RUN_OS")
-    py_ver    = os.getenv("PY_VERSION")
-
-    # Optional embedded banner info (read back from README after rotation)
-    banner_info = ""  # added by caller if available
-
-    lines = []
-    lines.append("\n---")
-    lines.append("<!-- RUNMETA:START -->")
-    lines.append("<details>")
-    lines.append("<summary>📄 Run Meta (click to expand)</summary>\n")
-    lines.append(f"- 🕒 Updated (UTC): {now_utc:%Y-%m-%d %H:%M}")
-    lines.append(f"- 🔢 Run: #{run_no}" + (f"  —  ▶️ [open run]({run_url})" if run_url else ""))
-    lines.append(f"- 🔗 Commit: {short_sha}" + (f"  —  📘 [open commit]({commit_url})" if commit_url else ""))
-    lines.append(f"- ⚙️ Workflow: {workflow}" + (f"  ·  Job: {job}" if job else ""))
-    lines.append(f"- 🧨 Event: {event}" + (f"  ·  👤 Actor: {actor}" if actor else ""))
-    lines.append(f"- ⏳ Schedule: {schedule}")
-    if run_os or py_ver:
-        extras = "  ·  ".join([x for x in [f"OS: {run_os}" if run_os else "", f"Python: {py_ver}" if py_ver else ""] if x])
-        lines.append(f"- 🧰 {extras}")
-    if banner_info:
-        lines.append(banner_info)
-    lines.append(f"- ▶️ Next ETA (UTC): {next_eta_utc_str}\n")
-    lines.append("</details>")
-    lines.append("<!-- RUNMETA:END -->")
-    lines.append("---\n")
-    return "\n".join(lines)
-
-def _upsert_runmeta(md_text: str, now_utc: datetime.datetime) -> str:
-    """Insert or replace the RUNMETA block; place it after the banner if possible."""
-    # Compute Next ETA (simple +24h model; keep UTC)
-    next_eta = (now_utc + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
-
-    block = _render_runmeta_block(now_utc, next_eta)
-
-    # If we can read banner X/Y, inject one line into block
-    banner_nums = _extract_banner_numbers(md_text)
-    if banner_nums:
-        x, y = banner_nums
-        inject = f"- 🖼️ Banner: {x}/{y}"
-        block = block.replace("<!-- RUNMETA:START -->",
-                              "<!-- RUNMETA:START -->", 1)\
-                     .replace("- ▶️ Next ETA", f"{inject}\n- ▶️ Next ETA")
-
-    pat = re.compile(r"<!-- RUNMETA:START -->(.*?)<!-- RUNMETA:END -->", re.S)
-    if pat.search(md_text):
-        # Replace existing block
-        new_md = pat.sub(block.strip(), md_text)
+        return md_text[:m.start(2)] + "\n" + meta_md + "\n" + md_text[m.end(2):]
     else:
-        # Insert after banner block if present; otherwise append at end
-        banner_pat = re.compile(r"(<!-- BANNER:END -->)", re.S)
-        if banner_pat.search(md_text):
-            new_md = banner_pat.sub(r"\1\n" + block, md_text, count=1)
-        else:
-            new_md = md_text.rstrip() + "\n" + block
-    return new_md
-
+        return md_text + "\n<!-- RUNMETA:START -->\n" + meta_md + "\n<!-- RUNMETA:END -->\n"
 
 # -------- Main driver --------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
     md = md_path.read_text(encoding="utf-8")
 
-    # 1) Rotate the banner (stateless)
-    md = rotate_banner_in_md(md)
+    # 1) Rotate banner -> returns (md, (x,total))
+    md, banner_pos = rotate_banner_in_md(md)
 
-    # 2) Update timestamp and insight line
+    # 2) Update timestamp + insight
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
 
@@ -441,26 +361,25 @@ def generate_new_readme() -> None:
 
     md = "".join(updated)
 
-    # 3) Upsert RUNMETA block (after banner if present)
-    md = _upsert_runmeta(md, now)
+    # 3) Inject/refresh RUNMETA block
+    md = _update_runmeta_block(md, banner_pos=banner_pos)
 
-    # 4) Write back to disk
+    # 4) Write back
     md_path.write_text(md, encoding="utf-8")
 
-    # 5) Heartbeat logs for Actions
+    # 5) Log heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = os.getenv("GITHUB_SHA", "")[:7]
     schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
-    next_eta  = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
+    next_eta = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
 
     bar = "─" * 72
     print("\n" + bar)
     print(f"✅ README updated: {now:%Y-%m-%d %H:%M:%S} UTC")
-    print(f"🖼️ Banner mode: {BANNER_MODE}   🔢 Run: #{run_no}   🔗 SHA: {short_sha}")
+    print(f"🖼️ Banner mode: {'calendar' if CAL_MODE else BANNER_MODE}   🔢 Run: #{run_no}   🔗 SHA: {short_sha}")
     print(f"💬 Insight: {dynamic_quote}")
     print(f"⏱️ Schedule: {schedule}   ▶️ Next ETA: {next_eta}")
     print(bar + "\n")
-
 
 if __name__ == "__main__":
     generate_new_readme()
