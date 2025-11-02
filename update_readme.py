@@ -17,7 +17,7 @@ from typing import List, Tuple, Optional, Dict, Any
 # -------- Config --------
 README_FILE = "README.md"
 ASSETS = Path("assets")
-STATE_DIR = Path(".cache")
+STATE_DIR = Path(".cache")           # keeps banner state and run log
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 
 MAX_MB = 10
@@ -26,6 +26,7 @@ EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
 CAL_MODE = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1", "true", "yes"}
 
+# Run-log & details markers
 RUN_LOG_JSON = STATE_DIR / "run_log.json"
 LOG_START = "<!-- LOG:START -->"
 LOG_END   = "<!-- LOG:END -->"
@@ -215,7 +216,6 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int,int]) -> str:
     open_run_link = f"[open run]({open_run})" if open_run else "—"
     open_commit_link = f"[open commit]({open_commit})" if open_commit else "—"
 
-    # Собираем строками (без вложенных выражений в f-скобках)
     meta_lines = [
         "<details>",
         "  <summary>🗒️ Run Meta (click to expand)</summary>",
@@ -314,7 +314,7 @@ def generate_new_readme() -> None:
         if line.startswith("Last updated:"):
             updated.append("Last updated: " + str(now) + " UTC\n")
             saw_updated = True
-        elif line.startswith("🔥 MLOps Insight:"):
+        elif line.startswith("🔥 MLOPS Insight:"):
             insight_line = os.getenv("MLOPS_INSIGHT", "").strip() or "💡 " + dynamic_quote
             updated.append("🔥 MLOPS Insight: " + insight_line + "\n")
             saw_insight = True
