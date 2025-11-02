@@ -2,11 +2,12 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "5 9 * * *"     # daily at 09:05 UTC
+    # Run once a day at 09:05 UTC
+    - cron: "5 9 * * *"
   workflow_dispatch: {}
 
 permissions:
-  contents: write
+  contents: write   # allow push via GITHUB_TOKEN
 
 concurrency:
   group: auto-update-readme
@@ -17,14 +18,18 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # ---- Controls for your updater script ----
       BANNER_MODE: sequential
+      # Toggle calendar-stable rotation if you want daily change even if a run was skipped:
       # BANNER_CALENDAR_MODE: "true"
+      # Shown in STATUS and Run Meta blocks:
       SCHEDULE_BADGE: "24h_5m"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # Use GITHUB_TOKEN credentials so we can push back without a PAT
           persist-credentials: true
           fetch-depth: 0
 
@@ -34,30 +39,16 @@ jobs:
           python-version: "3.10"
 
       - name: Configure Git author
-        shell: bash
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-     
-      - name: Run updater (with debug)
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "Python: $(python -V)"
-          echo "PWD: $PWD"
-          echo "::group::Repo tree"
-          ls -la
-          echo "::endgroup::"
-          # сам запуск
-          python update_readme.py || {
-            echo "::group::Updater traceback"
-            tail -n 100 update_log.txt 2>/dev/null || true
-            echo "::endgroup::"
-            exit 1
-          }
+      # Run the update script (rotates banner + timestamp + quote + RUNMETA)
+      - name: Run updater
+        run: python update_readme.py
 
+      # Append run metadata to a short log and keep it short
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -70,22 +61,12 @@ jobs:
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
+
+          # keep last ~70 lines
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      - name: Trim JSON log (keep last ~200 lines)
-        shell: bash
-        run: |
-          [ -f update_log.jsonl ] || : > update_log.jsonl
-          tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
-          mv update_log.jsonl.tmp update_log.jsonl || true
-
-      - name: Show last JSON log line
-        shell: bash
-        run: |
-          echo "Last JSONL line:"
-          tail -n 1 update_log.jsonl || true
-
+      # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
         run: |
@@ -107,6 +88,7 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
+      # Only commit if there are actual changes
       - name: Commit changes (if any)
         id: commit
         shell: bash
@@ -121,6 +103,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
+      # Push with a couple of retries to avoid rare race conditions
       - name: Push changes
         if: steps.commit.outputs.changed == 'true'
         env:
@@ -136,6 +119,7 @@ jobs:
             git pull --rebase || true
           done
 
+      # Nice summary in the run view
       - name: Write job summary
         shell: bash
         run: |
@@ -148,47 +132,9 @@ jobs:
             echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Enrich job summary from JSONL
-        shell: bash
-        run: |
-          python - <<'PY' > json_summary.md
-import json, pathlib, sys
-
-p = pathlib.Path("update_log.jsonl")
-if not p.exists():
-    sys.exit(0)
-
-lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-5:]
-if not lines:
-    sys.exit(0)
-
-def esc(s):
-    return str(s).replace("|", "\\|").replace("\n", " ").strip()
-
-print("### Updates (from JSON log)")
-print("| Time (UTC) | Run # | SHA | Banner | Mode | Event/Actor | Schedule | Insight |")
-print("|---|---|---|---|---|---|---|---|")
-for line in lines:
-    d = json.loads(line)
-    row = [
-        esc(d.get("ts_utc","")),
-        esc(d.get("run_number","")),
-        esc(d.get("sha","")),
-        esc(f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"),
-        esc(d.get("banner_mode","")),
-        esc(f"{d.get('event','')}/{d.get('actor','')}"),
-        esc(d.get("schedule_badge","")),
-        esc(d.get("insight_preview","")),
-    ]
-    print("| " + " | ".join(row) + " |")
-PY
-          cat json_summary.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload logs as artifacts
+      - name: Upload log as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: update_logs
-          path: |
-            update_log.txt
-            update_log.jsonl
+          name: update_log
+          path: update_log.txt
           retention-days: 7
