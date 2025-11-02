@@ -68,6 +68,12 @@ jobs:
           tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
+      - name: Show last 10 JSONL lines
+        shell: bash
+        run: |
+          echo "Last 10 JSONL lines:"
+          [ -f update_log.jsonl ] && tail -n 10 update_log.jsonl || echo "update_log.jsonl not found yet"
+      
       - name: Update STATUS line in README
         shell: bash
         run: |
