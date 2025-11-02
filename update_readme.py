@@ -368,7 +368,29 @@ def generate_new_readme() -> None:
 
     # 4) Write back
     md_path.write_text(md, encoding="utf-8")
+     # --- JSONL audit log (structured) ---
+    current_asset = _extract_current_asset_from_md(md) or ""
+    banner_file = os.path.basename(current_asset) if current_asset else ""
+    quote_hash = hashlib.sha1(dynamic_quote.encode("utf-8")).hexdigest()[:8]
 
+    payload = {
+        "ts_utc": now.strftime("%Y-%m-%d %H:%M:%S"),
+        "run_id": os.getenv("GITHUB_RUN_ID", ""),
+        "run_number": os.getenv("GITHUB_RUN_NUMBER", ""),
+        "sha": os.getenv("GITHUB_SHA", "")[:7],
+        "event": os.getenv("GITHUB_EVENT_NAME", ""),
+        "actor": os.getenv("GITHUB_ACTOR", ""),
+        "schedule_badge": os.getenv("SCHEDULE_BADGE", "24h_5m"),
+        "banner_index": banner_pos[0],
+        "banner_total": banner_pos[1],
+        "banner_file": banner_file,
+        "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
+        "insight_preview": dynamic_quote[:140],
+        "insight_hash": quote_hash,
+    }
+    with open("update_log.jsonl", "a", encoding="utf-8") as jf:
+        jf.write(json.dumps(payload, ensure_ascii=False) + "\n")
+    
     # 5) Log heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = os.getenv("GITHUB_SHA", "")[:7]
