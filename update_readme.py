@@ -1,12 +1,13 @@
-# update_readme.py
 # -*- coding: utf-8 -*-
 """
-README auto-updater (robust):
+README auto-updater (robust + counters)
 - Rotates banner (stateless) with cache-busted raw URL
-- Updates INSIGHT block strictly between <!-- INSIGHT:START/END -->
-- Updates <details> Run Meta block strictly between <!-- RUNMETA:START/END -->
-- Appends one JSONL row (update_log.jsonl) for tables in workflow
-- Safe first-run bootstrap; clear logs in console; works if assets/ is empty
+- Keeps a single INSIGHT block strictly between <!-- INSIGHT:START/END -->
+- Updates <details> Run Meta between <!-- RUNMETA:START/END -->
+- Appends one JSONL row (update_log.jsonl) for workflow tables
+- Safe first-run bootstrap (README, markers)
+- Works if assets/ is empty (banner step is skipped with a warning)
+- NEW: persists total update counter in .ci/update_count.txt and logs heartbeat
 """
 
 from __future__ import annotations
@@ -25,8 +26,11 @@ BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
 CAL_MODE = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1", "true", "yes"}
 
 JSONL_FILE = Path("update_log.jsonl")
+CI_DIR = Path(".ci")
+COUNTER_FILE = CI_DIR / "update_count.txt"
+HEARTBEAT_FILE = CI_DIR / "heartbeat.log"
 
-# -------- Utils --------
+# -------- Small helpers --------
 def _natkey(p: Path) -> List[object]:
     s = p.name.lower()
     return [(int(t) if t.isdigit() else t) for t in re.findall(r"\d+|\D+", s)]
@@ -52,7 +56,6 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(block_pat, md_text, flags=re.S)
     scope = m.group(2) if m else md_text
-
     m2 = re.search(r'src="([^"]*?/assets/[^"?"]+)', scope, flags=re.I)
     if not m2:
         return None
@@ -70,7 +73,8 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         raise RuntimeError("No valid assets found in 'assets/'.")
     paths = [f.as_posix() for f in files]
 
-    if CAL_MODE:  # calendar-stable wins
+    # Calendar-stable has priority
+    if CAL_MODE:
         doy = int(datetime.datetime.utcnow().strftime("%j"))  # 1..366
         idx = (doy - 1) % len(paths)
         return paths[idx], idx + 1
@@ -95,7 +99,7 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
 # -------- Banner rotation --------
 def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     """
-    Returns (new_md, (x,total)), where x/total used in captions + Run Meta.
+    Returns (new_md, (x,total)), where x/total is shown in caption and used in Run Meta.
     """
     files = _list_assets()
     if not files:
@@ -108,7 +112,7 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     bust = int(datetime.datetime.utcnow().timestamp())
     img_src = "{}?t={}".format(_to_raw_url(next_rel), bust)
 
-    # Derive X from filename prefix if present; else fallback
+    # Determine X from filename prefix if present; else fallback index
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
@@ -151,11 +155,11 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
             new_md = md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
         return new_md, (x_num, total)
 
-    # If block absent — prepend a fresh one
+    # If block is absent — prepend a fresh one
     banner_block = '<!-- BANNER:START -->' + new_inner + '<!-- BANNER:END -->\n'
     return banner_block + md_text, (x_num, total)
 
-# -------- Quotes & headline --------
+# -------- Dynamic quotes --------
 MORNING_QUOTES = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
@@ -284,23 +288,19 @@ def _resolve_insight(dynamic_quote: str) -> str:
 
 def _upsert_insight_block(md_text: str, insight: str) -> str:
     """Keep a single INSIGHT block. Remove stray old single-line insights."""
-    # 1) remove any old single-line 'MLOps Insight:' outside markers
     md_text = re.sub(r'(?im)^\s*🔥\s*MLOPS?\s*Insight:.*\n?', "", md_text)
-
-    # 2) upsert block
     block = "<!-- INSIGHT:START -->\n" + insight + "\n<!-- INSIGHT:END -->"
     pat = r"(<!-- INSIGHT:START -->)(.*?)(<!-- INSIGHT:END -->)"
     m = re.search(pat, md_text, flags=re.S)
     if m:
         return md_text[:m.start(2)] + "\n" + insight + "\n" + md_text[m.end(2):]
-    # add near top (after banner if present)
     banner_pat = r"(<!-- BANNER:END -->\s*)"
     if re.search(banner_pat, md_text, flags=re.S):
         return re.sub(banner_pat, r"\1\n" + block + "\n\n", md_text, count=1, flags=re.S)
     return block + "\n\n" + md_text
 
 # -------- Run Meta block --------
-def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int]) -> str:
+def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int], total_updates: int) -> str:
     run_no   = os.getenv("GITHUB_RUN_NUMBER", "")
     run_id   = os.getenv("GITHUB_RUN_ID", "")
     sha_full = os.getenv("GITHUB_SHA", "")
@@ -324,6 +324,7 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int]) -> str:
         "- 🕒 Updated (UTC): **{}**".format(now_utc),
         "- 🔢 Run: **#{}** — {}".format(run_no, open_run_link),
         "- 🔗 Commit: **{}** — {}".format(sha, open_commit_link),
+        "- 🔁 Updates (total): **{}**".format(total_updates),
         "- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**",
         "- 🪄 Event: **{}** · 👤 Actor: **{}**".format(event, actor),
         "- ⏱️ Schedule: **{}**".format(schedule),
@@ -339,6 +340,28 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int]) -> str:
         return md_text[:m.start(2)] + "\n" + meta_md + "\n" + md_text[m.end(2):]
     return (md_text.rstrip() + "\n\n"
             "<!-- RUNMETA:START -->\n" + meta_md + "\n<!-- RUNMETA:END -->\n")
+
+# -------- CI state (counter + heartbeat) --------
+def _read_increment_counter() -> int:
+    CI_DIR.mkdir(parents=True, exist_ok=True)
+    if COUNTER_FILE.exists():
+        try:
+            n = int(COUNTER_FILE.read_text(encoding="utf-8").strip() or "0")
+        except Exception:
+            n = 0
+    else:
+        n = 0
+    n += 1
+    COUNTER_FILE.write_text(str(n), encoding="utf-8")
+    return n
+
+def _append_heartbeat(now: datetime.datetime) -> None:
+    CI_DIR.mkdir(parents=True, exist_ok=True)
+    run_no = os.getenv("GITHUB_RUN_NUMBER", "?")
+    sha = (os.getenv("GITHUB_SHA", "")[:7])
+    line = "{}\trun={}\tsha={}\n".format(now.strftime("%Y-%m-%d %H:%M:%S UTC"), run_no, sha)
+    with HEARTBEAT_FILE.open("a", encoding="utf-8") as f:
+        f.write(line)
 
 # -------- JSONL append --------
 def _append_jsonl_line(path: Path, obj: Dict[str, Any]) -> None:
@@ -361,22 +384,28 @@ def generate_new_readme() -> None:
 
     md = md_path.read_text(encoding="utf-8")
 
+    # 0) Persist/advance counters & heartbeat
+    total_updates = _read_increment_counter()
+
     # 1) Rotate banner (skips if no assets)
     md, banner_pos = rotate_banner_in_md(md)
 
-    # 2) Insight block (single source of truth)
+    # 2) Insight block
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
     insight_text = "🔥 MLOPS Insight: " + _resolve_insight(dynamic_quote)
     md = _upsert_insight_block(md, insight_text)
 
     # 3) Run Meta
-    md = _update_runmeta_block(md, banner_pos=banner_pos)
+    md = _update_runmeta_block(md, banner_pos=banner_pos, total_updates=total_updates)
 
     # 4) Write README back
     md_path.write_text(md, encoding="utf-8")
 
-    # 5) Append one JSONL row
+    # 5) Append heartbeat (useful for force commits)
+    _append_heartbeat(now)
+
+    # 6) Append one JSONL row
     try:
         current_asset = _extract_current_asset_from_md(md) or ""
         banner_file = os.path.basename(current_asset) if current_asset else ""
@@ -393,12 +422,13 @@ def generate_new_readme() -> None:
             "banner_file": banner_file,
             "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
             "insight_preview": _resolve_insight(dynamic_quote),
+            "update_count": total_updates,  # NEW
         }
         _append_jsonl_line(JSONL_FILE, jsonl_row)
     except Exception as exc:
         print("[warn] failed to append JSONL: {}".format(exc))
 
-    # 6) Console heartbeat
+    # 7) Console heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = (os.getenv("GITHUB_SHA", "")[:7])
     schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
@@ -406,10 +436,11 @@ def generate_new_readme() -> None:
 
     bar = "─" * 72
     print("\n" + bar)
-    print("✅ README updated: " + now.strftime("%Y-%m-%d %H:%M:%S") + " UTC")
-    print("🖼️ Banner mode: " + ("calendar" if CAL_MODE else BANNER_MODE) + "   🔢 Run: #{}   🔗 SHA: {}".format(run_no, short_sha))
-    print("💬 Insight: " + _resolve_insight(dynamic_quote))
-    print("⏱️ Schedule: {}   ▶️ Next ETA: {}".format(schedule, next_eta))
+    print("✅ README updated:", now.strftime("%Y-%m-%d %H:%M:%S"), "UTC")
+    print("🔁 Total updates:", total_updates)
+    print("🖼️ Banner mode:", ("calendar" if CAL_MODE else BANNER_MODE), "  🔢 Run: #{}  🔗 SHA: {}".format(run_no, short_sha))
+    print("💬 Insight:", _resolve_insight(dynamic_quote))
+    print("⏱️ Schedule:", schedule, "  ▶️ Next ETA:", next_eta)
     print(bar + "\n")
 
 if __name__ == "__main__":
