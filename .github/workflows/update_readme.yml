@@ -3,7 +3,7 @@ name: Auto Update README
 on:
   schedule:
     # Run once a day at 09:05 UTC   - cron: "5 9 * * *"
-    - cron: "*/3 * * * *"           # Run every 5 min 
+    - cron: "*/5 * * * *"           # Run every 5 min 
   workflow_dispatch:
     inputs:
       banner_mode:
