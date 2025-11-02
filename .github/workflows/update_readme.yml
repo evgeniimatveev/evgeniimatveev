@@ -66,6 +66,13 @@ jobs:
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
+      
+      - name: Trim JSON log (keep last ~200 lines)
+        shell: bash
+        run: |
+          [ -f update_log.jsonl ] || : > update_log.jsonl
+          tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
+          mv update_log.jsonl.tmp update_log.jsonl || true
       # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
@@ -132,9 +139,11 @@ jobs:
             echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload log as artifact
+      - name: Upload logs as artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: update_log
-          path: update_log.txt
+          name: update_logs
+          path: |
+            update_log.txt
+            update_log.jsonl
           retention-days: 7
