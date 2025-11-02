@@ -170,117 +170,80 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int,int]]:
     banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
     return banner_block + md_text, (x_num, total)
 
- ===================== MLOps Quotes (Unified & Compact) =====================
-
-from collections import OrderedDict
-
-def _dedupe(seq):
-    return list(OrderedDict.fromkeys(seq))
-
-# === More variety (drop-in additions) ===
-
-MORNING_QUOTES += [
-    "Kickstart the day with green checks and clean diffs ✅🧼",
-    "Caffeinate, lint, and log wisely ☕🧪",
-    "Warm caches, cold starts, steady pipelines ❄️🔄",
-    "Spin up, smoke test, ship a slice 🚀🧪",
-    "Make the first commit count 🧠🖋️",
-    "Hydrate features, sync schemas, breathe 💧📂",
-    "Morning stand-up, evening stand-down 🧍‍♂️↔️🛏️",
-    "Fewer flags, clearer flows 🎯🧩",
-    "Start simple, measure truth 📊💡",
-    "Steady inputs → stable outputs 🔧📦",
+# -------- Quotes & headline --------
+MORNING_QUOTES = [
+    "Time for some coffee and MLOps ☕",
+    "Start your morning with automation! 🛠️",
+    "Good morning! Let's optimize ML experiments! 🎯",
+    "Kick off with clean pipelines and clear metrics 📊",
+    "Bootstrap your day with reproducible runs 🔁",
+    "Ship small, ship early, measure always 📈",
+    "Warm up the DAGs and run smoke tests 🌅",
+    "Start with data quality, end with insights ✅",
+    "One small PR before breakfast 🍳",
+    "Spin up environments, hydrate the features 💧",
 ]
-
-AFTERNOON_QUOTES += [
-    "Bench, profile, optimize — then commit 📈🧠",
-    "Cut toil, raise signal 📉→📡",
-    "Push the canary, watch the graphs 🐤📊",
-    "Docs or it didn’t happen 📓✨",
-    "Lower variance, higher confidence 🎯📏",
-    "Refactor small, deliver often 🔁🚀",
-    "Ruthless with flakiness, gentle with humans 🛟✅",
-    "Cache misses pay the bill — fix them 💾⚙️",
-    "Resilience beats brilliance on-call 🧯🧭",
-    "Guard the SLO, respect the budget ⏱️💎",
+AFTERNOON_QUOTES = [
+    "Keep pushing your MLOps pipeline forward! 🔧",
+    "Perfect time for CI/CD magic ⚡",
+    "Optimize, deploy, repeat! 🔄",
+    "Measure → iterate → ship 🚀",
+    "Refactor the DAGs, simplify the flows 🧩",
+    "Guardrails on, feature flags ready 🧯",
+    "Profile the hotspots, cache the wins 🧠",
+    "Review metrics, cut toil, add value 📉→📈",
+    "Monitor, alert, respond — calmly 🧭",
+    "Make it boring: stable, predictable releases 🫡",
 ]
-
-EVENING_QUOTES += [
-    "Close loops, open learnings 🔄📚",
-    "Archive artifacts, retire the noise 📦🔕",
-    "Tag the champion, park the challengers 🏷️🎯",
-    "Cool the cluster, warm the roadmap ❄️🗺️",
-    "Write once, run always — reproducibility first 🧪💾",
-    "Queue tomorrow’s batch and sleep well ⏳🛏️",
-    "Curate insights, trim the backlog ✂️💡",
-    "One clean PR before lights out 🍳💡",
-    "Snapshot state, freeze versions 🧊📦",
-    "Reflect on impact, not effort 🌌📈",
+EVENING_QUOTES = [
+    "Evening is the best time to track ML experiments 🌙",
+    "Relax and let automation handle your work 🤖",
+    "Wrap up the day with some Bayesian tuning 🎯",
+    "Document results, queue tomorrow's jobs 📝",
+    "Small wins today, big gains tomorrow 📈",
+    "Close issues, open insights ✅",
+    "Archive artifacts, tag the best runs 🏷️",
+    "Cool down the cluster, warm up ideas ❄️💡",
+    "Write the changelog you wish you had 📓",
+    "Reflect, refactor, and rest 🌌",
 ]
-
-# Optional alternates per day (keep your original DAY_OF_WEEK_QUOTES as-is)
-DAY_OF_WEEK_ALTS = {
-    "Monday": [
-        "Monday: align goals, pin metrics 📌📊",
-        "New week, new slice of value 🍰🚀",
+DAY_OF_WEEK_QUOTES = {
+    "Monday": "Start your week strong! 🚀",
+    "Tuesday": "Keep up the momentum! 🔥",
+    "Wednesday": "Halfway there — keep automating! 🛠️",
+    "Thursday": "Test, iterate, deploy! 🚀",
+    "Friday": "Wrap it up like a pro! ⚡",
+    "Saturday": "Weekend automation vibes! 🎉",
+    "Sunday": "Prep for an MLOps-filled week! ⏳",
+}
+SEASON_QUOTES = {
+    "Spring": [
+        "Fresh start — time to grow 🌸", "Refactor and bloom 🌼",
+        "Spring into automation! 🪴", "Plant ideas, water pipelines 🌱",
+        "Rebuild with lighter dependencies 🌿", "Nurture data quality from the root 🌷",
     ],
-    "Tuesday": [
-        "Tuesday: prune scope, grow signal ✂️📡",
-        "Keep momentum, kill blockers 🔥🧱",
+    "Summer": [
+        "Keep shining and shipping ☀️", "Hot pipelines, cool results 🔥",
+        "Sunny mindset, clean commits 😎", "Scale up smart, throttle costs 🏖️",
+        "Ship value before the sunset 🌇", "Heat-proof your infra with tests 🔥🧪",
     ],
-    "Wednesday": [
-        "Midweek: stabilize, then accelerate 🧱⚡",
-        "Halfway: fewer knobs, better defaults 🧩✅",
+    "Autumn": [
+        "Reflect, refine, retrain 🍂", "Collect insights like golden leaves 🍁",
+        "Harvest your best MLOps ideas 🌾", "Prune legacy, keep essentials ✂️",
+        "Tune models, store wisdom 📦", "Backtest decisions, bank learnings 🏦",
     ],
-    "Thursday": [
-        "Thursday: test hard, deploy soft 🧪🛟",
-        "Pre-weekend: canary first, main later 🐤🚀",
-    ],
-    "Friday": [
-        "Friday: ship small, sleep well 😴✅",
-        "Wrap clean, leave breadcrumbs 📓🧵",
-    ],
-    "Saturday": [
-        "Saturday: sandbox ideas, zero risk 🧪🧰",
-        "Light touch, heavy learning 😎💡",
-    ],
-    "Sunday": [
-        "Sunday: roadmap calm, queues ready 🗺️⏳",
-        "Prep quietly, launch loudly tomorrow 🤫🚀",
+    "Winter": [
+        "Deep focus and model tuning ❄️", "Hibernate and optimize 🧊",
+        "Great time for infra upgrades 🛠️", "Keep the core warm and robust 🔧",
+        "Reduce noise, raise signal 📡", "Plan roadmaps with calm clarity 🧭",
     ],
 }
-
-# Extra seasonal variety (adds; originals remain)
-SEASON_QUOTES["Spring"] += [
-    "Seed ideas, weed tech debt 🌱✂️",
-    "Fresh data, fresh baselines 📊🌿",
-    "Lightweight deps, heavy insights 🪴💡",
-]
-SEASON_QUOTES["Summer"] += [
-    "Scale carefully, chill the costs ☀️📉",
-    "Heat maps up, errors down 🔥🧯",
-    "Sunny builds, shady incidents 😎🛟",
-]
-SEASON_QUOTES["Autumn"] += [
-    "Harvest metrics, store wisdom 🍁📦",
-    "Trim configs, keep clarity ✂️✨",
-    "Retrain, re-evaluate, retain 📈🧠",
-]
-SEASON_QUOTES["Winter"] += [
-    "Hibernate noise, amplify signal ❄️📡",
-    "Deep focus, long tests 🧊🧪",
-    "Plan lean, ship clean 🧭✅",
-]
-
-# More headline variety
-HEADLINE_TEMPLATES += [
-    "MEASURE TWICE, SHIP ONCE",
-    "DAGs BEFORE DRAMA",
-    "AUTOMATE • OBSERVE • IMPROVE",
-    "CANARY FIRST, MAIN LATER",
-    "LOW VARIANCE, HIGH TRUST",
-    "GREEN CHECKS, QUIET PAGES",
-    "DATA → DECISIONS → DELIGHT",
+EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊"]
+HEADLINE_TEMPLATES = [
+    "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING",
+    "SHIP SMALL, SHIP OFTEN","EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT",
+    "TRACK • TUNE • TRUST","REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE",
+    "LOW TOIL, HIGH LEVERAGE","METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
 ]
 
 def _get_season_by_month(m: int) -> str:
@@ -405,37 +368,7 @@ def generate_new_readme() -> None:
 
     # 4) Write back
     md_path.write_text(md, encoding="utf-8")
-     # --- JSONL audit log (structured) ---
-    current_asset = _extract_current_asset_from_md(md) or ""
-    banner_file = os.path.basename(current_asset) if current_asset else ""
-    quote_hash = hashlib.sha1(dynamic_quote.encode("utf-8")).hexdigest()[:8]
 
-    payload = {
-        "ts_utc": now.strftime("%Y-%m-%d %H:%M:%S"),
-        "run_id": os.getenv("GITHUB_RUN_ID", ""),
-        "run_number": os.getenv("GITHUB_RUN_NUMBER", ""),
-        "sha": os.getenv("GITHUB_SHA", "")[:7],
-        "event": os.getenv("GITHUB_EVENT_NAME", ""),
-        "actor": os.getenv("GITHUB_ACTOR", ""),
-        "schedule_badge": os.getenv("SCHEDULE_BADGE", "24h_5m"),
-        "banner_index": banner_pos[0],
-        "banner_total": banner_pos[1],
-        "banner_file": banner_file,
-        "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
-        "insight_preview": dynamic_quote[:140],
-        "insight_hash": quote_hash,
-    }
-    with open("update_log.jsonl", "a", encoding="utf-8") as jf:
-        jf.write(json.dumps(payload, ensure_ascii=False) + "\n")
-
-    
-    try:
-        from pathlib import Path as _P
-        sz = _P("update_log.jsonl").stat().st_size
-        print(f"🧾 JSONL appended · banner={banner_file} {banner_pos[0]}/{banner_pos[1]} · size={sz} bytes")
-    except Exception:
-        pass
-    
     # 5) Log heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = os.getenv("GITHUB_SHA", "")[:7]
