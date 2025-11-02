@@ -2,12 +2,11 @@ name: Auto Update README
 
 on:
   schedule:
-    # Run once a day at 09:05 UTC
-    - cron: "5 9 * * *"
-  workflow_dispatch: {}
+    - cron: "5 9 * * *"           # каждый день 09:05 UTC
+  workflow_dispatch: {}            # ручной запуск
 
 permissions:
-  contents: write  # allow push via GITHUB_TOKEN
+  contents: write
 
 concurrency:
   group: auto-update-readme
@@ -18,12 +17,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # ---- Controls for your updater script ----
+      # ---- Controls for updater ----
       BANNER_MODE: sequential
-      # BANNER_CALENDAR_MODE: "true"   # optional: force daily change even if a run was skipped
-      # Shown in STATUS and Run Meta blocks:
+      # BANNER_CALENDAR_MODE: "true"
       SCHEDULE_BADGE: "24h_5m"
-      # Log keep limits (easy to tune)
+      # Log trim limits (настраиваемые)
       JSONL_KEEP_LINES: "200"
       TXT_KEEP_LINES: "70"
 
@@ -63,14 +61,13 @@ jobs:
           tail -n ${TXT_KEEP_LINES} update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      - name: Trim JSON log (keep last ~N lines)
+      - name: Trim JSON log (keep last N lines)
         shell: bash
         run: |
           [ -f update_log.jsonl ] || : > update_log.jsonl
           tail -n ${JSONL_KEEP_LINES} update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
-      # ---------- Render accordion into README (last 5) ----------
       - name: Render last 5 updates into README (accordion)
         shell: bash
         run: |
@@ -81,7 +78,6 @@ jobs:
           readme_p = pathlib.Path("README.md")
 
           def esc_md(s: str) -> str:
-              # Safe for GitHub tables; don't break columns
               return str(s).replace("|", "&#124;").replace("\n", " ").strip()
 
           rows = []
@@ -95,7 +91,6 @@ jobs:
                   insight = esc_md(d.get("insight_preview",""))
                   if len(insight) > 140:
                       insight = insight[:137] + "…"
-
                   row = (
                       "| {} | {} | `{}` | {} | {}/{} | {} |".format(
                           esc_md(d.get("ts_utc","")),
@@ -157,9 +152,9 @@ jobs:
           print("|---|---|---|---|---|---|---|")
           for line in reversed(lines):
               d = json.loads(line)
-              banner = f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
-              evt = f"{d.get('event','')}/{d.get('actor','')}"
-              print(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |")
+              banner = f\"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})\"
+              evt = f\"{d.get('event','')}/{d.get('actor','')}\"
+              print(f\"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |\")
           PY
 
       - name: Update STATUS line in README
