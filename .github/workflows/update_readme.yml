@@ -4,9 +4,11 @@ on:
   schedule:
     # Run once a day at 09:05 UTC
     - cron: "5 9 * * *"
-  workflow_dispatch: {}          # Allow manual runs from the Actions tab
+  workflow_dispatch: {}
 
-# Prevent concurrent runs of this workflow from racing on README changes
+permissions:
+  contents: write   # allow push via GITHUB_TOKEN
+
 concurrency:
   group: auto-update-readme
   cancel-in-progress: false
@@ -14,37 +16,41 @@ concurrency:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+
     env:
+      # ---- Controls for your updater script ----
       BANNER_MODE: sequential
-      # Optional: map banner to day-of-year so it always changes even if a run is skipped
+      # Toggle calendar-stable rotation if you want daily change even if a run was skipped:
       # BANNER_CALENDAR_MODE: "true"
+      # Shown in STATUS and Run Meta blocks:
+      SCHEDULE_BADGE: "24h_5m"
 
     steps:
-      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          # Use GITHUB_TOKEN credentials so we can push back without a PAT
+          persist-credentials: true
           fetch-depth: 0
 
-      # Setup Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      # Run the update script (rotates banner + timestamp + quote)
+      - name: Configure Git author
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      # Run the update script (rotates banner + timestamp + quote + RUNMETA)
       - name: Run updater
         run: python update_readme.py
 
-      # Configure Git author (for commit attribution)
-      - name: Configure Git author
-        run: |
-          git config --global user.name "evgeniimatveev"
-          git config --global user.email "your-email@users.noreply.github.com"
-
-      # Append run metadata to a short log
-      - name: Append run metadata to log
+      # Append run metadata to a short log and keep it short
+      - name: Append & trim update_log.txt
+        shell: bash
         run: |
           {
             echo "--------------------------------------"
@@ -56,17 +62,13 @@ jobs:
             echo "--------------------------------------"
           } >> update_log.txt
 
-      # Keep the log short (last ~70 lines)
-      - name: Trim log (keep last ~70 lines)
-        run: |
+          # keep last ~70 lines
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      # Refresh STATUS badges in README
+      # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
-        env:
-          SCHEDULE_BADGE: "24h_5m"
         run: |
           short_sha="${GITHUB_SHA:0:7}"
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
@@ -86,11 +88,53 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Commit & push changes (using PAT)
-      - name: Commit & push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
+      # Only commit if there are actual changes
+      - name: Commit changes (if any)
+        id: commit
+        shell: bash
         run: |
+          set -e
           git add README.md update_log.txt || true
-          git commit -m "Auto-update README (sequential rotation)" || echo "No changes to commit"
-          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update README (banner/status/insight rotation)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Push with a couple of retries to avoid rare race conditions
+      - name: Push changes
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          for i in 1 2 3; do
+            if git push; then
+              echo "Pushed successfully"; break
+            fi
+            echo "Push failed (attempt $i). Retrying in $((i*3))s..."
+            sleep $((i*3))
+            git pull --rebase || true
+          done
+
+      # Nice summary in the run view
+      - name: Write job summary
+        shell: bash
+        run: |
+          {
+            echo "## README Auto-Update"
+            echo "- **Run**: #${{ github.run_number }}"
+            echo "- **Event**: ${{ github.event_name }}"
+            echo "- **Commit**: \`${{ github.sha }}\`"
+            echo "- **Schedule**: \`${{ env.SCHEDULE_BADGE }}\`"
+            echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload log as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: update_log
+          path: update_log.txt
+          retention-days: 7
