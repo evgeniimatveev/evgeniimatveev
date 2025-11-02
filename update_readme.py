@@ -430,10 +430,23 @@ def generate_new_readme() -> None:
     if not saw_insight:
         updated.append(f"\n🔥 MLOps Insight: 💡 {dynamic_quote}\n")
 
-    md_path.write_text("".join(updated), encoding="utf-8")
-    print(f"✅ README updated at {now} UTC")
-    print(f"🖼️ Banner mode: {BANNER_MODE}")
-    print(f"📝 Quote: {dynamic_quote}")
+    # --- Heartbeat / build card (compact status in CI logs) ---
+# Pull metadata from the Actions environment (fallbacks keep it safe locally).
+run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
+short_sha = os.getenv("GITHUB_SHA", "")[:7]
+schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
+
+# For a daily schedule, the next rotation is now + 24h (UTC).
+next_eta = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
+
+# Pretty separator to make the block easy to spot in Actions logs.
+bar = "─" * 72
+print("\n" + bar)
+print(f"✅ README updated: {now:%Y-%m-%d %H:%M:%S} UTC")
+print(f"🖼️ Banner mode: {BANNER_MODE}   🔢 Run: #{run_no}   🔗 SHA: {short_sha}")
+print(f"💬 Insight: {dynamic_quote}")
+print(f"⏱️ Schedule: {schedule}   ▶️ Next ETA: {next_eta}")
+print(bar + "\n")
 
 
 if __name__ == "__main__":
