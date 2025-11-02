@@ -1,21 +1,19 @@
 # update_readme.py
 # -*- coding: utf-8 -*-
 """
-Auto-rotate a banner image in README.md.
+Auto-rotate a banner image in README.md and inject a daily dynamic message.
 
-Key features:
-- Stateless rotation: detects the current <img src=".../assets/..."> and picks the NEXT file
-  using natural ordering (1.gif, 2.gif, 10.gif, ...). No .banner_state is required.
-- Works with both relative and raw URLs; always writes a raw.githubusercontent.com URL
-  with a cache-buster (?t=...) to avoid GitHub's image caching.
-- Caption "Banner X/Y" is kept in sync. If the filename starts with a number (e.g. 6.gif),
-  we prefer that number for X; otherwise we fall back to the 1-based index in the sorted list.
-- Environment variable BANNER_MODE: "sequential" (default) or "random".
+Key improvements in this version:
+- Daily-stable message generator (same text for the whole day), composed from:
+  season (winter/spring/summer/autumn) + weekday + a day-part that cycles by day-of-year.
+- Optional "calendar index" banner selection to avoid drift if some runs are skipped.
+  Enable via env: BANNER_CALENDAR_MODE=true
+- Clean English comments throughout.
 
 Expected repo layout:
   README.md
   assets/
-    1.gif, 2.gif, 10.gif, ...
+    1.gif, 2.gif, 10.gif, ... (or any names; natural sort applied)
 
 This script updates:
   - The banner block delimited by <!-- BANNER:START --> ... <!-- BANNER:END -->
@@ -27,36 +25,43 @@ from __future__ import annotations
 
 import os
 import re
-import datetime
+import datetime as dt
+from zoneinfo import ZoneInfo
 import random
 from pathlib import Path
 from typing import List, Tuple, Optional
 
-# -------- Config --------
+# ----------------------------- Config ---------------------------------
 README_FILE = "README.md"
 ASSETS = Path("assets")
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
-# Banner selection mode: "sequential" | "random"
+# Banner selection modes:
+# - "sequential": next file in natural order (default)
+# - "random":     random file (will try to avoid repeating the current one)
 BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
 
+# Optional calendar indexing to avoid drift:
+# If true, we choose the banner by day-of-year instead of "next file".
+# This keeps day N always mapped to the same index even if a run is skipped.
+BANNER_CALENDAR_MODE = os.getenv("BANNER_CALENDAR_MODE", "false").lower() in {"1", "true", "yes"}
 
-# -------- Utils --------
+# Timezone used to anchor "today" for message composition (and optional gating if you want it here).
+LOCAL_TZ = ZoneInfo("America/Los_Angeles")
+
+# If you prefer meteorological seasons (by months) keep True;
+# if you want exactly 4 acts (4 * ~91 days) switch to False.
+USE_METEOROLOGICAL_SEASONS = True
+
+# ----------------------------- Utilities ------------------------------
 def _natkey(p: Path) -> List[object]:
-    """
-    Natural sort key so that 2.gif < 10.gif.
-    Splits the filename into digit/non-digit chunks and converts digits to int.
-    """
+    """Natural sort key so that '2.gif' < '10.gif'."""
     s = p.name.lower()
     return [(int(t) if t.isdigit() else t) for t in re.findall(r"\d+|\D+", s)]
 
-
 def _list_assets() -> List[Path]:
-    """
-    Return valid asset files (filtered by extension & size), naturally sorted.
-    Hidden files (starting with ".") are skipped.
-    """
+    """Return valid asset files (filtered by extension & size), naturally sorted."""
     files: List[Path] = []
     if not ASSETS.exists():
         return files
@@ -72,16 +77,11 @@ def _list_assets() -> List[Path]:
         files.append(p)
     return sorted(files, key=_natkey)
 
-
 def _to_raw_url(rel_path: str) -> str:
-    """
-    Build a raw GitHub URL for this repo/branch.
-    Works locally (after push) and inside GitHub Actions.
-    """
+    """Build a raw GitHub URL for this repo/branch (works locally and in Actions)."""
     repo = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
     branch = os.getenv("GITHUB_REF_NAME", "main")
     return f"https://raw.githubusercontent.com/{repo}/{branch}/{rel_path}"
-
 
 def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     """
@@ -89,7 +89,6 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     Returns a relative 'assets/<file>' path or None if not found.
     Handles raw URLs and strips query strings.
     """
-    # Prefer within explicit banner block
     block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(block_pat, md_text, flags=re.S)
     scope = m.group(2) if m else md_text
@@ -106,18 +105,25 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
         return url
     return None
 
-
 def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
     """
-    Stateless choice of the next banner.
-    - If BANNER_MODE == 'random': pick a random file, avoid current when possible.
-    - Else (sequential): find the current in README and advance to the next (wrap).
-    Returns (relative_path 'assets/..', index_1based_in_sorted_list).
+    Choose the next banner asset and return (relative_path, 1-based index_in_sorted_list).
+    Behavior depends on:
+      - BANNER_CALENDAR_MODE (if true, day-of-year selects the index)
+      - BANNER_MODE ('sequential' or 'random')
     """
     if not files:
         raise RuntimeError("No valid assets found in 'assets/'.")
 
-    paths = [f.as_posix() for f in files]  # e.g. 'assets/6.gif'
+    paths = [f.as_posix() for f in files]  # e.g., 'assets/6.gif'
+
+    # Calendar mode: pick based on day-of-year (stable mapping)
+    if BANNER_CALENDAR_MODE:
+        doy = dt.datetime.now(dt.timezone.utc).timetuple().tm_yday
+        idx0 = (doy - 1) % len(paths)
+        choice = paths[idx0]
+        return choice, idx0 + 1
+
     current = _extract_current_asset_from_md(md_text)
 
     if BANNER_MODE == "random":
@@ -127,22 +133,20 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         choice = random.choice(candidates)
         return choice, paths.index(choice) + 1
 
-    # sequential
+    # Default: sequential (advance one step; wrap at the end)
     if current in paths:
         i = paths.index(current)
         nxt = paths[(i + 1) % len(paths)]
     else:
         nxt = paths[0]
-
     return nxt, paths.index(nxt) + 1
 
-
-# -------- Banner rotation --------
+# ------------------------- Banner rotation ----------------------------
 def rotate_banner_in_md(md_text: str) -> str:
     """
     Stateless banner rotation:
-    - Detect the current <img src=".../assets/..."> and pick the NEXT asset.
-    - Write a raw.githubusercontent.com URL with cache-buster.
+    - Detect the current <img src=".../assets/..."> and pick the NEXT asset (or calendar index).
+    - Write a raw.githubusercontent.com URL with a cache-buster (?t=...).
     - Keep/update the caption "Banner X/Y" (emoji preserved/added).
     - If the block is missing, prepend a fresh one at the top.
     """
@@ -154,10 +158,10 @@ def rotate_banner_in_md(md_text: str) -> str:
     next_rel, idx_fallback = _pick_next_asset(md_text, files)
 
     # Build cache-busted raw URL
-    bust = int(datetime.datetime.utcnow().timestamp())
+    bust = int(dt.datetime.utcnow().timestamp())
     img_src = f'{_to_raw_url(next_rel)}?t={bust}'
 
-    # Derive X from filename if it starts with digits (e.g. "6.gif"); else use fallback index
+    # Derive X from filename if it starts with digits; else use fallback index
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
@@ -166,7 +170,7 @@ def rotate_banner_in_md(md_text: str) -> str:
     caption_text = f'Banner {x_num}/{total}'
     caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
 
-    # Fresh inner HTML we can fall back to
+    # Fresh inner HTML
     new_inner = (
         f'\n<p align="center">\n'
         f'  <img src="{img_src}" alt="Banner" width="960">\n'
@@ -188,7 +192,7 @@ def rotate_banner_in_md(md_text: str) -> str:
             flags=re.I
         )
 
-        # 2) Update caption "Banner X/Y" (with or without emoji)
+        # 2) Update caption "Banner X/Y"
         inner_patched2 = re.sub(
             r'(?:🖼️\s*)?Banner\s+\d+/\d+',
             f'🖼️ {caption_text}',
@@ -196,81 +200,138 @@ def rotate_banner_in_md(md_text: str) -> str:
             flags=re.I
         )
 
-        # 3) If no caption existed at all, append it after the image block
+        # 3) If no caption existed, append it
         if 'Banner' not in inner_patched2:
             after_img = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
             if after_img == inner_patched2:
                 inner_patched2 = inner_patched2 + caption_html
 
-        # If something changed, return the patched block
+        # Return patched block (or overwrite if nothing changed)
         if inner_patched2 != inner:
             return md_text[:mblock.start(2)] + inner_patched2 + md_text[mblock.end(2):]
-
-        # If we couldn’t safely patch, overwrite inner completely
         return md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
 
     # No banner block yet — prepend a fresh one
     banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
     return banner_block + md_text
 
-
-# -------- Dynamic insight --------
-MORNING_QUOTES = [
-    "Time for some coffee and MLOps ☕",
-    "Start your morning with automation! 🛠️",
-    "Good morning! Let's optimize ML experiments! 🎯",
-]
-AFTERNOON_QUOTES = [
-    "Keep pushing your MLOps pipeline forward! 🔧",
-    "Optimize, deploy, repeat! 🔄",
-    "Perfect time for CI/CD magic! ⚡",
-]
-EVENING_QUOTES = [
-    "Evening is the best time to track ML experiments 🌙",
-    "Relax and let automation handle your work 🤖",
-    "Wrap up the day with some Bayesian tuning 🎯",
-]
-DAY_OF_WEEK_QUOTES = {
-    "Monday": "Start your week strong! 🚀",
-    "Tuesday": "Keep up the momentum! 🔥",
-    "Wednesday": "Halfway to the weekend, keep automating! 🛠️",
-    "Thursday": "Test, iterate, deploy! 🚀",
-    "Friday": "Wrap it up like a pro! 🔥",
-    "Saturday": "Weekend automation vibes! 🎉",
-    "Sunday": "Prepare for an MLOps-filled week! ⏳",
+# ------------------------- Daily dynamic message ----------------------
+WEEKDAY_LINES = {
+    "Monday":    "Start your week strong! 🚀",
+    "Tuesday":   "Keep up the momentum! 🔥",
+    "Wednesday": "Halfway there—keep automating! 🛠️",
+    "Thursday":  "Test, iterate, deploy! 🚀",
+    "Friday":    "Wrap it up like a pro! 🎯",
+    "Saturday":  "Weekend automation vibes! 🎉",
+    "Sunday":    "Recharge and prep the pipelines! ⏳",
 }
+
+DAYPARTS = ["morning", "noon", "evening", "night"]
+DAYPART_QUOTES = {
+    "morning": [
+        "Time for some coffee and MLOps ☕",
+        "Start your morning with automation! 🛠️",
+        "Good morning! Let's optimize ML experiments! 🎯",
+    ],
+    "noon": [
+        "Keep pushing your MLOps pipeline forward! 🔧",
+        "Optimize, deploy, repeat! 🔄",
+        "Perfect time for CI/CD magic! ⚡",
+    ],
+    "evening": [
+        "Evening is perfect for experiment tracking 🌙",
+        "Relax and let automation do the work 🤖",
+        "Wrap up the day with smart tuning 🎯",
+    ],
+    "night": [
+        "Night shift: logs, metrics, and calm lights 🌌",
+        "Quiet hours, clean deploys 🌙",
+        "Ship safely while the city sleeps ✨",
+    ],
+}
+
+SEASON_TAGLINES = {
+    "winter": [
+        "Cozy commits under snowy lights ❄️",
+        "Warm coffee, cold rooftops ☕❄️",
+        "Quiet nights, bright dashboards ✨",
+    ],
+    "spring": [
+        "Fresh runs, blooming graphs 🌸",
+        "New metrics sprouting everywhere 🌱",
+        "Clean configs, clear skies ☀️",
+    ],
+    "summer": [
+        "Neon nights and quick deploys 🌆",
+        "Hotfixes in warm sunsets 🌇",
+        "Bright builds, lighter vibes 🌞",
+    ],
+    "autumn": [
+        "Amber lights, steady pipelines 🍁",
+        "Calm refactors and rainy windows 🌧️",
+        "Soft glow, sharp insights 🔶",
+    ],
+}
+
 EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️"]
 
-
-def get_dynamic_quote() -> str:
-    """Pick a time-of-day + weekday flavored quote with a random emoji."""
-    now = datetime.datetime.utcnow()
-    day_of_week = now.strftime("%A")
-    hour = now.hour
-
-    if 6 <= hour < 12:
-        selected = random.choice(MORNING_QUOTES)
-    elif 12 <= hour < 18:
-        selected = random.choice(AFTERNOON_QUOTES)
+def _season_for(day: dt.date) -> str:
+    """Determine season by month (meteorological) or by 4 equal acts."""
+    if USE_METEOROLOGICAL_SEASONS:
+        m = day.month
+        if m in (12, 1, 2):  return "winter"
+        if m in (3, 4, 5):   return "spring"
+        if m in (6, 7, 8):   return "summer"
+        return "autumn"
     else:
-        selected = random.choice(EVENING_QUOTES)
+        doy = day.timetuple().tm_yday
+        if doy <= 91:    return "winter"
+        if doy <= 182:   return "spring"
+        if doy <= 273:   return "summer"
+        return "autumn"
 
-    selected += f" | {DAY_OF_WEEK_QUOTES[day_of_week]}"
-    selected += f" {random.choice(EXTRA_EMOJIS)}"
-    return selected
+def get_daily_quote(today: dt.date | None = None) -> str:
+    """
+    Return ONE stable message for the day (anchored to LOCAL_TZ).
+    Composition:
+      base = random( daypart bucket )    # daypart cycles by day-of-year
+      weekday_line = fixed by weekday
+      season_line  = random( season bucket )
+      + one extra emoji
+    """
+    now_local = dt.datetime.now(LOCAL_TZ)
+    if today is None:
+        today = now_local.date()
 
+    season = _season_for(today)
+    weekday = today.strftime("%A")
+    doy = today.timetuple().tm_yday
 
-# -------- Main driver --------
+    # Cycle daypart by day-of-year instead of using current hour
+    daypart = DAYPARTS[(doy - 1) % 4]
+
+    # Deterministic seed per day → stable choice for the whole day
+    seed = int(today.strftime("%Y%m%d"))
+    rnd = random.Random(seed)
+
+    base = rnd.choice(DAYPART_QUOTES[daypart])
+    season_line = rnd.choice(SEASON_TAGLINES[season])
+    tail = rnd.choice(EXTRA_EMOJIS)
+
+    msg = f"{base} | {weekday}: {WEEKDAY_LINES[weekday]} • {season_line} {tail}"
+    return msg
+
+# ---------------------------- Main driver -----------------------------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
     md = md_path.read_text(encoding="utf-8")
 
-    # 1) Rotate the banner (stateless)
+    # 1) Rotate the banner
     md = rotate_banner_in_md(md)
 
-    # 2) Update timestamp and insight line
-    now = datetime.datetime.utcnow()
-    dynamic_quote = get_dynamic_quote()
+    # 2) Update timestamp and the daily message
+    now_utc = dt.datetime.utcnow()
+    daily_msg = get_daily_quote()
 
     lines = md.splitlines(keepends=True)
     updated: List[str] = []
@@ -279,24 +340,23 @@ def generate_new_readme() -> None:
 
     for line in lines:
         if line.startswith("Last updated:"):
-            updated.append(f"Last updated: {now} UTC\n")
+            updated.append(f"Last updated: {now_utc} UTC\n")
             saw_updated = True
         elif line.startswith("🔥 MLOps Insight:"):
-            updated.append(f"🔥 MLOps Insight: 💡 {dynamic_quote}\n")
+            updated.append(f"🔥 MLOps Insight: 💡 {daily_msg}\n")
             saw_insight = True
         else:
             updated.append(line)
 
     if not saw_updated:
-        updated.append(f"\nLast updated: {now} UTC\n")
+        updated.append(f"\nLast updated: {now_utc} UTC\n")
     if not saw_insight:
-        updated.append(f"\n🔥 MLOps Insight: 💡 {dynamic_quote}\n")
+        updated.append(f"\n🔥 MLOps Insight: 💡 {daily_msg}\n")
 
     md_path.write_text("".join(updated), encoding="utf-8")
-    print(f"✅ README updated at {now} UTC")
-    print(f"🖼️ Banner mode: {BANNER_MODE}")
-    print(f"📝 Quote: {dynamic_quote}")
-
+    print(f"✅ README updated at {now_utc} UTC")
+    print(f"🖼️ Banner mode: {BANNER_MODE} | Calendar mode: {BANNER_CALENDAR_MODE}")
+    print(f"📝 Daily message: {daily_msg}")
 
 if __name__ == "__main__":
     generate_new_readme()
