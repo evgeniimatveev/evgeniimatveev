@@ -218,11 +218,6 @@ def rotate_banner_in_md(md_text: str) -> str:
 # -------- Dynamic insight --------
 # Season + Day-of-week + Random vibe (keeps your 24h cron fresh without extra state
 # -------- Dynamic insight (Season + DoW + Vibe + Headline styles) --------
-import os
-import datetime
-import random
-from typing import List
-
 # Time-of-day vibes
 MORNING_QUOTES: List[str] = [
     "Time for some coffee and MLOps ☕",
