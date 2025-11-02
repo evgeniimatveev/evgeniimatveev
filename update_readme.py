@@ -390,6 +390,14 @@ def generate_new_readme() -> None:
     }
     with open("update_log.jsonl", "a", encoding="utf-8") as jf:
         jf.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+    
+    try:
+        from pathlib import Path as _P
+        sz = _P("update_log.jsonl").stat().st_size
+        print(f"🧾 JSONL appended · banner={banner_file} {banner_pos[0]}/{banner_pos[1]} · size={sz} bytes")
+    except Exception:
+        pass
     
     # 5) Log heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
