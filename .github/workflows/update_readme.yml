@@ -23,6 +23,9 @@ jobs:
       # BANNER_CALENDAR_MODE: "true"   # optional: force daily change even if a run was skipped
       # Shown in STATUS and Run Meta blocks:
       SCHEDULE_BADGE: "24h_5m"
+      # Log keep limits (easy to tune)
+      JSONL_KEEP_LINES: "200"
+      TXT_KEEP_LINES: "70"
 
     steps:
       - name: Checkout repository
@@ -57,17 +60,17 @@ jobs:
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
-          tail -n 70 update_log.txt > temp_log.txt || true
+          tail -n ${TXT_KEEP_LINES} update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      - name: Trim JSON log (keep last ~200 lines)
+      - name: Trim JSON log (keep last ~N lines)
         shell: bash
         run: |
           [ -f update_log.jsonl ] || : > update_log.jsonl
-          tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
+          tail -n ${JSONL_KEEP_LINES} update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
-      # ---------- FIXED: render accordion into README without nested f-strings ----------
+      # ---------- Render accordion into README (last 5) ----------
       - name: Render last 5 updates into README (accordion)
         shell: bash
         run: |
@@ -166,9 +169,9 @@ jobs:
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
           STATUS="<p align=\"center\">
-          <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=300&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
-          <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
+          <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
           </p>"
@@ -227,6 +230,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: update_logs
