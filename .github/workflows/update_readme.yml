@@ -20,7 +20,9 @@ jobs:
     env:
       # ---- Controls for your updater script ----
       BANNER_MODE: sequential
+      # Toggle calendar-stable rotation if you want daily change even if a run was skipped:
       # BANNER_CALENDAR_MODE: "true"
+      # Shown in STATUS and Run Meta blocks:
       SCHEDULE_BADGE: "24h_5m"
 
     steps:
@@ -41,11 +43,9 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      # Run the update script (rotates banner + timestamp + quote + RUNMETA)
       - name: Run updater
         run: python update_readme.py
 
-      # Append run metadata to a short log and keep it short
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -58,71 +58,35 @@ jobs:
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
-
-          # keep last ~70 lines
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      - name: Enrich job summary from JSONL
-  shell: bash
-  run: |
-    python - <<'PY'
-import json, pathlib, sys
+      - name: Trim JSON log (keep last ~200 lines)
+        shell: bash
+        run: |
+          [ -f update_log.jsonl ] || : > update_log.jsonl
+          tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
+          mv update_log.jsonl.tmp update_log.jsonl || true
 
-p = pathlib.Path("update_log.jsonl")
-if not p.exists():
-    sys.exit(0)
-
-# Берём последние 5 записей (можно 1, если хочешь только последнюю)
-lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-5:]
-if not lines:
-    sys.exit(0)
-
-def esc(s):
-    # экранируем пайпы и переносы для таблицы Markdown
-    return str(s).replace("|", "\\|").replace("\n", " ").strip()
-
-print("### Updates (from JSON log)")
-print("| Time (UTC) | Run # | SHA | Banner | Mode | Event/Actor | Schedule | Insight |")
-print("|---|---|---|---|---|---|---|---|")
-
-for line in lines:
-    d = json.loads(line)
-    time_utc = esc(d.get("ts_utc",""))
-    run_no   = esc(d.get("run_number",""))
-    sha      = esc(d.get("sha",""))
-    banner   = esc(f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})")
-    mode     = esc(d.get("banner_mode",""))
-    evt_act  = esc(f"{d.get('event','')}/{d.get('actor','')}")
-    sched    = esc(d.get("schedule_badge",""))
-    insight  = esc(d.get("insight_preview",""))
-    print(f"| {time_utc} | {run_no} | {sha} | {banner} | {mode} | {evt_act} | {sched} | {insight} |")
-PY
-    >> "$GITHUB_STEP_SUMMARY"
-
-      # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
         run: |
           short_sha="${GITHUB_SHA:0:7}"
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
-
           STATUS="<p align=\"center\">
-            <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
-            <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
-            <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
-            <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
-            <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
+          <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
           </p>"
-
           awk -v r="$STATUS" '
             /<!-- STATUS:START -->/ {print; print r; f=1; next}
             /<!-- STATUS:END -->/   {f=0}
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Only commit if there are actual changes
       - name: Commit changes (if any)
         id: commit
         shell: bash
@@ -145,7 +109,8 @@ PY
         run: |
           for i in 1 2 3; do
             if git push; then
-              echo "Pushed successfully"; break
+              echo "Pushed successfully"
+              break
             fi
             echo "Push failed (attempt $i). Retrying in $((i*3))s..."
             sleep $((i*3))
@@ -159,8 +124,8 @@ PY
             echo "## README Auto-Update"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
-            echo "- **Commit**: \`${{ github.sha }}\`"
-            echo "- **Schedule**: \`${{ env.SCHEDULE_BADGE }}\`"
+            echo "- **Commit**: ${{ github.sha }}"
+            echo "- **Schedule**: ${SCHEDULE_BADGE}"
             echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
           } >> "$GITHUB_STEP_SUMMARY"
 
