@@ -145,6 +145,44 @@ jobs:
             echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Enrich job summary from JSONL
+  shell: bash
+  run: |
+    python - <<'PY'
+import json, pathlib, sys
+
+p = pathlib.Path("update_log.jsonl")
+if not p.exists():
+    sys.exit(0)
+
+lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-5:]
+if not lines:
+    sys.exit(0)
+
+def esc(s):  # экранируем пайпы и переносы для Markdown-таблицы
+    return str(s).replace("|", "\\|").replace("\n", " ").strip()
+
+print("### Updates (from JSON log)")
+print("| Time (UTC) | Run # | SHA | Banner | Mode | Event/Actor | Schedule | Insight |")
+print("|---|---|---|---|---|---|---|---|")
+
+for line in lines:
+    d = json.loads(line)
+    row = [
+        esc(d.get("ts_utc","")),
+        esc(d.get("run_number","")),
+        esc(d.get("sha","")),
+        esc(f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"),
+        esc(d.get("banner_mode","")),
+        esc(f"{d.get('event','')}/{d.get('actor','')}"),
+        esc(d.get("schedule_badge","")),
+        esc(d.get("insight_preview","")),
+    ]
+    print("| " + " | ".join(row) + " |")
+PY
+    >> "$GITHUB_STEP_SUMMARY"
+      
+      
       - name: Upload logs as artifacts
         uses: actions/upload-artifact@v4
         with:
