@@ -170,8 +170,15 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int,int]]:
     banner_block = f'<!-- BANNER:START -->{new_inner}<!-- BANNER:END -->\n'
     return banner_block + md_text, (x_num, total)
 
-# -------- Quotes & headline --------
-MORNING_QUOTES = [
+ ===================== MLOps Quotes (Unified & Compact) =====================
+
+from collections import OrderedDict
+
+def _dedupe(seq):
+    return list(OrderedDict.fromkeys(seq))
+
+# --- Base (твои) ---
+MORNING_BASE = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
     "Good morning! Let's optimize ML experiments! 🎯",
@@ -183,7 +190,7 @@ MORNING_QUOTES = [
     "One small PR before breakfast 🍳",
     "Spin up environments, hydrate the features 💧",
 ]
-AFTERNOON_QUOTES = [
+AFTERNOON_BASE = [
     "Keep pushing your MLOps pipeline forward! 🔧",
     "Perfect time for CI/CD magic ⚡",
     "Optimize, deploy, repeat! 🔄",
@@ -195,7 +202,7 @@ AFTERNOON_QUOTES = [
     "Monitor, alert, respond — calmly 🧭",
     "Make it boring: stable, predictable releases 🫡",
 ]
-EVENING_QUOTES = [
+EVENING_BASE = [
     "Evening is the best time to track ML experiments 🌙",
     "Relax and let automation handle your work 🤖",
     "Wrap up the day with some Bayesian tuning 🎯",
@@ -207,7 +214,7 @@ EVENING_QUOTES = [
     "Write the changelog you wish you had 📓",
     "Reflect, refactor, and rest 🌌",
 ]
-DAY_OF_WEEK_QUOTES = {
+DAY_OF_WEEK_BASE = {
     "Monday": "Start your week strong! 🚀",
     "Tuesday": "Keep up the momentum! 🔥",
     "Wednesday": "Halfway there — keep automating! 🛠️",
@@ -216,7 +223,7 @@ DAY_OF_WEEK_QUOTES = {
     "Saturday": "Weekend automation vibes! 🎉",
     "Sunday": "Prep for an MLOps-filled week! ⏳",
 }
-SEASON_QUOTES = {
+SEASON_BASE = {
     "Spring": [
         "Fresh start — time to grow 🌸", "Refactor and bloom 🌼",
         "Spring into automation! 🪴", "Plant ideas, water pipelines 🌱",
@@ -238,13 +245,145 @@ SEASON_QUOTES = {
         "Reduce noise, raise signal 📡", "Plan roadmaps with calm clarity 🧭",
     ],
 }
-EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊"]
-HEADLINE_TEMPLATES = [
+EXTRA_EMOJIS = _dedupe([
+    # Core
+    "🚀","⚡","🔥","💡","🎯","🔄","📈","✅","🧠","🤖","🧪",
+    # Tools
+    "🛠️","🧰","🧱","🧩","🔧","⚙️","🗜️","🔩","🪛","🧵",
+    # Data
+    "📊","📉","🧮","📋","🧾","📂","🗂️","💾","📦",
+    # Observability
+    "🧭","🛰️","🔍","📡","📢","🧯","🛟","⏱️","🔔",
+    # Time / Mood
+    "🌅","🌇","🌙","☀️","❄️","🍁","🌸","🌾","🌈","🌊",
+    # Docs / Polish
+    "📓","📝","🖋️","🪶","💭","✨","💎","🎨","🎬","😎","🧼","🗺️","🛏️","⏳"
+])
+HEADLINE_BASE = [
     "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING",
     "SHIP SMALL, SHIP OFTEN","EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT",
     "TRACK • TUNE • TRUST","REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE",
     "LOW TOIL, HIGH LEVERAGE","METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
+    "MEASURE TWICE, SHIP ONCE","DAGs BEFORE DRAMA","AUTOMATE • OBSERVE • IMPROVE",
+    "CANARY FIRST, MAIN LATER","LOW VARIANCE, HIGH TRUST","GREEN CHECKS, QUIET PAGES",
+    "DATA → DECISIONS → DELIGHT"
 ]
+
+# --- Additions (мои) ---
+MORNING_ADD = [
+    "Kickstart the day with green checks and clean diffs ✅🧼",
+    "Caffeinate, lint, and log wisely ☕🧪",
+    "Warm caches, cold starts, steady pipelines ❄️🔄",
+    "Spin up, smoke test, ship a slice 🚀🧪",
+    "Make the first commit count 🧠🖋️",
+    "Hydrate features, sync schemas, breathe 💧📂",
+    "Morning stand-up, evening stand-down 🧍‍♂️↔️🛏️",
+    "Fewer flags, clearer flows 🎯🧩",
+    "Start simple, measure truth 📊💡",
+    "Steady inputs → stable outputs 🔧📦",
+]
+AFTERNOON_ADD = [
+    "Bench, profile, optimize — then commit 📈🧠",
+    "Cut toil, raise signal 📉→📡",
+    "Push the canary, watch the graphs 🐤📊",
+    "Docs or it didn’t happen 📓✨",
+    "Lower variance, higher confidence 🎯📏",
+    "Refactor small, deliver often 🔁🚀",
+    "Ruthless with flakiness, gentle with humans 🛟✅",
+    "Cache misses pay the bill — fix them 💾⚙️",
+    "Resilience beats brilliance on-call 🧯🧭",
+    "Guard the SLO, respect the budget ⏱️💎",
+]
+EVENING_ADD = [
+    "Close loops, open learnings 🔄📚",
+    "Archive artifacts, retire the noise 📦🔕",
+    "Tag the champion, park the challengers 🏷️🎯",
+    "Cool the cluster, warm the roadmap ❄️🗺️",
+    "Write once, run always — reproducibility first 🧪💾",
+    "Queue tomorrow’s batch and sleep well ⏳🛏️",
+    "Curate insights, trim the backlog ✂️💡",
+    "One clean PR before lights out 🍳💡",
+    "Snapshot state, freeze versions 🧊📦",
+    "Reflect on impact, not effort 🌌📈",
+]
+DAY_OF_WEEK_ALTS = {
+    "Monday": [
+        "Monday: align goals, pin metrics 📌📊",
+        "New week, new slice of value 🍰🚀",
+    ],
+    "Tuesday": [
+        "Tuesday: prune scope, grow signal ✂️📡",
+        "Keep momentum, kill blockers 🔥🧱",
+    ],
+    "Wednesday": [
+        "Midweek: stabilize, then accelerate 🧱⚡",
+        "Halfway: fewer knobs, better defaults 🧩✅",
+    ],
+    "Thursday": [
+        "Thursday: test hard, deploy soft 🧪🛟",
+        "Pre-weekend: canary first, main later 🐤🚀",
+    ],
+    "Friday": [
+        "Friday: ship small, sleep well 😴✅",
+        "Wrap clean, leave breadcrumbs 📓🧵",
+    ],
+    "Saturday": [
+        "Saturday: sandbox ideas, zero risk 🧪🧰",
+        "Light touch, heavy learning 😎💡",
+    ],
+    "Sunday": [
+        "Sunday: roadmap calm, queues ready 🗺️⏳",
+        "Prep quietly, launch loudly tomorrow 🤫🚀",
+    ],
+}
+SEASON_ADD = {
+    "Spring": [
+        "Seed ideas, weed tech debt 🌱✂️",
+        "Fresh data, fresh baselines 📊🌿",
+        "Lightweight deps, heavy insights 🪴💡",
+    ],
+    "Summer": [
+        "Scale carefully, chill the costs ☀️📉",
+        "Heat maps up, errors down 🔥🧯",
+        "Sunny builds, shady incidents 😎🛟",
+    ],
+    "Autumn": [
+        "Harvest metrics, store wisdom 🍁📦",
+        "Trim configs, keep clarity ✂️✨",
+        "Retrain, re-evaluate, retain 📈🧠",
+    ],
+    "Winter": [
+        "Hibernate noise, amplify signal ❄️📡",
+        "Deep focus, long tests 🧊🧪",
+        "Plan lean, ship clean 🧭✅",
+    ],
+}
+HEADLINE_ADD = [
+    "MEASURE TWICE, SHIP ONCE",
+    "DAGs BEFORE DRAMA",
+    "AUTOMATE • OBSERVE • IMPROVE",
+    "CANARY FIRST, MAIN LATER",
+    "LOW VARIANCE, HIGH TRUST",
+    "GREEN CHECKS, QUIET PAGES",
+    "DATA → DECISIONS → DELIGHT",
+]
+
+# --- Final merged (deduped) ---
+MORNING_QUOTES   = _dedupe(MORNING_BASE   + MORNING_ADD)
+AFTERNOON_QUOTES = _dedupe(AFTERNOON_BASE + AFTERNOON_ADD)
+EVENING_QUOTES   = _dedupe(EVENING_BASE   + EVENING_ADD)
+
+DAY_OF_WEEK_QUOTES = {**DAY_OF_WEEK_BASE}  # базовые по умолчанию
+DAY_OF_WEEK_ALTS   = {k: _dedupe(v) for k, v in DAY_OF_WEEK_ALTS.items()}
+
+SEASON_QUOTES = {
+    k: _dedupe(SEASON_BASE[k] + SEASON_ADD.get(k, []))
+    for k in SEASON_BASE
+}
+
+HEADLINE_TEMPLATES = _dedupe(HEADLINE_BASE + HEADLINE_ADD)
+
+# ===================== /end =====================
 
 def _get_season_by_month(m: int) -> str:
     if m in (3,4,5): return "Spring"
