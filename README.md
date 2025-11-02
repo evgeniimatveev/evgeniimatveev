@@ -134,8 +134,26 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 Last updated: 2025-11-02 08:01:14.988230 UTC
 
 ---
-
+<!-- INSIGHT:START -->
 🔥 MLOps Insight: 💡 LOW TOIL, HIGH LEVERAGE • RUN #5283 — Collect insights like golden leaves 🍁 | Prep for an MLOps-filled week! ⏳ Time for some coffee and MLOps ☕ 📅
+<!-- INSIGHT:END -->
+---
+
+---
+<!-- RUNMETA:START -->
+<details>
+  <summary>🧾 Run Meta (click to expand)</summary>
+
+- 🕒 Updated (UTC): 2025-11-02 08:01
+- 🔢 Run: #5283
+- 🔗 Commit: 28b7a49
+- ⚙️ Workflow: update_readme
+- 🎯 Event: workflow_dispatch
+- 🗓️ Schedule: 24h_5m
+- ▶️ Next ETA (UTC): 2025-11-03 08:01
+
+</details>
+<!-- RUNMETA:END -->
 
 ---
 
