@@ -215,33 +215,48 @@ def rotate_banner_in_md(md_text: str) -> str:
     return banner_block + md_text
 
 
-# -------- Dynamic insight --------
 # Season + Day-of-week + Random vibe (keeps your 24h cron fresh without extra state
-# -------- Dynamic insight (Season + DoW + Vibe + Headline styles) --------
-# Time-of-day vibes
-MORNING_QUOTES: List[str] = [
+
+# Morning
+MORNING_QUOTES = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
     "Good morning! Let's optimize ML experiments! 🎯",
     "Kick off with clean pipelines and clear metrics 📊",
     "Bootstrap your day with reproducible runs 🔁",
     "Ship small, ship early, measure always 📈",
+    "Warm up the DAGs and run smoke tests 🌅",
+    "Start with data quality, end with insights ✅",
+    "One small PR before breakfast 🍳",
+    "Spin up environments, hydrate the features 💧",
 ]
-AFTERNOON_QUOTES: List[str] = [
+
+# Afternoon
+AFTERNOON_QUOTES = [
     "Keep pushing your MLOps pipeline forward! 🔧",
     "Perfect time for CI/CD magic ⚡",
     "Optimize, deploy, repeat! 🔄",
     "Measure → iterate → ship 🚀",
     "Refactor the DAGs, simplify the flows 🧩",
     "Guardrails on, feature flags ready 🧯",
+    "Profile the hotspots, cache the wins 🧠",
+    "Review metrics, cut toil, add value 📉→📈",
+    "Monitor, alert, respond — calmly 🧭",
+    "Make it boring: stable, predictable releases 🫡",
 ]
-EVENING_QUOTES: List[str] = [
+
+# Evening
+EVENING_QUOTES = [
     "Evening is the best time to track ML experiments 🌙",
     "Relax and let automation handle your work 🤖",
     "Wrap up the day with some Bayesian tuning 🎯",
     "Document results, queue tomorrow's jobs 📝",
     "Small wins today, big gains tomorrow 📈",
     "Close issues, open insights ✅",
+    "Archive artifacts, tag the best runs 🏷️",
+    "Cool down the cluster, warm up ideas ❄️💡",
+    "Write the changelog you wish you had 📓",
+    "Reflect, refactor, and rest 🌌",
 ]
 
 # Day-of-week booster
@@ -261,25 +276,40 @@ SEASON_QUOTES = {
         "Fresh start — time to grow 🌸",
         "Refactor and bloom 🌼",
         "Spring into automation! 🪴",
+        "Plant ideas, water pipelines 🌱",
+        "Rebuild with lighter dependencies 🌿",
+        "Nurture data quality from the root 🌷",
     ],
     "Summer": [
         "Keep shining and shipping ☀️",
         "Hot pipelines, cool results 🔥",
         "Sunny mindset, clean commits 😎",
+        "Scale up smart, throttle costs 🏖️",
+        "Ship value before the sunset 🌇",
+        "Heat-proof your infra with tests 🔥🧪",
     ],
     "Autumn": [
         "Reflect, refine, retrain 🍂",
         "Collect insights like golden leaves 🍁",
         "Harvest your best MLOps ideas 🌾",
+        "Prune legacy, keep essentials ✂️",
+        "Tune models, store wisdom 📦",
+        "Backtest decisions, bank learnings 🏦",
     ],
     "Winter": [
         "Deep focus and model tuning ❄️",
         "Hibernate and optimize 🧊",
         "Great time for infra upgrades 🛠️",
+        "Keep the core warm and robust 🔧",
+        "Reduce noise, raise signal 📡",
+        "Plan roadmaps with calm clarity 🧭",
     ],
 }
 
-EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️", "🧠", "🤖", "🧪", "✅"]
+EXTRA_EMOJIS = [
+    "🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅",
+    "📊","🧭","🧱","🧰","🧹","🛰️"
+]
 
 HEADLINE_TEMPLATES = [
     "MLOPS DAILY",
@@ -287,6 +317,13 @@ HEADLINE_TEMPLATES = [
     "AUTOMATE EVERYTHING",
     "SHIP SMALL, SHIP OFTEN",
     "EXPERIMENT → INSIGHT → DEPLOY",
+    "DATA • CODE • IMPACT",
+    "TRACK • TUNE • TRUST",
+    "REPRODUCIBILITY FIRST",
+    "OBSERVE • ALERT • IMPROVE",
+    "LOW TOIL, HIGH LEVERAGE",
+    "METRICS OVER MYTHS",
+    "PIPELINES, NOT FIRE-DRILLS",
 ]
 
 def _get_season_by_month(m: int) -> str:
