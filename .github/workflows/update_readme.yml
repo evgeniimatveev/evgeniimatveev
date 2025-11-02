@@ -73,6 +73,12 @@ jobs:
           [ -f update_log.jsonl ] || : > update_log.jsonl
           tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
+      
+      - name: Show last JSON log line
+        shell: bash
+        run: |
+          echo "Last JSONL line:"
+          tail -n 1 update_log.jsonl || true
       # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
