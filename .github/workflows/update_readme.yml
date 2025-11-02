@@ -1,11 +1,17 @@
-name: Auto Update README
+name: Auto Update README (Daily PT)
 
 on:
   schedule:
-    - cron: "5 */6 * * *"        # Run every 6 hours (at minute 5)
-  workflow_dispatch:              # Allow manual runs from the Actions tab
+    # Run every hour at :05 (UTC). We gate by local time inside the job to get exactly 1 run/day in PT.
+    - cron: "5 * * * *"
+  # Allow manual runs from the Actions tab
+  workflow_dispatch: {}
 
-# Prevent concurrent runs of this workflow from racing on README changes
+# Use the built-in GITHUB_TOKEN to push changes (no PAT needed)
+permissions:
+  contents: write
+
+# Prevent concurrent runs from racing on README changes
 concurrency:
   group: auto-update-readme
   cancel-in-progress: false
@@ -14,60 +20,73 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
     env:
+      # Banner rotation mode used by your script
       BANNER_MODE: sequential
+      # Target timezone and hour for the single daily update
+      TZ_REGION: America/Los_Angeles
+      TARGET_HOUR: "09"            # Change to "08", "10", etc. for a different local hour
+      # Badge text shown in README (purely cosmetic)
+      SCHEDULE_BADGE: "24h"
 
     steps:
-      # Checkout repository
+      # Exit early unless it's the target local hour in PT.
+      # This gives you exactly one update per day while cron runs hourly.
+      - name: Run only at target hour in PT
+        shell: bash
+        run: |
+          PT_HOUR="$(TZ=${TZ_REGION} date +%H)"
+          if [ "$PT_HOUR" != "${TARGET_HOUR}" ]; then
+            echo "⏭️ Skipping run: now is ${PT_HOUR}:$(TZ=${TZ_REGION} date +%M) in ${TZ_REGION}, target is ${TARGET_HOUR}:xx"
+            exit 0
+          fi
+          echo "✅ Proceed: it's ${PT_HOUR}:$(TZ=${TZ_REGION} date +%M) in ${TZ_REGION}"
+
+      # Checkout repository (GITHUB_TOKEN credentials are persisted by default)
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
           fetch-depth: 0
 
-      # Setup Python
+      # Set up Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      # Run the update script
-      - name: Run updater (updates banner + timestamp + quote)
+      # Run your updater (rotates banner + updates timestamp + quote)
+      - name: Run updater
         run: python update_readme.py
 
-      # Configure Git author
-      - name: Configure Git author
-        run: |
-          git config --global user.name "evgeniimatveev"
-          git config --global user.email "your-email@users.noreply.github.com"
-
-      # Append metadata to update log
+      # Append a short run log (optional; helps with debugging/history)
       - name: Append run metadata to log
         run: |
           {
             echo "--------------------------------------"
             echo "Updated on: $(date -u) (UTC)"
-            echo "Triggered by: ${{ github.event_name }}"
+            echo "Local PT:   $(TZ=${TZ_REGION} date) (${TZ_REGION})"
+            echo "Triggered:  ${{ github.event_name }}"
             echo "Commit SHA: ${{ github.sha }}"
-            echo "Run ID: ${{ github.run_id }}"
+            echo "Run ID:     ${{ github.run_id }}"
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
 
-      # Trim log (keep last 70 lines)
+      # Keep the log short (last ~70 lines)
       - name: Trim log (keep last ~70 lines)
         run: |
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      # Inject all badges between STATUS markers
+      # Refresh STATUS badges in README
       - name: Update STATUS line in README
         shell: bash
         env:
-          SCHEDULE_BADGE: "6h_5m"
+          TZ_REGION: America/Los_Angeles
+          SCHEDULE_BADGE: "24h"
         run: |
           short_sha="${GITHUB_SHA:0:7}"
 
-          # Build "Updated" badge text: e.g., "2025-10-31 22:21 UTC"
+          # Human-readable UTC timestamp for the badge
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
 
@@ -85,11 +104,9 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Commit & push changes
+      # Commit & push changes using GITHUB_TOKEN
       - name: Commit & push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
           git add README.md update_log.txt || true
-          git commit -m "Auto-update README (sequential rotation)" || echo "No changes to commit"
-          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
+          git commit -m "Auto-update README (daily PT run #${GITHUB_RUN_NUMBER})" || echo "No changes to commit"
+          git push
