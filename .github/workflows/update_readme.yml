@@ -107,6 +107,52 @@ jobs:
               print(f"| {time} | {run} | {sha} | {banner} | {mode} | {evt} | {insight} |")
           PY
 
+      - name: Render last 5 updates into README (accordion)
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, pathlib, re
+
+          log = pathlib.Path("update_log.jsonl")
+          readme_p = pathlib.Path("README.md")
+
+          rows = []
+          if log.exists():
+              lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-5:]
+
+              for line in reversed(lines):
+                  d = json.loads(line)
+                  def esc(s):
+                      return str(s).replace("|","\\|").replace("\n"," ").strip()
+                  rows.append(
+                      "| {ts} | {run} | `{sha}` | {banner} | {event}/{actor} | {insight} |".format(
+                          ts   = esc(d.get("ts_utc","")),
+                          run  = esc(d.get("run_number","")),
+                          sha  = esc(d.get("sha","")),
+                          banner = esc(f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"),
+                          event  = esc(d.get("event","")),
+                          actor  = esc(d.get("actor","")),
+                          insight= esc(d.get("insight_preview",""))
+                      )
+                  )
+
+          table = [
+              "<details><summary><b>Recent updates (last 5)</b></summary>",
+              "",
+              "| Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |",
+              "|---|---|---|---|---|---|",
+          ]
+          table.extend(rows or ["| — | — | — | — | — | — |"])
+          table.append("")
+          table.append("</details>")
+
+          new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
+
+          readme = readme_p.read_text(encoding="utf-8")
+          readme = re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->", new_block, readme, flags=re.S)
+          readme_p.write_text(readme, encoding="utf-8")
+          PY
+
       - name: Update STATUS line in README
         shell: bash
         run: |
