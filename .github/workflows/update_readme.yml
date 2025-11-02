@@ -214,9 +214,9 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # If commit_mode == force, create a tiny heartbeat change to ensure a commit
-      - name: Heartbeat (only for commit_mode=force)
-        if: env.COMMIT_MODE == 'force'
+      # Force a tiny diff to guarantee a commit on schedule, or when commit_mode=force
+      - name: Heartbeat (force a diff on schedule/force)
+        if: ${{ github.event_name == 'schedule' || env.COMMIT_MODE == 'force' }}
         shell: bash
         run: |
           mkdir -p .ci
