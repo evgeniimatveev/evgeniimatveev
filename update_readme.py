@@ -1,27 +1,24 @@
-
 # update_readme.py
 # -*- coding: utf-8 -*-
 """
-Auto-rotate a banner image in README.md.
+Auto-rotate a banner in README.md + append runtime metadata.
 
-Key features:
-- Stateless rotation: detects the current <img src=".../assets/..."> and picks the NEXT file
-  using natural ordering (1.gif, 2.gif, 10.gif, ...). No .banner_state is required.
-- Works with both relative and raw URLs; always writes a raw.githubusercontent.com URL
-  with a cache-buster (?t=...) to avoid GitHub's image caching.
-- Caption "Banner X/Y" is kept in sync. If the filename starts with a number (e.g. 6.gif),
-  we prefer that number for X; otherwise we fall back to the 1-based index in the sorted list.
-- Environment variable BANNER_MODE: "sequential" (default) or "random".
+Adds/updates:
+- Banner block between <!-- BANNER:START --> ... <!-- BANNER:END -->
+- "Last updated: <UTC>" line
+- "🔥 MLOps Insight: 💡 ..." line
+- RUNMETA block between <!-- RUNMETA:START --> ... <!-- RUNMETA:END -->
 
-Expected repo layout:
-  README.md
-  assets/
-    1.gif, 2.gif, 10.gif, ...
+Environment knobs:
+- BANNER_MODE = "sequential" | "random"     (default: sequential)
+- SCHEDULE_BADGE (e.g., "24h_5m")           (default: 24h_5m)
 
-This script updates:
-  - The banner block delimited by <!-- BANNER:START --> ... <!-- BANNER:END -->
-  - The "Last updated:" line
-  - The "🔥 MLOps Insight:" line
+Reads standard GitHub Actions env when running in CI:
+GITHUB_REPOSITORY, GITHUB_REF_NAME, GITHUB_RUN_NUMBER, GITHUB_RUN_ID,
+GITHUB_SHA, GITHUB_WORKFLOW, GITHUB_EVENT_NAME, GITHUB_ACTOR, GITHUB_JOB.
+
+Optionally pass custom env from workflow (they are shown if present):
+RUN_OS, PY_VERSION
 """
 
 from __future__ import annotations
@@ -45,19 +42,13 @@ BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
 
 # -------- Utils --------
 def _natkey(p: Path) -> List[object]:
-    """
-    Natural sort key so that 2.gif < 10.gif.
-    Splits the filename into digit/non-digit chunks and converts digits to int.
-    """
+    """Natural sort key so that 2.gif < 10.gif."""
     s = p.name.lower()
     return [(int(t) if t.isdigit() else t) for t in re.findall(r"\d+|\D+", s)]
 
 
 def _list_assets() -> List[Path]:
-    """
-    Return valid asset files (filtered by extension & size), naturally sorted.
-    Hidden files (starting with ".") are skipped.
-    """
+    """Return valid assets (by ext & size), naturally sorted."""
     files: List[Path] = []
     if not ASSETS.exists():
         return files
@@ -75,10 +66,7 @@ def _list_assets() -> List[Path]:
 
 
 def _to_raw_url(rel_path: str) -> str:
-    """
-    Build a raw GitHub URL for this repo/branch.
-    Works locally (after push) and inside GitHub Actions.
-    """
+    """Build a raw GitHub URL for this repo/branch."""
     repo = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
     branch = os.getenv("GITHUB_REF_NAME", "main")
     return f"https://raw.githubusercontent.com/{repo}/{branch}/{rel_path}"
@@ -86,11 +74,9 @@ def _to_raw_url(rel_path: str) -> str:
 
 def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     """
-    Find the current <img src=".../assets/<file>"> in README (prefer the banner block).
-    Returns a relative 'assets/<file>' path or None if not found.
-    Handles raw URLs and strips query strings.
+    Find current <img src=".../assets/<file>"> (prefer banner block).
+    Return 'assets/<file>' or None.
     """
-    # Prefer within explicit banner block
     block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     m = re.search(block_pat, md_text, flags=re.S)
     scope = m.group(2) if m else md_text
@@ -99,7 +85,7 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     if not m2:
         return None
 
-    url = m2.group(1)  # could be 'assets/6.gif' or 'https://.../assets/6.gif'
+    url = m2.group(1)
     tail = re.search(r'/assets/([^/]+)$', url)
     if tail:
         return f'assets/{tail.group(1)}'
@@ -110,15 +96,15 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
 
 def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
     """
-    Stateless choice of the next banner.
-    - If BANNER_MODE == 'random': pick a random file, avoid current when possible.
-    - Else (sequential): find the current in README and advance to the next (wrap).
-    Returns (relative_path 'assets/..', index_1based_in_sorted_list).
+    Stateless next banner:
+    - random mode avoids the current when possible
+    - sequential moves to next (wrap-around)
+    Returns (rel_path, index_1based_in_sorted_list).
     """
     if not files:
         raise RuntimeError("No valid assets found in 'assets/'.")
 
-    paths = [f.as_posix() for f in files]  # e.g. 'assets/6.gif'
+    paths = [f.as_posix() for f in files]
     current = _extract_current_asset_from_md(md_text)
 
     if BANNER_MODE == "random":
@@ -128,37 +114,30 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         choice = random.choice(candidates)
         return choice, paths.index(choice) + 1
 
-    # sequential
     if current in paths:
         i = paths.index(current)
         nxt = paths[(i + 1) % len(paths)]
     else:
         nxt = paths[0]
-
     return nxt, paths.index(nxt) + 1
 
 
 # -------- Banner rotation --------
 def rotate_banner_in_md(md_text: str) -> str:
     """
-    Stateless banner rotation:
-    - Detect the current <img src=".../assets/..."> and pick the NEXT asset.
-    - Write a raw.githubusercontent.com URL with cache-buster.
-    - Keep/update the caption "Banner X/Y" (emoji preserved/added).
-    - If the block is missing, prepend a fresh one at the top.
+    Statelessly rotate the banner and keep a centered caption:
+    - raw.githubusercontent.com URL with cache-buster (?t=<unix>)
+    - caption "🖼️ Banner X/Y" (X prefers numeric prefix in filename)
     """
     files = _list_assets()
     if not files:
         return md_text
 
-    # Choose next asset
     next_rel, idx_fallback = _pick_next_asset(md_text, files)
 
-    # Build cache-busted raw URL
     bust = int(datetime.datetime.utcnow().timestamp())
     img_src = f'{_to_raw_url(next_rel)}?t={bust}'
 
-    # Derive X from filename if it starts with digits (e.g. "6.gif"); else use fallback index
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
@@ -167,21 +146,18 @@ def rotate_banner_in_md(md_text: str) -> str:
     caption_text = f'Banner {x_num}/{total}'
     caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
 
-    # Fresh inner HTML we can fall back to
     new_inner = (
         f'\n<p align="center">\n'
         f'  <img src="{img_src}" alt="Banner" width="960">\n'
         f'</p>\n' + caption_html
     )
 
-    # Try to patch an existing banner block first
     block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
     mblock = re.search(block_pat, md_text, flags=re.S)
 
     if mblock:
         inner = mblock.group(2)
 
-        # 1) Update <img src=".../assets/...">
         inner_patched = re.sub(
             r'src="[^"]*?/assets/[^"?"]+[^"]*"',
             f'src="{img_src}"',
@@ -189,7 +165,6 @@ def rotate_banner_in_md(md_text: str) -> str:
             flags=re.I
         )
 
-        # 2) Update caption "Banner X/Y" (with or without emoji)
         inner_patched2 = re.sub(
             r'(?:🖼️\s*)?Banner\s+\d+/\d+',
             f'🖼️ {caption_text}',
@@ -197,17 +172,13 @@ def rotate_banner_in_md(md_text: str) -> str:
             flags=re.I
         )
 
-        # 3) If no caption existed at all, append it after the image block
         if 'Banner' not in inner_patched2:
             after_img = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
             if after_img == inner_patched2:
                 inner_patched2 = inner_patched2 + caption_html
 
-        # If something changed, return the patched block
         if inner_patched2 != inner:
             return md_text[:mblock.start(2)] + inner_patched2 + md_text[mblock.end(2):]
-
-        # If we couldn’t safely patch, overwrite inner completely
         return md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
 
     # No banner block yet — prepend a fresh one
@@ -215,9 +186,7 @@ def rotate_banner_in_md(md_text: str) -> str:
     return banner_block + md_text
 
 
-# Season + Day-of-week + Random vibe (keeps your 24h cron fresh without extra state
-
-# Morning
+# -------- Insight generation --------
 MORNING_QUOTES = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
@@ -230,8 +199,6 @@ MORNING_QUOTES = [
     "One small PR before breakfast 🍳",
     "Spin up environments, hydrate the features 💧",
 ]
-
-# Afternoon
 AFTERNOON_QUOTES = [
     "Keep pushing your MLOps pipeline forward! 🔧",
     "Perfect time for CI/CD magic ⚡",
@@ -244,8 +211,6 @@ AFTERNOON_QUOTES = [
     "Monitor, alert, respond — calmly 🧭",
     "Make it boring: stable, predictable releases 🫡",
 ]
-
-# Evening
 EVENING_QUOTES = [
     "Evening is the best time to track ML experiments 🌙",
     "Relax and let automation handle your work 🤖",
@@ -258,8 +223,6 @@ EVENING_QUOTES = [
     "Write the changelog you wish you had 📓",
     "Reflect, refactor, and rest 🌌",
 ]
-
-# Day-of-week booster
 DAY_OF_WEEK_QUOTES = {
     "Monday": "Start your week strong! 🚀",
     "Tuesday": "Keep up the momentum! 🔥",
@@ -269,8 +232,6 @@ DAY_OF_WEEK_QUOTES = {
     "Saturday": "Weekend automation vibes! 🎉",
     "Sunday": "Prep for an MLOps-filled week! ⏳",
 }
-
-# Seasonal tones
 SEASON_QUOTES = {
     "Spring": [
         "Fresh start — time to grow 🌸",
@@ -305,58 +266,34 @@ SEASON_QUOTES = {
         "Plan roadmaps with calm clarity 🧭",
     ],
 }
-
 EXTRA_EMOJIS = [
-    # Core MLOps / Engineering energy
-    "🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️", "🧠", "🤖",
-    "🧪", "✅", "📊", "🧭", "🧱", "🧰", "🧹", "🛰️",
-
-    # Data / tracking / monitoring vibes
-    "📡", "📂", "💾", "📁", "📋", "🧾", "📅", "🗂️", "📇", "📜",
-    "🕹️", "🎮", "🎛️", "🎚️", "🎯", "📍", "📶", "⏱️", "⏳", "⌛",
-
-    # Network / code / IP / log vibes
-    "🖥️", "💻", "🧮", "📡", "🧩", "🧷", "🔌", "🪛", "🧰", "⚙️",
-    "🌐", "🪩", "🧱", "🪄", "🪐", "🔭", "🧬", "📡", "💿", "🪙",
-
-    # Creative / seasonal spark
-    "🌅", "🌇", "🌙", "❄️", "🍁", "☀️", "🌸", "🌾", "🌈", "🌊",
+    "🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🛰️",
+    "📡","📂","💾","📅","⏱️","⏳","⌛","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊",
 ]
-
 HEADLINE_TEMPLATES = [
-    "MLOPS DAILY",
-    "BUILD • MEASURE • LEARN",
-    "AUTOMATE EVERYTHING",
-    "SHIP SMALL, SHIP OFTEN",
-    "EXPERIMENT → INSIGHT → DEPLOY",
-    "DATA • CODE • IMPACT",
-    "TRACK • TUNE • TRUST",
-    "REPRODUCIBILITY FIRST",
-    "OBSERVE • ALERT • IMPROVE",
-    "LOW TOIL, HIGH LEVERAGE",
-    "METRICS OVER MYTHS",
-    "PIPELINES, NOT FIRE-DRILLS",
+    "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING","SHIP SMALL, SHIP OFTEN",
+    "EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT","TRACK • TUNE • TRUST",
+    "REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE","LOW TOIL, HIGH LEVERAGE",
+    "METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
 ]
 
 def _get_season_by_month(m: int) -> str:
-    if m in (3, 4, 5):
-        return "Spring"
-    if m in (6, 7, 8):
-        return "Summer"
-    if m in (9, 10, 11):
-        return "Autumn"
+    if m in (3, 4, 5): return "Spring"
+    if m in (6, 7, 8): return "Summer"
+    if m in (9, 10, 11): return "Autumn"
     return "Winter"
 
 def _style_text(text: str) -> str:
-    """Randomly format text as UPPER (30%), Title Case (30%) or leave as is (40%)."""
+    """Randomly upper/title/keep (30/30/40)."""
     r = random.random()
     if r < 0.30:
         return text.upper()
     if r < 0.60:
-        # Title case but keep emojis & ALL-CAPS tokens intact
         parts = []
         for token in text.split(" "):
-            if any(ch for ch in token if ch.isalpha()) and not token.isupper() and not token.startswith(("🧪","🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","❄️","☀️","🍁","🌸","😎","🌙","📝","✅")):
+            if any(ch.isalpha() for ch in token) and not token.isupper() and not token.startswith(
+                ("🧪","🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","❄️","☀️","🍁","🌸","😎","🌙","📝","✅")
+            ):
                 parts.append(token[:1].upper() + token[1:].lower())
             else:
                 parts.append(token)
@@ -364,40 +301,112 @@ def _style_text(text: str) -> str:
     return text
 
 def get_dynamic_quote() -> str:
-    """
-    Seasonal + day-of-week + time-of-day + headline.
-    Keeps the same return contract: a single formatted string.
-    """
+    """Seasonal + day-of-week + time-of-day + headline (+ RUN # in CI)."""
     now = datetime.datetime.utcnow()
     day = now.strftime("%A")
     hour = now.hour
     season = _get_season_by_month(now.month)
 
-    # Pick time-of-day vibe
-    if 6 <= hour < 12:
-        vibe = random.choice(MORNING_QUOTES)
-    elif 12 <= hour < 18:
-        vibe = random.choice(AFTERNOON_QUOTES)
-    else:
-        vibe = random.choice(EVENING_QUOTES)
-
+    vibe = (
+        random.choice(MORNING_QUOTES) if 6 <= hour < 12 else
+        random.choice(AFTERNOON_QUOTES) if 12 <= hour < 18 else
+        random.choice(EVENING_QUOTES)
+    )
     season_line = random.choice(SEASON_QUOTES[season])
     day_line = DAY_OF_WEEK_QUOTES.get(day, "")
     tail_emoji = random.choice(EXTRA_EMOJIS)
 
-    # Optional: include short run marker if we’re inside Actions
     run_no = os.getenv("GITHUB_RUN_NUMBER")
     run_tag = f" • RUN #{run_no}" if run_no else ""
 
-    # Headline (occasionally in all caps)
-    headline = random.choice(HEADLINE_TEMPLATES)
-    headline = _style_text(headline)
-
-    # Compose: HEADLINE · Season | Day | Vibe + emoji (+ optional run tag)
-    core = f"{season_line} | {day_line} {vibe} {tail_emoji}"
-    core = _style_text(core)  # maybe UPPER / Title Case for variety
-
+    headline = _style_text(random.choice(HEADLINE_TEMPLATES))
+    core = _style_text(f"{season_line} | {day_line} {vibe} {tail_emoji}")
     return f"{headline}{run_tag} — {core}"
+
+
+# -------- RUNMETA block --------
+def _extract_banner_numbers(md_text: str) -> Optional[Tuple[int, int]]:
+    """Try to read '🖼️ Banner X/Y' from the README (after rotation)."""
+    m = re.search(r'Banner\s+(\d+)\s*/\s*(\d+)', md_text, flags=re.I)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    return None
+
+def _render_runmeta_block(now_utc: datetime.datetime, next_eta_utc_str: str) -> str:
+    """Render the collapsible RUNMETA block with links & optional extras."""
+    repo      = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
+    branch    = os.getenv("GITHUB_REF_NAME", "main")
+    run_no    = os.getenv("GITHUB_RUN_NUMBER", "—")
+    run_id    = os.getenv("GITHUB_RUN_ID")
+    sha       = os.getenv("GITHUB_SHA", "")
+    short_sha = sha[:7] if sha else "—"
+    workflow  = os.getenv("GITHUB_WORKFLOW", "—")
+    event     = os.getenv("GITHUB_EVENT_NAME", "—")
+    actor     = os.getenv("GITHUB_ACTOR")
+    job       = os.getenv("GITHUB_JOB")
+
+    run_url   = f"https://github.com/{repo}/actions/runs/{run_id}" if run_id else None
+    commit_url= f"https://github.com/{repo}/commit/{sha}" if sha else None
+
+    schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
+    run_os    = os.getenv("RUN_OS")
+    py_ver    = os.getenv("PY_VERSION")
+
+    # Optional embedded banner info (read back from README after rotation)
+    banner_info = ""  # added by caller if available
+
+    lines = []
+    lines.append("\n---")
+    lines.append("<!-- RUNMETA:START -->")
+    lines.append("<details>")
+    lines.append("<summary>📄 Run Meta (click to expand)</summary>\n")
+    lines.append(f"- 🕒 Updated (UTC): {now_utc:%Y-%m-%d %H:%M}")
+    lines.append(f"- 🔢 Run: #{run_no}" + (f"  —  ▶️ [open run]({run_url})" if run_url else ""))
+    lines.append(f"- 🔗 Commit: {short_sha}" + (f"  —  📘 [open commit]({commit_url})" if commit_url else ""))
+    lines.append(f"- ⚙️ Workflow: {workflow}" + (f"  ·  Job: {job}" if job else ""))
+    lines.append(f"- 🧨 Event: {event}" + (f"  ·  👤 Actor: {actor}" if actor else ""))
+    lines.append(f"- ⏳ Schedule: {schedule}")
+    if run_os or py_ver:
+        extras = "  ·  ".join([x for x in [f"OS: {run_os}" if run_os else "", f"Python: {py_ver}" if py_ver else ""] if x])
+        lines.append(f"- 🧰 {extras}")
+    if banner_info:
+        lines.append(banner_info)
+    lines.append(f"- ▶️ Next ETA (UTC): {next_eta_utc_str}\n")
+    lines.append("</details>")
+    lines.append("<!-- RUNMETA:END -->")
+    lines.append("---\n")
+    return "\n".join(lines)
+
+def _upsert_runmeta(md_text: str, now_utc: datetime.datetime) -> str:
+    """Insert or replace the RUNMETA block; place it after the banner if possible."""
+    # Compute Next ETA (simple +24h model; keep UTC)
+    next_eta = (now_utc + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+
+    block = _render_runmeta_block(now_utc, next_eta)
+
+    # If we can read banner X/Y, inject one line into block
+    banner_nums = _extract_banner_numbers(md_text)
+    if banner_nums:
+        x, y = banner_nums
+        inject = f"- 🖼️ Banner: {x}/{y}"
+        block = block.replace("<!-- RUNMETA:START -->",
+                              "<!-- RUNMETA:START -->", 1)\
+                     .replace("- ▶️ Next ETA", f"{inject}\n- ▶️ Next ETA")
+
+    pat = re.compile(r"<!-- RUNMETA:START -->(.*?)<!-- RUNMETA:END -->", re.S)
+    if pat.search(md_text):
+        # Replace existing block
+        new_md = pat.sub(block.strip(), md_text)
+    else:
+        # Insert after banner block if present; otherwise append at end
+        banner_pat = re.compile(r"(<!-- BANNER:END -->)", re.S)
+        if banner_pat.search(md_text):
+            new_md = banner_pat.sub(r"\1\n" + block, md_text, count=1)
+        else:
+            new_md = md_text.rstrip() + "\n" + block
+    return new_md
+
+
 # -------- Main driver --------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
@@ -430,15 +439,19 @@ def generate_new_readme() -> None:
     if not saw_insight:
         updated.append(f"\n🔥 MLOps Insight: 💡 {dynamic_quote}\n")
 
-    # ✅ write updated README back to disk
-    md_path.write_text("".join(updated), encoding="utf-8")
+    md = "".join(updated)
 
-    # --- Heartbeat / build card (compact status in CI logs) ---
+    # 3) Upsert RUNMETA block (after banner if present)
+    md = _upsert_runmeta(md, now)
+
+    # 4) Write back to disk
+    md_path.write_text(md, encoding="utf-8")
+
+    # 5) Heartbeat logs for Actions
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = os.getenv("GITHUB_SHA", "")[:7]
     schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
-
-    next_eta = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
+    next_eta  = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
 
     bar = "─" * 72
     print("\n" + bar)
