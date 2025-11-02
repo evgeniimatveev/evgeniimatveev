@@ -20,8 +20,7 @@ jobs:
     env:
       # ---- Controls for your updater script ----
       BANNER_MODE: sequential
-      # Toggle calendar-stable rotation if you want daily change even if a run was skipped:
-      # BANNER_CALENDAR_MODE: "true"
+      # BANNER_CALENDAR_MODE: "true"   # optional
       # Shown in STATUS and Run Meta blocks:
       SCHEDULE_BADGE: "24h_5m"
 
@@ -29,7 +28,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Use GITHUB_TOKEN credentials so we can push back without a PAT
           persist-credentials: true
           fetch-depth: 0
 
@@ -66,19 +64,19 @@ jobs:
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      
       - name: Trim JSON log (keep last ~200 lines)
         shell: bash
         run: |
           [ -f update_log.jsonl ] || : > update_log.jsonl
           tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
-      
+
       - name: Show last JSON log line
         shell: bash
         run: |
           echo "Last JSONL line:"
           tail -n 1 update_log.jsonl || true
+
       # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
@@ -132,7 +130,6 @@ jobs:
             git pull --rebase || true
           done
 
-      # Nice summary in the run view
       - name: Write job summary
         shell: bash
         run: |
@@ -159,7 +156,7 @@ lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-5:
 if not lines:
     sys.exit(0)
 
-def esc(s):  # экранируем пайпы и переносы для Markdown-таблицы
+def esc(s):  # escape for Markdown table
     return str(s).replace("|", "\\|").replace("\n", " ").strip()
 
 print("### Updates (from JSON log)")
@@ -180,9 +177,7 @@ for line in lines:
     ]
     print("| " + " | ".join(row) + " |")
 PY
-    >> "$GITHUB_STEP_SUMMARY"
-      
-      
+
       - name: Upload logs as artifacts
         uses: actions/upload-artifact@v4
         with:
