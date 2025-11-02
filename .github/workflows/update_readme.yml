@@ -2,8 +2,8 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "5 9 * * *"           # каждый день 09:05 UTC
-  workflow_dispatch: {}            # ручной запуск
+    - cron: "5 9 * * *"           
+  workflow_dispatch: {}            
 
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
       BANNER_MODE: sequential
       # BANNER_CALENDAR_MODE: "true"
       SCHEDULE_BADGE: "24h_5m"
-      # Log trim limits (настраиваемые)
+      # Log trim limits 
       JSONL_KEEP_LINES: "200"
       TXT_KEEP_LINES: "70"
 
