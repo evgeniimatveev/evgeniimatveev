@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write
+  contents: write  # allow push via GITHUB_TOKEN
 
 concurrency:
   group: auto-update-readme
@@ -18,10 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Controls for the updater script
+      # ---- Controls for your updater script ----
       BANNER_MODE: sequential
-      # If you want rotation to advance even when a run was skipped, enable:
-      # BANNER_CALENDAR_MODE: "true"
+      # BANNER_CALENDAR_MODE: "true"   # optional: force daily change even if a run was skipped
       # Shown in STATUS and Run Meta blocks:
       SCHEDULE_BADGE: "24h_5m"
 
@@ -43,11 +42,9 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      # Run your updater (rotates banner, timestamps, quote, writes JSONL line, etc.)
       - name: Run updater
         run: python update_readme.py
 
-      # Append run metadata to a small text log and keep it compact
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -60,11 +57,9 @@ jobs:
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
-          # Keep last ~70 lines
           tail -n 70 update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
-      # Keep JSONL log short and readable
       - name: Trim JSON log (keep last ~200 lines)
         shell: bash
         run: |
@@ -72,67 +67,46 @@ jobs:
           tail -n 200 update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
-      # Render last 5 JSONL entries into README as an accordion table
-      - name: Render last 5 updates into README (accordion)
+      - name: Show last 10 JSONL lines
         shell: bash
         run: |
-          python - <<'PY'
-          import json, pathlib, re
+          echo "Last 10 JSONL lines:"
+          if [ -f update_log.jsonl ]; then
+            tail -n 10 update_log.jsonl
+          else
+            echo "update_log.jsonl not found yet"
+          fi
 
-          log = pathlib.Path("update_log.jsonl")
-          readme_p = pathlib.Path("README.md")
+      - name: Summary table from JSONL (last 10)
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
 
-          def esc_md(s: str) -> str:
-              # Safe for GitHub tables; keeps columns intact without extra backslashes
-              s = str(s).replace("|", "&#124;").replace("\n", " ").strip()
-              return s
+          p = pathlib.Path("update_log.jsonl")
+          if not p.exists():
+              print("No update_log.jsonl yet."); raise SystemExit
 
-          rows = []
-          if log.exists():
-              lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-5:]
-              for line in reversed(lines):
-                  d = json.loads(line)
+          lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-10:]
+          def esc(s): return str(s).replace("|","\\|").replace("\n"," ").strip()
 
-                  insight = esc_md(d.get("insight_preview",""))
-                  # Soft-truncate to 140 chars so the table remains tidy
-                  if len(insight) > 140:
-                      insight = insight[:137] + "…"
+          print("### Last 10 updates")
+          print("| Time (UTC) | Run | SHA | Banner | Mode | Event/Actor | Insight |")
+          print("|---|---|---|---|---|---|---|")
 
-                  row = (
-                      f"| {esc_md(d.get('ts_utc',''))}"
-                      f" | {esc_md(d.get('run_number',''))}"
-                      f" | `{esc_md(d.get('sha',''))}`"
-                      f" | {esc_md(f\"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})\")}"
-                      f" | {esc_md(d.get('event',''))}/{esc_md(d.get('actor',''))}"
-                      f" | {insight} |"
-                  )
-                  rows.append(row)
-
-          # Headers and correct separator for 6 columns
-          headers = ["Time (UTC)", "Run", "SHA", "Banner", "Event/Actor", "Insight"]
-          sep = "|" + "|".join(["---"] * len(headers)) + "|"
-
-          table = [
-              "<details><summary><b>Recent updates (last 5)</b></summary>",
-              "",
-              "| " + " | ".join(headers) + " |",
-              sep,
-              *(rows or ["| — | — | — | — | — | — |"]),
-              "",
-              "</details>",
-          ]
-          new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
-
-          readme = readme_p.read_text(encoding="utf-8")
-          if re.search(r"<!-- LOG:START -->.*?<!-- LOG:END -->", readme, flags=re.S):
-              readme = re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->", new_block, readme, flags=re.S)
-          else:
-              readme = readme.rstrip() + "\n\n" + new_block + "\n"
-
-          readme_p.write_text(readme, encoding="utf-8")
+          # newest first
+          for line in reversed(lines):
+              d = json.loads(line)
+              time   = esc(d.get("ts_utc",""))
+              run    = esc(d.get("run_number",""))
+              sha    = esc(d.get("sha",""))
+              banner = esc(f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})")
+              mode   = esc(d.get("banner_mode",""))
+              evt    = esc(f"{d.get('event','')}/{d.get('actor','')}")
+              insight= esc(d.get("insight_preview",""))[:120]
+              print(f"| {time} | {run} | {sha} | {banner} | {mode} | {evt} | {insight} |")
           PY
 
-      # Refresh STATUS badges in README (uses SCHEDULE_BADGE + current run/time)
       - name: Update STATUS line in README
         shell: bash
         run: |
@@ -152,22 +126,20 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Only commit if there are actual changes
       - name: Commit changes (if any)
         id: commit
         shell: bash
         run: |
           set -e
-          git add README.md update_log.txt || true
+          git add README.md update_log.txt update_log.jsonl || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            git commit -m "Auto-update README (banner/status/insight rotation)"
+            git commit -m "Auto-update README (banner/status/insight rotation + logs)"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # Push with a couple of retries to avoid rare race conditions
       - name: Push changes
         if: steps.commit.outputs.changed == 'true'
         env:
@@ -177,14 +149,15 @@ jobs:
           for i in 1 2 3; do
             if git push; then
               echo "Pushed successfully"
-              break
+              exit 0
             fi
             echo "Push failed (attempt $i). Retrying in $((i*3))s..."
             sleep $((i*3))
             git pull --rebase || true
           done
+          echo "Push failed after 3 attempts"
+          exit 1
 
-      # Nice summary in the run view
       - name: Write job summary
         shell: bash
         run: |
@@ -194,7 +167,11 @@ jobs:
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
             echo "- **Schedule**: ${SCHEDULE_BADGE}"
-            echo "- Pushed: $([[ '${{ steps.commit.outputs.changed }}' == 'true' ]] && echo '✅' || echo '—')"
+            if [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
+              echo "- Pushed: ✅"
+            else
+              echo "- Pushed: —"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
