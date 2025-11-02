@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # allow push via GITHUB_TOKEN
+  contents: write  # allow push via GITHUB_TOKEN
 
 concurrency:
   group: auto-update-readme
@@ -76,6 +76,36 @@ jobs:
           else
             echo "update_log.jsonl not found yet"
           fi
+
+      - name: Summary table from JSONL (last 10)
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+
+          p = pathlib.Path("update_log.jsonl")
+          if not p.exists():
+              print("No update_log.jsonl yet."); raise SystemExit
+
+          lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-10:]
+          def esc(s): return str(s).replace("|","\\|").replace("\n"," ").strip()
+
+          print("### Last 10 updates")
+          print("| Time (UTC) | Run | SHA | Banner | Mode | Event/Actor | Insight |")
+          print("|---|---|---|---|---|---|---|")
+
+          # newest first
+          for line in reversed(lines):
+              d = json.loads(line)
+              time   = esc(d.get("ts_utc",""))
+              run    = esc(d.get("run_number",""))
+              sha    = esc(d.get("sha",""))
+              banner = esc(f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})")
+              mode   = esc(d.get("banner_mode",""))
+              evt    = esc(f"{d.get('event','')}/{d.get('actor','')}")
+              insight= esc(d.get("insight_preview",""))[:120]
+              print(f"| {time} | {run} | {sha} | {banner} | {mode} | {evt} | {insight} |")
+          PY
 
       - name: Update STATUS line in README
         shell: bash
