@@ -3,18 +3,13 @@
 """
 README auto-updater (hybrid):
 - Rotates banner (stateless) with cache-busted raw URL
-- Updates "Last updated:" and "🔥 MLOps Insight:" lines
+- Robustly updates "Last updated:" and "MLOPS Insight:" lines
 - Injects/refreshes a <details> Run Meta block with links
-- Appends single JSONL row (update_log.jsonl) consumed by workflow step that renders a table
+- Appends single JSONL row (update_log.jsonl) for workflow summary
 """
 
 from __future__ import annotations
-
-import os
-import re
-import json
-import random
-import datetime
+import os, re, json, random, datetime
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Any
 
@@ -28,12 +23,6 @@ BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
 CAL_MODE = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1", "true", "yes"}
 
 JSONL_FILE = Path("update_log.jsonl")
-
-# -------- Helpers --------
-def _resolve_insight(dynamic_quote: str) -> str:
-    """Single place to resolve final insight string."""
-    env = os.getenv("MLOPS_INSIGHT", "").strip()
-    return env if env else "💡 " + dynamic_quote
 
 # -------- Utils --------
 def _natkey(p: Path) -> List[object]:
@@ -59,47 +48,37 @@ def _list_assets() -> List[Path]:
 def _to_raw_url(rel_path: str) -> str:
     repo = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
     branch = os.getenv("GITHUB_REF_NAME", "main")
-    return "https://raw.githubusercontent.com/{}/{}/{}".format(repo, branch, rel_path)
+    return f"https://raw.githubusercontent.com/{repo}/{branch}/{rel_path}"
 
 def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
-    block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
-    m = re.search(block_pat, md_text, flags=re.S)
+    m = re.search(r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)", md_text, flags=re.S)
     scope = m.group(2) if m else md_text
-
     m2 = re.search(r'src="([^"]*?/assets/[^"?"]+)', scope, flags=re.I)
     if not m2:
         return None
-
     url = m2.group(1)
     tail = re.search(r'/assets/([^/]+)$', url)
     if tail:
-        return 'assets/{}'.format(tail.group(1))
+        return f'assets/{tail.group(1)}'
     if url.startswith("assets/"):
         return url
     return None
 
 def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
-    """Return ('assets/<file>', 1-based-index) for next banner."""
     if not files:
         raise RuntimeError("No valid assets found in 'assets/'.")
     paths = [f.as_posix() for f in files]
-
-    # Calendar-stable mode has priority
     if CAL_MODE:
-        doy = int(datetime.datetime.utcnow().strftime("%j"))  # 1..366
+        doy = int(datetime.datetime.utcnow().strftime("%j"))
         idx = (doy - 1) % len(paths)
         return paths[idx], idx + 1
-
     current = _extract_current_asset_from_md(md_text)
-
     if BANNER_MODE == "random":
         candidates = paths.copy()
         if current in candidates and len(candidates) > 1:
             candidates.remove(current)
         choice = random.choice(candidates)
         return choice, paths.index(choice) + 1
-
-    # sequential
     if current in paths:
         i = paths.index(current)
         nxt = paths[(i + 1) % len(paths)]
@@ -109,64 +88,52 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
 
 # -------- Banner rotation --------
 def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
-    """
-    Returns (new_md, (x,total)), where x/total is shown in caption and used in Run Meta.
-    """
     files = _list_assets()
     if not files:
         print("[warn] no assets found in ./assets — banner rotation skipped")
         return md_text, (0, 0)
 
     next_rel, idx_fallback = _pick_next_asset(md_text, files)
-
-    # Cache-busted raw URL
     bust = int(datetime.datetime.utcnow().timestamp())
-    img_src = "{}?t={}".format(_to_raw_url(next_rel), bust)
+    img_src = f"{_to_raw_url(next_rel)}?t={bust}"
 
-    # Determine X from filename if numeric prefix; else fallback index
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
-
     total = len(files)
-    caption_text = "Banner {}/{}".format(x_num, total)
-    caption_html = '<p align="center"><sub>🖼️ ' + caption_text + "</sub></p>\n"
+
+    caption_text = f"Banner {x_num}/{total}"
+    caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
 
     new_inner = (
         '\n<p align="center">\n'
-        '  <img src="' + img_src + '" alt="Banner" style="max-width:960px;width:100%;">\n'
+        f'  <img src="{img_src}" alt="Banner" style="max-width:960px;width:100%;">\n'
         "</p>\n" + caption_html
     )
 
-    block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
-    mblock = re.search(block_pat, md_text, flags=re.S)
-
+    mblock = re.search(r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)", md_text, flags=re.S)
     if mblock:
         inner = mblock.group(2)
         inner_patched = re.sub(
             r'src="[^"]*?/assets/[^"?"]+[^"]*"',
-            'src="' + img_src + '"',
-            inner,
-            flags=re.I
+            f'src="{img_src}"',
+            inner, flags=re.I
         )
         inner_patched2 = re.sub(
             r'(?:🖼️\s*)?Banner\s+\d+/\d+',
-            '🖼️ ' + caption_text,
-            inner_patched,
-            flags=re.I
+            f'🖼️ {caption_text}',
+            inner_patched, flags=re.I
         )
         if 'Banner' not in inner_patched2:
             after_img = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
             if after_img == inner_patched2:
                 inner_patched2 = inner_patched2 + caption_html
-
         if inner_patched2 != inner:
             new_md = md_text[:mblock.start(2)] + inner_patched2 + md_text[mblock.end(2):]
         else:
             new_md = md_text[:mblock.start(2)] + new_inner + md_text[mblock.end(2):]
         return new_md, (x_num, total)
 
-    # If block absent — prepend a fresh one
     banner_block = '<!-- BANNER:START -->' + new_inner + '<!-- BANNER:END -->\n'
     return banner_block + md_text, (x_num, total)
 
@@ -217,26 +184,10 @@ DAY_OF_WEEK_QUOTES = {
     "Sunday": "Prep for an MLOps-filled week! ⏳",
 }
 SEASON_QUOTES = {
-    "Spring": [
-        "Fresh start — time to grow 🌸", "Refactor and bloom 🌼",
-        "Spring into automation! 🪴", "Plant ideas, water pipelines 🌱",
-        "Rebuild with lighter dependencies 🌿", "Nurture data quality from the root 🌷",
-    ],
-    "Summer": [
-        "Keep shining and shipping ☀️", "Hot pipelines, cool results 🔥",
-        "Sunny mindset, clean commits 😎", "Scale up smart, throttle costs 🏖️",
-        "Ship value before the sunset 🌇", "Heat-proof your infra with tests 🔥🧪",
-    ],
-    "Autumn": [
-        "Reflect, refine, retrain 🍂", "Collect insights like golden leaves 🍁",
-        "Harvest your best MLOps ideas 🌾", "Prune legacy, keep essentials ✂️",
-        "Tune models, store wisdom 📦", "Backtest decisions, bank learnings 🏦",
-    ],
-    "Winter": [
-        "Deep focus and model tuning ❄️", "Hibernate and optimize 🧊",
-        "Great time for infra upgrades 🛠️", "Keep the core warm and robust 🔧",
-        "Reduce noise, raise signal 📡", "Plan roadmaps with calm clarity 🧭",
-    ],
+    "Spring": ["Fresh start — time to grow 🌸","Refactor and bloom 🌼","Spring into automation! 🪴","Plant ideas, water pipelines 🌱","Rebuild with lighter dependencies 🌿","Nurture data quality from the root 🌷"],
+    "Summer": ["Keep shining and shipping ☀️","Hot pipelines, cool results 🔥","Sunny mindset, clean commits 😎","Scale up smart, throttle costs 🏖️","Ship value before the sunset 🌇","Heat-proof your infra with tests 🔥🧪"],
+    "Autumn": ["Reflect, refine, retrain 🍂","Collect insights like golden leaves 🍁","Harvest your best MLOps ideas 🌾","Prune legacy, keep essentials ✂️","Tune models, store wisdom 📦","Backtest decisions, bank learnings 🏦"],
+    "Winter": ["Deep focus and model tuning ❄️","Hibernate and optimize 🧊","Great time for infra upgrades 🛠️","Keep the core warm and robust 🔧","Reduce noise, raise signal 📡","Plan roadmaps with calm clarity 🧭"],
 }
 EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊"]
 HEADLINE_TEMPLATES = [
@@ -247,9 +198,9 @@ HEADLINE_TEMPLATES = [
 ]
 
 def _get_season_by_month(m: int) -> str:
-    if m in (3, 4, 5): return "Spring"
-    if m in (6, 7, 8): return "Summer"
-    if m in (9, 10, 11): return "Autumn"
+    if m in (3,4,5): return "Spring"
+    if m in (6,7,8): return "Summer"
+    if m in (9,10,11): return "Autumn"
     return "Winter"
 
 def _style_text(text: str) -> str:
@@ -272,25 +223,25 @@ def get_dynamic_quote() -> str:
     day = now.strftime("%A")
     hour = now.hour
     season = _get_season_by_month(now.month)
-
     if 6 <= hour < 12:
         vibe = random.choice(MORNING_QUOTES)
     elif 12 <= hour < 18:
         vibe = random.choice(AFTERNOON_QUOTES)
     else:
         vibe = random.choice(EVENING_QUOTES)
-
     season_line = random.choice(SEASON_QUOTES[season])
     day_line = DAY_OF_WEEK_QUOTES.get(day, "")
     tail_emoji = random.choice(EXTRA_EMOJIS)
-
     run_no = os.getenv("GITHUB_RUN_NUMBER")
-    run_tag = " • RUN #{}".format(run_no) if run_no else ""
-
+    run_tag = f" • RUN #{run_no}" if run_no else ""
     headline = _style_text(random.choice(HEADLINE_TEMPLATES))
-    core = _style_text("{} | {} {} {}".format(season_line, day_line, vibe, tail_emoji))
+    core = _style_text(f"{season_line} | {day_line} {vibe} {tail_emoji}")
+    return f"{headline}{run_tag} — {core}"
 
-    return "{}{} — {}".format(headline, run_tag, core)
+# -------- Insight resolver (single source of truth) --------
+def _resolve_insight(dynamic_quote: str) -> str:
+    env = os.getenv("MLOPS_INSIGHT", "").strip()
+    return env if env else "💡 " + dynamic_quote
 
 # -------- Run Meta block --------
 def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int]) -> str:
@@ -304,23 +255,22 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int]) -> str:
     event    = os.getenv("GITHUB_EVENT_NAME", "")
     now_utc  = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
 
-    open_run    = "https://github.com/{}/actions/runs/{}".format(repo, run_id) if run_id and repo else ""
-    open_commit = "https://github.com/{}/commit/{}".format(repo, sha_full) if sha_full and repo else ""
-
-    open_run_link = "[open run]({})".format(open_run) if open_run else "—"
-    open_commit_link = "[open commit]({})".format(open_commit) if open_commit else "—"
+    open_run    = f"https://github.com/{repo}/actions/runs/{run_id}" if run_id and repo else ""
+    open_commit = f"https://github.com/{repo}/commit/{sha_full}"      if sha_full and repo else ""
+    open_run_link    = f"[open run]({open_run})"       if open_run    else "—"
+    open_commit_link = f"[open commit]({open_commit})" if open_commit else "—"
 
     meta_lines = [
         "<details>",
         "  <summary>🗒️ Run Meta (click to expand)</summary>",
         "",
-        "- 🕒 Updated (UTC): **{}**".format(now_utc),
-        "- 🔢 Run: **#{}** — {}".format(run_no, open_run_link),
-        "- 🔗 Commit: **{}** — {}".format(sha, open_commit_link),
+        f"- 🕒 Updated (UTC): **{now_utc}**",
+        f"- 🔢 Run: **#{run_no}** — {open_run_link}",
+        f"- 🔗 Commit: **{sha}** — {open_commit_link}",
         "- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**",
-        "- 🪄 Event: **{}** · 👤 Actor: **{}**".format(event, actor),
-        "- ⏱️ Schedule: **{}**".format(schedule),
-        "- 🖼️ Banner: **{}/{}**".format(banner_pos[0], banner_pos[1]),
+        f"- 🪄 Event: **{event}** · 👤 Actor: **{actor}**",
+        f"- ⏱️ Schedule: **{schedule}**",
+        f"- 🖼️ Banner: **{banner_pos[0]}/{banner_pos[1]}**",
         "</details>",
         ""
     ]
@@ -342,46 +292,38 @@ def _append_jsonl_line(path: Path, obj: Dict[str, Any]) -> None:
 # -------- Main driver --------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
-
-    # Scaffold README on first run
     if not md_path.exists():
         md_path.write_text(
             "<!-- BANNER:START --><!-- BANNER:END -->\n"
             "<!-- STATUS:START --><!-- STATUS:END -->\n",
             encoding="utf-8"
         )
-
     md = md_path.read_text(encoding="utf-8")
 
     # 1) Rotate banner
     md, banner_pos = rotate_banner_in_md(md)
 
-    # 2) Update timestamp + insight
+    # 2) Update timestamp + insight (robust regex)
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
-    resolved_insight = _resolve_insight(dynamic_quote)
+    insight_text = _resolve_insight(dynamic_quote)
 
-    lines = md.splitlines(keepends=True)
-    updated: List[str] = []
-    saw_updated = False
-    saw_insight = False
+    # Last updated (case-insensitive)
+    if re.search(r"^Last\s+updated\s*:\s*.*$", md, flags=re.M|re.I):
+        md = re.sub(r"^Last\s+updated\s*:\s*.*$",
+                    f"Last updated: {now} UTC",
+                    md, flags=re.M|re.I)
+    else:
+        md += f"\nLast updated: {now} UTC\n"
 
-    for line in lines:
-        if line.startswith("Last updated:"):
-            updated.append("Last updated: {} UTC\n".format(now))
-            saw_updated = True
-        elif line.startswith("🔥 MLOps Insight:"):
-            updated.append("🔥 MLOps Insight: " + resolved_insight + "\n")
-            saw_insight = True
-        else:
-            updated.append(line)
-
-    if not saw_updated:
-        updated.append("\nLast updated: {} UTC\n".format(now))
-    if not saw_insight:
-        updated.append("\n🔥 MLOps Insight: " + resolved_insight + "\n")
-
-    md = "".join(updated)
+    # MLOPS Insight (accepts with/without fire emoji, any case)
+    insight_pat = r"^(?:\s*🔥\s*)?MLOP[Ss]\s+INSIGHT\s*:\s*.*$"
+    if re.search(insight_pat, md, flags=re.M):
+        md = re.sub(insight_pat,
+                    f"🔥 MLOps Insight: {insight_text}",
+                    md, flags=re.M)
+    else:
+        md += f"\n🔥 MLOps Insight: {insight_text}\n"
 
     # 3) Run Meta block
     md = _update_runmeta_block(md, banner_pos=banner_pos)
@@ -389,7 +331,7 @@ def generate_new_readme() -> None:
     # 4) Write README back
     md_path.write_text(md, encoding="utf-8")
 
-    # 5) Append one JSONL row — consumed later by workflow step
+    # 5) Append one JSONL row
     try:
         current_asset = _extract_current_asset_from_md(md) or ""
         banner_file = os.path.basename(current_asset) if current_asset else ""
@@ -405,24 +347,24 @@ def generate_new_readme() -> None:
             "banner_total": banner_pos[1],
             "banner_file": banner_file,
             "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
-            "insight_preview": resolved_insight,
+            "insight_preview": insight_text.replace("🔥 ", "", 1) if insight_text.startswith("🔥 ") else insight_text,
         }
         _append_jsonl_line(JSONL_FILE, jsonl_row)
     except Exception as exc:
-        print("[warn] failed to append JSONL: {}".format(exc))
+        print(f"[warn] failed to append JSONL: {exc}")
 
     # 6) Console heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = (os.getenv("GITHUB_SHA", "")[:7])
     schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
-    next_eta = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
+    next_eta  = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
 
     bar = "─" * 72
     print("\n" + bar)
-    print("✅ README updated: " + now.strftime("%Y-%m-%d %H:%M:%S") + " UTC")
-    print("🖼️ Banner mode: " + ("calendar" if CAL_MODE else BANNER_MODE) + "   🔢 Run: #{}   🔗 SHA: {}".format(run_no, short_sha))
-    print("💬 Insight: " + resolved_insight)
-    print("⏱️ Schedule: {}   ▶️ Next ETA: {}".format(schedule, next_eta))
+    print(f"✅ README updated: {now.strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    print(f"🖼️ Banner mode: {('calendar' if CAL_MODE else BANNER_MODE)}   🔢 Run: #{run_no}   🔗 SHA: {short_sha}")
+    print("💬 Insight: " + insight_text)
+    print(f"⏱️ Schedule: {schedule}   ▶️ Next ETA: {next_eta}")
     print(bar + "\n")
 
 if __name__ == "__main__":
