@@ -64,7 +64,7 @@ jobs:
       - name: Update STATUS line in README
         shell: bash
         env:
-          SCHEDULE_BADGE: "6h_5m"
+          SCHEDULE_BADGE: "24h_5m"
         run: |
           short_sha="${GITHUB_SHA:0:7}"
 
