@@ -217,39 +217,47 @@ def rotate_banner_in_md(md_text: str) -> str:
 
 # -------- Dynamic insight --------
 # Season + Day-of-week + Random vibe (keeps your 24h cron fresh without extra state
+# -------- Dynamic insight (Season + DoW + Vibe + Headline styles) --------
+import os
+import datetime
+import random
+from typing import List
 
 # Time-of-day vibes
-MORNING_QUOTES = [
+MORNING_QUOTES: List[str] = [
     "Time for some coffee and MLOps ☕",
     "Start your morning with automation! 🛠️",
     "Good morning! Let's optimize ML experiments! 🎯",
     "Kick off with clean pipelines and clear metrics 📊",
     "Bootstrap your day with reproducible runs 🔁",
+    "Ship small, ship early, measure always 📈",
 ]
-AFTERNOON_QUOTES = [
+AFTERNOON_QUOTES: List[str] = [
     "Keep pushing your MLOps pipeline forward! 🔧",
     "Perfect time for CI/CD magic ⚡",
     "Optimize, deploy, repeat! 🔄",
     "Measure → iterate → ship 🚀",
     "Refactor the DAGs, simplify the flows 🧩",
+    "Guardrails on, feature flags ready 🧯",
 ]
-EVENING_QUOTES = [
+EVENING_QUOTES: List[str] = [
     "Evening is the best time to track ML experiments 🌙",
     "Relax and let automation handle your work 🤖",
     "Wrap up the day with some Bayesian tuning 🎯",
     "Document results, queue tomorrow's jobs 📝",
     "Small wins today, big gains tomorrow 📈",
+    "Close issues, open insights ✅",
 ]
 
 # Day-of-week booster
 DAY_OF_WEEK_QUOTES = {
     "Monday": "Start your week strong! 🚀",
     "Tuesday": "Keep up the momentum! 🔥",
-    "Wednesday": "Halfway to the weekend, keep automating! 🛠️",
+    "Wednesday": "Halfway there — keep automating! 🛠️",
     "Thursday": "Test, iterate, deploy! 🚀",
     "Friday": "Wrap it up like a pro! ⚡",
     "Saturday": "Weekend automation vibes! 🎉",
-    "Sunday": "Prepare for an MLOps-filled week! ⏳",
+    "Sunday": "Prep for an MLOps-filled week! ⏳",
 }
 
 # Seasonal tones
@@ -265,21 +273,28 @@ SEASON_QUOTES = {
         "Sunny mindset, clean commits 😎",
     ],
     "Autumn": [
-        "Reflect, refine, and retrain 🍂",
+        "Reflect, refine, retrain 🍂",
         "Collect insights like golden leaves 🍁",
         "Harvest your best MLOps ideas 🌾",
     ],
     "Winter": [
         "Deep focus and model tuning ❄️",
         "Hibernate and optimize 🧊",
-        "Perfect time for infrastructure upgrades 🛠️",
+        "Great time for infra upgrades 🛠️",
     ],
 }
 
-EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️", "🧠", "🤖"]
+EXTRA_EMOJIS = ["🚀", "⚡", "🔥", "💡", "🎯", "🔄", "📈", "🛠️", "🧠", "🤖", "🧪", "✅"]
+
+HEADLINE_TEMPLATES = [
+    "MLOPS DAILY",
+    "BUILD • MEASURE • LEARN",
+    "AUTOMATE EVERYTHING",
+    "SHIP SMALL, SHIP OFTEN",
+    "EXPERIMENT → INSIGHT → DEPLOY",
+]
 
 def _get_season_by_month(m: int) -> str:
-    """Return season name for a given month (UTC-based)."""
     if m in (3, 4, 5):
         return "Spring"
     if m in (6, 7, 8):
@@ -288,13 +303,29 @@ def _get_season_by_month(m: int) -> str:
         return "Autumn"
     return "Winter"
 
+def _style_text(text: str) -> str:
+    """Randomly format text as UPPER (30%), Title Case (30%) or leave as is (40%)."""
+    r = random.random()
+    if r < 0.30:
+        return text.upper()
+    if r < 0.60:
+        # Title case but keep emojis & ALL-CAPS tokens intact
+        parts = []
+        for token in text.split(" "):
+            if any(ch for ch in token if ch.isalpha()) and not token.isupper() and not token.startswith(("🧪","🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","❄️","☀️","🍁","🌸","😎","🌙","📝","✅")):
+                parts.append(token[:1].upper() + token[1:].lower())
+            else:
+                parts.append(token)
+        return " ".join(parts)
+    return text
+
 def get_dynamic_quote() -> str:
     """
-    Build a seasonal + day-of-week + time-of-day insight.
-    Keeps the same return contract as before (string).
+    Seasonal + day-of-week + time-of-day + headline.
+    Keeps the same return contract: a single formatted string.
     """
     now = datetime.datetime.utcnow()
-    day_of_week = now.strftime("%A")
+    day = now.strftime("%A")
     hour = now.hour
     season = _get_season_by_month(now.month)
 
@@ -306,14 +337,23 @@ def get_dynamic_quote() -> str:
     else:
         vibe = random.choice(EVENING_QUOTES)
 
-    # Compose final message
     season_line = random.choice(SEASON_QUOTES[season])
-    day_line = DAY_OF_WEEK_QUOTES.get(day_of_week, "")
+    day_line = DAY_OF_WEEK_QUOTES.get(day, "")
     tail_emoji = random.choice(EXTRA_EMOJIS)
 
-    # Example: "Reflect, refine, and retrain 🍂 | Friday | Perfect time for CI/CD magic ⚡ 💡"
-    return f"{season_line} | {day_line} {vibe} {tail_emoji}"
+    # Optional: include short run marker if we’re inside Actions
+    run_no = os.getenv("GITHUB_RUN_NUMBER")
+    run_tag = f" • RUN #{run_no}" if run_no else ""
 
+    # Headline (occasionally in all caps)
+    headline = random.choice(HEADLINE_TEMPLATES)
+    headline = _style_text(headline)
+
+    # Compose: HEADLINE · Season | Day | Vibe + emoji (+ optional run tag)
+    core = f"{season_line} | {day_line} {vibe} {tail_emoji}"
+    core = _style_text(core)  # maybe UPPER / Title Case for variety
+
+    return f"{headline}{run_tag} — {core}"
 # -------- Main driver --------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
