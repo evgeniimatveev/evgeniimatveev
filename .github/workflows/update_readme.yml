@@ -2,8 +2,27 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "5 9 * * *"           
-  workflow_dispatch: {}            
+    # Run once a day at 09:05 UTC
+    - cron: "5 9 * * *"
+  workflow_dispatch:
+    inputs:
+      banner_mode:
+        description: "sequential | random | calendar"
+        type: choice
+        options: [sequential, random, calendar]
+        default: sequential
+      insight:
+        description: "Override MLOPS_INSIGHT"
+        type: string
+        default: ""
+      jsonl_keep:
+        description: "Keep last N JSONL lines"
+        type: string
+        default: "200"
+      txt_keep:
+        description: "Keep last N TXT lines"
+        type: string
+        default: "70"
 
 permissions:
   contents: write
@@ -17,13 +36,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # ---- Controls for updater ----
-      BANNER_MODE: sequential
-      # BANNER_CALENDAR_MODE: "true"
+      # Controls for updater
+      BANNER_MODE: ${{ inputs.banner_mode != '' && inputs.banner_mode != 'calendar' && inputs.banner_mode || 'sequential' }}
+      BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       SCHEDULE_BADGE: "24h_5m"
-      # Log trim limits 
-      JSONL_KEEP_LINES: "200"
-      TXT_KEEP_LINES: "70"
+      MLOPS_INSIGHT: ${{ inputs.insight }}
+      JSONL_KEEP_LINES: ${{ inputs.jsonl_keep != '' && inputs.jsonl_keep || '200' }}
+      TXT_KEEP_LINES:   ${{ inputs.txt_keep   != '' && inputs.txt_keep   || '70' }}
 
     steps:
       - name: Checkout repository
@@ -58,14 +77,14 @@ jobs:
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
-          tail -n ${TXT_KEEP_LINES} update_log.txt > temp_log.txt || true
+          tail -n "${TXT_KEEP_LINES}" update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
       - name: Trim JSON log (keep last N lines)
         shell: bash
         run: |
           [ -f update_log.jsonl ] || : > update_log.jsonl
-          tail -n ${JSONL_KEEP_LINES} update_log.jsonl > update_log.jsonl.tmp || true
+          tail -n "${JSONL_KEEP_LINES}" update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
       - name: Render last 5 updates into README (accordion)
@@ -73,7 +92,6 @@ jobs:
         run: |
           python - <<'PY'
           import json, pathlib, re
-
           log = pathlib.Path("update_log.jsonl")
           readme_p = pathlib.Path("README.md")
 
@@ -137,6 +155,7 @@ jobs:
             echo "update_log.jsonl not found yet"
           fi
 
+      # >>> FIX: без f-строк (чтобы не падал heredoc из-за фигурных скобок)
       - name: Summary table from JSONL (last 10)
         shell: bash
         run: |
@@ -152,9 +171,17 @@ jobs:
           print("|---|---|---|---|---|---|---|")
           for line in reversed(lines):
               d = json.loads(line)
-              banner = f\"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})\"
-              evt = f\"{d.get('event','')}/{d.get('actor','')}\"
-              print(f\"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |\")
+              banner = "{}/{} ({})".format(d.get('banner_index','?'), d.get('banner_total','?'), d.get('banner_file',''))
+              evt = "{}/{}".format(d.get('event',''), d.get('actor',''))
+              print("| {} | {} | {} | {} | {} | {} | {} |".format(
+                  esc(d.get('ts_utc','')),
+                  esc(d.get('run_number','')),
+                  esc(d.get('sha','')),
+                  esc(banner),
+                  esc(d.get('banner_mode','')),
+                  esc(evt),
+                  esc(d.get('insight_preview',''))[:120],
+              ))
           PY
 
       - name: Update STATUS line in README
