@@ -376,7 +376,7 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int], total_up
 
     meta_lines = [
         "<details>",
-        "  <summary>🧰 Run Meta (click to expand)</summary>",
+        "  <summary>🪄 Run Meta (click to expand)</summary>",
         "",
         f"- 🕒 Updated (UTC): **{now_utc}**",
         f"- 🔢 Run: **#{run_no}** — {open_run_link}",
