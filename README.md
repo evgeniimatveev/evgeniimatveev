@@ -83,7 +83,7 @@
 | Assistant        | Role                          | Usage  |
 |---|---|---|
 | ChatGPT 5.0      | Prompting, architecture, docs | 50–60% |
-| Claude Sonnet 4.5| Long-context planning         | 30–40% |
+| Claude Sonnet 4.5 | Long-context planning        | 30–40% |
 | DeepSeek R1      | Debugging & strict logic      | 10–15% |
 
   <details>
@@ -105,6 +105,7 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 <details>
   <summary>🗒️ Automation Logs</summary>
 
+  <!-- RUNMETA:START -->
   <details>
     <summary>🪄 Run Meta (last run)</summary>
 
@@ -116,20 +117,24 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 - 🪄 Event: **schedule** · 👤 Actor: **evgeniimatveev**  
 - ⏱️ Schedule: **24h_5m**  
 - 🖼️ Banner: **124/367**
-  </details>
 
+  </details>
+  <!-- RUNMETA:END -->
+
+  <!-- LOG:START -->
   <details>
     <summary>🏆 Recent updates (last 5)</summary>
 
-| Time (UTC)         | Run  | SHA      | Banner             | Event/Actor                 | Insight |
+| Time (UTC)         | Run  | SHA       | Banner             | Event/Actor                      | Insight |
 |---|---|---|---|---|---|
-| 2025-11-03 01:02:59 | 5371 | `36e082d` | 124/367 (124.gif) | schedule/evgeniimatveev     | 💡 MLOPS DAILY • Prune legacy, keep essentials ✂️ |
+| 2025-11-03 01:02:59 | 5371 | `36e082d` | 124/367 (124.gif) | schedule/evgeniimatveev          | 💡 MLOPS DAILY • Prune legacy, keep essentials ✂️ |
 | 2025-11-03 00:50:53 | 5370 | `6eed2b3` | 123/367 (123.gif) | workflow_dispatch/evgeniimatveev | 💡 PIPELINES, NOT FIRE-DRILLS |
 | 2025-11-03 00:32:32 | 5369 | `4d54f9c` | 122/367 (122.gif) | workflow_dispatch/evgeniimatveev | 💡 DATA • CODE • IMPACT |
 | 2025-11-03 00:25:14 | 5368 | `9e829f6` | 121/367 (121.gif) | workflow_dispatch/evgeniimatveev | 💡 BATCH & STREAM IN HARMONY |
-| 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev     | 💡 AUTOMATE EVERYTHING |
+| 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev          | 💡 AUTOMATE EVERYTHING |
 
   </details>
+  <!-- LOG:END -->
 
 </details>
 <!-- END: AUTOMATION -->
