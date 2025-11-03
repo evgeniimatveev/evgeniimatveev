@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-README auto-updater (robust + counters)
+README auto-updater (v7.1)
 - Rotates banner (stateless) with cache-busted raw URL
+- Random/stable emoji before "Banner X/Y" (configurable)
 - Keeps a single INSIGHT block strictly between <!-- INSIGHT:START/END -->
 - Updates <details> Run Meta between <!-- RUNMETA:START/END -->
 - Appends one JSONL row (update_log.jsonl) for workflow tables
@@ -22,8 +23,9 @@ ASSETS = Path("assets")
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
-BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()
-CAL_MODE = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1", "true", "yes"}
+BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()          # sequential | random
+CAL_MODE    = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1","true","yes"}
+EMOJI_MODE  = os.getenv("BANNER_EMOJI_MODE", "random").strip().lower()         # random | stable
 
 JSONL_FILE = Path("update_log.jsonl")
 CI_DIR = Path(".ci")
@@ -116,10 +118,18 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
-
     total = len(files)
-    caption_text = f"Banner {x_num}/{total}"
-    caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
+
+    # Emoji selection
+    emoji_choices = ["🎞️", "🔁", "🪄", "🤖"]
+    if EMOJI_MODE == "stable":
+        run_no = int(os.getenv("GITHUB_RUN_NUMBER", "0") or 0)
+        emoji = emoji_choices[(x_num + run_no) % len(emoji_choices)]
+    else:
+        emoji = random.choice(emoji_choices)
+
+    caption_text  = f"Banner {x_num}/{total}"
+    caption_html  = f'<p align="center"><sub>{emoji} {caption_text}</sub></p>\n'
 
     new_inner = (
         '\n<p align="center">\n'
@@ -132,22 +142,21 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
 
     if mblock:
         inner = mblock.group(2)
+        # 1) обновляем src
         inner_patched = re.sub(
             r'src="[^"]*?/assets/[^"?"]+[^"]*"',
             f'src="{img_src}"',
             inner,
             flags=re.I
         )
-        inner_patched2 = re.sub(
-            r'(?:🖼️\s*)?Banner\s+\d+/\d+',
-            f'🖼️ {caption_text}',
-            inner_patched,
-            flags=re.I
-        )
+        # 2) обновляем подпись: любой (или отсутствующий) эмодзи перед "Banner d+/d+"
+        emoji_any = r'[\u2600-\u27BF\U0001F300-\U0001FAFF]\ufe0f?'
+        pattern = rf'(?:{emoji_any}\s*)?Banner\s+\d+/\d+'
+        inner_patched2 = re.sub(pattern, f'{emoji} {caption_text}', inner_patched)
+
+        # 3) если подписи не было — аккуратно добавим после </p> с картинкой
         if 'Banner' not in inner_patched2:
-            after_img = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
-            if after_img == inner_patched2:
-                inner_patched2 = inner_patched2 + caption_html
+            inner_patched2 = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
 
         if inner_patched2 != inner:
             new_md = md_text[:mblock.start(2)] + inner_patched2 + md_text[mblock.end(2):]
@@ -268,7 +277,7 @@ HEADLINE_TEMPLATES = [
     "TRACK • TUNE • TRUST","REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE",
     "LOW TOIL, HIGH LEVERAGE","METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
     "DATA • PLATFORMS • VALUE","ETL → FEATURES → IMPACT","RELIABLE ML BY DESIGN",
-    "SQL • PYTHON • PIPELINES","BATCH & STREAM IN HARMONY", "TEST • OBSERVE • DEPLOY",
+    "SQL • PYTHON • PIPELINES","BATCH & STREAM IN HARMONY","TEST • OBSERVE • DEPLOY",
 ]
 
 def _get_season_by_month(m: int) -> str:
@@ -355,7 +364,7 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int], total_up
 
     meta_lines = [
         "<details>",
-        "  <summary>🗒️ Run Meta (click to expand)</summary>",
+        "  <summary>🧰 Run Meta (click to expand)</summary>",
         "",
         f"- 🕒 Updated (UTC): **{now_utc}**",
         f"- 🔢 Run: **#{run_no}** — {open_run_link}",
@@ -386,7 +395,6 @@ def _read_increment_counter() -> int:
         except Exception:
             n = 0
     else:
-        # Fallback: derive from JSONL length if present
         try:
             if JSONL_FILE.exists():
                 n = sum(1 for l in JSONL_FILE.read_text(encoding="utf-8").splitlines() if l.strip())
@@ -464,6 +472,7 @@ def generate_new_readme() -> None:
             "banner_total": banner_pos[1],
             "banner_file": banner_file,
             "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
+            "emoji_mode": EMOJI_MODE,
             "insight_preview": _resolve_insight(dynamic_quote),
             "update_count": total_updates,
         }
@@ -481,7 +490,8 @@ def generate_new_readme() -> None:
     print("\n" + bar)
     print("✅ README updated:", now.strftime("%Y-%m-%d %H:%M:%S"), "UTC")
     print("🔁 Total updates:", total_updates)
-    print("🖼️ Banner mode:", ("calendar" if CAL_MODE else BANNER_MODE), f"  🔢 Run: #{run_no}  🔗 SHA: {short_sha}")
+    print("🖼️ Banner mode:", ("calendar" if CAL_MODE else BANNER_MODE),
+          f"  🎲 Emoji mode: {EMOJI_MODE}  🔢 Run: #{run_no}  🔗 SHA: {short_sha}")
     print("💬 Insight:", _resolve_insight(dynamic_quote))
     print("⏱️ Schedule:", schedule, "  ▶️ Next ETA:", next_eta)
     print(bar + "\n")
