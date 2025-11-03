@@ -119,7 +119,7 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
 
     total = len(files)
     caption_text = f"Banner {x_num}/{total}"
-    caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
+    caption_html = f'<p align="center"><sub>🪄 {caption_text}</sub></p>\n'
 
     new_inner = (
         '\n<p align="center">\n'
