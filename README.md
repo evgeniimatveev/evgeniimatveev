@@ -151,13 +151,6 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 
 ---
 
-
-<p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?color=%2336BCF7&size=22&center=true&vCenter=true&width=980&lines=MLOps+Automation+%26+CI%2FCD;SQL+Analytics+for+MLflow;Docker+%2B+FastAPI+Deployments;Tableau+Dashboards+for+ML+Insights">
-</p>
-
----   
-
 ![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
 ![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
