@@ -49,7 +49,7 @@ jobs:
       BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       MLOPS_INSIGHT: ${{ inputs.insight }}
       SCHEDULE_BADGE: "24h_5m"
-      BANNER_EMOJI_MODE: random   # random | stable
+      BANNER_EMOJI_MODE: stable   # random | stable
 
       # Logs / tables
       JSONL_KEEP_LINES: ${{ inputs.jsonl_keep_lines != '' && inputs.jsonl_keep_lines || 200 }}
