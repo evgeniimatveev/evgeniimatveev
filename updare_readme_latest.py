@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-README auto-updater (v7.1)
+README auto-updater (v7.2)
 - Rotates banner (stateless) with cache-busted raw URL
-- Random/stable emoji before "Banner X/Y" (configurable)
+- Emoji before "Banner X/Y": random | stable (configurable)
+- Emoji set overridable via ENV: BANNER_EMOJIS="🎞️,🔁,🪄,🤖,⚙️,📈"
 - Keeps a single INSIGHT block strictly between <!-- INSIGHT:START/END -->
 - Updates <details> Run Meta between <!-- RUNMETA:START/END -->
 - Appends one JSONL row (update_log.jsonl) for workflow tables
@@ -23,9 +24,9 @@ ASSETS = Path("assets")
 MAX_MB = 10
 EXTS = {".gif", ".webp", ".png", ".jpg", ".jpeg"}
 
-BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()          # sequential | random
+BANNER_MODE = os.getenv("BANNER_MODE", "sequential").strip().lower()   # sequential | random
 CAL_MODE    = os.getenv("BANNER_CALENDAR_MODE", "").strip().lower() in {"1","true","yes"}
-EMOJI_MODE  = os.getenv("BANNER_EMOJI_MODE", "random").strip().lower()         # random | stable
+EMOJI_MODE  = os.getenv("BANNER_EMOJI_MODE", "random").strip().lower() # random | stable
 
 JSONL_FILE = Path("update_log.jsonl")
 CI_DIR = Path(".ci")
@@ -75,7 +76,7 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         raise RuntimeError("No valid assets found in 'assets/'.")
     paths = [f.as_posix() for f in files]
 
-    # Calendar-stable
+    # Calendar-stable (same banner for same day-of-year)
     if CAL_MODE:
         doy = int(datetime.datetime.utcnow().strftime("%j"))  # 1..366
         idx = (doy - 1) % len(paths)
@@ -120,11 +121,22 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     x_num = int(mnum.group(1)) if mnum else idx_fallback
     total = len(files)
 
-    # Emoji selection
-    emoji_choices = ["🎞️", "🔁", "🪄", "🤖"]
+    # --- Emoji selection with ENV override ---
+    default_emojis = ["🎞️", "☕", "🪄", "🤖"]
+    raw = os.getenv("BANNER_EMOJIS", "").strip()
+    if raw:
+        emoji_choices = [e.strip() for e in raw.split(",") if e.strip()]
+        if not emoji_choices:
+            emoji_choices = default_emojis
+    else:
+        emoji_choices = default_emojis
+
     if EMOJI_MODE == "stable":
+        # deterministic by banner index + run number
         run_no = int(os.getenv("GITHUB_RUN_NUMBER", "0") or 0)
         emoji = emoji_choices[(x_num + run_no) % len(emoji_choices)]
+        # For strict per-banner stability instead, use:
+        # emoji = emoji_choices[x_num % len(emoji_choices)]
     else:
         emoji = random.choice(emoji_choices)
 
@@ -142,19 +154,19 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
 
     if mblock:
         inner = mblock.group(2)
-        # 1) обновляем src
+        # 1) update src
         inner_patched = re.sub(
             r'src="[^"]*?/assets/[^"?"]+[^"]*"',
             f'src="{img_src}"',
             inner,
             flags=re.I
         )
-        # 2) обновляем подпись: любой (или отсутствующий) эмодзи перед "Banner d+/d+"
+        # 2) update caption: any (or missing) emoji before "Banner d+/d+"
         emoji_any = r'[\u2600-\u27BF\U0001F300-\U0001FAFF]\ufe0f?'
         pattern = rf'(?:{emoji_any}\s*)?Banner\s+\d+/\d+'
         inner_patched2 = re.sub(pattern, f'{emoji} {caption_text}', inner_patched)
 
-        # 3) если подписи не было — аккуратно добавим после </p> с картинкой
+        # 3) if caption absent — append just after </p> with the image
         if 'Banner' not in inner_patched2:
             inner_patched2 = re.sub(r'(</p>\s*)$', r'\1' + caption_html, inner_patched2, count=1)
 
