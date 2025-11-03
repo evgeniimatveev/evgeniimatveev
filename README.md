@@ -109,8 +109,35 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 📈 Build interactive dashboards with Tableau & Power BI for reporting and analysis.
 
 🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
+---
+
+## What I Do
+- Automate end-to-end ML pipelines (train → eval → deploy).
+- Track experiments with **MLflow & W&B**; analyze runs via **PostgreSQL/SQL**.
+- Deploy services with **Docker + FastAPI + GitHub Actions**.
+- Build stakeholder dashboards in **Tableau / Power BI**.
 
 ---
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?color=%2336BCF7&size=22&center=true&vCenter=true&width=980&lines=MLOps+Automation+%26+CI%2FCD;SQL+Analytics+for+MLflow;Docker+%2B+FastAPI+Deployments;Tableau+Dashboards+for+ML+Insights">
+</p>
+
+
+---
+<details><summary>AI Copilot Ecosystem</summary>
+
+| Assistant | Role | Usage |
+|---|---|---|
+| ChatGPT 5.0 | Prompting, architecture, docs | 50–60% |
+| Claude Sonnet 4.5 | Long-context planning | 30–40% |
+| DeepSeek R1 | Debugging & strict logic | 10–15% |
+</details>
+
+<details><summary>Automation Logs</summary>
+
+<!-- leave your RUNMETA + LOG blocks here -->
+</details>
 ![Trophies Alt](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
 
 ---   
@@ -176,3 +203,20 @@ Last updated: 2025-11-02 21:12:27.690809 UTC
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&size=24&center=true&vCenter=true&width=1200&lines=🚀+MLOps+Automation+%7C+AI+Ops+🔧;📊+SQL+for+ML+Experiments+🔍;⚡+Track+your+models+like+a+pro+🔥;🛠️+MLOps+%2B+CI%2FCD+%3D+💙;📡+Deploy+ML+models+with+FastAPI+🌐;📈+Monitor+metrics+with+W%26B+%7C+MLflow+🛠️;🐍+Python+%7C+R+%7C+PostgreSQL+for+Data+Science+📊;🦾+Automate+ML+Pipelines+with+GitHub+Actions+⚡;🔄+Data+Versioning+with+DVC+%7C+LakeFS+🌊;📦+Containerize+ML+Models+with+Docker+🐳;🔬+Hyperparameter+Tuning+with+W%26B+Sweeps+🎯;🤖+Deploy+AI+Chatbots+using+LLMs+🛠️;💾+Feature+Engineering+for+ML+Success+🚀;🛡️+Secure+ML+Pipelines+with+MLOps+Best+Practices+🔒;📜+Automate+SQL+Queries+for+MLflow+Tracking+⏳;💡+Optimize+ML+Experiments+with+Bayesian+Tuning+🎯;🖥️+Build+Interactive+Dashboards+in+Tableau+%7C+Power+BI+📊;🎭+Track+and+Compare+Models+with+Experiment+Versioning+📈;⚙️+CI%2FCD+%7C+Docker+%7C+FastAPI+for+ML+Deployment+🚀;🌍+Make+your+ML+models+reproducible+with+MLflow+🌐;📊+Analyze+ML+Experiments+using+SQL+Queries+🔍;🛠️+Refactor+your+ML+Code+for+Scalability+🔧;🔬+ML+Research+meets+Production+🚀;🌟+MLOps+is+the+Future+of+AI+⚡;🤝+Collaborate+on+ML+Projects+with+Versioning+📌;🎯+Hyperparameter+Optimization+Done+Right+🚀;💡+Stay+ahead+in+ML+with+Automation+🤖;💥+Debug+ML+Pipelines+like+a+pro+🛠️;⚡+Parallel+Training+%7C+Optimize+Compute+Resources+⚙️;📡+Deploy+AI+models+at+scale+🌍;🛠️+Fine-tune+LLMs+with+Advanced+Methods+🤖;📜+Efficient+Data+Engineering+for+ML+📊;🛠️+Model+Inference+Optimization+🚀;🧠+Experiment+Tracking+%7C+MLflow+%7C+W%26B+⚡;🔍+Explainability+%26+Interpretability+in+ML+📖;🔒+Secure+Data+Pipelines+in+AI+🏗️;🖥️+Advanced+Data+Visualization+Techniques+📊;📡+Streamline+ML+Lifecycle+with+MLOps+⚙️;🔧+Data+Science+Infrastructure+Best+Practices+🛠️;🔄+Automate+ML+Testing+%26+Validation+✅;📊+Big+Data+for+Machine+Learning+📡;📜+Data+Governance+in+AI+%7C+Best+Practices+🔒;🔬+Model+Drift+Detection+%26+Retraining+⚡;🎯+Ensemble+Learning+%7C+Stacking+%26+Boosting+🚀;🦾+AI+Scaling+%7C+Edge+AI+Deployment+🌍;💾+Data+Pipeline+Automation+for+AI+📡;📊+Graph+Databases+for+ML+%7C+Knowledge+Graphs+🌐;⚡+AutoML+%7C+Hyperparameter+Search+Automation+🚀;🔬+Generative+AI+%7C+Diffusion+Models+%7C+GANs+🤖)](https://git.io/typing-svg)
 
 ---
+
+<h1 align="center">Evgenii Matveev — MLOps & Data Automation</h1>
+<p align="center">MLOps engineer: MLflow · W&B · SQL · Docker · GitHub Actions · Tableau</p>
+<p align="center">
+  <a href="https://www.datascienceportfol.io/evgeniimatveevusa">Portfolio</a> ·
+  <a href="https://www.linkedin.com/in/evgenii-matveev-510926276/">LinkedIn</a> ·
+  <a href="mailto:evgeniimatveevusa@gmail.com">Email</a>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=Updated&message=auto&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=600" />
+  <img src="https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=githubactions" />
+  <img src="https://img.shields.io/badge/Tracking-MLflow%20%7C%20W%26B-0194E2" />
+  <img src="https://img.shields.io/badge/DB-PostgreSQL-4169E1" />
+</p>
+
+---
+
