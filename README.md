@@ -104,18 +104,25 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 <!-- Keep your RUNMETA + LOG blocks here -->
 <!-- RUNMETA:START ... RUNMETA:END -->
 <!-- LOG:START ... LOG:END -->
+<!-- RUNMETA:START -->
+<details>
+  <summary>🗒️ Run Meta (click to expand)</summary>
 
+- 🕒 Updated (UTC): **2025-11-03 01:02 UTC**
+- 🔢 Run: **#5371** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19020952721)
+- 🔗 Commit: **36e082d** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/36e082d6aee45ed241d31ea6fe1c98191ee0ca9b)
+- 🔁 Updates (total): **35**
+- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**
+- 🪄 Event: **schedule** · 👤 Actor: **evgeniimatveev**
+- ⏱️ Schedule: **24h_5m**
+- 🖼️ Banner: **124/367**
+</details>
+
+<!-- RUNMETA:END -->
 </details>
 
 ---
 
-🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
-
-⚡ Experienced in automating end-to-end ML workflows using MLflow, Weights & Biases, PostgreSQL, and CI/CD pipelines.
-
-📊 Skilled in creating interactive dashboards and driving insights with Tableau, Power BI, and advanced SQL analysis.
-
----
 ## 📌 **What I Do**
 
 🏆  Automate end-to-end ML pipelines (train → eval → deploy)
@@ -124,7 +131,6 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 
 📈 Build stakeholder dashboards in **Tableau / Power BI**.
 
-🚀 Deploy services with **Docker + FastAPI + GitHub Actions**.
 ---
 
 
