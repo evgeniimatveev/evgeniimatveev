@@ -2,8 +2,7 @@ name: Auto Update README
 
 on:
   schedule:
-    # Run once a day at 09:05 UTC
-    - cron: "5 9 * * *"
+    - cron: "*/5 * * * *"   # every 5 min (UTC)
   workflow_dispatch:
     inputs:
       banner_mode:
@@ -228,7 +227,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log 2>/dev/null || true
+          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
@@ -285,4 +284,5 @@ jobs:
             update_log.txt
             update_log.jsonl
             .ci/heartbeat.log
+            .ci/update_count.txt
           retention-days: 7
