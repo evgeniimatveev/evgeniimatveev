@@ -79,7 +79,7 @@
 ---
 <!-- BEGIN: COPILOTS -->
 <details>
-  <summary>🧩 AI Copilot Ecosystem</summary>
+  <summary>🧠 AI Copilot Ecosystem</summary>
 
 | Assistant        | Role                          | Usage  |
 |---|---|---|
@@ -105,7 +105,7 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 
 <!-- BEGIN: AUTOMATION -->
 <details>
-  <summary>🗒️ Automation Logs</summary>
+  <summary>🔗 Automation Logs</summary>
 
   <!-- RUNMETA:START -->
 <details>
