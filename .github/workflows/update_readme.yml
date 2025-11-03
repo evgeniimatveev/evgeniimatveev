@@ -142,7 +142,7 @@ jobs:
           sep = "|" + "|".join(["---"] * len(headers)) + "|"
 
           table = [
-              "<details><summary><b>Recent updates (last {})</b></summary>".format(N),
+              "<details><summary>🏆<b>Recent updates (last {})</b></summary>".format(N),
               "",
               "| " + " | ".join(headers) + " |",
               sep,
