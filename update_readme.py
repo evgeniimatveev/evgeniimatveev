@@ -116,10 +116,18 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     base = os.path.basename(next_rel)
     mnum = re.match(r'(\d+)', base)
     x_num = int(mnum.group(1)) if mnum else idx_fallback
-
     total = len(files)
+
+    # --- caption with random/stable emoji ---
     caption_text = f"Banner {x_num}/{total}"
-    caption_html = f'<p align="center"><sub>🪄 {caption_text}</sub></p>\n'
+    emoji_choices = ["🎞️", "🔁", "🪄", "🤖"]
+    mode = os.getenv("BANNER_EMOJI_MODE", "random")  # random | stable
+    if mode == "stable":
+        run_no = int(os.getenv("GITHUB_RUN_NUMBER", "0"))
+        emoji = emoji_choices[(x_num + run_no) % len(emoji_choices)]
+    else:
+        emoji = random.choice(emoji_choices)
+    caption_html = f'<p align="center"><sub>{emoji} {caption_text}</sub></p>\n'
 
     new_inner = (
         '\n<p align="center">\n'
