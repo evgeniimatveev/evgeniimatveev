@@ -96,7 +96,7 @@ This ecosystem runs as a **multi-copilot workflow** — each assistant has a dis
 Together, it forms a loop of **innovation → execution → validation** — my personal **AI engineering stack**.
 </details>
 </details>
-
+---
 <details>
   <summary>🗒️ Automation Logs</summary>
 
@@ -105,7 +105,7 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 <!-- LOG:START ... LOG:END -->
 
 </details>
-
+---
 🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
 
 ⚡ Experienced in automating end-to-end ML workflows using MLflow, Weights & Biases, PostgreSQL, and CI/CD pipelines.
