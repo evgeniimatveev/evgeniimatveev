@@ -171,6 +171,12 @@ MORNING_QUOTES = [
     "Start with data quality, end with insights ✅",
     "One small PR before breakfast 🍳",
     "Spin up environments, hydrate the features 💧",
+    "Stand up the warehouse and warm the Airflow ☀️",
+    "Morning checks: data freshness, schema drift, alerts ✅",
+    "Spin up notebooks, pin deps, run unit tests 🧪",
+    "A perfect hour to tidy feature stores and docs 📚",
+    "Kick off ETL and sip SQL like coffee ☕🧊",
+    "Good morning, Python! Black/ruff, then commit 🐍",
 ]
 AFTERNOON_QUOTES = [
     "Keep pushing your MLOps pipeline forward! 🔧",
@@ -183,6 +189,12 @@ AFTERNOON_QUOTES = [
     "Review metrics, cut toil, add value 📉→📈",
     "Monitor, alert, respond — calmly 🧭",
     "Make it boring: stable, predictable releases 🫡",
+    "Great window for backfills and vacuum/analyze 🧹",
+    "Tighten SLAs, widen observability, reduce toil 🧭",
+    "Ship a thin slice: API → model → dashboard 🍰",
+    "Profile queries, add indexes, save compute 💸",
+    "Validate data contracts before the deploy 🔒",
+    "Review PRs: tests green, lineage clear ✅",
 ]
 EVENING_QUOTES = [
     "Evening is the best time to track ML experiments 🌙",
@@ -195,6 +207,12 @@ EVENING_QUOTES = [
     "Cool down the cluster, warm up ideas ❄️💡",
     "Write the changelog you wish you had 📓",
     "Reflect, refactor, and rest 🌌",
+    "Park experiments, tag best runs, close loops 🏁",
+    "Nightly retrains queued, costs capped 🌙💸",
+    "Write postmortems while context is fresh ✍️",
+    "Snapshot metrics, export to BI, breathe out 📊",
+    "Refactor pipelines to be boring & reliable 😌",
+    "Archive artifacts, prune buckets, sleep tight 💤",
 ]
 DAY_OF_WEEK_QUOTES = {
     "Monday": "Start your week strong! 🚀",
@@ -210,29 +228,43 @@ SEASON_QUOTES = {
         "Fresh start — time to grow 🌸", "Refactor and bloom 🌼",
         "Spring into automation! 🪴", "Plant ideas, water pipelines 🌱",
         "Rebuild with lighter dependencies 🌿", "Nurture data quality from the root 🌷",
+        "Seed new schemas, grow reliable models 🌱","Refresh docs, replant ownership maps 🗺️",
+        "Pollinate features across teams 🐝","Spring-clean orphan tables and dags 🧽",
+        "Budgets sprout where queries are lean 🌿",
     ],
     "Summer": [
         "Keep shining and shipping ☀️", "Hot pipelines, cool results 🔥",
         "Sunny mindset, clean commits 😎", "Scale up smart, throttle costs 🏖️",
         "Ship value before the sunset 🌇", "Heat-proof your infra with tests 🔥🧪",
+        "Scale heat-tested services before peak ☀️📈","Keep GPUs cool, keep dashboards hot 🧊🔥",
+        "Sunlight on flaky tests—fix and chill 😎","Beach-safe deploys with feature flags 🏖️",
+        "Batch by night, stream by day 🌅",
     ],
     "Autumn": [
         "Reflect, refine, retrain 🍂", "Collect insights like golden leaves 🍁",
         "Harvest your best MLOps ideas 🌾", "Prune legacy, keep essentials ✂️",
         "Tune models, store wisdom 📦", "Backtest decisions, bank learnings 🏦",
+        "Harvest signals, drop the noise 🍁","Migrate legacy jobs; leave the dead leaves 🍂",
+        "Backfill history, reconcile truth sources 🧾","Budget for winter retrains now 🧮",
+        "Rake through logs; keep insights 🍂➡️💡",
     ],
     "Winter": [
         "Deep focus and model tuning ❄️", "Hibernate and optimize 🧊",
         "Great time for infra upgrades 🛠️", "Keep the core warm and robust 🔧",
         "Reduce noise, raise signal 📡", "Plan roadmaps with calm clarity 🧭",
+        "Deep work: schema design & contracts ❄️","Harden CI, cache models, reduce cold starts 🧊",
+        "Warm your warehouse with partition pruning 🔥","Dark mode dashboards, bright KPIs 🌌",
+        "Plan the roadmap; align data and product 🧭",
     ],
 }
-EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊"]
+EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊""🧱","🧰","🧯","🧩","📦","🧾","🗂️","🔍","🔧","🧼"]
 HEADLINE_TEMPLATES = [
     "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING",
     "SHIP SMALL, SHIP OFTEN","EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT",
     "TRACK • TUNE • TRUST","REPRODUCIBILITY FIRST","OBSERVE • ALERT • IMPROVE",
     "LOW TOIL, HIGH LEVERAGE","METRICS OVER MYTHS","PIPELINES, NOT FIRE-DRILLS",
+    "DATA • PLATFORMS • VALUE","ETL → FEATURES → IMPACT","RELIABLE ML BY DESIGN",
+    "SQL • PYTHON • PIPELINES","BATCH & STREAM IN HARMONY", "TEST • OBSERVE • DEPLOY",
 ]
 
 def _get_season_by_month(m: int) -> str:
