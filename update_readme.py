@@ -7,7 +7,7 @@ README auto-updater (robust + counters)
 - Appends one JSONL row (update_log.jsonl) for workflow tables
 - Safe first-run bootstrap (README, markers)
 - Works if assets/ is empty (banner step is skipped with a warning)
-- NEW: persists total update counter in .ci/update_count.txt and logs heartbeat
+- Persists total update counter in .ci/update_count.txt and logs heartbeat
 """
 
 from __future__ import annotations
@@ -50,7 +50,7 @@ def _list_assets() -> List[Path]:
 def _to_raw_url(rel_path: str) -> str:
     repo = os.getenv("GITHUB_REPOSITORY", "evgeniimatveev/evgeniimatveev")
     branch = os.getenv("GITHUB_REF_NAME", "main")
-    return "https://raw.githubusercontent.com/{}/{}/{}".format(repo, branch, rel_path)
+    return f"https://raw.githubusercontent.com/{repo}/{branch}/{rel_path}"
 
 def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     block_pat = r"(<!-- BANNER:START -->)(.*?)(<!-- BANNER:END -->)"
@@ -62,7 +62,7 @@ def _extract_current_asset_from_md(md_text: str) -> Optional[str]:
     url = m2.group(1)
     tail = re.search(r'/assets/([^/]+)$', url)
     if tail:
-        return 'assets/{}'.format(tail.group(1))
+        return f"assets/{tail.group(1)}"
     if url.startswith("assets/"):
         return url
     return None
@@ -73,7 +73,7 @@ def _pick_next_asset(md_text: str, files: List[Path]) -> Tuple[str, int]:
         raise RuntimeError("No valid assets found in 'assets/'.")
     paths = [f.as_posix() for f in files]
 
-    # Calendar-stable has priority
+    # Calendar-stable
     if CAL_MODE:
         doy = int(datetime.datetime.utcnow().strftime("%j"))  # 1..366
         idx = (doy - 1) % len(paths)
@@ -110,7 +110,7 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
 
     # Cache-busted raw URL
     bust = int(datetime.datetime.utcnow().timestamp())
-    img_src = "{}?t={}".format(_to_raw_url(next_rel), bust)
+    img_src = f"{_to_raw_url(next_rel)}?t={bust}"
 
     # Determine X from filename prefix if present; else fallback index
     base = os.path.basename(next_rel)
@@ -118,12 +118,12 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     x_num = int(mnum.group(1)) if mnum else idx_fallback
 
     total = len(files)
-    caption_text = "Banner {}/{}".format(x_num, total)
-    caption_html = '<p align="center"><sub>🖼️ ' + caption_text + "</sub></p>\n"
+    caption_text = f"Banner {x_num}/{total}"
+    caption_html = f'<p align="center"><sub>🖼️ {caption_text}</sub></p>\n'
 
     new_inner = (
         '\n<p align="center">\n'
-        '  <img src="' + img_src + '" alt="Banner" style="max-width:960px;width:100%;">\n'
+        f'  <img src="{img_src}" alt="Banner" style="max-width:960px;width:100%;">\n'
         "</p>\n" + caption_html
     )
 
@@ -134,13 +134,13 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
         inner = mblock.group(2)
         inner_patched = re.sub(
             r'src="[^"]*?/assets/[^"?"]+[^"]*"',
-            'src="' + img_src + '"',
+            f'src="{img_src}"',
             inner,
             flags=re.I
         )
         inner_patched2 = re.sub(
             r'(?:🖼️\s*)?Banner\s+\d+/\d+',
-            '🖼️ ' + caption_text,
+            f'🖼️ {caption_text}',
             inner_patched,
             flags=re.I
         )
@@ -310,12 +310,12 @@ def get_dynamic_quote() -> str:
     tail_emoji = random.choice(EXTRA_EMOJIS)
 
     run_no = os.getenv("GITHUB_RUN_NUMBER")
-    run_tag = " • RUN #{}".format(run_no) if run_no else ""
+    run_tag = f" • RUN #{run_no}" if run_no else ""
 
     headline = _style_text(random.choice(HEADLINE_TEMPLATES))
-    core = _style_text("{} | {} {} {}".format(season_line, day_line, vibe, tail_emoji))
+    core = _style_text(f"{season_line} | {day_line} {vibe} {tail_emoji}")
 
-    return "{}{} — {}".format(headline, run_tag, core)
+    return f"{headline}{run_tag} — {core}"
 
 # -------- Insight helpers --------
 def _resolve_insight(dynamic_quote: str) -> str:
@@ -347,24 +347,24 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int], total_up
     event    = os.getenv("GITHUB_EVENT_NAME", "")
     now_utc  = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
 
-    open_run    = "https://github.com/{}/actions/runs/{}".format(repo, run_id) if run_id and repo else ""
-    open_commit = "https://github.com/{}/commit/{}".format(repo, sha_full) if sha_full and repo else ""
+    open_run    = f"https://github.com/{repo}/actions/runs/{run_id}" if run_id and repo else ""
+    open_commit = f"https://github.com/{repo}/commit/{sha_full}" if sha_full and repo else ""
 
-    open_run_link = "[open run]({})".format(open_run) if open_run else "—"
-    open_commit_link = "[open commit]({})".format(open_commit) if open_commit else "—"
+    open_run_link = f"[open run]({open_run})" if open_run else "—"
+    open_commit_link = f"[open commit]({open_commit})" if open_commit else "—"
 
     meta_lines = [
         "<details>",
         "  <summary>🗒️ Run Meta (click to expand)</summary>",
         "",
-        "- 🕒 Updated (UTC): **{}**".format(now_utc),
-        "- 🔢 Run: **#{}** — {}".format(run_no, open_run_link),
-        "- 🔗 Commit: **{}** — {}".format(sha, open_commit_link),
-        "- 🔁 Updates (total): **{}**".format(total_updates),
+        f"- 🕒 Updated (UTC): **{now_utc}**",
+        f"- 🔢 Run: **#{run_no}** — {open_run_link}",
+        f"- 🔗 Commit: **{sha}** — {open_commit_link}",
+        f"- 🔁 Updates (total): **{total_updates}**",
         "- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**",
-        "- 🪄 Event: **{}** · 👤 Actor: **{}**".format(event, actor),
-        "- ⏱️ Schedule: **{}**".format(schedule),
-        "- 🖼️ Banner: **{}/{}**".format(banner_pos[0], banner_pos[1]),
+        f"- 🪄 Event: **{event}** · 👤 Actor: **{actor}**",
+        f"- ⏱️ Schedule: **{schedule}**",
+        f"- 🖼️ Banner: **{banner_pos[0]}/{banner_pos[1]}**",
         "</details>",
         ""
     ]
@@ -386,7 +386,14 @@ def _read_increment_counter() -> int:
         except Exception:
             n = 0
     else:
-        n = 0
+        # Fallback: derive from JSONL length if present
+        try:
+            if JSONL_FILE.exists():
+                n = sum(1 for l in JSONL_FILE.read_text(encoding="utf-8").splitlines() if l.strip())
+            else:
+                n = 0
+        except Exception:
+            n = 0
     n += 1
     COUNTER_FILE.write_text(str(n), encoding="utf-8")
     return n
@@ -395,7 +402,7 @@ def _append_heartbeat(now: datetime.datetime) -> None:
     CI_DIR.mkdir(parents=True, exist_ok=True)
     run_no = os.getenv("GITHUB_RUN_NUMBER", "?")
     sha = (os.getenv("GITHUB_SHA", "")[:7])
-    line = "{}\trun={}\tsha={}\n".format(now.strftime("%Y-%m-%d %H:%M:%S UTC"), run_no, sha)
+    line = f"{now.strftime('%Y-%m-%d %H:%M:%S UTC')}\trun={run_no}\tsha={sha}\n"
     with HEARTBEAT_FILE.open("a", encoding="utf-8") as f:
         f.write(line)
 
@@ -458,11 +465,11 @@ def generate_new_readme() -> None:
             "banner_file": banner_file,
             "banner_mode": ("calendar" if CAL_MODE else BANNER_MODE),
             "insight_preview": _resolve_insight(dynamic_quote),
-            "update_count": total_updates,  # NEW
+            "update_count": total_updates,
         }
         _append_jsonl_line(JSONL_FILE, jsonl_row)
     except Exception as exc:
-        print("[warn] failed to append JSONL: {}".format(exc))
+        print(f"[warn] failed to append JSONL: {exc}")
 
     # 7) Console heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
@@ -474,7 +481,7 @@ def generate_new_readme() -> None:
     print("\n" + bar)
     print("✅ README updated:", now.strftime("%Y-%m-%d %H:%M:%S"), "UTC")
     print("🔁 Total updates:", total_updates)
-    print("🖼️ Banner mode:", ("calendar" if CAL_MODE else BANNER_MODE), "  🔢 Run: #{}  🔗 SHA: {}".format(run_no, short_sha))
+    print("🖼️ Banner mode:", ("calendar" if CAL_MODE else BANNER_MODE), f"  🔢 Run: #{run_no}  🔗 SHA: {short_sha}")
     print("💬 Insight:", _resolve_insight(dynamic_quote))
     print("⏱️ Schedule:", schedule, "  ▶️ Next ETA:", next_eta)
     print(bar + "\n")
