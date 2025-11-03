@@ -151,6 +151,10 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 📈 Build stakeholder dashboards in **Tableau / Power BI**.
 
 ---
+- ⚙️ Automate end-to-end ML pipelines (train → eval → deploy).
+- 📈 Track experiments with MLflow & W&B; analyze with PostgreSQL/SQL.
+- 📊 Build stakeholder dashboards in Tableau / Power BI.
+---
 
 ![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
 ![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
