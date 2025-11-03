@@ -109,7 +109,7 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 
   <!-- RUNMETA:START -->
 <details>
-  <summary>🧰 Run Meta (click to expand)</summary>
+  <summary>🪄 Run Meta (click to expand)</summary>
 
 - 🕒 Updated (UTC): **2025-11-03 22:16 UTC**
 - 🔢 Run: **#5433** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19051027481)
@@ -146,7 +146,7 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 
 - ⚙️ **Automate** end-to-end ML pipelines *(train → eval → deploy)*  
 - 📊 **Track experiments** with MLflow & W&B; analyze runs via PostgreSQL/SQL  
-- 📈 **Build stakeholder dashboards** in Tableau / Power BI
+- 📉 **Build stakeholder dashboards** in Tableau / Power BI
 
 ---
 
