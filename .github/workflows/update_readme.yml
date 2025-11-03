@@ -56,7 +56,7 @@ jobs:
 
       # Emoji control
       BANNER_EMOJI_MODE: stable   # random | stable
-      BANNER_EMOJIS: ${{ inputs.emojis != '' && inputs.emojis || '🎞️,🔁,🪄,🤖,⚙️,📈,🧪,🚀,🧠,✅' }}
+      BANNER_EMOJIS: ${{ inputs.emojis != '' && inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,🌈,🌊,🔥,🧹,⚡,⏱️,🏁'📊 }}
 
       # Logs / tables
       JSONL_KEEP_LINES: ${{ inputs.jsonl_keep_lines != '' && inputs.jsonl_keep_lines || 200 }}
