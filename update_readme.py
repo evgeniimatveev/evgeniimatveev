@@ -379,13 +379,13 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int], total_up
         "  <summary>🪄 Run Meta (click to expand)</summary>",
         "",
         f"- 🕒 Updated (UTC): **{now_utc}**",
-        f"- 🔢 Run: **#{run_no}** — {open_run_link}",
-        f"- 🔗 Commit: **{sha}** — {open_commit_link}",
-        f"- 🔁 Updates (total): **{total_updates}**",
+        f"- 🤖 Run: **#{run_no}** — {open_run_link}",
+        f"- 🧬 Commit: **{sha}** — {open_commit_link}",
+        f"- ♻️ Updates (total): **{total_updates}**",
         "- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**",
-        f"- 🪄 Event: **{event}** · 👤 Actor: **{actor}**",
-        f"- ⏱️ Schedule: **{schedule}**",
-        f"- 🖼️ Banner: **{banner_pos[0]}/{banner_pos[1]}**",
+        f"- 📥 Event: **{event}** · 👤 Actor: **{actor}**",
+        f"- 📆 Schedule: **{schedule}**",
+        f"-🌈 Banner: **{banner_pos[0]}/{banner_pos[1]}**",
         "</details>",
         ""
     ]
@@ -456,7 +456,7 @@ def generate_new_readme() -> None:
     # 2) Insight block
     now = datetime.datetime.utcnow()
     dynamic_quote = get_dynamic_quote()
-    insight_text = "🔥 MLOPS Insight: " + _resolve_insight(dynamic_quote)
+    insight_text = "🤖 MLOPS Insight: " + _resolve_insight(dynamic_quote)
     md = _upsert_insight_block(md, insight_text)
 
     # 3) Run Meta
