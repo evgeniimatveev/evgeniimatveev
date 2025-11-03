@@ -106,8 +106,9 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 <!-- LOG:START ... LOG:END -->
 <!-- RUNMETA:START -->
 <details>
-  <summary>🗒️ Run Meta (click to expand)</summary>
+  <summary>🪄 Automation_Logs</summary>
 
+  <details>
 - 🕒 Updated (UTC): **2025-11-03 01:02 UTC**
 - 🔢 Run: **#5371** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19020952721)
 - 🔗 Commit: **36e082d** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/36e082d6aee45ed241d31ea6fe1c98191ee0ca9b)
@@ -118,9 +119,20 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 - 🖼️ Banner: **124/367**
 </details>
 
-<!-- RUNMETA:END -->
-</details>
+  <details>
+    <summary>🏆 Recent updates (last 5)</summary>
 
+  | Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |
+  |---|---|---|---|---|---|
+  | 2025-11-03 01:02:59 | 5371 | `36e082d` | 124/367 (124.gif) | schedule/evgeniimatveev | 💡 MLOPS DAILY • Prune legacy… |
+  | 2025-11-03 00:50:53 | 5370 | `6eed2b3` | 123/367 (123.gif) | workflow_dispatch/evgeniimatveev | 💡 PIPELINES, NOT FIRE-DRILLS |
+  | 2025-11-03 00:32:32 | 5369 | `4d54f9c` | 122/367 (122.gif) | workflow_dispatch/evgeniimatveev | 💡 DATA • CODE • IMPACT |
+  | 2025-11-03 00:25:14 | 5368 | `9e829f6` | 121/367 (121.gif) | workflow_dispatch/evgeniimatveev | 💡 BATCH & STREAM IN HARMONY |
+  | 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev | 💡 AUTOMATE EVERYTHING |
+
+  </details>
+
+</details>
 ---
 
 ## 📌 **What I Do**
@@ -201,29 +213,3 @@ Last updated: 2025-11-02 21:12:27.690809 UTC
 ---
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&size=24&center=true&vCenter=true&width=1200&lines=🚀+MLOps+Automation+%7C+AI+Ops+🔧;📊+SQL+for+ML+Experiments+🔍;⚡+Track+your+models+like+a+pro+🔥;🛠️+MLOps+%2B+CI%2FCD+%3D+💙;📡+Deploy+ML+models+with+FastAPI+🌐;📈+Monitor+metrics+with+W%26B+%7C+MLflow+🛠️;🐍+Python+%7C+R+%7C+PostgreSQL+for+Data+Science+📊;🦾+Automate+ML+Pipelines+with+GitHub+Actions+⚡;🔄+Data+Versioning+with+DVC+%7C+LakeFS+🌊;📦+Containerize+ML+Models+with+Docker+🐳;🔬+Hyperparameter+Tuning+with+W%26B+Sweeps+🎯;🤖+Deploy+AI+Chatbots+using+LLMs+🛠️;💾+Feature+Engineering+for+ML+Success+🚀;🛡️+Secure+ML+Pipelines+with+MLOps+Best+Practices+🔒;📜+Automate+SQL+Queries+for+MLflow+Tracking+⏳;💡+Optimize+ML+Experiments+with+Bayesian+Tuning+🎯;🖥️+Build+Interactive+Dashboards+in+Tableau+%7C+Power+BI+📊;🎭+Track+and+Compare+Models+with+Experiment+Versioning+📈;⚙️+CI%2FCD+%7C+Docker+%7C+FastAPI+for+ML+Deployment+🚀;🌍+Make+your+ML+models+reproducible+with+MLflow+🌐;📊+Analyze+ML+Experiments+using+SQL+Queries+🔍;🛠️+Refactor+your+ML+Code+for+Scalability+🔧;🔬+ML+Research+meets+Production+🚀;🌟+MLOps+is+the+Future+of+AI+⚡;🤝+Collaborate+on+ML+Projects+with+Versioning+📌;🎯+Hyperparameter+Optimization+Done+Right+🚀;💡+Stay+ahead+in+ML+with+Automation+🤖;💥+Debug+ML+Pipelines+like+a+pro+🛠️;⚡+Parallel+Training+%7C+Optimize+Compute+Resources+⚙️;📡+Deploy+AI+models+at+scale+🌍;🛠️+Fine-tune+LLMs+with+Advanced+Methods+🤖;📜+Efficient+Data+Engineering+for+ML+📊;🛠️+Model+Inference+Optimization+🚀;🧠+Experiment+Tracking+%7C+MLflow+%7C+W%26B+⚡;🔍+Explainability+%26+Interpretability+in+ML+📖;🔒+Secure+Data+Pipelines+in+AI+🏗️;🖥️+Advanced+Data+Visualization+Techniques+📊;📡+Streamline+ML+Lifecycle+with+MLOps+⚙️;🔧+Data+Science+Infrastructure+Best+Practices+🛠️;🔄+Automate+ML+Testing+%26+Validation+✅;📊+Big+Data+for+Machine+Learning+📡;📜+Data+Governance+in+AI+%7C+Best+Practices+🔒;🔬+Model+Drift+Detection+%26+Retraining+⚡;🎯+Ensemble+Learning+%7C+Stacking+%26+Boosting+🚀;🦾+AI+Scaling+%7C+Edge+AI+Deployment+🌍;💾+Data+Pipeline+Automation+for+AI+📡;📊+Graph+Databases+for+ML+%7C+Knowledge+Graphs+🌐;⚡+AutoML+%7C+Hyperparameter+Search+Automation+🚀;🔬+Generative+AI+%7C+Diffusion+Models+%7C+GANs+🤖)](https://git.io/typing-svg)
 
-<details>
-  <summary>🗒️ Automation</summary>
-
-  <details>
-    <summary>📌 Run Meta (last run)</summary>
-
-  **Updated (UTC):** 2025-11-03 01:02 · **Run:** #5371 — [open run](#) · **Commit:** 36e082d — [open commit](#)  
-  **Workflow:** Auto Update README → `update-readme` · **Event:** schedule · **Actor:** evgeniimatveev  
-  **Schedule:** 24h_5m · **Banner:** 124/367
-
-  </details>
-
-  <details>
-    <summary>📚 Recent updates (last 5)</summary>
-
-  | Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |
-  |---|---|---|---|---|---|
-  | 2025-11-03 01:02:59 | 5371 | `36e082d` | 124/367 (124.gif) | schedule/evgeniimatveev | 💡 MLOPS DAILY • Prune legacy… |
-  | 2025-11-03 00:50:53 | 5370 | `6eed2b3` | 123/367 (123.gif) | workflow_dispatch/evgeniimatveev | 💡 PIPELINES, NOT FIRE-DRILLS |
-  | 2025-11-03 00:32:32 | 5369 | `4d54f9c` | 122/367 (122.gif) | workflow_dispatch/evgeniimatveev | 💡 DATA • CODE • IMPACT |
-  | 2025-11-03 00:25:14 | 5368 | `9e829f6` | 121/367 (121.gif) | workflow_dispatch/evgeniimatveev | 💡 BATCH & STREAM IN HARMONY |
-  | 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev | 💡 AUTOMATE EVERYTHING |
-
-  </details>
-
-</details>
