@@ -31,7 +31,7 @@
 
 🧠 Focus: MLOps| SQL| Automation| Experiment Tracking 
 
-⏱️ 1.9+ years of continuous learning 
+⏱️ 2+ years of continuous learning 
 
 
 ---
@@ -76,28 +76,33 @@
 ![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
 
 ---
-### 🧩 AI Copilot Ecosystem  
-Everyday copilots I use to code, debug, and build production-grade MLOps workflows.  
-Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️  
-
-<details><summary>AI Copilot Ecosystem</summary>
+<details>
+  <summary>🧩 AI Copilot Ecosystem</summary>
 
 | Assistant | Role | Usage |
 |---|---|---|
 | ChatGPT 5.0 | Prompting, architecture, docs | 50–60% |
 | Claude Sonnet 4.5 | Long-context planning | 30–40% |
 | DeepSeek R1 | Debugging & strict logic | 10–15% |
-</details>
 
-<details><summary>Automation Logs</summary>
-
----
 <details>
   <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
 
-> 💡 *Note:* This ecosystem runs as a multi-copilot workflow.  
-> Each assistant has a unique role — **ChatGPT** leads architecture and reasoning, **Claude Sonnet** handles long-range automation and planning, and **DeepSeek** ensures rigorous code logic and debugging precision.  
-> Together, they form a continuous loop of **innovation → execution → validation** — my personal AI engineering stack. 
+This ecosystem runs as a **multi-copilot workflow** — each assistant has a distinct role:
+- 🧠 **ChatGPT** → architecture, reasoning, documentation  
+- 🧩 **Claude Sonnet 4.5** → long-range automation & planning  
+- 🔬 **DeepSeek R1** → rigorous code logic & debugging  
+
+Together, it forms a loop of **innovation → execution → validation** — my personal **AI engineering stack**.
+</details>
+</details>
+
+<details>
+  <summary>🗒️ Automation Logs</summary>
+
+<!-- Keep your RUNMETA + LOG blocks here -->
+<!-- RUNMETA:START ... RUNMETA:END -->
+<!-- LOG:START ... LOG:END -->
 
 </details>
 
