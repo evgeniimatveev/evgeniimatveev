@@ -383,7 +383,7 @@ def _update_runmeta_block(md_text: str, *, banner_pos: tuple[int, int], total_up
         f"- 🧬 Commit: **{sha}** — {open_commit_link}",
         f"- ♻️ Updates (total): **{total_updates}**",
         "- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**",
-        f"- 📥 Event: **{event}** · 👤 Actor: **{actor}**",
+        f"- 📥 Event: **{event}** · 🧑‍💻 Actor: **{actor}**",
         f"- 📆 Schedule: **{schedule}**",
         f"-🌈 Banner: **{banner_pos[0]}/{banner_pos[1]}**",
         "</details>",
