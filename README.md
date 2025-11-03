@@ -131,7 +131,9 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 
 </details>
 <!-- END: AUTOMATION -->
+
 ---
+
 ## 📌 **What I Do**
 
 🏆  Automate end-to-end ML pipelines (train → eval → deploy)
