@@ -76,6 +76,7 @@
 ![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
 
 ---
+<!-- BEGIN: COPILOTS -->
 <details>
   <summary>🧩 AI Copilot Ecosystem</summary>
 
@@ -85,8 +86,8 @@
 | Claude Sonnet 4.5 | Long-context planning | 30–40% |
 | DeepSeek R1 | Debugging & strict logic | 10–15% |
 
-<details>
-  <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
+  <details>
+    <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
 
 This ecosystem runs as a **multi-copilot workflow** — each assistant has a distinct role:
 - 🧠 **ChatGPT** → architecture, reasoning, documentation  
@@ -94,6 +95,12 @@ This ecosystem runs as a **multi-copilot workflow** — each assistant has a dis
 - 🔬 **DeepSeek R1** → rigorous code logic & debugging  
 
 Together, it forms a loop of **innovation → execution → validation** — my personal **AI engineering stack**.
+  </details>
+
+</details>
+<!-- END: COPILOTS -->
+
+<!-- BEGIN: AUTOMATION -->
 <details>
   <summary>🗒️ Automation Logs</summary>
 
@@ -108,7 +115,6 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 - 🪄 Event: **schedule** · 👤 Actor: **evgeniimatveev**  
 - ⏱️ Schedule: **24h_5m**  
 - 🖼️ Banner: **124/367**
-
   </details>
 
   <details>
@@ -121,11 +127,10 @@ Together, it forms a loop of **innovation → execution → validation** — my 
 | 2025-11-03 00:32:32 | 5369 | `4d54f9c` | 122/367 (122.gif) | workflow_dispatch/evgeniimatveev | 💡 DATA • CODE • IMPACT |
 | 2025-11-03 00:25:14 | 5368 | `9e829f6` | 121/367 (121.gif) | workflow_dispatch/evgeniimatveev | 💡 BATCH & STREAM IN HARMONY |
 | 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev | 💡 AUTOMATE EVERYTHING |
-
   </details>
 
 </details>
-
+<!-- END: AUTOMATION -->
 ---
 ## 📌 **What I Do**
 
