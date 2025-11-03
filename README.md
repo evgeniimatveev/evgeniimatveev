@@ -94,46 +94,37 @@ This ecosystem runs as a **multi-copilot workflow** — each assistant has a dis
 - 🔬 **DeepSeek R1** → rigorous code logic & debugging  
 
 Together, it forms a loop of **innovation → execution → validation** — my personal **AI engineering stack**.
-</details>
----
-</details>
-
 <details>
   <summary>🗒️ Automation Logs</summary>
 
-<!-- Keep your RUNMETA + LOG blocks here -->
-<!-- RUNMETA:START ... RUNMETA:END -->
-<!-- LOG:START ... LOG:END -->
-<!-- RUNMETA:START -->
-<details>
-  <summary>🪄 Automation_Logs</summary>
-
   <details>
-- 🕒 Updated (UTC): **2025-11-03 01:02 UTC**
-- 🔢 Run: **#5371** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19020952721)
-- 🔗 Commit: **36e082d** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/36e082d6aee45ed241d31ea6fe1c98191ee0ca9b)
-- 🔁 Updates (total): **35**
-- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**
-- 🪄 Event: **schedule** · 👤 Actor: **evgeniimatveev**
-- ⏱️ Schedule: **24h_5m**
+    <summary>🪄 Run Meta (last run)</summary>
+
+- 🕒 Updated (UTC): **2025-11-03 01:02 UTC**  
+- 🔢 Run: **#5371** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19020952721)  
+- 🔗 Commit: **36e082d** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/36e082d6aee45ed241d31ea6fe1c98191ee0ca9b)  
+- 🔁 Updates (total): **35**  
+- ⚙️ Workflow: **Auto Update README** · Job: **update-readme**  
+- 🪄 Event: **schedule** · 👤 Actor: **evgeniimatveev**  
+- ⏱️ Schedule: **24h_5m**  
 - 🖼️ Banner: **124/367**
-</details>
+
+  </details>
 
   <details>
     <summary>🏆 Recent updates (last 5)</summary>
 
-  | Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |
-  |---|---|---|---|---|---|
-  | 2025-11-03 01:02:59 | 5371 | `36e082d` | 124/367 (124.gif) | schedule/evgeniimatveev | 💡 MLOPS DAILY • Prune legacy… |
-  | 2025-11-03 00:50:53 | 5370 | `6eed2b3` | 123/367 (123.gif) | workflow_dispatch/evgeniimatveev | 💡 PIPELINES, NOT FIRE-DRILLS |
-  | 2025-11-03 00:32:32 | 5369 | `4d54f9c` | 122/367 (122.gif) | workflow_dispatch/evgeniimatveev | 💡 DATA • CODE • IMPACT |
-  | 2025-11-03 00:25:14 | 5368 | `9e829f6` | 121/367 (121.gif) | workflow_dispatch/evgeniimatveev | 💡 BATCH & STREAM IN HARMONY |
-  | 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev | 💡 AUTOMATE EVERYTHING |
+| Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |
+|---|---|---|---|---|---|
+| 2025-11-03 01:02:59 | 5371 | `36e082d` | 124/367 (124.gif) | schedule/evgeniimatveev | 💡 MLOPS DAILY • Prune legacy, keep essentials ✂️ |
+| 2025-11-03 00:50:53 | 5370 | `6eed2b3` | 123/367 (123.gif) | workflow_dispatch/evgeniimatveev | 💡 PIPELINES, NOT FIRE-DRILLS |
+| 2025-11-03 00:32:32 | 5369 | `4d54f9c` | 122/367 (122.gif) | workflow_dispatch/evgeniimatveev | 💡 DATA • CODE • IMPACT |
+| 2025-11-03 00:25:14 | 5368 | `9e829f6` | 121/367 (121.gif) | workflow_dispatch/evgeniimatveev | 💡 BATCH & STREAM IN HARMONY |
+| 2025-11-02 23:51:48 | 5367 | `95aa3a4` | 120/367 (120.gif) | schedule/evgeniimatveev | 💡 AUTOMATE EVERYTHING |
 
   </details>
 
 </details>
----
 
 ## 📌 **What I Do**
 
