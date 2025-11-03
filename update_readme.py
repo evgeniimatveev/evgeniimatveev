@@ -257,7 +257,11 @@ SEASON_QUOTES = {
         "Plan the roadmap; align data and product 🧭",
     ],
 }
-EXTRA_EMOJIS = ["🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭","🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊""🧱","🧰","🧯","🧩","📦","🧾","🗂️","🔍","🔧","🧼"]
+EXTRA_EMOJIS = [
+    "🚀","⚡","🔥","💡","🎯","🔄","📈","🛠️","🧠","🤖","🧪","✅","📊","🧭",
+    "🌅","🌇","🌙","❄️","🍁","☀️","🌸","🌾","🌈","🌊","🧱","🧰","🧯","🧩",
+    "📦","🧾","🗂️","🔍","🔧","🧼"
+]
 HEADLINE_TEMPLATES = [
     "MLOPS DAILY","BUILD • MEASURE • LEARN","AUTOMATE EVERYTHING",
     "SHIP SMALL, SHIP OFTEN","EXPERIMENT → INSIGHT → DEPLOY","DATA • CODE • IMPACT",
