@@ -97,6 +97,7 @@ This ecosystem runs as a **multi-copilot workflow** — each assistant has a dis
 Together, it forms a loop of **innovation → execution → validation** — my personal **AI engineering stack**.
   </details>
 
+---
 </details>
 <!-- END: COPILOTS -->
 
