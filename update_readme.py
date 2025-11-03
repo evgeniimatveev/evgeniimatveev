@@ -122,7 +122,7 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
     total = len(files)
 
     # --- Emoji selection with ENV override ---
-    default_emojis = ["🎞️", "🔁", "🪄", "🤖"]
+    default_emojis = ["🎞️", "☕", "🪄", "🤖"]
     raw = os.getenv("BANNER_EMOJIS", "").strip()
     if raw:
         emoji_choices = [e.strip() for e in raw.split(",") if e.strip()]
