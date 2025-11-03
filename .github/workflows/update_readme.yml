@@ -2,7 +2,7 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "*/45 * * * *"   # every 5 min (UTC)
+    - cron: "*/45 * * * *"   # every 45 minutes (UTC)
   workflow_dispatch:
     inputs:
       banner_mode:
@@ -12,6 +12,10 @@ on:
         default: sequential
       insight:
         description: "Override MLOPS_INSIGHT"
+        type: string
+        default: ""
+      emojis:
+        description: "Comma-separated emoji list (optional)"
         type: string
         default: ""
       jsonl_keep_lines:
@@ -49,7 +53,10 @@ jobs:
       BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       MLOPS_INSIGHT: ${{ inputs.insight }}
       SCHEDULE_BADGE: "24h_5m"
+
+      # Emoji control
       BANNER_EMOJI_MODE: stable   # random | stable
+      BANNER_EMOJIS: ${{ inputs.emojis != '' && inputs.emojis || '🎞️,🔁,🪄,🤖,⚙️,📈,🧪,🚀,🧠,✅' }}
 
       # Logs / tables
       JSONL_KEEP_LINES: ${{ inputs.jsonl_keep_lines != '' && inputs.jsonl_keep_lines || 200 }}
@@ -107,7 +114,6 @@ jobs:
         run: |
           python - <<'PY'
           import json, pathlib, re, os
-
           N = int(os.getenv("LOG_TABLE_N", "5"))
           log = pathlib.Path("update_log.jsonl")
           readme_p = pathlib.Path("README.md")
@@ -214,7 +220,6 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # Force a tiny diff to guarantee a commit on schedule, or when commit_mode=force
       - name: Heartbeat (force a diff on schedule/force)
         if: ${{ github.event_name == 'schedule' || env.COMMIT_MODE == 'force' }}
         shell: bash
