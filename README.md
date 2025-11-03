@@ -80,18 +80,26 @@
 Everyday copilots I use to code, debug, and build production-grade MLOps workflows.  
 Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️  
 
-| Assistant        | Role / Specialty                                        | Usage |
-|------------------|---------------------------------------------------------|--------|
-| 🧠 **ChatGPT 5.0**       | Prompting, architecture design, documentation writing   | 50–60 % |
-| 🧩 **Claude Sonnet 4.5** | Long-context reasoning, agent orchestration, planning   | 30–40 % |
-| 🔬 **DeepSeek R1**       | Debugging, strict logic, code review & analysis         | 10-15 % |
+<details><summary>AI Copilot Ecosystem</summary>
+
+| Assistant | Role | Usage |
+|---|---|---|
+| ChatGPT 5.0 | Prompting, architecture, docs | 50–60% |
+| Claude Sonnet 4.5 | Long-context planning | 30–40% |
+| DeepSeek R1 | Debugging & strict logic | 10–15% |
+</details>
+
+<details><summary>Automation Logs</summary>
 
 ---
+<details>
+  <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
 
 > 💡 *Note:* This ecosystem runs as a multi-copilot workflow.  
 > Each assistant has a unique role — **ChatGPT** leads architecture and reasoning, **Claude Sonnet** handles long-range automation and planning, and **DeepSeek** ensures rigorous code logic and debugging precision.  
 > Together, they form a continuous loop of **innovation → execution → validation** — my personal AI engineering stack. 
 
+</details>
 
 🔬 Passionate about building robust MLOps systems, combining Data Science, SQL, and Experiment Tracking.
 
@@ -102,13 +110,13 @@ Balanced hybrid setup across reasoning, automation, and logic layers. ⚙️
 ---
 ## 📌 **What I Do**
 
-🏆 Design and automate ML pipelines using best-in-class MLOps tools.
+🏆  Automate end-to-end ML pipelines (train → eval → deploy)
 
-📊 Query and visualize ML experiments using SQL, MLflow & W&B.
+📊 Track experiments with **MLflow & W&B**; analyze runs via **PostgreSQL/SQL**.
 
-📈 Build interactive dashboards with Tableau & Power BI for reporting and analysis.
+📈 Build stakeholder dashboards in **Tableau / Power BI**.
 
-🚀 Deploy scalable models with FastAPI, Docker, and GitHub Actions.
+🚀 Deploy services with **Docker + FastAPI + GitHub Actions**.
 ---
 
 ## What I Do
