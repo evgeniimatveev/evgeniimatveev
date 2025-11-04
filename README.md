@@ -15,6 +15,7 @@
 <img src="https://img.shields.io/badge/Mode-force-grey?cacheSeconds=60" />
 </p>
 <!-- STATUS:END -->
+
 <!-- STATUS:START -->
 <p align="center">
   <!-- ...твои бейджи... -->
