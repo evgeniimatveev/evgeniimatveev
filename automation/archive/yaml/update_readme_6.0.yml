@@ -1,0 +1,262 @@
+name: Auto Update README
+
+on:
+  schedule:
+    # Run once a day at 09:05 UTC
+    - cron: "5 9 * * *"
+  workflow_dispatch:
+    inputs:
+      banner_mode:
+        description: "sequential | random | calendar"
+        type: choice
+        options: [sequential, random, calendar]
+        default: sequential
+      insight:
+        description: "Override MLOPS_INSIGHT"
+        type: string
+        default: ""
+      jsonl_keep:
+        description: "Keep last N JSONL lines"
+        type: string
+        default: "200"
+      txt_keep:
+        description: "Keep last N TXT lines"
+        type: string
+        default: "70"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-update-readme
+  cancel-in-progress: false
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    env:
+      # Controls for updater
+      BANNER_MODE: ${{ inputs.banner_mode != '' && inputs.banner_mode != 'calendar' && inputs.banner_mode || 'sequential' }}
+      BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
+      SCHEDULE_BADGE: "24h_5m"
+      MLOPS_INSIGHT: ${{ inputs.insight }}
+      JSONL_KEEP_LINES: ${{ inputs.jsonl_keep != '' && inputs.jsonl_keep || '200' }}
+      TXT_KEEP_LINES:   ${{ inputs.txt_keep   != '' && inputs.txt_keep   || '70' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Configure Git author
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Run updater
+        run: python update_readme.py
+
+      - name: Append & trim update_log.txt
+        shell: bash
+        run: |
+          {
+            echo "--------------------------------------"
+            echo "Updated on: $(date -u) (UTC)"
+            echo "Triggered by: ${{ github.event_name }}"
+            echo "Commit SHA: ${{ github.sha }}"
+            echo "Run ID: ${{ github.run_id }}"
+            echo "Run number: ${{ github.run_number }}"
+            echo "--------------------------------------"
+          } >> update_log.txt
+          tail -n "${TXT_KEEP_LINES}" update_log.txt > temp_log.txt || true
+          mv temp_log.txt update_log.txt || true
+
+      - name: Trim JSON log (keep last N lines)
+        shell: bash
+        run: |
+          [ -f update_log.jsonl ] || : > update_log.jsonl
+          tail -n "${JSONL_KEEP_LINES}" update_log.jsonl > update_log.jsonl.tmp || true
+          mv update_log.jsonl.tmp update_log.jsonl || true
+
+      - name: Render last 5 updates into README (accordion)
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, pathlib, re
+          log = pathlib.Path("update_log.jsonl")
+          readme_p = pathlib.Path("README.md")
+
+          def esc_md(s: str) -> str:
+              return str(s).replace("|", "&#124;").replace("\n", " ").strip()
+
+          rows = []
+          if log.exists():
+              lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-5:]
+              for line in reversed(lines):
+                  d = json.loads(line)
+                  banner_str = "{}/{} ({})".format(
+                      d.get("banner_index","?"), d.get("banner_total","?"), d.get("banner_file","")
+                  )
+                  insight = esc_md(d.get("insight_preview",""))
+                  if len(insight) > 140:
+                      insight = insight[:137] + "…"
+                  row = (
+                      "| {} | {} | `{}` | {} | {}/{} | {} |".format(
+                          esc_md(d.get("ts_utc","")),
+                          esc_md(d.get("run_number","")),
+                          esc_md(d.get("sha","")),
+                          esc_md(banner_str),
+                          esc_md(d.get("event","")),
+                          esc_md(d.get("actor","")),
+                          insight
+                      )
+                  )
+                  rows.append(row)
+
+          headers = ["Time (UTC)", "Run", "SHA", "Banner", "Event/Actor", "Insight"]
+          sep = "|" + "|".join(["---"] * len(headers)) + "|"
+
+          table = [
+              "<details><summary><b>Recent updates (last 5)</b></summary>",
+              "",
+              "| " + " | ".join(headers) + " |",
+              sep,
+              *(rows or ["| — | — | — | — | — | — |"]),
+              "",
+              "</details>",
+          ]
+          new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
+
+          readme = readme_p.read_text(encoding="utf-8")
+          pattern = r"<!-- LOG:START -->.*?<!-- LOG:END -->"
+          if re.search(pattern, readme, flags=re.S):
+              readme = re.sub(pattern, new_block, readme, flags=re.S)
+          else:
+              readme = readme.rstrip() + "\n\n" + new_block + "\n"
+          readme_p.write_text(readme, encoding="utf-8")
+          PY
+
+      - name: Show last 10 JSONL lines
+        shell: bash
+        run: |
+          echo "Last 10 JSONL lines:"
+          if [ -f update_log.jsonl ]; then
+            tail -n 10 update_log.jsonl
+          else
+            echo "update_log.jsonl not found yet"
+          fi
+
+      # >>> FIX: без f-строк (чтобы не падал heredoc из-за фигурных скобок)
+      - name: Summary table from JSONL (last 10)
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          p = pathlib.Path("update_log.jsonl")
+          if not p.exists():
+              print("No update_log.jsonl yet."); raise SystemExit
+          lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-10:]
+          def esc(s): return str(s).replace("|","\\|").replace("\n"," ").strip()
+          print("### Last 10 updates")
+          print("| Time (UTC) | Run | SHA | Banner | Mode | Event/Actor | Insight |")
+          print("|---|---|---|---|---|---|---|")
+          for line in reversed(lines):
+              d = json.loads(line)
+              banner = "{}/{} ({})".format(d.get('banner_index','?'), d.get('banner_total','?'), d.get('banner_file',''))
+              evt = "{}/{}".format(d.get('event',''), d.get('actor',''))
+              print("| {} | {} | {} | {} | {} | {} | {} |".format(
+                  esc(d.get('ts_utc','')),
+                  esc(d.get('run_number','')),
+                  esc(d.get('sha','')),
+                  esc(banner),
+                  esc(d.get('banner_mode','')),
+                  esc(evt),
+                  esc(d.get('insight_preview',''))[:120],
+              ))
+          PY
+
+      - name: Update STATUS line in README
+        shell: bash
+        run: |
+          short_sha="${GITHUB_SHA:0:7}"
+          NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
+          NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
+          STATUS="<p align=\"center\">
+          <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=300&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
+          </p>"
+          awk -v r="$STATUS" '
+            /<!-- STATUS:START -->/ {print; print r; f=1; next}
+            /<!-- STATUS:END -->/   {f=0}
+            !f
+          ' README.md > README.tmp && mv README.tmp README.md
+
+      - name: Commit changes (if any)
+        id: commit
+        shell: bash
+        run: |
+          set -e
+          git add README.md update_log.txt update_log.jsonl || true
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update README (banner/status/insight rotation + logs)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push changes
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          for i in 1 2 3; do
+            if git push; then
+              echo "Pushed successfully"
+              exit 0
+            fi
+            echo "Push failed (attempt $i). Retrying in $((i*3))s..."
+            sleep $((i*3))
+            git pull --rebase || true
+          done
+          echo "Push failed after 3 attempts"
+          exit 1
+
+      - name: Write job summary
+        shell: bash
+        run: |
+          {
+            echo "## README Auto-Update"
+            echo "- **Run**: #${{ github.run_number }}"
+            echo "- **Event**: ${{ github.event_name }}"
+            echo "- **Commit**: ${{ github.sha }}"
+            echo "- **Schedule**: ${SCHEDULE_BADGE}"
+            if [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
+              echo "- Pushed: ✅"
+            else
+              echo "- Pushed: —"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload logs as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: update_logs
+          path: |
+            update_log.txt
+            update_log.jsonl
+          retention-days: 7
