@@ -21,7 +21,7 @@
 
 ---
 
-# 🤖 Hi, I'm Evgenii — automating AI & MLOps workflows  
+# 🤖 Hi, I'm Evgenii — automating AI & MLOps workflows 🤖  
 ## ⚙️ Building production-ready pipelines with CI/CD and intelligent automation  
 
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
