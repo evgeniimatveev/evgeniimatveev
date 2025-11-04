@@ -2,7 +2,7 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "15 12 * * *"   # daily at 12:15 UTC (≈ 04:15 PST / 05:15 PDT)
+    - cron: "15 12 * * *"   # Run daily at 12:15 UTC (≈ 04:15 PST / 05:15 PDT)
   workflow_dispatch:
     inputs:
       banner_mode:
@@ -37,25 +37,27 @@ on:
         default: auto
 
 permissions:
-  contents: write
+  contents: write   # Required to push README/log updates
 
 concurrency:
-  group: auto-update-readme
-  cancel-in-progress: true   
+  group: auto-update-readme     # Deduplicate overlapping runs
+  cancel-in-progress: true      # If a new run starts, cancel the previous one
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    # Optional safety: prevent hanging jobs
+    # timeout-minutes: 45
 
     env:
-      # ---- Controls for updater script ----
+      # ---- Controls for the updater script ----
       BANNER_MODE: ${{ inputs.banner_mode != '' && inputs.banner_mode || 'sequential' }}
       BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       MLOPS_INSIGHT: ${{ inputs.insight }}
-      SCHEDULE_BADGE: "24h_5m"   
+      SCHEDULE_BADGE: "24h_5m"     # Display-only badge; does not affect schedule
 
       # Emoji control
-      BANNER_EMOJI_MODE: stable   # random | stable
+      BANNER_EMOJI_MODE: stable    # random | stable
       BANNER_EMOJIS: ${{ inputs.emojis != '' && inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
 
       # Logs / tables
@@ -66,7 +68,7 @@ jobs:
       # Commit behavior
       COMMIT_MODE: ${{ inputs.commit_mode != '' && inputs.commit_mode || 'auto' }}
 
-      # ---- JITTER ----
+      # ---- JITTER (up to 30 minutes) ----
       JITTER_MAX_SEC: 1800
 
     steps:
@@ -76,8 +78,9 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-    
+      # Apply jitter only for scheduled runs (manual runs start immediately)
       - name: Random jitter (sleep up to 30 min)
+        if: ${{ github.event_name == 'schedule' }}
         shell: bash
         run: |
           S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
@@ -248,7 +251,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
-          else:
+          else
             msg="Auto-update README (banner/status/insight rotation + logs)"
             if [ "${COMMIT_MODE}" = "force" ]; then
               msg="${msg} [force]"
@@ -287,7 +290,7 @@ jobs:
             echo "- **Mode**: ${COMMIT_MODE}"
             if [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
               echo "- Pushed: ✅"
-            else
+            else:
               echo "- Pushed: —"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
