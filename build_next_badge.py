@@ -1,5 +1,8 @@
 # build_next_badge.py
 # -*- coding: utf-8 -*-
+# Generates a Shields.io endpoint JSON with a time-to-next-update message
+# and a smooth color gradient driven by minutes remaining.
+# No emoji, only a clean label + message + dynamic color.
 
 from __future__ import annotations
 import os, json, datetime as dt
@@ -8,7 +11,7 @@ from typing import Iterable, Optional
 
 # ---------- env helpers ----------
 
-def getenv_first(candidates: Iterable[str], default: Optional[str]=None) -> str:
+def getenv_first(candidates: Iterable[str], default: Optional[str] = None) -> str:
     """Return the first existing env value from candidates, else default (or empty)."""
     for k in candidates:
         v = os.getenv(k)
@@ -17,7 +20,7 @@ def getenv_first(candidates: Iterable[str], default: Optional[str]=None) -> str:
     return default if default is not None else ""
 
 def getenv_int(cands: Iterable[str], default: int) -> int:
-    """Same as getenv_first but coerces the result to int with a safe fallback."""
+    """Integer version of getenv with safe fallback."""
     raw = getenv_first(cands, None)
     try:
         return int(raw) if raw is not None else default
@@ -35,23 +38,20 @@ def getenv_float(cands: Iterable[str], default: float) -> float:
 # ---------- config (via env) ----------
 
 # Daily schedule (UTC). Multiple keys kept for backward compatibility.
-CRON_HOUR   = getenv_int(["NEXT_UPDATE_HOUR","CRON_HOUR","NEXT_CRON_HOUR"], 7)
-CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN","CRON_MINUTE","NEXT_CRON_MINUTE"], 43)
+CRON_HOUR   = getenv_int(["NEXT_UPDATE_HOUR", "CRON_HOUR", "NEXT_CRON_HOUR"], 7)
+CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN",  "CRON_MINUTE", "NEXT_CRON_MINUTE"], 43)
 
-# If >0 we mark human time as approximate with "~".
-JITTER_MAX_SEC = getenv_int(["JITTER_MAX_SEC","NEXT_BADGE_JITTER_SEC"], 0)
+# If >0 we prefix human time with "~" to signal possible jitter around the moment.
+JITTER_MAX_SEC = getenv_int(["JITTER_MAX_SEC", "NEXT_BADGE_JITTER_SEC"], 0)
 
-# Countdown window in minutes for color/emoji transitions.
-TOTAL_WINDOW_MIN = getenv_float(["NEXT_BADGE_WINDOW_MIN","TOTAL_WINDOW_MIN"], 20.0)
-
-# When True, if minutes_left >= window we show coffee (neutral) emoji.
-COFFEE_BEYOND_WINDOW = getenv_first(["BADGE_COFFEE_BEYOND_WINDOW"], "1") not in ("0","false","False")
+# Size of the visualization window (in minutes) that drives the color transition.
+# At ratio=0 (now/overdue) we use a "hot" color; at ratio>=1 (far) we clamp to a calm color.
+WINDOW_MIN = getenv_float(["NEXT_BADGE_WINDOW_MIN", "TOTAL_WINDOW_MIN"], 20.0)
 
 # Badge appearance.
 LABEL       = getenv_first(["NEXT_BADGE_LABEL"], "Next Update")
 LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "2e2e2e")
-# Keep both env names for compatibility.
-LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO","NEXT_BADGE_LOGO"], "timer")
+LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO", "NEXT_BADGE_LOGO"], "timer")
 
 # Output JSON path.
 OUT_PATH = Path("badges/next_update.json")
@@ -65,7 +65,7 @@ def next_scheduled(now_utc: dt.datetime) -> dt.datetime:
         nxt = nxt + dt.timedelta(days=1)
     return nxt
 
-def fmt_human(delta: dt.timedelta, approx: bool=False) -> str:
+def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
     """Compact human-friendly remaining time string."""
     sec = int(delta.total_seconds())
     if sec <= 0:
@@ -79,75 +79,52 @@ def fmt_human(delta: dt.timedelta, approx: bool=False) -> str:
         return f"{tilde}{m}m"
     return f"{tilde}{m}m {s}s"
 
-# ---------- color gradient: red -> yellow -> green ----------
+# ---------- color utils (HSL -> HEX) ----------
 
-def gradient_color_hex(minutes_left: float, window_min: float) -> str:
+def _hsl_to_hex(h: float, s: float, l: float) -> str:
     """
-    Return hex color (without '#') for smooth red->yellow->green transition.
-    ratio=0 (now/overdue) => red, ratio=1 (>=window) => green.
+    Convert HSL (0..360, 0..1, 0..1) to hex string without '#'.
+    Uses standard HSL-to-RGB conversion.
     """
-    if minutes_left < 0:
-        return "9e0142"  # dark red for overdue
+    c = (1 - abs(2*l - 1)) * s
+    h_ = (h % 360) / 60.0
+    x = c * (1 - abs((h_ % 2) - 1))
+    if   0 <= h_ < 1: r, g, b = c, x, 0
+    elif 1 <= h_ < 2: r, g, b = x, c, 0
+    elif 2 <= h_ < 3: r, g, b = 0, c, x
+    elif 3 <= h_ < 4: r, g, b = 0, x, c
+    elif 4 <= h_ < 5: r, g, b = x, 0, c
+    else:             r, g, b = c, 0, x
+    m = l - c/2
+    R = int(round((r + m) * 255))
+    G = int(round((g + m) * 255))
+    B = int(round((b + m) * 255))
+    return f"{R:02x}{G:02x}{B:02x}"
 
-    ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
-
-    if ratio < 0.5:
-        # red -> yellow
-        g = int(255 * (ratio / 0.5))   # 0..255
-        r = 255
-        b = 0
-    else:
-        # yellow -> green
-        g = 255
-        r = int(255 * (1 - (ratio - 0.5) / 0.5))  # 255..0
-        b = 0
-
-    return f"{r:02x}{g:02x}{b:02x}"
-
-# ---------- 72-step emoji palette ----------
-
-def build_emoji_palette(n: int = 72) -> list[str]:
+def timeline_color_hex(minutes_left: float, window_min: float) -> str:
     """
-    Create a palette progressing from 'alert' red to 'ok' green.
-    Overdue uses 💥 (handled elsewhere). Long horizon can be ☕ (see COFFEE_BEYOND_WINDOW).
-    """
-    reds    = ["🟥","🔴","🧨","🛑","❗"]
-    yellows = ["🟨","🟡","⚠️","⏳","⌛"]
-    greens  = ["🟩","🟢","✅","☘️","💚","🟩","🟢","✅","💚","🟢"]
+    Smooth color across time using HSL for a pleasing, modern look.
 
-    n_red = max(6, int(n * 0.30))
-    n_yel = max(4, int(n * 0.20))
-    n_grn = max(10, n - n_red - n_yel)
+    Design:
+      - Overdue/now: deep crimson (attention but not harsh red)
+      - Progress through window: hue sweeps from hot pink -> amber -> lime
+      - Beyond window: clamp to calm lime (stable)
 
-    palette = (
-        [reds[i % len(reds)] for i in range(n_red)] +
-        [yellows[i % len(yellows)] for i in range(n_yel)] +
-        [greens[i % len(greens)] for i in range(n_grn)]
-    )
-    return palette[:n]
-
-_EMOJI_STEPS = build_emoji_palette(72)
-
-def emoji_for_minutes(minutes_left: float, window_min: float) -> str:
-    """
-    Map remaining minutes to one of the palette steps.
-    - overdue: 💥
-    - >= window and COFFEE_BEYOND_WINDOW: ☕
-    - otherwise: pick a step aligned with the same ratio used by the gradient
-      so that color and emoji are semantically consistent.
+    Hues (degrees): 330 -> 60 -> 140 (piecewise, via a single 330->140 sweep)
+    Saturation: 0.90, Lightness: 0.45
     """
     if minutes_left < 0:
-        return "💥"
+        return "b00040"  # deep crimson for overdue
 
-    if COFFEE_BEYOND_WINDOW and minutes_left >= window_min:
-        return "☕"
-
-    # Ratio in [0..1] (0 = now, 1 = window edge)
+    # ratio in [0..1]; >=1 clamps to final calm color
     ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
-    # Convert to index where lower ratio -> red side, higher -> green side
-    idx = int(round(ratio * (len(_EMOJI_STEPS) - 1)))
-    idx = max(0, min(len(_EMOJI_STEPS) - 1, idx))
-    return _EMOJI_STEPS[idx]
+
+    # Sweep hue from 330 (hot pink) down to 140 (lime) as ratio grows.
+    start_h, end_h = 330.0, 140.0
+    # Interpolate with slight easing for a softer start
+    eased = ratio * ratio * (3 - 2 * ratio)  # smoothstep
+    h = start_h + (end_h - start_h) * eased
+    return _hsl_to_hex(h, s=0.90, l=0.45)
 
 # ---------- main ----------
 
@@ -156,19 +133,16 @@ def main() -> None:
     nxt = next_scheduled(now)
     approx = JITTER_MAX_SEC > 0
 
-    minutes_left = (nxt - now).total_seconds() / 60.0
-    human = fmt_human(nxt - now, approx=approx)
-
-    # Single source of truth: same ratio drives both color and emoji.
-    color_hex = gradient_color_hex(minutes_left, TOTAL_WINDOW_MIN)
-    emoji     = emoji_for_minutes(minutes_left, TOTAL_WINDOW_MIN)
+    delta = nxt - now
+    minutes_left = delta.total_seconds() / 60.0
+    human = fmt_human(delta, approx=approx)
 
     payload = {
         "schemaVersion": 1,
         "label": LABEL,
         "labelColor": LABEL_COLOR,
-        "message": f"{emoji} {human}",
-        "color": color_hex,
+        "message": human,  # clean text only, no emoji
+        "color": timeline_color_hex(minutes_left, WINDOW_MIN),
         "namedLogo": LOGO,
         # "style": "flat",
     }
