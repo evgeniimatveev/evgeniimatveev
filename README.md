@@ -144,7 +144,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ## 💯 What I Do
 
 - ⚙️ **Automate** end-to-end ML pipelines *(train → eval → deploy)*  
-- 📊 **Track experiments** with MLflow & W&B; analyze runs via PostgreSQL/SQL  
+- 📈 **Track experiments** with MLflow & W&B; analyze runs via PostgreSQL/SQL  
 - 📉 **Build stakeholder dashboards** in Tableau / Power BI
 
 ---
