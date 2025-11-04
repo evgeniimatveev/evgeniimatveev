@@ -138,10 +138,12 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 </details>
 <!-- END: AUTOMATION -->
+
 ---
 | 🧩 Workflow | ⚙️ Automation | 📊 Insights |
 |-------------|---------------|-------------|
 | Design → Build → Deploy |  Deploy	CI/CD with intelligence | Measure → Learn → Improve |
+
 ---
 ## 💯 What I Do
 
