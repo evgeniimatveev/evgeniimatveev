@@ -140,7 +140,8 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <!-- END: AUTOMATION -->
 
 ---
-
+> 🧠 From automated workflows to measurable results — bridging MLOps and insight delivery.
+---
 ## 💯 What I Do
 
 - ⚙️ **Automate** end-to-end ML pipelines *(train → eval → deploy)*  
