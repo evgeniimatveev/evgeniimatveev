@@ -19,7 +19,7 @@ env:
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Small randomization window (seconds) to avoid thundering herd
+  # Randomization window (seconds) to avoid thundering herd
   JITTER_MAX_SEC: 1200
 
   # Shields badge settings
@@ -30,10 +30,10 @@ env:
   # Size of the visualization window (minutes) for the color gradient
   NEXT_BADGE_WINDOW_MIN: 20
 
-  # Logging policy (rotating logs)
-  NEXT_BADGE_LOG_EVERY_RUN: "0"        # "1" = append on every run (more commits)
-  NEXT_BADGE_LOG_SNAPSHOT_MIN: "60"    # periodic snapshots (minutes); "0" to disable
-  NEXT_BADGE_LOG_MAX: "400"            # keep last N lines in each log
+  # --- Logging policy (full telemetry each run + rotation) ---
+  NEXT_BADGE_LOG_EVERY_RUN: "1"        # <— write a log record on EVERY run
+  NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"     # <— disable periodic-only snapshots
+  NEXT_BADGE_LOG_MAX: "1050"           # keep last N lines (~7 days @ */10)
 
 jobs:
   refresh-badge:
