@@ -2,7 +2,7 @@ name: Update "Next Update" badge
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # run every 10 minutes
+    - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -13,13 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Keep in sync with your main update_readme.yml schedule (12:15 UTC)
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
-  # Same jitter as the main workflow; enables "~" in the badge
   JITTER_MAX_SEC: 1800
-
-  # Badge visuals (override if you want)
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "2e2e2e"
   NEXT_BADGE_LOGO: "timer"
@@ -27,37 +23,27 @@ env:
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Debug paths (optional)
-        run: |
-          pwd
-          ls -al
-
       - name: Build JSON for badge
-        run: |
-          python build_next_badge.py
+        run: python build_next_badge.py
 
       - name: Commit JSON (if changed)
-        shell: bash
         run: |
           set -e
-          git add badges/next_update.json 2>/dev/null || true
+          git add badges/next_update.json || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git config --global user.name  "${{ github.actor }}"
+            git config --global user.name "${{ github.actor }}"
             git config --global user.email "${{ github.actor }}@users.noreply.github.com"
             git commit -m "chore: refresh next_update badge"
             git push
