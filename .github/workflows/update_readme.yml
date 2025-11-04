@@ -40,20 +40,20 @@ permissions:
   contents: write   # Required to push README/log updates
 
 concurrency:
-  group: auto-update-readme     # Deduplicate overlapping runs
-  cancel-in-progress: true      # If a new run starts, cancel the previous one
+  group: auto-update-readme
+  cancel-in-progress: true
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    # timeout-minutes: 45  # Optional safety
+    # timeout-minutes: 45
 
     env:
       # ---- Controls for the updater script ----
       BANNER_MODE: ${{ inputs.banner_mode != '' && inputs.banner_mode || 'sequential' }}
       BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       MLOPS_INSIGHT: ${{ inputs.insight }}
-      SCHEDULE_BADGE: "24h_5m"     # Display-only badge; does not affect schedule
+      SCHEDULE_BADGE: "24h_5m"
 
       # Emoji control
       BANNER_EMOJI_MODE: stable    # random | stable
@@ -70,6 +70,10 @@ jobs:
       # ---- JITTER (up to 30 minutes) ----
       JITTER_MAX_SEC: 1800
 
+      # ---- Next Update nominal time (used in badge JSON) ----
+      NEXT_UPDATE_HOUR: 12
+      NEXT_UPDATE_MIN: 15
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -77,7 +81,6 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      # Apply jitter only for scheduled runs (manual runs start immediately)
       - name: Random jitter (sleep up to 30 min)
         if: ${{ github.event_name == 'schedule' }}
         shell: bash
@@ -99,6 +102,29 @@ jobs:
 
       - name: Run updater
         run: python update_readme.py
+
+      # (update_readme.py уже пишет badges/next_update.json; шаг оставлен как явный "post-run" хук при желании)
+      - name: Refresh Next Update badge JSON (post-run, idempotent)
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime as dt, os, json
+          from pathlib import Path
+          hour = int(os.getenv("NEXT_UPDATE_HOUR","12"))
+          minute = int(os.getenv("NEXT_UPDATE_MIN","15"))
+          def next_eta(now):
+              t = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+              return t if now < t else (t + dt.timedelta(days=1))
+          def human(td):
+              s=max(0,int(td.total_seconds())); h,s=divmod(s,3600); m,_=divmod(s,60)
+              return f"in {m}m" if h==0 else f"in {h}h {m:02d}m"
+          def color(mins):
+              return "brightgreen" if mins<=15 else "green" if mins<=30 else "yellowgreen" if mins<=60 else "yellow" if mins<=120 else "orange" if mins<=240 else "lightgrey"
+          now=dt.datetime.utcnow(); eta=next_eta(now); left=eta-now; mins=max(0,int(left.total_seconds()//60))
+          badge={"schemaVersion":1,"label":"Next Update","message":human(left),"color":color(mins),"labelColor":"333333"}
+          p=Path("badges"); p.mkdir(parents=True, exist_ok=True)
+          (p/"next_update.json").write_text(json.dumps(badge, ensure_ascii=False), encoding="utf-8")
+          PY
 
       - name: Append & trim update_log.txt
         shell: bash
@@ -130,10 +156,8 @@ jobs:
           N = int(os.getenv("LOG_TABLE_N", "5"))
           log = pathlib.Path("update_log.jsonl")
           readme_p = pathlib.Path("README.md")
-
           def esc_md(s: str) -> str:
               return str(s).replace("|", "&#124;").replace("\n", " ").strip()
-
           rows = []
           if log.exists():
               lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
@@ -157,10 +181,8 @@ jobs:
                       )
                   )
                   rows.append(row)
-
           headers = ["Time (UTC)", "Run", "SHA", "Banner", "Event/Actor", "Insight"]
           sep = "|" + "|".join(["---"] * len(headers)) + "|"
-
           table = [
               "<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),
               "",
@@ -171,7 +193,6 @@ jobs:
               "</details>",
           ]
           new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
-
           readme = readme_p.read_text(encoding="utf-8")
           pattern = r"<!-- LOG:START -->.*?<!-- LOG:END -->"
           if re.search(pattern, readme, flags=re.S):
@@ -246,12 +267,12 @@ jobs:
         shell: bash
         run: |
           set -e
-          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt 2>/dev/null || true
+          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt badges/next_update.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs)"
+            msg="Auto-update README (banner/status/insight rotation + logs + next-update badge)"
             if [ "${COMMIT_MODE}" = "force" ]; then
               msg="${msg} [force]"
             fi
@@ -280,7 +301,6 @@ jobs:
       - name: Write job summary
         shell: bash
         run: |
-          # Build a small summary file first (avoids parser quirks with if/else inside a group)
           {
             echo "## README Auto-Update"
             echo "- **Run**: #${{ github.run_number }}"
@@ -289,13 +309,11 @@ jobs:
             echo "- **Schedule**: ${SCHEDULE_BADGE}"
             echo "- **Mode**: ${COMMIT_MODE}"
           } > .summary.md
-
           if [[ "${{ steps.commit.outputs.changed }}" == "true" ]]; then
             echo "- Pushed: ✅" >> .summary.md
           else
             echo "- Pushed: —" >> .summary.md
           fi
-
           cat .summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
@@ -308,4 +326,5 @@ jobs:
             update_log.jsonl
             .ci/heartbeat.log
             .ci/update_count.txt
+            badges/next_update.json
           retention-days: 7
