@@ -6,11 +6,9 @@ import os
 import json
 import datetime as dt
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Dict, Any, Tuple
 
-# ------------------------------------------------------------
-# Env helpers
-# ------------------------------------------------------------
+# -------------------------- env helpers --------------------------
 
 def getenv_first(candidates: Iterable[str], default: Optional[str] = None) -> str:
     """Return the first existing env value from candidates, else default (or empty)."""
@@ -21,7 +19,7 @@ def getenv_first(candidates: Iterable[str], default: Optional[str] = None) -> st
     return default if default is not None else ""
 
 def getenv_int(cands: Iterable[str], default: int) -> int:
-    """Return env as int with a safe fallback."""
+    """Like getenv_first but coerces to int with safe fallback."""
     raw = getenv_first(cands, None)
     try:
         return int(raw) if raw is not None else default
@@ -29,51 +27,48 @@ def getenv_int(cands: Iterable[str], default: int) -> int:
         return default
 
 def getenv_float(cands: Iterable[str], default: float) -> float:
-    """Return env as float with a safe fallback."""
+    """Like getenv_first but coerces to float with safe fallback."""
     raw = getenv_first(cands, None)
     try:
         return float(raw) if raw is not None else default
     except Exception:
         return default
 
-# ------------------------------------------------------------
-# Config (via env)
-# ------------------------------------------------------------
+def getenv_bool(cands: Iterable[str], default: bool) -> bool:
+    """Interpret typical truthy/falsey strings."""
+    raw = getenv_first(cands, None)
+    if raw is None:
+        return default
+    return str(raw).lower() not in ("0", "false", "no", "off", "")
+
+# -------------------------- configuration --------------------------
 
 # Daily schedule (UTC). Multiple keys kept for backward compatibility.
 CRON_HOUR   = getenv_int(["NEXT_UPDATE_HOUR", "CRON_HOUR", "NEXT_CRON_HOUR"], 7)
-CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN",  "CRON_MINUTE", "NEXT_CRON_MINUTE"], 43)
+CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN", "CRON_MINUTE", "NEXT_CRON_MINUTE"], 43)
 
 # If >0 we mark human time as approximate with "~".
-JITTER_MAX_SEC   = getenv_int(["JITTER_MAX_SEC", "NEXT_BADGE_JITTER_SEC"], 0)
+JITTER_MAX_SEC = getenv_int(["JITTER_MAX_SEC", "NEXT_BADGE_JITTER_SEC"], 0)
 
-# Countdown window in minutes that controls the color gradient.
+# Size (minutes) of the window used by the color gradient.
 TOTAL_WINDOW_MIN = getenv_float(["NEXT_BADGE_WINDOW_MIN", "TOTAL_WINDOW_MIN"], 20.0)
 
-# Badge appearance.
+# Badge appearance
 LABEL       = getenv_first(["NEXT_BADGE_LABEL"], "Next Update")
-LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "2e2e2e")    # left label color
+LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "2e2e2e")
 LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO", "NEXT_BADGE_LOGO"], "timer")
 
-# Output JSON path consumed by shields.io endpoint
-OUT_PATH    = Path("badges/next_update.json")
+# Output paths
+BADGE_PATH = Path("badges/next_update.json")
+LOG_JSONL  = Path("badges/next_update_log.jsonl")  # line-delimited JSON (telemetry)
+LOG_TXT    = Path("badges/next_update_log.txt")    # human-friendly tail view
 
-# --- Logging config (rotating logs) ---
-LOG_JSONL_PATH   = Path("badges/next_update_log.jsonl")  # one JSON per line
-LOG_TXT_PATH     = Path("badges/next_update_log.txt")    # human-readable
-LOG_MAX_LINES    = getenv_int(["NEXT_BADGE_LOG_MAX", "LOG_MAX_LINES"], 400)
+# Logging policy
+LOG_EVERY_RUN  = getenv_bool(["NEXT_BADGE_LOG_EVERY_RUN"], False)
+SNAPSHOT_MIN   = getenv_int(["NEXT_BADGE_LOG_SNAPSHOT_MIN"], 60)  # minutes; 0 disables
+LOG_MAX_LINES  = getenv_int(["NEXT_BADGE_LOG_MAX"], 400)          # rotation cap for each log
 
-# When to write to logs:
-# - LOG_EVERY_RUN: "1" -> append on every run (can cause frequent commits)
-# - otherwise append only when badge JSON changed, plus periodic snapshots
-LOG_EVERY_RUN    = getenv_first(["NEXT_BADGE_LOG_EVERY_RUN"], "0") not in ("0", "false", "False")
-
-# Append a snapshot every N minutes regardless of change (0 = disabled)
-LOG_SNAPSHOT_MIN = getenv_int(["NEXT_BADGE_LOG_SNAPSHOT_MIN"], 60)  # hourly by default
-
-# ------------------------------------------------------------
-# Time helpers
-# ------------------------------------------------------------
+# -------------------------- time helpers --------------------------
 
 def next_scheduled(now_utc: dt.datetime) -> dt.datetime:
     """Return the next daily occurrence at CRON_HOUR:CRON_MINUTE (UTC)."""
@@ -83,7 +78,7 @@ def next_scheduled(now_utc: dt.datetime) -> dt.datetime:
     return nxt
 
 def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
-    """Return compact human-friendly remaining time string."""
+    """Compact human-friendly remaining time string."""
     sec = int(delta.total_seconds())
     if sec <= 0:
         return "now" if sec >= -30 else "overdue"
@@ -96,18 +91,18 @@ def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
         return f"{tilde}{m}m"
     return f"{tilde}{m}m {s}s"
 
-# ------------------------------------------------------------
-# Color gradient (red -> yellow -> green)
-# ------------------------------------------------------------
+# -------------------------- color gradient --------------------------
+# Red -> Yellow -> Green smooth transition within TOTAL_WINDOW_MIN.
 
 def gradient_color_hex(minutes_left: float, window_min: float) -> str:
     """
-    Return hex color (without '#') for smooth red->yellow->green transition.
+    Return hex color (without '#') for a smooth red->yellow->green transition.
     ratio=0 (now/overdue) => red, ratio=1 (>=window) => green.
     """
     if minutes_left < 0:
         return "9e0142"  # dark red for overdue
 
+    # Clamp to [0..1]
     ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
 
     if ratio < 0.5:
@@ -123,100 +118,152 @@ def gradient_color_hex(minutes_left: float, window_min: float) -> str:
 
     return f"{r:02x}{g:02x}{b:02x}"
 
-# ------------------------------------------------------------
-# Logging helpers
-# ------------------------------------------------------------
+# -------------------------- logging utils --------------------------
 
-def _should_take_snapshot(now: dt.datetime) -> bool:
-    """Return True if periodic snapshot should be taken at this minute."""
-    if LOG_SNAPSHOT_MIN <= 0:
-        return False
-    minute_index = int(now.timestamp() // 60)
-    return (minute_index % LOG_SNAPSHOT_MIN) == 0
+def _ensure_dirs() -> None:
+    BADGE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    LOG_JSONL.parent.mkdir(parents=True, exist_ok=True)
+    LOG_TXT.parent.mkdir(parents=True, exist_ok=True)
 
-def _append_and_rotate(path: Path, new_line: str, max_lines: int) -> None:
-    """Append a line and keep only the last max_lines."""
+def _read_last_jsonl_line(path: Path) -> Optional[str]:
+    """Efficient tail(1) for reasonably-sized files."""
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
+        with path.open("rb") as f:
+            f.seek(0, 2)
+            size = f.tell()
+            if size == 0:
+                return None
+            # read backwards up to ~8KB to find the last newline
+            chunk = 8192
+            pos = max(0, size - chunk)
+            f.seek(pos)
+            data = f.read().decode("utf-8", errors="ignore")
+            lines = [ln for ln in data.splitlines() if ln.strip()]
+            return lines[-1] if lines else None
+    except FileNotFoundError:
+        return None
     except Exception:
-        lines = []
-    lines.append(new_line)
-    if len(lines) > max_lines:
-        lines = lines[-max_lines:]
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        return None
 
-def write_logs(now: dt.datetime,
-               human: str,
-               minutes_left: float,
-               color_hex: str,
-               message: str) -> None:
-    """Write JSONL + text logs with rotation."""
-    LOG_JSONL_PATH.parent.mkdir(parents=True, exist_ok=True)
-    ts = now.replace(microsecond=0).isoformat() + "Z"
-    entry = {
-        "ts": ts,
-        "human": human,
-        "minutes_left": round(minutes_left, 2),
-        "color": color_hex,
-        "label": LABEL,
-        "message": message,
-        "sha": os.getenv("GITHUB_SHA", ""),
-        "run_id": os.getenv("GITHUB_RUN_ID", ""),
-        "repo": os.getenv("GITHUB_REPOSITORY", ""),
-    }
+def _last_snapshot_ts() -> Optional[dt.datetime]:
+    """Extract last 'ts' field from the JSONL tail, if present."""
+    line = _read_last_jsonl_line(LOG_JSONL)
+    if not line:
+        return None
+    try:
+        obj = json.loads(line)
+        if "ts" in obj:
+            return dt.datetime.fromisoformat(obj["ts"])
+    except Exception:
+        pass
+    return None
+
+def _should_write_log(now: dt.datetime) -> bool:
+    """Decide whether to append a telemetry entry this run."""
+    if LOG_EVERY_RUN:
+        return True
+    if SNAPSHOT_MIN <= 0:
+        return False
+    last = _last_snapshot_ts()
+    if last is None:
+        return True
+    return (now - last) >= dt.timedelta(minutes=SNAPSHOT_MIN)
+
+def _tail_lines(path: Path, keep: int) -> None:
+    """Rotate file to keep the last N non-empty lines."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return
+    lines = [ln for ln in text.splitlines() if ln.strip()]
+    if len(lines) <= keep:
+        return
+    tail = "\n".join(lines[-keep:]) + "\n"
+    path.write_text(tail, encoding="utf-8")
+
+def _append_logs(entry: Dict[str, Any]) -> None:
+    """Append a single entry to both JSONL and TXT logs, then rotate."""
     # JSONL
-    _append_and_rotate(LOG_JSONL_PATH, json.dumps(entry, ensure_ascii=False), LOG_MAX_LINES)
-    # TXT (compact)
-    txt = f'{ts} | {human:<8} | {minutes_left:6.1f}m | #{color_hex} | {message}'
-    _append_and_rotate(LOG_TXT_PATH, txt, LOG_MAX_LINES)
+    with LOG_JSONL.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
-# ------------------------------------------------------------
-# Main
-# ------------------------------------------------------------
+    # Human-readable TXT (compact)
+    line = (
+        f"[{entry['ts']}] color={entry['color']} "
+        f"msg='{entry['message']}' next_utc={entry['next_utc']} "
+        f"mins_left={entry['minutes_left']:.2f}\n"
+    )
+    with LOG_TXT.open("a", encoding="utf-8") as f:
+        f.write(line)
 
-def main() -> None:
-    now = dt.datetime.utcnow()
+    # Rotate both
+    _tail_lines(LOG_JSONL, LOG_MAX_LINES)
+    _tail_lines(LOG_TXT, LOG_MAX_LINES)
+
+# -------------------------- main --------------------------
+
+def build_payload(now: dt.datetime) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """Build shields.io payload and a telemetry entry."""
     nxt = next_scheduled(now)
     approx = JITTER_MAX_SEC > 0
+    delta = nxt - now
+    minutes_left = delta.total_seconds() / 60.0
 
-    minutes_left = (nxt - now).total_seconds() / 60.0
-    human        = fmt_human(nxt - now, approx=approx)
-    color_hex    = gradient_color_hex(minutes_left, TOTAL_WINDOW_MIN)
+    human = fmt_human(delta, approx=approx)
+    color_hex = gradient_color_hex(minutes_left, TOTAL_WINDOW_MIN)
 
-    # message shows only the time string (no emoji for a clean look)
-    payload = {
+    payload: Dict[str, Any] = {
         "schemaVersion": 1,
         "label": LABEL,
         "labelColor": LABEL_COLOR,
-        "message": human,
+        "message": human,           # no emoji, human-readable remaining time
         "color": color_hex,
         "namedLogo": LOGO,
+        # "style": "flat",
     }
 
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    telemetry: Dict[str, Any] = {
+        "ts": now.replace(microsecond=0).isoformat(),  # ISO8601 UTC
+        "next_utc": nxt.replace(microsecond=0).isoformat(),
+        "minutes_left": minutes_left,
+        "message": human,
+        "color": color_hex,
+        "label": LABEL,
+        "labelColor": LABEL_COLOR,
+        "window_min": TOTAL_WINDOW_MIN,
+        "cron_hour": CRON_HOUR,
+        "cron_min": CRON_MINUTE,
+        "jitter_max_sec": JITTER_MAX_SEC,
+    }
+    return payload, telemetry
 
+def main() -> None:
+    _ensure_dirs()
+
+    # Use UTC consistently
+    now = dt.datetime.utcnow()
+
+    payload, telemetry = build_payload(now)
+
+    # Write badge JSON only if changed (reduces churn)
+    old = None
     try:
-        old = json.loads(OUT_PATH.read_text(encoding="utf-8"))
+        old = json.loads(BADGE_PATH.read_text(encoding="utf-8"))
     except Exception:
-        old = None
+        pass
 
-    changed = (old != payload)
-    if changed:
-        OUT_PATH.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    if old != payload:
+        BADGE_PATH.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
         print("[badge] updated:", payload)
     else:
         print("[badge] no change")
 
-    # Logging policy: every run OR changed OR periodic snapshot
-    take_snapshot = _should_take_snapshot(now)
-    if LOG_EVERY_RUN or changed or take_snapshot:
-        write_logs(now, human, minutes_left, color_hex, payload["message"])
-        print("[log] written",
-              "(every-run)" if LOG_EVERY_RUN else
-              "(changed)" if changed else
-              f"(snapshot/{LOG_SNAPSHOT_MIN}m)")
+    # Telemetry logging (every run or periodic snapshots)
+    if _should_write_log(now):
+        _append_logs(telemetry)
+        print("[log] appended")
     else:
-        print("[log] skipped (no change and no snapshot)")
+        print("[log] skipped (policy)")
 
 if __name__ == "__main__":
     main()
