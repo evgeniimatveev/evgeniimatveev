@@ -26,7 +26,8 @@
 
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
 ---
-> 🧩 Passionate about building reproducible, automated, and insight-driven ML systems.
+🧩 Passionate about building reproducible, automated, and insight-driven ML systems.
+
 ## 📚 Learning Journey  
 - 🎓 Learning @ **SuperDataScience**  
 - 🪄 Focus: **MLOps | SQL | Automation**  
