@@ -24,6 +24,14 @@ def getenv_int(cands: Iterable[str], default: int) -> int:
     except Exception:
         return default
 
+def getenv_float(cands: Iterable[str], default: float) -> float:
+    """Float version of getenv with safe fallback."""
+    raw = getenv_first(cands, None)
+    try:
+        return float(raw) if raw is not None else default
+    except Exception:
+        return default
+
 # ---------- config (via env) ----------
 
 # Daily schedule (UTC). Multiple keys kept for backward compatibility.
@@ -34,12 +42,16 @@ CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN","CRON_MINUTE","NEXT_CRON_MINUTE"], 4
 JITTER_MAX_SEC = getenv_int(["JITTER_MAX_SEC","NEXT_BADGE_JITTER_SEC"], 0)
 
 # Countdown window in minutes for color/emoji transitions.
-TOTAL_WINDOW_MIN = float(getenv_first(["NEXT_BADGE_WINDOW_MIN","TOTAL_WINDOW_MIN"], "20"))
+TOTAL_WINDOW_MIN = getenv_float(["NEXT_BADGE_WINDOW_MIN","TOTAL_WINDOW_MIN"], 20.0)
+
+# When True, if minutes_left >= window we show coffee (neutral) emoji.
+COFFEE_BEYOND_WINDOW = getenv_first(["BADGE_COFFEE_BEYOND_WINDOW"], "1") not in ("0","false","False")
 
 # Badge appearance.
 LABEL       = getenv_first(["NEXT_BADGE_LABEL"], "Next Update")
-LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "black")
-LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO"], "")  # e.g., "github"
+LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "2e2e2e")
+# Keep both env names for compatibility.
+LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO","NEXT_BADGE_LOGO"], "timer")
 
 # Output JSON path.
 OUT_PATH = Path("badges/next_update.json")
@@ -72,7 +84,7 @@ def fmt_human(delta: dt.timedelta, approx: bool=False) -> str:
 def gradient_color_hex(minutes_left: float, window_min: float) -> str:
     """
     Return hex color (without '#') for smooth red->yellow->green transition.
-    ratio=0 (now) => red, ratio=1 (far) => green.
+    ratio=0 (now/overdue) => red, ratio=1 (>=window) => green.
     """
     if minutes_left < 0:
         return "9e0142"  # dark red for overdue
@@ -97,7 +109,7 @@ def gradient_color_hex(minutes_left: float, window_min: float) -> str:
 def build_emoji_palette(n: int = 72) -> list[str]:
     """
     Create a palette progressing from 'alert' red to 'ok' green.
-    Last steps are celebratory: rocket/fire/sparkles; overdue uses explosion.
+    Overdue uses 💥 (handled elsewhere). Long horizon can be ☕ (see COFFEE_BEYOND_WINDOW).
     """
     reds    = ["🟥","🔴","🧨","🛑","❗"]
     yellows = ["🟨","🟡","⚠️","⏳","⌛"]
@@ -112,20 +124,29 @@ def build_emoji_palette(n: int = 72) -> list[str]:
         [yellows[i % len(yellows)] for i in range(n_yel)] +
         [greens[i % len(greens)] for i in range(n_grn)]
     )
-
-    if len(palette) >= 3:
-        palette[-3:] = ["🚀","🔥","✨"]
     return palette[:n]
 
 _EMOJI_STEPS = build_emoji_palette(72)
 
 def emoji_for_minutes(minutes_left: float, window_min: float) -> str:
-    """Map remaining minutes to one of the 72 emoji steps."""
+    """
+    Map remaining minutes to one of the palette steps.
+    - overdue: 💥
+    - >= window and COFFEE_BEYOND_WINDOW: ☕
+    - otherwise: pick a step aligned with the same ratio used by the gradient
+      so that color and emoji are semantically consistent.
+    """
     if minutes_left < 0:
         return "💥"
-    idx = int(round((window_min - max(0.0, minutes_left)) / max(1e-6, window_min)
-                    * (len(_EMOJI_STEPS)-1)))
-    idx = max(0, min(len(_EMOJI_STEPS)-1, idx))
+
+    if COFFEE_BEYOND_WINDOW and minutes_left >= window_min:
+        return "☕"
+
+    # Ratio in [0..1] (0 = now, 1 = window edge)
+    ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
+    # Convert to index where lower ratio -> red side, higher -> green side
+    idx = int(round(ratio * (len(_EMOJI_STEPS) - 1)))
+    idx = max(0, min(len(_EMOJI_STEPS) - 1, idx))
     return _EMOJI_STEPS[idx]
 
 # ---------- main ----------
@@ -137,25 +158,27 @@ def main() -> None:
 
     minutes_left = (nxt - now).total_seconds() / 60.0
     human = fmt_human(nxt - now, approx=approx)
-    emoji = emoji_for_minutes(minutes_left, TOTAL_WINDOW_MIN)
+
+    # Single source of truth: same ratio drives both color and emoji.
+    color_hex = gradient_color_hex(minutes_left, TOTAL_WINDOW_MIN)
+    emoji     = emoji_for_minutes(minutes_left, TOTAL_WINDOW_MIN)
 
     payload = {
         "schemaVersion": 1,
         "label": LABEL,
         "labelColor": LABEL_COLOR,
         "message": f"{emoji} {human}",
-        "color": gradient_color_hex(minutes_left, TOTAL_WINDOW_MIN),
+        "color": color_hex,
         "namedLogo": LOGO,
         # "style": "flat",
     }
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    old = None
     try:
         old = json.loads(OUT_PATH.read_text(encoding="utf-8"))
     except Exception:
-        pass
+        old = None
 
     if old != payload:
         OUT_PATH.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
