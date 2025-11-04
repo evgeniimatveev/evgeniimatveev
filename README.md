@@ -218,33 +218,27 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <!-- Collapsible GitHub Insights -->
 <details>
-  <summary align="center">
-    <b>📈 Auto GitHub Insights</b>
-    <sub>(UTC · auto-refresh)</sub>
-  </summary>
+<summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
-  <div align="center">
+<p align="center">
+  <img
+    src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight"
+    alt="Profile Details"
+    width="800"
+  />
+</p>
 
-    <br/>
+<p align="center">
+  <img
+    src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight"
+    width="400"
+    alt="Stats"
+  />
+  <img
+    src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0"
+    width="400"
+    alt="Commits by time (UTC)"
+  />
+</p>
 
-    <img
-      src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight"
-      alt="Profile Details"
-      width="800"
-    />
-
-    <p>
-      <img
-        src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight"
-        width="400"
-        alt="Stats"
-      />
-      <img
-        src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0"
-        width="400"
-        alt="Commits by time (UTC)"
-      />
-    </p>
-
-  </div>
 </details>
