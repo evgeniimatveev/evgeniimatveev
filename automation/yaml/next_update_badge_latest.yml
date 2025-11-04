@@ -1,0 +1,55 @@
+name: Update "Next Update" badge
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # every 10 minutes
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: next-update-badge
+  cancel-in-progress: true
+
+env:
+  # Target UTC time for the next planned update (used for countdown)
+  NEXT_UPDATE_HOUR: 12
+  NEXT_UPDATE_MIN: 15
+
+  # Optional: if non-zero we show "~" in the time string (approximate)
+  JITTER_MAX_SEC: 1200
+
+  # Shields badge appearance
+  NEXT_BADGE_LABEL: "Next Update"
+  NEXT_BADGE_LABEL_COLOR: "2e2e2e"
+  NEXT_BADGE_NAMED_LOGO: "timer"
+
+jobs:
+  refresh-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Build JSON for badge
+        run: python build_next_badge.py
+
+      - name: Commit JSON (if changed)
+        run: |
+          set -e
+          git add badges/next_update.json || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git config --global user.name "${{ github.actor }}"
+            git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+            git commit -m "chore: refresh next_update badge"
+            git push
+          fi
