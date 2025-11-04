@@ -21,8 +21,8 @@
 
 ---
 
-#  🤖 Hi, I'm Evgenii — I automate things with AI & MLOps 
-## 🤖 I build automated MLOps systems that help models reach production smarter & faster
+# 🤖 Hi, I'm Evgenii — I automate things with AI & MLOps  
+## 🛠️ I build automated MLOps systems that help models reach production smarter & faster
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
 
 ---
