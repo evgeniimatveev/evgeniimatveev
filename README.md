@@ -167,9 +167,12 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ![Update Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red)
 ![Last Update](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue)
 
+---
 
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=dark)?
 
 ---
+
 <!-- INSIGHT:START -->
 🤖 MLOPS Insight: 📡 DATA • PLATFORMS • VALUE • RUN #5470 — Prune legacy, keep essentials ✂️ | Keep up the momentum! 🔥 Bootstrap your day with reproducible runs 🔁 🤖
 <!-- INSIGHT:END -->
