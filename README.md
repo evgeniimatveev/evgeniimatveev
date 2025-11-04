@@ -21,26 +21,23 @@
 
 ---
 
-# 🤖 Hi, I'm Evgenii — automating AI & MLOps workflows  
-## ⚙️ Building production-ready systems with CI/CD and smart automation
-**🧠 MLOps | 📊 Data Science | 🐍 SQL | ⚙️ Automation | 📈 Experiment Tracking | 📉 Tableau** 
+# 🤖 Hi, I'm Evgenii — I automate things with AI & MLOps  
+## 🚀 I build automated MLOps systems that help models reach production smarter & faster  
+
+🧠 MLOps | 📊 Data Science | 🐍 SQL | ⚙️ Automation | 📈 Experiment Tracking | 📉 Tableau  
 
 ---
 
-# 📚 Learning Journey
-🎓 Learning @ SuperDataScience
-
-🐍 Focus: |MLOps|SQL|Automation|
-
-⏳ Over 2 years of continuous learning
-
+## 📚 Learning Journey  
+- 🎓 Learning @ **SuperDataScience**  
+- 🪄 Focus: **MLOps | SQL | Automation**  
+- ⏳ Over 2 years of continuous learning  
 
 ---
-
 ## 💎 Stay Connected!  
-  🧠**GitHub Repository:**  [Evgenii Matveev](https://github.com/evgeniimatveev)  
+  🤖**GitHub Repository:**  [Evgenii Matveev](https://github.com/evgeniimatveev)  
   🗂️**Portfolio:**  [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveevusa)  
-  💼**LinkedIn:**  [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
+  🌐**LinkedIn:**  [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
 
 ---
 ##  💼 Tech Stack
