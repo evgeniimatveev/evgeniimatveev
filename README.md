@@ -176,7 +176,14 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <br>
 
-[![Next Update](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json)](https://github.com/evgeniimatveev)
+<p align="left">
+  <a href="https://github.com/evgeniimatveev">
+    <img
+      src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
+      alt="Next Update"
+    />
+  </a>
+</p>
 
 ---
 
