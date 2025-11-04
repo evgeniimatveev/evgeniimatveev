@@ -103,8 +103,8 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 </details>
 <!-- END: COPILOTS -->
----
 
+---
 <!-- BEGIN: AUTOMATION -->
 <details>
   <summary>🤖 Automation Logs</summary>
