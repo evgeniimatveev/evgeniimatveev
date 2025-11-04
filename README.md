@@ -77,29 +77,32 @@
 ![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
 
 ---
+---
 <!-- BEGIN: COPILOTS -->
 <details>
   <summary>🧠 AI Copilot Ecosystem</summary>
 
-| Assistant        | Role                          | Usage  |
+| Assistant | Role | Usage |
 |------------|------|--------|
 | 🧠 ChatGPT 5.0 | Core copilot for architecture & automation | Rapid execution |
 | 🎯 Claude Sonnet 4.5 | Contextual planner & strategic reasoner | Long-range thinking |
 
   <details>
-    <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
+    <summary>💡 <b>Note: Dual-Copilot Workflow</b></summary>
 
-This ecosystem runs as a **multi-copilot workflow** — each assistant has a distinct role:
+This ecosystem operates as a **dual-copilot workflow** — two AI systems working in synergy:  
 - 🧠 **ChatGPT** → architecture, reasoning, documentation  
-- 🧩 **Claude Sonnet 4.5** → long-range automation & planning  
-- 🔬 **DeepSeek R1** → rigorous code logic & debugging  
+- 🪶 **Claude Sonnet 4.5** → long-context planning & strategic alignment  
 
-Together, it forms a loop of **innovation → execution → validation** — my personal **AI engineering stack**.
+> This dual-copilot system balances speed and depth —  
+> **ChatGPT** executes and refines · **Claude** plans and connects.  
+> Together they form my **AI-powered engineering loop** for continuous innovation.  
+
+✨ *Built for clarity, driven by automation, inspired by intelligence.*
   </details>
 
 </details>
 <!-- END: COPILOTS -->
-
 ---
 
 <!-- BEGIN: AUTOMATION -->
