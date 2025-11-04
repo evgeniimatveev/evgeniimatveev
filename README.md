@@ -16,9 +16,8 @@
 <!-- STATUS:END -->
 
 ---
-<p align="center">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}" />
-</p>
+
+![Next Update](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fevgeniimatveev%2Fevgeniimatveev%2Fmain%2Fbadges%2Fnext_update.json&cacheSeconds=120)
 
 ---
 
