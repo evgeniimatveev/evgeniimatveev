@@ -188,6 +188,17 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/evgeniimatveev">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/update_log.json"
+      alt="Automation Log" />
+  </a>
+</p>
+
+<p align="center">
+  <sub>📈 Live telemetry powered by GitHub Actions + Python automation</sub>
+</p>
+
 
 <div align="center">
 
