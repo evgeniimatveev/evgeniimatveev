@@ -46,8 +46,7 @@ concurrency:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    # Optional safety: prevent hanging jobs
-    # timeout-minutes: 45
+    # timeout-minutes: 45  # Optional safety
 
     env:
       # ---- Controls for the updater script ----
@@ -281,6 +280,7 @@ jobs:
       - name: Write job summary
         shell: bash
         run: |
+          # Build a small summary file first (avoids parser quirks with if/else inside a group)
           {
             echo "## README Auto-Update"
             echo "- **Run**: #${{ github.run_number }}"
@@ -288,12 +288,15 @@ jobs:
             echo "- **Commit**: ${{ github.sha }}"
             echo "- **Schedule**: ${SCHEDULE_BADGE}"
             echo "- **Mode**: ${COMMIT_MODE}"
-            if [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
-              echo "- Pushed: ✅"
-            else:
-              echo "- Pushed: —"
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
+          } > .summary.md
+
+          if [[ "${{ steps.commit.outputs.changed }}" == "true" ]]; then
+            echo "- Pushed: ✅" >> .summary.md
+          else
+            echo "- Pushed: —" >> .summary.md
+          fi
+
+          cat .summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
         if: always()
