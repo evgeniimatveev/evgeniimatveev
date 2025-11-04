@@ -51,8 +51,8 @@ def main() -> None:
         "labelColor": LABEL_COLOR,
         "message": f"{emoji} {human}",
         "color": _color_for_minutes(minutes_left),
-        "namedLogo": LOGO,               # <— ВАЖНО: namedLogo
-        # "style": "flat"                # опционально
+        "namedLogo": LOGO,              
+        # "style": "flat"                
     }
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
