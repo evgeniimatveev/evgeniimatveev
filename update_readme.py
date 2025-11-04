@@ -341,7 +341,7 @@ def get_dynamic_quote() -> str:
 # -------- Insight helpers --------
 def _resolve_insight(dynamic_quote: str) -> str:
     env = os.getenv("MLOPS_INSIGHT", "").strip()
-    return env if env else "💡 " + dynamic_quote
+    return env if env else "📡 " + dynamic_quote
 
 def _upsert_insight_block(md_text: str, insight: str) -> str:
     """Keep a single INSIGHT block. Remove stray old single-line insights."""
