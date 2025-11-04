@@ -86,6 +86,10 @@
 | ChatGPT 5.0      | Prompting, architecture, docs | 50–60% |
 | Claude Sonnet 4.5 | Long-context planning        | 30–40% |
 | DeepSeek R1      | Debugging & strict logic      | 10–15% |
+| Assistant | Role | Focus |
+|------------|------|--------|
+| 🧠 ChatGPT 5.0 | Core copilot for architecture & automation | Rapid execution |
+| 🎯 Claude Sonnet 4.5 | Contextual planner & strategic reasoner | Long-range thinking |
 
   <details>
     <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
