@@ -84,15 +84,15 @@
 
 | Assistant | Role | Usage |
 |------------|------|--------|
-| 🧠 ChatGPT 5.0 | Core copilot for architecture & automation | Rapid execution |
-| 🎯 Claude Sonnet 4.5 | Contextual planner & strategic reasoner | Long-range thinking |
+|  ChatGPT 5.0 | Core copilot for architecture & automation | Rapid execution |
+|  Claude Sonnet 4.5 | Contextual planner & strategic reasoner | Long-range thinking |
 
   <details>
     <summary>💡 <b>Note: Dual-Copilot Workflow</b></summary>
 
 This ecosystem operates as a **dual-copilot workflow** — two AI systems working in synergy:  
-- 🧠 **ChatGPT** → architecture, reasoning, documentation  
-- 🪶 **Claude Sonnet 4.5** → long-context planning & strategic alignment  
+-  **ChatGPT** → architecture, reasoning, documentation  
+-  **Claude Sonnet 4.5** → long-context planning & strategic alignment  
 
 > This dual-copilot system balances speed and depth —  
 > **ChatGPT** executes and refines · **Claude** plans and connects.  
