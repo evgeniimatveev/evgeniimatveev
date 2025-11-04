@@ -17,7 +17,7 @@
 
 ---
 <p align="center">
- <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<USER>/<REPO>/main/badges/next_update.json&cacheSeconds=60" />
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}" />
 </p>
 
 ---
