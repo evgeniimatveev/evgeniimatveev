@@ -170,36 +170,17 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-### 📊 GitHub Summary
-
 <div align="center">
 
-<!-- Профильный график -->
 <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight" alt="Profile Details" width="800"/>
 
-<!-- Две карточки в ряд -->
+
 <p>
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight" alt="Stats" width="400"/>
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" alt="Productive Time" width="400"/>
 </p>
 
 </div>
-
-## 🧠 Developer Metrics
-
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight" width="800" />
-</p>
-
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight" width="400" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=evgeniimatveev&theme=tokyonight" width="400" />
-</p>
-
-
-![Profile Details](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight)
-
-![Stats](https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight)
 
 ---
 
