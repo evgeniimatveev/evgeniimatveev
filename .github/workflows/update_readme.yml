@@ -70,7 +70,7 @@ jobs:
       # ---- JITTER (up to 30 minutes) ----
       JITTER_MAX_SEC: 1800
 
-      # ---- Next Update nominal time (used in badge JSON) ----
+      # ---- Next Update nominal time (for badge ETA) ----
       NEXT_UPDATE_HOUR: 12
       NEXT_UPDATE_MIN: 15
 
@@ -81,6 +81,7 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
+      # Apply jitter only for scheduled runs (manual runs start immediately)
       - name: Random jitter (sleep up to 30 min)
         if: ${{ github.event_name == 'schedule' }}
         shell: bash
@@ -103,8 +104,8 @@ jobs:
       - name: Run updater
         run: python update_readme.py
 
-      # (update_readme.py уже пишет badges/next_update.json; шаг оставлен как явный "post-run" хук при желании)
-      - name: Refresh Next Update badge JSON (post-run, idempotent)
+      # Idempotent post-run: (re)build badges/next_update.json so shields endpoint shows ETA
+      - name: Refresh Next Update badge JSON (post-run)
         shell: bash
         run: |
           python - <<'PY'
@@ -119,9 +120,15 @@ jobs:
               s=max(0,int(td.total_seconds())); h,s=divmod(s,3600); m,_=divmod(s,60)
               return f"in {m}m" if h==0 else f"in {h}h {m:02d}m"
           def color(mins):
-              return "brightgreen" if mins<=15 else "green" if mins<=30 else "yellowgreen" if mins<=60 else "yellow" if mins<=120 else "orange" if mins<=240 else "lightgrey"
-          now=dt.datetime.utcnow(); eta=next_eta(now); left=eta-now; mins=max(0,int(left.total_seconds()//60))
-          badge={"schemaVersion":1,"label":"Next Update","message":human(left),"color":color(mins),"labelColor":"333333"}
+              return "brightgreen" if mins<=15 else \
+                     "green" if mins<=30 else \
+                     "yellowgreen" if mins<=60 else \
+                     "yellow" if mins<=120 else \
+                     "orange" if mins<=240 else "lightgrey"
+          now=dt.datetime.utcnow(); eta=next_eta(now); left=eta-now
+          mins=max(0,int(left.total_seconds()//60))
+          badge={"schemaVersion":1,"label":"Next Update","message":human(left),
+                 "color":color(mins),"labelColor":"333333"}
           p=Path("badges"); p.mkdir(parents=True, exist_ok=True)
           (p/"next_update.json").write_text(json.dumps(badge, ensure_ascii=False), encoding="utf-8")
           PY
@@ -228,26 +235,32 @@ jobs:
           print("|---|---|---|---|---|---|---|")
           for line in reversed(lines):
               d = json.loads(line)
-              banner = "{}{}/{} ({})".format("" , d.get('banner_index','?'), d.get('banner_total','?'), d.get('banner_file',''))
+              banner = "{}{}/{} ({})".format("", d.get('banner_index','?'), d.get('banner_total','?'), d.get('banner_file',''))
               evt = f"{d.get('event','')}/{d.get('actor','')}"
               print(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |")
           PY
 
-      - name: Update STATUS line in README
+      - name: Update STATUS line in README (with Next Update badge)
         shell: bash
         run: |
           short_sha="${GITHUB_SHA:0:7}"
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
           MODE_BADGE="${COMMIT_MODE}"
+
+          # dynamic endpoint badge reading badges/next_update.json from this ref
+          BADGE_NEXT="<img src=\"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json\" />"
+
           STATUS="<p align=\"center\">
           <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+          ${BADGE_NEXT}
           <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
           <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
           </p>"
+
           awk -v r="$STATUS" '
             /<!-- STATUS:START -->/ {print; print r; f=1; next}
             /<!-- STATUS:END -->/   {f=0}
