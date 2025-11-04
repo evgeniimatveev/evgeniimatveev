@@ -1,71 +1,56 @@
 # build_next_badge.py
 # -*- coding: utf-8 -*-
-# Generates a Shields.io endpoint JSON with a time-to-next-update message
-# and a smooth color gradient driven by minutes remaining.
-# No emoji, only a clean label + message + dynamic color.
 
 from __future__ import annotations
 import os, json, datetime as dt
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Tuple
 
-# ---------- env helpers ----------
+# -------------------- small env helpers --------------------
 
-def getenv_first(candidates: Iterable[str], default: Optional[str] = None) -> str:
-    """Return the first existing env value from candidates, else default (or empty)."""
-    for k in candidates:
+def getenv_first(keys: Iterable[str], default: Optional[str] = None) -> str:
+    """Return the first existing env var among keys, else default (or empty)."""
+    for k in keys:
         v = os.getenv(k)
         if v is not None:
             return v
     return default if default is not None else ""
 
-def getenv_int(cands: Iterable[str], default: int) -> int:
-    """Integer version of getenv with safe fallback."""
-    raw = getenv_first(cands, None)
+def getenv_int(keys: Iterable[str], default: int) -> int:
+    """Same as getenv_first but coerces result to int with a safe fallback."""
+    raw = getenv_first(keys, None)
     try:
         return int(raw) if raw is not None else default
     except Exception:
         return default
 
-def getenv_float(cands: Iterable[str], default: float) -> float:
-    """Float version of getenv with safe fallback."""
-    raw = getenv_first(cands, None)
-    try:
-        return float(raw) if raw is not None else default
-    except Exception:
-        return default
+# -------------------- config (via env) --------------------
 
-# ---------- config (via env) ----------
+# Daily target time in UTC (kept compatible with earlier names)
+CRON_HOUR   = getenv_int(["NEXT_UPDATE_HOUR", "CRON_HOUR", "NEXT_CRON_HOUR"], 12)
+CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN",  "CRON_MINUTE", "NEXT_CRON_MINUTE"], 15)
 
-# Daily schedule (UTC). Multiple keys kept for backward compatibility.
-CRON_HOUR   = getenv_int(["NEXT_UPDATE_HOUR", "CRON_HOUR", "NEXT_CRON_HOUR"], 7)
-CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN",  "CRON_MINUTE", "NEXT_CRON_MINUTE"], 43)
-
-# If >0 we prefix human time with "~" to signal possible jitter around the moment.
+# If >0 we prefix human time with "~" to indicate jitter/approximation
 JITTER_MAX_SEC = getenv_int(["JITTER_MAX_SEC", "NEXT_BADGE_JITTER_SEC"], 0)
 
-# Size of the visualization window (in minutes) that drives the color transition.
-# At ratio=0 (now/overdue) we use a "hot" color; at ratio>=1 (far) we clamp to a calm color.
-WINDOW_MIN = getenv_float(["NEXT_BADGE_WINDOW_MIN", "TOTAL_WINDOW_MIN"], 20.0)
-
-# Badge appearance.
+# Badge appearance
 LABEL       = getenv_first(["NEXT_BADGE_LABEL"], "Next Update")
 LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "2e2e2e")
 LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO", "NEXT_BADGE_LOGO"], "timer")
 
-# Output JSON path.
+# Output JSON
 OUT_PATH = Path("badges/next_update.json")
 
-# ---------- time utils ----------
+# -------------------- time helpers --------------------
 
 def next_scheduled(now_utc: dt.datetime) -> dt.datetime:
     """Return the next daily occurrence at CRON_HOUR:CRON_MINUTE (UTC)."""
     nxt = now_utc.replace(hour=CRON_HOUR, minute=CRON_MINUTE, second=0, microsecond=0)
     if nxt <= now_utc:
-        nxt = nxt + dt.timedelta(days=1)
+        nxt += dt.timedelta(days=1)
     return nxt
 
-def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
+def fmt_human(delta: dt.timedelta, approx: bool=False) -> str:
     """Compact human-friendly remaining time string."""
     sec = int(delta.total_seconds())
     if sec <= 0:
@@ -79,80 +64,92 @@ def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
         return f"{tilde}{m}m"
     return f"{tilde}{m}m {s}s"
 
-# ---------- color utils (HSL -> HEX) ----------
+# -------------------- color helpers (period-wide gradient) --------------------
 
-def _hsl_to_hex(h: float, s: float, l: float) -> str:
+def _hex_to_rgb(h: str) -> Tuple[int, int, int]:
+    h = h.lstrip("#")
+    return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+def _rgb_to_hex(rgb: Tuple[int, int, int]) -> str:
+    r, g, b = rgb
+    return f"{r:02x}{g:02x}{b:02x}"
+
+def _lerp(a: float, b: float, t: float) -> float:
+    return a + (b - a) * t
+
+def _lerp_rgb(a: Tuple[int, int, int], b: Tuple[int, int, int], t: float) -> Tuple[int, int, int]:
+    return (
+        int(round(_lerp(a[0], b[0], t))),
+        int(round(_lerp(a[1], b[1], t))),
+        int(round(_lerp(a[2], b[2], t))),
+    )
+
+def palette_color_hex(ratio: float) -> str:
     """
-    Convert HSL (0..360, 0..1, 0..1) to hex string without '#'.
-    Uses standard HSL-to-RGB conversion.
+    Map ratio in [0..1] to a smooth multi-stop gradient across the WHOLE period:
+      ratio=1.0 -> just after last update (far from deadline)
+      ratio=0.0 -> right at next update (deadline)
+    Palette: calm cyan -> sky blue -> violet -> amber -> red.
     """
-    c = (1 - abs(2*l - 1)) * s
-    h_ = (h % 360) / 60.0
-    x = c * (1 - abs((h_ % 2) - 1))
-    if   0 <= h_ < 1: r, g, b = c, x, 0
-    elif 1 <= h_ < 2: r, g, b = x, c, 0
-    elif 2 <= h_ < 3: r, g, b = 0, c, x
-    elif 3 <= h_ < 4: r, g, b = 0, x, c
-    elif 4 <= h_ < 5: r, g, b = x, 0, c
-    else:             r, g, b = c, 0, x
-    m = l - c/2
-    R = int(round((r + m) * 255))
-    G = int(round((g + m) * 255))
-    B = int(round((b + m) * 255))
-    return f"{R:02x}{G:02x}{B:02x}"
+    stops = ["#00c6ff", "#1e88e5", "#7e57c2", "#ffb300", "#e53935"]
+    # Convert to RGB once
+    rgbs = [_hex_to_rgb(s) for s in stops]
+    n = len(rgbs) - 1
+    if n <= 0:
+        return stops[0].lstrip("#")
 
-def timeline_color_hex(minutes_left: float, window_min: float) -> str:
-    """
-    Smooth color across time using HSL for a pleasing, modern look.
+    # Clamp ratio
+    r = max(0.0, min(1.0, ratio))
+    # Find segment
+    pos = r * n
+    i = int(pos)
+    t = pos - i
+    if i >= n:
+        i = n - 1
+        t = 1.0
+    rgb = _lerp_rgb(rgbs[i], rgbs[i+1], t)
+    return _rgb_to_hex(rgb)
 
-    Design:
-      - Overdue/now: deep crimson (attention but not harsh red)
-      - Progress through window: hue sweeps from hot pink -> amber -> lime
-      - Beyond window: clamp to calm lime (stable)
-
-    Hues (degrees): 330 -> 60 -> 140 (piecewise, via a single 330->140 sweep)
-    Saturation: 0.90, Lightness: 0.45
-    """
-    if minutes_left < 0:
-        return "b00040"  # deep crimson for overdue
-
-    # ratio in [0..1]; >=1 clamps to final calm color
-    ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
-
-    # Sweep hue from 330 (hot pink) down to 140 (lime) as ratio grows.
-    start_h, end_h = 330.0, 140.0
-    # Interpolate with slight easing for a softer start
-    eased = ratio * ratio * (3 - 2 * ratio)  # smoothstep
-    h = start_h + (end_h - start_h) * eased
-    return _hsl_to_hex(h, s=0.90, l=0.45)
-
-# ---------- main ----------
+# -------------------- main --------------------
 
 def main() -> None:
     now = dt.datetime.utcnow()
     nxt = next_scheduled(now)
-    approx = JITTER_MAX_SEC > 0
+    prev = nxt - dt.timedelta(days=1)  # previous day’s scheduled time
 
-    delta = nxt - now
-    minutes_left = delta.total_seconds() / 60.0
-    human = fmt_human(delta, approx=approx)
+    # Remaining time & human string
+    remaining = nxt - now
+    human = fmt_human(remaining, approx=(JITTER_MAX_SEC > 0))
+
+    # Ratio across the WHOLE period (prev -> nxt). 1 = just after prev (far), 0 = at nxt.
+    period = (nxt - prev).total_seconds()
+    ratio  = (now - prev).total_seconds() / period if period > 0 else 1.0
+    # Convert to “distance to deadline” so that 1 (far) -> calm; 0 (near) -> intense
+    ratio_to_deadline = 1.0 - max(0.0, min(1.0, ratio))
+
+    # Overdue safeguard
+    if remaining.total_seconds() < 0:
+        color_hex = "b00040"  # deep red
+    else:
+        color_hex = palette_color_hex(ratio_to_deadline)
 
     payload = {
         "schemaVersion": 1,
         "label": LABEL,
         "labelColor": LABEL_COLOR,
-        "message": human,  # clean text only, no emoji
-        "color": timeline_color_hex(minutes_left, WINDOW_MIN),
+        "message": human,          # <- no emojis here
+        "color": color_hex,
         "namedLogo": LOGO,
         # "style": "flat",
     }
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
+    old = None
     try:
         old = json.loads(OUT_PATH.read_text(encoding="utf-8"))
     except Exception:
-        old = None
+        pass
 
     if old != payload:
         OUT_PATH.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
