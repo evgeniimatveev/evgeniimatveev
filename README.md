@@ -77,7 +77,6 @@
 ![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
 
 ---
----
 <!-- BEGIN: COPILOTS -->
 <details>
   <summary>🧠 AI Copilot Ecosystem</summary>
