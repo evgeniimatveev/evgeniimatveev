@@ -41,7 +41,7 @@ permissions:
 
 concurrency:
   group: auto-update-readme
-  cancel-in-progress: true   # важное: чтобы расписание + джиттер не пересекались
+  cancel-in-progress: true   
 
 jobs:
   update-readme:
@@ -52,7 +52,7 @@ jobs:
       BANNER_MODE: ${{ inputs.banner_mode != '' && inputs.banner_mode || 'sequential' }}
       BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       MLOPS_INSIGHT: ${{ inputs.insight }}
-      SCHEDULE_BADGE: "24h_5m"   # можно оставить как есть; бейдж не влияет на расписание
+      SCHEDULE_BADGE: "24h_5m"   
 
       # Emoji control
       BANNER_EMOJI_MODE: stable   # random | stable
