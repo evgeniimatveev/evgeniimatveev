@@ -1,0 +1,62 @@
+name: Update "Next Update" badge
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # Run every 10 min
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: next-update-badge
+  cancel-in-progress: true
+
+env:
+  NEXT_UPDATE_HOUR: 12
+  NEXT_UPDATE_MIN: 15
+
+jobs:
+  refresh-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Build JSON for badge
+        run: |
+          python - <<'PY'
+          import os, json, datetime as dt
+          from pathlib import Path
+          hour=int(os.getenv("NEXT_UPDATE_HOUR","12")); minute=int(os.getenv("NEXT_UPDATE_MIN","15"))
+          def next_eta(now): 
+              t=now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+              return t if now<t else (t+dt.timedelta(days=1))
+          def human(td):
+              s=max(0,int(td.total_seconds())); h,s=divmod(s,3600); m,_=divmod(s,60)
+              return f"in {m}m" if h==0 else f"in {h}h {m:02d}m"
+          def color(mins):
+              return "brightgreen" if mins<=15 else "green" if mins<=30 else "yellowgreen" if mins<=60 else "yellow" if mins<=120 else "orange" if mins<=240 else "lightgrey"
+          now=dt.datetime.utcnow(); eta=next_eta(now); left=eta-now; mins=max(0,int(left.total_seconds()//60))
+          badge={"schemaVersion":1,"label":"Next Update","message":human(left),"color":color(mins),"labelColor":"333333"}
+          p=Path("badges"); p.mkdir(parents=True, exist_ok=True)
+          (p/"next_update.json").write_text(json.dumps(badge, ensure_ascii=False), encoding="utf-8")
+          PY
+
+      - name: Commit JSON (if changed)
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add badges/next_update.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: refresh next_update badge json"
+            git push
+          fi
