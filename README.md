@@ -140,7 +140,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <!-- END: AUTOMATION -->
 
 ---
-> | 🔁 Workflow | ⚙️ Automation | 📊 Insights |
+| 🔁 Workflow | ⚙️ Automation | 📊 Insights |
 |-------------|--------------|-------------|
 | From pipelines to production | Bridging MLOps and CI/CD | Delivering measurable results |
 ---
