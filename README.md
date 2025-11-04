@@ -30,7 +30,7 @@
 # 📚 Learning Journey
 🎓 Learning @ SuperDataScience
 
-🐍 Focus: |MLOps|Automation|
+🐍 Focus: |MLOps|SQL|Automation|
 
 ⏳ Over 2 years of continuous learning
 
