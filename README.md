@@ -37,7 +37,7 @@
 
 ---
 
-## 🪙 Stay Connected!  
+## 💎 Stay Connected!  
 💻 **GitHub Repository:** [Evgenii Matveev](https://github.com/evgeniimatveev)  
 🌐 **Portfolio:** [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveevusa)  
 📌 **LinkedIn:** [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
