@@ -1,0 +1,96 @@
+name: Auto Update README
+
+on:
+  schedule:
+    # Run once a day at 09:05 UTC
+    - cron: "5 9 * * *"
+  workflow_dispatch: {}          # Allow manual runs from the Actions tab
+
+# Prevent concurrent runs of this workflow from racing on README changes
+concurrency:
+  group: auto-update-readme
+  cancel-in-progress: false
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    env:
+      BANNER_MODE: sequential
+      # Optional: map banner to day-of-year so it always changes even if a run is skipped
+      # BANNER_CALENDAR_MODE: "true"
+
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      # Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      # Run the update script (rotates banner + timestamp + quote)
+      - name: Run updater
+        run: python update_readme.py
+
+      # Configure Git author (for commit attribution)
+      - name: Configure Git author
+        run: |
+          git config --global user.name "evgeniimatveev"
+          git config --global user.email "your-email@users.noreply.github.com"
+
+      # Append run metadata to a short log
+      - name: Append run metadata to log
+        run: |
+          {
+            echo "--------------------------------------"
+            echo "Updated on: $(date -u) (UTC)"
+            echo "Triggered by: ${{ github.event_name }}"
+            echo "Commit SHA: ${{ github.sha }}"
+            echo "Run ID: ${{ github.run_id }}"
+            echo "Run number: ${{ github.run_number }}"
+            echo "--------------------------------------"
+          } >> update_log.txt
+
+      # Keep the log short (last ~70 lines)
+      - name: Trim log (keep last ~70 lines)
+        run: |
+          tail -n 70 update_log.txt > temp_log.txt || true
+          mv temp_log.txt update_log.txt || true
+
+      # Refresh STATUS badges in README
+      - name: Update STATUS line in README
+        shell: bash
+        env:
+          SCHEDULE_BADGE: "24h_5m"
+        run: |
+          short_sha="${GITHUB_SHA:0:7}"
+          NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
+          NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
+
+          STATUS="<p align=\"center\">
+            <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
+            <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+            <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
+            <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
+            <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
+          </p>"
+
+          awk -v r="$STATUS" '
+            /<!-- STATUS:START -->/ {print; print r; f=1; next}
+            /<!-- STATUS:END -->/   {f=0}
+            !f
+          ' README.md > README.tmp && mv README.tmp README.md
+
+      # Commit & push changes (using PAT)
+      - name: Commit & push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.CLASSIC_PAT }}
+        run: |
+          git add README.md update_log.txt || true
+          git commit -m "Auto-update README (sequential rotation)" || echo "No changes to commit"
+          git push "https://x-access-token:${{ secrets.CLASSIC_PAT }}@github.com/${{ github.repository }}.git" HEAD:main
