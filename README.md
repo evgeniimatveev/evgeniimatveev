@@ -21,8 +21,8 @@
 
 ---
 
-#  Hi,👋 I'm Evgenii Matveev  
-## 🔧 I  help models move to production — with automation, MLOps & a bit of AI
+#  🤖 Hi, I'm Evgenii — I automate things with AI & MLOps 
+## 🤖 I build automated MLOps systems that help models reach production smarter & faster
 **MLOps | Data Science | SQL | ML Experiment Tracking | Automation | Tableau** 
 
 ---
@@ -30,17 +30,17 @@
 # 📚 Learning Journey
 🎓 Learning @ SuperDataScience
 
-🧠 Focus: MLOps| SQL| Automation| Experiment Tracking 
+🐍 Focus: MLOps|Automation|
 
-⏱️ 2+ years of continuous learning 
+⏳ Over 2 years of continuous learning
 
 
 ---
 
 ## 💎 Stay Connected!  
-  🧑‍🚀**GitHub Repository:**  [Evgenii Matveev](https://github.com/evgeniimatveev)  
+  🌐**GitHub Repository:**  [Evgenii Matveev](https://github.com/evgeniimatveev)  
   🗂️**Portfolio:**  [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveevusa)  
-  🌐**LinkedIn:**  [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
+  💼**LinkedIn:**  [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
 
 ---
 ##  💼 Tech Stack
