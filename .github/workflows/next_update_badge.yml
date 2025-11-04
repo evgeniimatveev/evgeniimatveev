@@ -27,6 +27,7 @@ env:
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,25 +40,24 @@ jobs:
         with:
           python-version: "3.10"
 
+      - name: Debug paths (optional)
+        run: |
+          pwd
+          ls -al
+
       - name: Build JSON for badge
         run: |
-          python - <<'PY'
-          import runpy, pathlib, sys
-          p = pathlib.Path("automation/build_next_badge.py")
-          if not p.exists():
-              print("ERROR: automation/build_next_badge.py not found", file=sys.stderr)
-              sys.exit(1)
-          runpy.run_path(str(p))
-          PY
+          python build_next_badge.py
 
       - name: Commit JSON (if changed)
+        shell: bash
         run: |
           set -e
-          git add badges/next_update.json || true
+          git add badges/next_update.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git config --global user.name "${{ github.actor }}"
+            git config --global user.name  "${{ github.actor }}"
             git config --global user.email "${{ github.actor }}@users.noreply.github.com"
             git commit -m "chore: refresh next_update badge"
             git push
