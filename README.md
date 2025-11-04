@@ -8,7 +8,10 @@
 <p align="center">
 <img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-04%2009%3A19%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5469" />
 <img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=300" />
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" />
+<img
+    src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fevgeniimatveev%2Fevgeniimatveev%2Fmain%2Fbadges%2Fnext_update.json&cacheSeconds=120"
+    alt="Next Update"
+  />
 <img src="https://img.shields.io/badge/Rotation-%235469-1f6feb?cacheSeconds=60" />
 <img src="https://img.shields.io/badge/Commit-354c763-9cf?cacheSeconds=300" />
 <img src="https://img.shields.io/badge/Event-workflow_dispatch-8a2be2?cacheSeconds=300" />
