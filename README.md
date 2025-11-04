@@ -43,7 +43,7 @@
 📌 **LinkedIn:** [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)  
 
 ---
-##  🧰 Tech Stack
+##  💼 Tech Stack
 
 ### Languages & Databases
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
