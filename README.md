@@ -243,4 +243,19 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
+<p align="left">
+  <!-- Next Update (endpoint) — -->
+  <img
+    src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&link=https://github.com/evgeniimatveev/evgeniimatveev"
+    alt="Next Update" />
 
+  <!-- Open Actions schedule -->
+  <img
+    src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions&link=https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml"
+    alt="Open Actions" />
+
+  <!-- Logs tail (TXT) -->
+  <img
+    src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack&link=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt"
+    alt="Logs tail" />
+</p>
