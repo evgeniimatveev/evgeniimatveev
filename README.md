@@ -219,8 +219,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
     <img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal"
          alt="Telemetry" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow"
-         alt="Insight ML/W&B" style="vertical-align:middle;"/>
+    <img src="https://img.shields.io/badge/Commit-906feaf-9cf" />
     <img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
          alt="Rotation" style="vertical-align:middle;"/>
   </span>
