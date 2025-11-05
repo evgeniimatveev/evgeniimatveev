@@ -63,7 +63,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ├─ update_log.jsonl          # CI run timeline (1 JSON object per run: ts_utc · run_id · run_number · sha · banner_* · insight_*)
 ├─ update_log.txt            # Grep-friendly mirror of update_log.jsonl (ts UTC · run=… · sha=… tail)
 ├─ badges/
-│  ├─ next_update.json       # Live Shields.io badge state (label, message '~14h 35m', color bucket)
+│  ├─ next_update.json       # Live Shields.io badge state (label, message '~14h 35m', color d8f5e3)
 │  ├─ next_update_log.jsonl  # Badge countdown samples (ts · next_utc · minutes_left · message · color · jitter params)
 │  └─ next_update_log.txt    # Human tail of badge ETA ([ts] color=… msg='…' next_utc=… mins_left=…)
 └─ .ci/
