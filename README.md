@@ -284,4 +284,50 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://img.shields.io/badge/Rotation-%235471-blue?style=flat&logo=clockify" alt="Rotation" style="vertical-align:middle;"/>
 </p>
 
+--- 
 
+
+<div align="left" style="white-space:nowrap; overflow-x:auto; padding-bottom:4px;">
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&link=https://github.com/evgeniimatveev/evgeniimatveev" alt="Next Update" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions&link=https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml" alt="Open Schedule" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack&link=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt" alt="Logs tail" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Telemetry-Tracking-3b82f6?style=flat&logo=signal&link=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.jsonl" alt="Telemetry" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Insight-MLflow%20%7C%20W%26B-8b5cf6?style=flat&logo=mlflow&link=https://mlflow.org/" alt="Insight Engine" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Workflow-Active-10b981?style=flat&logo=githubactions" alt="Workflow Active" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Rotation-%235471-blue?style=flat&logo=clockify" alt="Rotation" style="vertical-align:middle;"/>
+</div
+
+---
+
+
+<p align="left" style="white-space:nowrap;">
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next" style="vertical-align:middle;"/>
+
+  &nbsp;<img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Schedule" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack" alt="Tail" style="vertical-align:middle;"/>
+
+  &nbsp;<img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal" alt="Telemetry" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow" alt="Insight" style="vertical-align:middle;"/>
+
+  &nbsp;<img src="https://img.shields.io/badge/WF-Active-10b981?style=flat-square&logo=githubactions" alt="WF" style="vertical-align:middle;"/>
+  &nbsp;<img src="https://img.shields.io/badge/Rot-%235471-1f6feb?style=flat-square&logo=clockify" alt="Rotation" style="vertical-align:middle;"/>
+</p>
+
+
+---
+
+<table width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style="white-space:nowrap; padding:0 8px 4px 0;">
+      <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" style="vertical-align:middle;"/>
+      &nbsp;<img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions" style="vertical-align:middle;"/>
+      &nbsp;<img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack" style="vertical-align:middle;"/>
+    </td>
+    <td style="white-space:nowrap; padding:0 0 4px 8px;">
+      <img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal" style="vertical-align:middle;"/>
+      &nbsp;<img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow" style="vertical-align:middle;"/>
+      &nbsp;<img src="https://img.shields.io/badge/WF-Active-10b981?style=flat-square&logo=githubactions" style="vertical-align:middle;"/>
+      &nbsp;<img src="https://img.shields.io/badge/Rot-%235471-1f6feb?style=flat-square&logo=clockify" style="vertical-align:middle;"/>
+    </td>
+  </tr>
+</table>
