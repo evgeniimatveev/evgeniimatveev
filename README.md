@@ -225,7 +225,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <hr/>
 
 <p align="center">
-  <b>Stay Connected</b>
+  <b></b>
 </p>
 
 <p align="center">
@@ -243,28 +243,4 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-<!-- FOOTER: QUICK LINKS (COMPACT) -->
-<p align="center">
-  <a href="https://github.com/evgeniimatveev">
-    <img src="https://img.shields.io/badge/GitHub-Profile-181717?style=flat-square&logo=github" alt="GitHub"/>
-  </a>
-  <a href="https://www.linkedin.com/in/evgenii-matveev-510926276/">
-    <img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn"/>
-  </a>
-  <a href="https://www.datascienceportfol.io/evgeniimatveevusa">
-    <img src="https://img.shields.io/badge/Portfolio-View-6f42c1?style=flat-square&logo=readthedocs" alt="Portfolio"/>
-  </a>
-</p>
 
----
-
-<!-- FOOTER: LIVE OPS STRIP -->
-<p align="center">
-  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next Update"/>
-  <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">
-    <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Open Actions"/>
-  </a>
-  <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt">
-    <img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack" alt="Logs tail"/>
-  </a>
-</p>
