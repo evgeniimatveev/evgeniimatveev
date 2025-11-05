@@ -35,12 +35,12 @@
 
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
-### 🎯 System Architecture:
-- 🎬 **Banner rotation**: 367 GIFs · natural sorting · cache-busted CDN URLs
-- 🧠 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
+### 🐍 System Architecture:
+- 🤖 **Banner rotation**: 367 GIFs · natural sorting · cache-busted CDN URLs
+- 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence  
-- 🔁 **Zero-touch ops**: 5475+ runs · 133 mutations · idempotent commits
+- ⚙️ **Zero-touch ops**: 5475+ runs · 133 mutations · idempotent commits
 
 ### 🐍 Core Scripts:
 | File | Version | Description |
