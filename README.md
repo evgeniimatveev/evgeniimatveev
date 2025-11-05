@@ -57,9 +57,35 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 📊 [View all runs →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
 
+### 📂 Observability Stack:
+```
+.
+├── update_log.jsonl           # Structured events (200-line rotation)
+├── update_log.txt             # Human-readable tail (70 runs)
+├── badges/
+│   ├── next_update.json       # Live countdown endpoint
+│   ├── next_update_log.jsonl  # Badge telemetry
+│   └── next_update_log.txt    # Badge history (human)
+└── .ci/
+    ├── heartbeat.log          # Force-commit ledger
+    └── update_count.txt       # Persistent counter (133+)
+```
+
+**📋 Browse logs:**  
+📊 [`update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl) · 
+📝 [`update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt) · 
+💓 [`heartbeat.log`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log) · 
+🔢 [`update_count.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt)  
+⏱️ [`next_update.json`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update.json) · 
+📡 [`next_update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.jsonl) · 
+📋 [`next_update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt)
 
 ---
 
+**💡 Philosophy**: *Automate everything · Log everything · Version everything*  
+**🔬 For engineers**: This is MLOps applied to itself — observability, idempotency, zero-toil operations.
+
+🔗 [Explore codebase](https://github.com/evgeniimatveev/evgeniimatveev) · 🌟 [Star repo](https://github.com/evgeniimatveev/evgeniimatveev)
 
 </details>
 
