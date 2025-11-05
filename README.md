@@ -209,15 +209,11 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-right:10px;border-right:1px solid #30363d;">
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
          alt="Next Update" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions"
-         alt="Schedule" style="vertical-align:middle;"/>
     <img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-04%2013%3A11%20UTC&color=0e8a16&labelColor=30363d&logo=clock" />
   </span>
 
   <!-- Right group -->
   <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-    <img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal"
-         alt="Telemetry" style="vertical-align:middle;"/>
     <img src="https://img.shields.io/badge/Commit-906feaf-9cf" />
     <img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
          alt="Rotation" style="vertical-align:middle;"/>
