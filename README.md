@@ -60,7 +60,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🔢 [`.ci/update_count.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt) — Persistent state counter (133+)
 
 ### 🛠️ Tech Stack:
-```python
 
 ---
 ## 📚 Learning Journey  
