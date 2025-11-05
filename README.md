@@ -29,11 +29,7 @@
 ## ⚙️ Building production-ready pipelines with CI/CD and intelligent automation  
 
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
----
-## 📚 Learning Journey  
-- 🎓 Learning @ **SuperDataScience**  
-- 🪄 Focus: **MLOps | SQL | Automation**  
-- ⏳ Over 2 years of continuous learning  
+
 
 <details>
 <summary>🔧 <b>How it works</b> <em>(for engineers)</em></summary>
@@ -55,6 +51,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio that showc
 
 </details>
 
+---
+## 📚 Learning Journey  
+- 🎓 Learning @ **SuperDataScience**  
+- 🪄 Focus: **MLOps | SQL | Automation**  
+- ⏳ Over 2 years of continuous learning  
 ---
 ## 💎 Stay Connected  
 
