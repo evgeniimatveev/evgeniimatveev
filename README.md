@@ -1,32 +1,21 @@
 <!-- BANNER:START -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/221.gif?t=1762261895" alt="Banner" height="420">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/222.gif?t=1762319764" alt="Banner" height="420">
 </p>
-<p align="center"><sub>🪄 Banner 221/367</sub></p>
+<p align="center"><sub>🌅 Banner 222/367</sub></p>
 <!-- BANNER:END -->
 
 ---
 
 <!-- STATUS:START -->
 <p align="center">
-
-<!-- ⏱ SYSTEM STATUS -->
-<img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-04%2013%3A11%20UTC&color=0e8a16&labelColor=30363d&logo=clock" />
-<img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f" />
+<img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-05%2005%3A16%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5472" />
+<img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=300" />
 <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" />
-
-<!-- ⚙️ VERSION INFO -->
-<img src="https://img.shields.io/badge/Rotation-%235471-1f6feb" />
-<img src="https://img.shields.io/badge/Commit-906feaf-9cf" />
-<img src="https://img.shields.io/badge/Event-schedule-8a2be2" />
-<img src="https://img.shields.io/badge/Mode-auto-grey" />
-
-</p>
-
-<!-- 💡 MISSION CONTEXT -->
-<p align="center">
-  <img src="https://img.shields.io/badge/Workflow%20Status-Active-success?style=for-the-badge&logo=githubactions" />
-  <img src="https://img.shields.io/badge/Telemetry%20Logs-Live-brightgreen?style=for-the-badge&logo=bookstack" />
+<img src="https://img.shields.io/badge/Rotation-%235472-1f6feb?cacheSeconds=60" />
+<img src="https://img.shields.io/badge/Commit-3bf0094-9cf?cacheSeconds=300" />
+<img src="https://img.shields.io/badge/Event-workflow_dispatch-8a2be2?cacheSeconds=300" />
+<img src="https://img.shields.io/badge/Mode-force-grey?cacheSeconds=60" />
 </p>
 <!-- STATUS:END -->
 
@@ -124,14 +113,14 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <details>
   <summary>🪄 Run Meta (click to expand)</summary>
 
-- 📆 Updated (UTC): **2025-11-04 13:11 UTC**
-- 🤖 Run: **#5471** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19069552593)
-- 🧬 Commit: **906feaf** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/906feaff2b5f7cb1d4f1ff2e2034c26557d17993)
-- ♻️ Updates (total): **129**
+- 📆 Updated (UTC): **2025-11-05 05:16 UTC**
+- 🤖 Run: **#5472** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19092059128)
+- 🧬 Commit: **3bf0094** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/3bf0094bd4a6bf69a3181ac4a9769f6993f8212d)
+- ♻️ Updates (total): **130**
 - 🌀 Workflow: **Auto Update README** · Job: **update-readme**
-- ✨ Event: **schedule** · 🧑‍💻 Actor: **evgeniimatveev**
+- ✨ Event: **workflow_dispatch** · 🧑‍💻 Actor: **evgeniimatveev**
 - 🕒 Schedule: **24h_5m**
-- 🌈 Banner: **221/367**
+- 🌈 Banner: **222/367**
 </details>
 
 <!-- RUNMETA:END -->
@@ -141,11 +130,11 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 | Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |
 |---|---|---|---|---|---|
+| 2025-11-05 05:16:04 | 5472 | `3bf0094` | 222/367 (222.gif) | workflow_dispatch/evgeniimatveev | 📡 PIPELINES, NOT FIRE-DRILLS • RUN #5472 — Reflect, refine, retrain 🍂 &#124; Halfway there — keep automating! 🛠️ Reflect, refactor, and r… |
 | 2025-11-04 13:11:35 | 5471 | `906feaf` | 221/367 (221.gif) | schedule/evgeniimatveev | 📡 TEST • OBSERVE • DEPLOY • RUN #5471 — Reflect, refine, retrain 🍂 &#124; Keep up the momentum! 🔥 Profile queries, add indexes, save comp… |
 | 2025-11-04 10:15:32 | 5470 | `74ee5c0` | 220/367 (220.gif) | workflow_dispatch/evgeniimatveev | 📡 DATA • PLATFORMS • VALUE • RUN #5470 — Prune legacy, keep essentials ✂️ &#124; Keep up the momentum! 🔥 Bootstrap your day with reproduc… |
 | 2025-11-04 09:19:39 | 5469 | `354c763` | 219/367 (219.gif) | workflow_dispatch/evgeniimatveev | 📡 AUTOMATE EVERYTHING • RUN #5469 — Tune models, store wisdom 📦 &#124; Keep up the momentum! 🔥 Spin up environments, hydrate the features… |
 | 2025-11-04 07:43:38 | 5468 | `888dedb` | 218/367 (218.gif) | workflow_dispatch/evgeniimatveev | 📡 SQL • PYTHON • PIPELINES • RUN #5468 — Rake through logs; keep insights 🍂➡️💡 &#124; Keep up the momentum! 🔥 Bootstrap your day with rep… |
-| 2025-11-04 07:36:32 | 5467 | `fd9c801` | 217/367 (217.gif) | workflow_dispatch/evgeniimatveev | 📡 TEST • OBSERVE • DEPLOY • RUN #5467 — BACKFILL HISTORY, RECONCILE TRUTH SOURCES 🧾 &#124; KEEP UP THE MOMENTUM! 🔥 STAND UP THE WAREHOUSE… |
 
 </details>
 <!-- LOG:END -->
@@ -191,7 +180,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 <!-- INSIGHT:START -->
-🤖 MLOPS Insight: 📡 TEST • OBSERVE • DEPLOY • RUN #5471 — Reflect, refine, retrain 🍂 | Keep up the momentum! 🔥 Profile queries, add indexes, save compute 💸 🛠️
+🤖 MLOPS Insight: 📡 PIPELINES, NOT FIRE-DRILLS • RUN #5472 — Reflect, refine, retrain 🍂 | Halfway there — keep automating! 🛠️ Reflect, refactor, and rest 🌌 📈
 <!-- INSIGHT:END -->
 
 ---
