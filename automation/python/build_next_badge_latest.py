@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
+
 import os
 import json
 import datetime as dt
 from pathlib import Path
 from typing import Iterable, Optional, Dict, Any, Tuple
+from colorsys import rgb_to_hls, hls_to_rgb  # used to pastelize colors
 
 # -------------------------- env helpers --------------------------
 
 def getenv_first(candidates: Iterable[str], default: Optional[str] = None) -> str:
-    """Return the first existing env value from candidates, else default (or empty)."""
+    """Return the first present env var from the list, else default (or empty string)."""
     for k in candidates:
         v = os.getenv(k)
         if v is not None:
@@ -19,7 +21,7 @@ def getenv_first(candidates: Iterable[str], default: Optional[str] = None) -> st
     return default if default is not None else ""
 
 def getenv_int(cands: Iterable[str], default: int) -> int:
-    """Like getenv_first but coerces to int with safe fallback."""
+    """Like getenv_first but coerces to int with a safe fallback."""
     raw = getenv_first(cands, None)
     try:
         return int(raw) if raw is not None else default
@@ -27,7 +29,7 @@ def getenv_int(cands: Iterable[str], default: int) -> int:
         return default
 
 def getenv_float(cands: Iterable[str], default: float) -> float:
-    """Like getenv_first but coerces to float with safe fallback."""
+    """Like getenv_first but coerces to float with a safe fallback."""
     raw = getenv_first(cands, None)
     try:
         return float(raw) if raw is not None else default
@@ -35,7 +37,7 @@ def getenv_float(cands: Iterable[str], default: float) -> float:
         return default
 
 def getenv_bool(cands: Iterable[str], default: bool) -> bool:
-    """Interpret typical truthy/falsey strings."""
+    """Interpret typical truthy/falsey strings for boolean env vars."""
     raw = getenv_first(cands, None)
     if raw is None:
         return default
@@ -43,30 +45,39 @@ def getenv_bool(cands: Iterable[str], default: bool) -> bool:
 
 # -------------------------- configuration --------------------------
 
-# Daily schedule (UTC). Multiple keys kept for backward compatibility.
+# Daily schedule in UTC (kept backward-compatible with alternative names)
 CRON_HOUR   = getenv_int(["NEXT_UPDATE_HOUR", "CRON_HOUR", "NEXT_CRON_HOUR"], 7)
 CRON_MINUTE = getenv_int(["NEXT_UPDATE_MIN", "CRON_MINUTE", "NEXT_CRON_MINUTE"], 43)
 
-# If >0 we mark human time as approximate with "~".
+# If >0 we mark human time as approximate by prefixing "~"
 JITTER_MAX_SEC = getenv_int(["JITTER_MAX_SEC", "NEXT_BADGE_JITTER_SEC"], 0)
 
-# Size (minutes) of the window used by the color gradient.
+# Size (minutes) of the gradient sensitivity window
 TOTAL_WINDOW_MIN = getenv_float(["NEXT_BADGE_WINDOW_MIN", "TOTAL_WINDOW_MIN"], 20.0)
 
 # Badge appearance
 LABEL       = getenv_first(["NEXT_BADGE_LABEL"], "Next Update")
-LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "2e2e2e")
+# Light label color ensures Shields renders black text on the left side
+LABEL_COLOR = getenv_first(["NEXT_BADGE_LABEL_COLOR"], "e5e7eb")
 LOGO        = getenv_first(["NEXT_BADGE_NAMED_LOGO", "NEXT_BADGE_LOGO"], "timer")
 
 # Output paths
 BADGE_PATH = Path("badges/next_update.json")
-LOG_JSONL  = Path("badges/next_update_log.jsonl")  # line-delimited JSON (telemetry)
-LOG_TXT    = Path("badges/next_update_log.txt")    # human-friendly tail view
+LOG_JSONL  = Path("badges/next_update_log.jsonl")  # line-delimited JSON telemetry
+LOG_TXT    = Path("badges/next_update_log.txt")    # human-friendly text tail
 
 # Logging policy
 LOG_EVERY_RUN  = getenv_bool(["NEXT_BADGE_LOG_EVERY_RUN"], False)
 SNAPSHOT_MIN   = getenv_int(["NEXT_BADGE_LOG_SNAPSHOT_MIN"], 60)  # minutes; 0 disables
-LOG_MAX_LINES  = getenv_int(["NEXT_BADGE_LOG_MAX"], 400)          # rotation cap for each log
+LOG_MAX_LINES  = getenv_int(["NEXT_BADGE_LOG_MAX"], 400)          # rotation cap
+
+# Pastel palette (light backgrounds => Shields chooses black text on right side)
+PASTELIZE        = getenv_bool(["NEXT_BADGE_PASTELIZE"], True)
+PASTEL_FACTOR    = getenv_float(["NEXT_BADGE_PASTEL_FACTOR"], 0.65)  # 0.55..0.75 typical
+OVERDUE_COLOR    = getenv_first(["NEXT_BADGE_OVERDUE_COLOR"], "fca5a5")  # light red
+GREEN_MAX_COLOR  = getenv_first(["NEXT_BADGE_GREEN_COLOR"], "86efac")    # light green
+YELLOW_COLOR     = getenv_first(["NEXT_BADGE_YELLOW_COLOR"], "fde68a")   # light yellow
+RED_COLOR        = getenv_first(["NEXT_BADGE_RED_COLOR"], "f87171")      # red-400
 
 # -------------------------- time helpers --------------------------
 
@@ -78,7 +89,7 @@ def next_scheduled(now_utc: dt.datetime) -> dt.datetime:
     return nxt
 
 def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
-    """Compact human-friendly remaining time string."""
+    """Compact human-friendly remaining time string like '~5h 12m'."""
     sec = int(delta.total_seconds())
     if sec <= 0:
         return "now" if sec >= -30 else "overdue"
@@ -91,32 +102,54 @@ def fmt_human(delta: dt.timedelta, approx: bool = False) -> str:
         return f"{tilde}{m}m"
     return f"{tilde}{m}m {s}s"
 
-# -------------------------- color gradient --------------------------
-# Red -> Yellow -> Green smooth transition within TOTAL_WINDOW_MIN.
+# -------------------------- color helpers --------------------------
+
+def _hex_to_rgb(h: str) -> tuple[int, int, int]:
+    h = h.lstrip("#")
+    return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+def _rgb_to_hex(r: int, g: int, b: int) -> str:
+    return f"{r:02x}{g:02x}{b:02x}"
+
+def _pastelize(hex_color: str, factor: float) -> str:
+    """
+    Lighten a hex color (using HLS) and slightly reduce saturation to get a pastel tone.
+    factor: 0..1 (0 = unchanged, 1 = nearly white).
+    """
+    r, g, b = _hex_to_rgb(hex_color)
+    rf, gf, bf = [x / 255.0 for x in (r, g, b)]
+    h, l, s = rgb_to_hls(rf, gf, bf)
+    l = l + (1.0 - l) * factor
+    s = s * (1.0 - 0.35 * factor)
+    r2, g2, b2 = hls_to_rgb(h, l, s)
+    return _rgb_to_hex(int(r2 * 255), int(g2 * 255), int(b2 * 255))
+
+# -------------------------- gradient --------------------------
 
 def gradient_color_hex(minutes_left: float, window_min: float) -> str:
     """
-    Return hex color (without '#') for a smooth red->yellow->green transition.
-    ratio=0 (now/overdue) => red, ratio=1 (>=window) => green.
+    Smooth red -> yellow -> green gradient within the window.
+    Then pastelize so the right side remains light and readable on dark themes.
     """
     if minutes_left < 0:
-        return "9e0142"  # dark red for overdue
-
-    # Clamp to [0..1]
-    ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
-
-    if ratio < 0.5:
-        # red -> yellow
-        g = int(255 * (ratio / 0.5))   # 0..255
-        r = 255
-        b = 0
+        base = OVERDUE_COLOR
     else:
-        # yellow -> green
-        g = 255
-        r = int(255 * (1 - (ratio - 0.5) / 0.5))  # 255..0
-        b = 0
-
-    return f"{r:02x}{g:02x}{b:02x}"
+        ratio = max(0.0, min(1.0, minutes_left / max(1e-6, window_min)))
+        if ratio < 0.5:
+            # RED -> YELLOW
+            t = ratio / 0.5
+            r1, g1, b1 = _hex_to_rgb(RED_COLOR)
+            r2, g2, b2 = _hex_to_rgb(YELLOW_COLOR)
+        else:
+            # YELLOW -> GREEN
+            t = (ratio - 0.5) / 0.5
+            r1, g1, b1 = _hex_to_rgb(YELLOW_COLOR)
+            r2, g2, b2 = _hex_to_rgb(GREEN_MAX_COLOR)
+        r = int(r1 + (r2 - r1) * t)
+        g = int(g1 + (g2 - g1) * t)
+        b = int(b1 + (b2 - b1) * t)
+        base = _rgb_to_hex(r, g, b)
+    return _pastelize(base, PASTEL_FACTOR) if PASTELIZE else base
 
 # -------------------------- logging utils --------------------------
 
@@ -126,14 +159,13 @@ def _ensure_dirs() -> None:
     LOG_TXT.parent.mkdir(parents=True, exist_ok=True)
 
 def _read_last_jsonl_line(path: Path) -> Optional[str]:
-    """Efficient tail(1) for reasonably-sized files."""
+    """Tail(1) for reasonably small files — read last non-empty line from JSONL."""
     try:
         with path.open("rb") as f:
             f.seek(0, 2)
             size = f.tell()
             if size == 0:
                 return None
-            # read backwards up to ~8KB to find the last newline
             chunk = 8192
             pos = max(0, size - chunk)
             f.seek(pos)
@@ -146,7 +178,7 @@ def _read_last_jsonl_line(path: Path) -> Optional[str]:
         return None
 
 def _last_snapshot_ts() -> Optional[dt.datetime]:
-    """Extract last 'ts' field from the JSONL tail, if present."""
+    """Extract last 'ts' from JSONL tail if present."""
     line = _read_last_jsonl_line(LOG_JSONL)
     if not line:
         return None
@@ -170,7 +202,7 @@ def _should_write_log(now: dt.datetime) -> bool:
     return (now - last) >= dt.timedelta(minutes=SNAPSHOT_MIN)
 
 def _tail_lines(path: Path, keep: int) -> None:
-    """Rotate file to keep the last N non-empty lines."""
+    """Rotate log file to keep only the last N non-empty lines."""
     try:
         text = path.read_text(encoding="utf-8")
     except FileNotFoundError:
@@ -182,12 +214,10 @@ def _tail_lines(path: Path, keep: int) -> None:
     path.write_text(tail, encoding="utf-8")
 
 def _append_logs(entry: Dict[str, Any]) -> None:
-    """Append a single entry to both JSONL and TXT logs, then rotate."""
-    # JSONL
+    """Append one entry to both JSONL and TXT logs, then rotate."""
     with LOG_JSONL.open("a", encoding="utf-8") as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
-    # Human-readable TXT (compact)
     line = (
         f"[{entry['ts']}] color={entry['color']} "
         f"msg='{entry['message']}' next_utc={entry['next_utc']} "
@@ -196,14 +226,13 @@ def _append_logs(entry: Dict[str, Any]) -> None:
     with LOG_TXT.open("a", encoding="utf-8") as f:
         f.write(line)
 
-    # Rotate both
     _tail_lines(LOG_JSONL, LOG_MAX_LINES)
     _tail_lines(LOG_TXT, LOG_MAX_LINES)
 
 # -------------------------- main --------------------------
 
 def build_payload(now: dt.datetime) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-    """Build shields.io payload and a telemetry entry."""
+    """Build a Shields.io payload and a telemetry entry."""
     nxt = next_scheduled(now)
     approx = JITTER_MAX_SEC > 0
     delta = nxt - now
@@ -216,14 +245,13 @@ def build_payload(now: dt.datetime) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         "schemaVersion": 1,
         "label": LABEL,
         "labelColor": LABEL_COLOR,
-        "message": human,           # no emoji, human-readable remaining time
+        "message": human,
         "color": color_hex,
         "namedLogo": LOGO,
-        # "style": "flat",
     }
 
     telemetry: Dict[str, Any] = {
-        "ts": now.replace(microsecond=0).isoformat(),  # ISO8601 UTC
+        "ts": now.replace(microsecond=0).isoformat(),
         "next_utc": nxt.replace(microsecond=0).isoformat(),
         "minutes_left": minutes_left,
         "message": human,
@@ -239,13 +267,11 @@ def build_payload(now: dt.datetime) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
 def main() -> None:
     _ensure_dirs()
-
-    # Use UTC consistently
     now = dt.datetime.utcnow()
 
     payload, telemetry = build_payload(now)
 
-    # Write badge JSON only if changed (reduces churn)
+    # Update badge JSON only if changed (reduces churn/commits)
     old = None
     try:
         old = json.loads(BADGE_PATH.read_text(encoding="utf-8"))
