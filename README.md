@@ -269,27 +269,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 
 ---
-
-<div align="left"
-     style="display:flex;flex-wrap:wrap;gap:12px;border:1px solid #30363d;border-radius:8px;padding:8px 10px;">
-
-  <!-- Left group -->
-  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-right:10px;border-right:1px solid #30363d;">
-    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
-         alt="Next Update" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions"
-         alt="Schedule" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack"
-         alt="Tail" style="vertical-align:middle;"/>
-  </span>
-
-  <!-- Right group -->
-  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-   <img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow"
-         alt="Insight ML/W&B" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/WF-Active-10b981?style=flat-square&logo=githubactions"
-         alt="Workflow Active" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
-         alt="Rotation" style="vertical-align:middle;"/>
-  </span>
-</div>
