@@ -194,7 +194,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <!-- Collapsible GitHub Insights -->
 ---
 
-<p align="center">
+<p align="left">
   <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next Update"/>
   <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">
     <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Open Actions"/>
