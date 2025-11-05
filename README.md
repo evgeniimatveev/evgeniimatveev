@@ -41,23 +41,70 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🧠 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence  
-- 🔁 **Zero-touch ops**: 5475+ automated runs · 133 mutations · idempotent commits
+- 🔁 **Zero-touch ops**: 5475+ runs · 133 mutations · idempotent commits
 
 ### 🐍 Core Scripts:
-- [`update_readme.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py) ![v7.3](https://img.shields.io/badge/v7.3-stable-success) — Banner engine + NLG + JSONL pipeline
-- [`build_next_badge.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py) — HLS gradient renderer + countdown logic
+| File | Version | Description |
+|------|---------|-------------|
+| [`update_readme.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py) | ![v7.3](https://img.shields.io/badge/v7.3-stable-success) | Banner engine + NLG + JSONL pipeline |
+| [`build_next_badge.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py) | ![v1.0](https://img.shields.io/badge/v1.0-stable-success) | HLS gradient renderer + countdown |
 
 ### ⚙️ CI/CD Workflows:
-- 🔄 [Auto Update README](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml) — Daily 12:15 UTC · 30min jitter · 3-retry push
-- ⏰ [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) — */10 cron · concurrency-safe
-- 🧪 [CI/CD Pipeline](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml) — Lint (pylint/bandit) · pytest · deploy gate
-- 📊 [All workflows →](https://github.com/evgeniimatveev/evgeniimatveev/actions) — Run history & telemetry
+| Workflow | Schedule | Status |
+|----------|----------|--------|
+| [Auto Update README](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml) | Daily 12:15 UTC | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg) |
+| [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) | Every 10min | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg) |
+| [CI/CD Pipeline](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml) | On push/PR | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg) |
+
+📊 [View all runs →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
 
 ### 📂 Observability Stack:
-- 🗄️ [`update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl) — Structured event stream (200-line rotation)
-- 📋 [`update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt) — Human-readable tail (70 runs)
-- 💓 [`.ci/heartbeat.log`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log) — Force-commit ledger
-- 🔢 [`.ci/update_count.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt) — Persistent state counter (133+)
+```
+.
+├── update_log.jsonl      # Structured events (200-line rotation)
+├── update_log.txt        # Human-readable tail (70 runs)
+└── .ci/
+    ├── heartbeat.log     # Force-commit ledger
+    └── update_count.txt  # Persistent counter (133+)
+```
+
+🗄️ [Browse logs →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main)
+
+### 🛠️ Tech Stack:
+```python
+{
+  "runtime": "Python 3.10 (pathlib, datetime, colorsys)",
+  "orchestration": "GitHub Actions (schedule, concurrency, artifacts)",
+  "versioning": "Git automation (retry logic, idempotent commits)",
+  "rendering": "Shields.io + HLS colorspace + Markdown",
+  "persistence": "JSONL + tail-rotation + heartbeat"
+}
+```
+
+### 🧭 Philosophy:
+> **Automate everything** · **Log everything** · **Version everything**  
+> *Systems that debug themselves. Documentation that writes itself.*
+
+---
+
+### 🚀 Roadmap (v7.4+):
+- [ ] 📊 Metrics dashboard (success rate, duration, banner CTR)
+- [ ] 🔔 RSS/Atom feed for profile updates
+- [ ] 🧪 A/B testing banner performance
+- [ ] 🤖 LLM-generated insights from git history
+- [ ] 📡 Real-time WebSocket badge
+- [ ] 🌐 GitHub Pages dashboard (Chart.js/Plotly)
+
+💡 [Suggest features →](https://github.com/evgeniimatveev/evgeniimatveev/issues)
+
+---
+
+**🔬 For engineers**: This is MLOps applied to itself — observability, idempotency, zero-toil operations.
+
+🔗 [Explore codebase](https://github.com/evgeniimatveev/evgeniimatveev) · 📈 [View metrics](https://github.com/evgeniimatveev/evgeniimatveev/actions) · 🌟 [Star repo](https://github.com/evgeniimatveev/evgeniimatveev)
+
+</details>
+
 
 ### 🛠️ Tech Stack:
 
