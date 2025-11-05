@@ -31,7 +31,7 @@
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
 
 <details>
-<summary>⚡ <b>How it works</b> <em>(architecture deep-dive)</em></summary>
+<summary>⚡ <b>How it works</b> <em>(architecture deep-dive **🔬 For engineers**)</em></summary>
 
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
@@ -81,11 +81,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 📋 [`next_update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt)
 
 ---
-
-**💡 Philosophy**: *Automate everything · Log everything · Version everything*  
-**🔬 For engineers**: This is MLOps applied to itself — observability, idempotency, zero-toil operations.
-
-🔗 [Explore codebase](https://github.com/evgeniimatveev/evgeniimatveev) · 🌟 [Star repo](https://github.com/evgeniimatveev/evgeniimatveev)
 
 </details>
 
