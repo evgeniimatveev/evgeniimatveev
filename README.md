@@ -181,33 +181,10 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ![Update Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red)
 ![Last Update](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue)
 
-![Cycle Monitor](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg)
-![Countdown](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json)
-![Logs](https://img.shields.io/badge/Logs-Tail-success?style=flat&logo=bookstack)
-![Next Cycle](https://img.shields.io/badge/Cycle-Active-22c55e?style=flat&logo=loop)
-
-
-![Insight Engine](https://img.shields.io/badge/Insight-MLflow%20|%20W%26B-8b5cf6?style=flat&logo=mlflow)
-![Workflow](https://img.shields.io/badge/Workflow-Active-10b981?style=flat&logo=githubactions)
-![Telemetry](https://img.shields.io/badge/Telemetry-Tracking-3b82f6?style=flat&logo=signal)
-![Auto Mode](https://img.shields.io/badge/Mode-auto-6b7280?style=flat)
-
-![Rotation Flow](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg)
-![Current Rotation](https://img.shields.io/badge/Rotation-%235471-blue?style=flat&logo=clockify)
-![Schedule](https://img.shields.io/badge/Schedule-24h%205m-1f6feb?style=flat)
-![Mode](https://img.shields.io/badge/Mode-auto-737373?style=flat)
-
-![Badge Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg)
-![Next Update](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json)
-![Telemetry Logs](https://img.shields.io/badge/Telemetry-LIVE-22c55e?style=flat&logo=signal)
-![Last Badge Refresh](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Badge%20Refresh&color=0ea5e9)
-
 ![Next-Update Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg)
 ![Total Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/next_update_badge.yml?label=Total%20Runs&color=brightgreen)
 ![Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/next_update_badge.yml?label=Failures&color=red)
 ![Last Badge Refresh](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Badge%20Refresh&color=0ea5e9)
-
-
 
 ---
 
