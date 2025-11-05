@@ -248,3 +248,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
     alt="Connect on LinkedIn"/></a>
 </p>
+
+
+---
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_totals.json" alt="Total Runs"/>
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/last_badge_refresh.json" alt="Last Badge Refresh"/>
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/commit.json" alt="Commit"/>
