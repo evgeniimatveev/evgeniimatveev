@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-README auto-updater (v7.2)
+README auto-updater (v7.3)
 - Rotates banner (stateless) with cache-busted raw URL
 - Emoji before "Banner X/Y": random | stable (configurable)
 - Emoji set overridable via ENV: BANNER_EMOJIS="🎞️,🔁,🪄,🤖,⚙️,📈"
@@ -10,6 +10,7 @@ README auto-updater (v7.2)
 - Safe first-run bootstrap (README, markers)
 - Works if assets/ is empty (banner step is skipped with a warning)
 - Persists total update counter in .ci/update_count.txt and logs heartbeat
+- NEW: writes badges/next_update.json for Shields endpoint (dynamic "Next Update")
 """
 
 from __future__ import annotations
@@ -32,6 +33,12 @@ JSONL_FILE = Path("update_log.jsonl")
 CI_DIR = Path(".ci")
 COUNTER_FILE = CI_DIR / "update_count.txt"
 HEARTBEAT_FILE = CI_DIR / "heartbeat.log"
+
+# Next Update badge target time (nominal daily cron)
+# Override with env NEXT_UPDATE_HOUR / NEXT_UPDATE_MIN if нужно
+TARGET_HOUR = int(os.getenv("NEXT_UPDATE_HOUR", "12"))
+TARGET_MIN  = int(os.getenv("NEXT_UPDATE_MIN",  "15"))
+BADGE_JSON  = Path("badges/next_update.json")
 
 # -------- Small helpers --------
 def _natkey(p: Path) -> List[object]:
@@ -135,8 +142,6 @@ def rotate_banner_in_md(md_text: str) -> Tuple[str, Tuple[int, int]]:
         # deterministic by banner index + run number
         run_no = int(os.getenv("GITHUB_RUN_NUMBER", "0") or 0)
         emoji = emoji_choices[(x_num + run_no) % len(emoji_choices)]
-        # For strict per-banner stability instead, use:
-        # emoji = emoji_choices[x_num % len(emoji_choices)]
     else:
         emoji = random.choice(emoji_choices)
 
@@ -432,6 +437,39 @@ def _append_jsonl_line(path: Path, obj: Dict[str, Any]) -> None:
     with path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
+# -------- Next Update badge helpers --------
+def _next_eta_utc(now: datetime.datetime) -> datetime.datetime:
+    today_eta = now.replace(hour=TARGET_HOUR, minute=TARGET_MIN, second=0, microsecond=0)
+    return today_eta if now < today_eta else (today_eta + datetime.timedelta(days=1))
+
+def _human_left(delta: datetime.timedelta) -> str:
+    total = max(0, int(delta.total_seconds()))
+    h, r = divmod(total, 3600)
+    m, _ = divmod(r, 60)
+    return f"in {m}m" if h == 0 else f"in {h}h {m:02d}m"
+
+def _color_by_minutes(min_left: int) -> str:
+    if min_left <= 15:  return "brightgreen"
+    if min_left <= 30:  return "green"
+    if min_left <= 60:  return "yellowgreen"
+    if min_left <= 120: return "yellow"
+    if min_left <= 240: return "orange"
+    return "lightgrey"
+
+def _write_next_update_badge(now: datetime.datetime) -> None:
+    eta = _next_eta_utc(now)
+    left = eta - now
+    mins = max(0, int(left.total_seconds() // 60))
+    badge = {
+        "schemaVersion": 1,
+        "label": "Next Update",
+        "message": _human_left(left),
+        "color": _color_by_minutes(mins),
+        "labelColor": "333333"
+    }
+    BADGE_JSON.parent.mkdir(parents=True, exist_ok=True)
+    BADGE_JSON.write_text(json.dumps(badge, ensure_ascii=False), encoding="utf-8")
+
 # -------- Main driver --------
 def generate_new_readme() -> None:
     md_path = Path(README_FILE)
@@ -492,11 +530,14 @@ def generate_new_readme() -> None:
     except Exception as exc:
         print(f"[warn] failed to append JSONL: {exc}")
 
-    # 7) Console heartbeat
+    # 7) Write "Next Update" badge JSON (nominal ETA by cron)
+    _write_next_update_badge(now)
+
+    # 8) Console heartbeat
     run_no    = os.getenv("GITHUB_RUN_NUMBER", "?")
     short_sha = (os.getenv("GITHUB_SHA", "")[:7])
     schedule  = os.getenv("SCHEDULE_BADGE", "24h_5m")
-    next_eta = (now + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M UTC")
+    next_eta = _next_eta_utc(now).strftime("%Y-%m-%d %H:%M UTC")
 
     bar = "─" * 72
     print("\n" + bar)
