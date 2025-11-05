@@ -190,30 +190,19 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 
-<div align="center">
 
-<img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight" alt="Profile Details" width="800"/>
 
-<p>
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight" width="400"/>
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400"/>
-</p>
-
-</div>
 
 ---
 
 <p align="center">
   <a href="https://github.com/evgeniimatveev">
-    <img src="https://img.shields.io/badge/Follow%20%40evgeniimatveev-181717?style=for-the-badge&logo=github"/>
-  </a>
-  <a href="https://www.linkedin.com/in/evgenii-matveev-510926276/">
-    <img src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0077B5?style=for-the-badge&logo=linkedin"/>
+    <img
+      src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
+      alt="Next Update"
+    />
   </a>
 </p>
-
----
-
 
 
 <!-- Collapsible GitHub Insights -->
@@ -242,3 +231,4 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 </details>
+---
