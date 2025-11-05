@@ -1,7 +1,7 @@
 name: Update "Next Update" badge
 
 on:
-  # Update every 10 minutes and allow manual runs
+  # Run every 10 minutes + allow manual dispatch
   schedule:
     - cron: "*/10 * * * *"
   workflow_dispatch: {}
@@ -15,25 +15,33 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Target UTC time for the next planned update (used for countdown)
+  # Target UTC time for the next planned update (used for the countdown)
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Randomization window (seconds) to avoid thundering herd
+  # Randomization window to avoid thundering herd when many repos run at once
   JITTER_MAX_SEC: 1200
 
   # Shields badge settings
-  NEXT_BADGE_LABEL: "Next Update"      # left text
-  NEXT_BADGE_LABEL_COLOR: "2e2e2e"     # left color
-  NEXT_BADGE_NAMED_LOGO: "timer"       # shields.io namedLogo
+  NEXT_BADGE_LABEL: "Next Update"
+  NEXT_BADGE_LABEL_COLOR: "e5e7eb"
+  NEXT_BADGE_NAMED_LOGO: "timer"
 
-  # Size of the visualization window (minutes) for the color gradient
+  # Gradient sensitivity window (minutes)
   NEXT_BADGE_WINDOW_MIN: 20
 
-  # --- Logging policy (full telemetry each run + rotation) ---
-  NEXT_BADGE_LOG_EVERY_RUN: "1"        # <— write a log record on EVERY run
-  NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"     # <— disable periodic-only snapshots
-  NEXT_BADGE_LOG_MAX: "1050"           # keep last N lines (~7 days @ */10)
+  # Pastel tuning (keeps right side light so Shields uses black text)
+  NEXT_BADGE_PASTELIZE: "1"
+  NEXT_BADGE_PASTEL_FACTOR: "0.65"
+  NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
+  NEXT_BADGE_RED_COLOR:     "f87171"
+  NEXT_BADGE_YELLOW_COLOR:  "fde68a"
+  NEXT_BADGE_GREEN_COLOR:   "86efac"
+
+  # Logging policy (full telemetry each run + rotation)
+  NEXT_BADGE_LOG_EVERY_RUN: "1"
+  NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
+  NEXT_BADGE_LOG_MAX: "1050"
 
 jobs:
   refresh-badge:
@@ -42,8 +50,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: main              # ensure we work on main
           persist-credentials: true
-          fetch-depth: 0
+          fetch-depth: 0         # full history so rebase works correctly
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -56,13 +65,27 @@ jobs:
       - name: Commit badge + logs (if changed)
         run: |
           set -e
-          # Stage badge + logs
-          git add badges/next_update.json badges/next_update_log.jsonl badges/next_update_log.txt || true
+
+          # Stage badge + log artifacts
+          git add badges/next_update.json \
+                 badges/next_update_log.jsonl \
+                 badges/next_update_log.txt || true
+
+          # Exit early if there is nothing to commit
           if git diff --cached --quiet; then
             echo "No changes to commit."
-          else
-            git config --global user.name "${{ github.actor }}"
-            git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-            git commit -m "chore: refresh next_update badge + logs"
-            git push
+            exit 0
           fi
+
+          # Configure commit author (local to this repo)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git commit -m "chore: refresh next_update badge + logs" || true
+
+          # Rebase on top of the latest main to avoid non-fast-forward errors
+          git fetch origin main
+          git pull --rebase origin main
+
+          # Push our updated main back to origin
+          git push origin HEAD:main
