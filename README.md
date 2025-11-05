@@ -203,33 +203,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ![Last Badge Refresh](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Badge%20Refresh&color=0ea5e9)
 
 
-<!-- NEXT-UPDATE BADGE · STATUS ROW -->
-<p align="left">
-  <!-- Live status of the workflow -->
-  <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">
-    <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg?branch=main" alt="Next Update badge · Status"/>
-  </a>
-
-  <!-- Countdown from your JSON endpoint -->
-  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next Update"/>
-
-  <!-- Open Actions console for this workflow -->
-  <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">
-    <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Open Actions"/>
-  </a>
-
-  <!-- Human-readable text tail of your telemetry -->
-  <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt">
-    <img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack" alt="Logs tail"/>
-  </a>
-
-  <!-- Approximate 'last run' via last commit (этот флоу коммитит файлы) -->
-  <a href="https://github.com/evgeniimatveev/evgeniimatveev/commits/main">
-    <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Badge%20Refresh&color=0ea5e9" alt="Last badge refresh"/>
-  </a>
-</p>
-
-
 ---
 
 <!-- INSIGHT:START -->
