@@ -209,8 +209,8 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 </details>
 
----
 
+---
 
 <!-- FOOTER: STAY CONNECTED (BIG) -->
 <hr/>
@@ -232,6 +232,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   </a>
 </p>
 
+---
 
 <!-- FOOTER: QUICK LINKS (COMPACT) -->
 <p align="center">
@@ -246,6 +247,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   </a>
 </p>
 
+---
 
 <!-- FOOTER: LIVE OPS STRIP -->
 <p align="center">
