@@ -213,12 +213,16 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   </span>
 
   <!-- Right group -->
-  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-    <img src="https://img.shields.io/badge/Commit-906feaf-9cf" />
+  <span style="display:flex;flex-wrap:wrap;gap:8px;align-ite<ms:center;">
     <img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
          alt="Rotation" style="vertical-align:middle;"/>
   </span>
 </div>
+
+<img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
+         alt="Rotation" style="vertical-align:middle;"/>
+
+
 
 <details>
 <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
@@ -243,4 +247,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
     alt="Connect on LinkedIn"/></a>
 </p>
-
