@@ -35,7 +35,7 @@
 
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
-### 🐍 System Architecture:
+### ♻️ System Architecture:
 - 🤖 **Banner rotation**: 367 GIFs · natural sorting · cache-busted CDN URLs
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
