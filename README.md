@@ -32,24 +32,35 @@
 
 
 <details>
-<summary>🔧 <b>How it works</b> <em>(for engineers)</em></summary>
+<summary>⚡ <b>How it works</b> <em>(architecture deep-dive)</em></summary>
 
-This profile is a **self-updating MLOps demo** — a living portfolio that showcases automation principles:
+This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
-- 🎞️ **Banner rotation**: 367 GIFs, natural sorting, cache-busted URLs
-- 💬 **Dynamic insights**: Context-aware quotes (time, season, day of week)
-- ⏰ **Next Update badge**: Shields.io endpoint with HLS gradient countdown
-- 📊 **Observability**: JSONL telemetry, heartbeat logs, run metadata
-- 🤖 **Zero toil**: 5475+ automated runs, 133 updates, no manual commits
+### 🎯 System Architecture:
+- 🎬 **Banner rotation**: 367 GIFs · natural sorting · cache-busted CDN URLs
+- 🧠 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
+- ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
+- 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence  
+- 🔁 **Zero-touch ops**: 5475+ automated runs · 133 mutations · idempotent commits
 
-**Stack**: Python 3.10, GitHub Actions, Git automation, HLS colorspace  
-**Philosophy**: *Automate everything, log everything, version everything*
+### 🐍 Core Scripts:
+- [`update_readme.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py) ![v7.3](https://img.shields.io/badge/v7.3-stable-success) — Banner engine + NLG + JSONL pipeline
+- [`build_next_badge.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py) — HLS gradient renderer + countdown logic
 
-📂 [View source code →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main/python)  
-📜 [Read workflows →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main/.github/workflows)  
-📈 [Check run history →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
+### ⚙️ CI/CD Workflows:
+- 🔄 [Auto Update README](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml) — Daily 12:15 UTC · 30min jitter · 3-retry push
+- ⏰ [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) — */10 cron · concurrency-safe
+- 🧪 [CI/CD Pipeline](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml) — Lint (pylint/bandit) · pytest · deploy gate
+- 📊 [All workflows →](https://github.com/evgeniimatveev/evgeniimatveev/actions) — Run history & telemetry
 
-</details>
+### 📂 Observability Stack:
+- 🗄️ [`update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl) — Structured event stream (200-line rotation)
+- 📋 [`update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt) — Human-readable tail (70 runs)
+- 💓 [`.ci/heartbeat.log`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log) — Force-commit ledger
+- 🔢 [`.ci/update_count.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt) — Persistent state counter (133+)
+
+### 🛠️ Tech Stack:
+```python
 
 ---
 ## 📚 Learning Journey  
