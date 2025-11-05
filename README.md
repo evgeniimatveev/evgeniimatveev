@@ -48,6 +48,26 @@
 ![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
+
+## 💎 Stay Connected
+
+- 🧠 **GitHub** — [Evgenii Matveev](https://github.com/evgeniimatveev)
+- 📁 **Portfolio** — [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveeusa)
+- 🔗 **LinkedIn** — [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/)
+
+<p align="left">
+  <a href="https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge">
+    <img src="https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge" alt="GitHub Followers">
+  </a>
+  <a href="https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge">
+    <img src="https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge" alt="GitHub Stars">
+  </a>
+  <a href="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge">
+    <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge" alt="Last Commit">
+  </a>
+</p>
+
+
 ---
 ##  💼 Tech Stack
 
