@@ -188,6 +188,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://img.shields.io/badge/Cycle-Active-10b981?style=flat&logo=githubactions" alt="Cycle Active"/>
   <img src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat&logo=clockify" alt="Last Badge Refresh"/>
 </p>
+
 ---
 
 <!-- Symmetric badges: single provider (Shields), single style, unified colors -->
@@ -260,6 +261,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img alt="Last Badge Refresh"
        src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat-square&labelColor=30363d&logo=clockify&logoColor=white" />
 </div>
+
 
 ---
 <!-- INSIGHT:START -->
