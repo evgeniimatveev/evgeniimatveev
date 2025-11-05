@@ -57,17 +57,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 📊 [View all runs →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
 
-### 📂 Observability Stack:
-```
-.
-├── update_log.jsonl      # Structured events (200-line rotation)
-├── update_log.txt        # Human-readable tail (70 runs)
-└── .ci/
-    ├── heartbeat.log     # Force-commit ledger
-    └── update_count.txt  # Persistent counter (133+)
-```
-
-🗄️ [Browse logs →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main)
 
 ---
 
