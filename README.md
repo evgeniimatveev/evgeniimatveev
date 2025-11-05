@@ -216,21 +216,50 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <!-- Collapsible GitHub Insights -->
 ---
 
-<table width="100%" cellspacing="0" cellpadding="0">
-  <tr>
-    <td style="white-space:nowrap; padding:0 8px 4px 0;">
-      <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" style="vertical-align:middle;"/>
-      &nbsp;<img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions" style="vertical-align:middle;"/>
-      &nbsp;<img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack" style="vertical-align:middle;"/>
-    </td>
-    <td style="white-space:nowrap; padding:0 0 4px 8px;">
-      <img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal" style="vertical-align:middle;"/>
-      &nbsp;<img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow" style="vertical-align:middle;"/>
-      &nbsp;<img src="https://img.shields.io/badge/WF-Active-10b981?style=flat-square&logo=githubactions" style="vertical-align:middle;"/>
-      &nbsp;<img src="https://img.shields.io/badge/Rot-%235471-1f6feb?style=flat-square&logo=clockify" style="vertical-align:middle;"/>
-    </td>
-  </tr>
-</table>
+<!-- Badges: responsive flex, no cropping, no blue underlines -->
+<div align="left"
+     style="display:flex;flex-wrap:wrap;gap:12px;border:1px solid #30363d;border-radius:8px;padding:8px 10px;">
+
+  <!-- Left group -->
+  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+               padding-right:12px;border-right:1px solid #30363d;">
+    <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
+       title="Next Update (dynamic)" style="text-decoration:none;">
+      <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
+           alt="Next Update" style="vertical-align:middle;"/>
+    </a>
+    <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml"
+       title="Open Actions schedule" style="text-decoration:none;">
+      <img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions"
+           alt="Schedule" style="vertical-align:middle;"/>
+    </a>
+    <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt"
+       title="Logs tail (text)" style="text-decoration:none;">
+      <img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack"
+           alt="Logs tail" style="vertical-align:middle;"/>
+    </a>
+  </span>
+
+  <!-- spacer: разносит группы по краям, если ширина позволяет -->
+  <span style="flex:1 1 auto;"></span>
+
+  <!-- Right group -->
+  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.jsonl"
+       title="Telemetry (jsonl)" style="text-decoration:none;">
+      <img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal"
+           alt="Telemetry" style="vertical-align:middle;"/>
+    </a>
+    <a href="https://mlflow.org/" title="Insight: MLflow | W&B" style="text-decoration:none;">
+      <img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow"
+           alt="Insight ML/W&B" style="vertical-align:middle;"/>
+    </a>
+    <img src="https://img.shields.io/badge/WF-Active-10b981?style=flat-square&logo=githubactions"
+         alt="Workflow Active" style="vertical-align:middle;"/>
+    <img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
+         alt="Rotation #5471" style="vertical-align:middle;"/>
+  </span>
+</div>
 
 <details>
 <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
@@ -258,29 +287,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-<!-- Responsive badges box (wraps gracefully, no cropping) -->
-<div align="left"
-     style="display:flex;flex-wrap:wrap;gap:12px;border:1px solid #30363d;border-radius:8px;padding:8px 10px;">
-
-  <!-- Left group -->
-  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-right:10px;border-right:1px solid #30363d;">
-    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"
-         alt="Next Update" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions"
-         alt="Schedule" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack"
-         alt="Tail" style="vertical-align:middle;"/>
-  </span>
-
-  <!-- Right group -->
-  <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-    <img src="https://img.shields.io/badge/Telem-Track-3b82f6?style=flat-square&logo=signal"
-         alt="Telemetry" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Insight-ML%2FW%26B-8b5cf6?style=flat-square&logo=mlflow"
-         alt="Insight ML/W&B" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/WF-Active-10b981?style=flat-square&logo=githubactions"
-         alt="Workflow Active" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Rotation-%235471-1f6feb?style=flat-square&logo=clockify"
-         alt="Rotation" style="vertical-align:middle;"/>
-  </span>
-</div>
