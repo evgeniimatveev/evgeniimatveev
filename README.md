@@ -211,8 +211,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
          alt="Next Update" style="vertical-align:middle;"/>
     <img src="https://img.shields.io/badge/Act-Schedule-1f6feb?style=flat-square&logo=githubactions"
          alt="Schedule" style="vertical-align:middle;"/>
-    <img src="https://img.shields.io/badge/Logs-Tail-success?style=flat-square&logo=bookstack"
-         alt="Tail" style="vertical-align:middle;"/>
+    <img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-04%2013%3A11%20UTC&color=0e8a16&labelColor=30363d&logo=clock" />
   </span>
 
   <!-- Right group -->
