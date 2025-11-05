@@ -269,30 +269,19 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ---
 
 <p align="left">
-  <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" style="display:inline-block;margin-right:6px;">
-    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next Update"/>
-  </a>
-
-  <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml" style="display:inline-block;margin-right:6px;">
-    <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Open Schedule"/>
-  </a>
-
-  <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt" style="display:inline-block;margin-right:6px;">
-    <img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack" alt="Logs tail"/>
-  </a>
-
-  <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.jsonl" style="display:inline-block;margin-right:6px;">
-    <img src="https://img.shields.io/badge/Telemetry-Tracking-3b82f6?style=flat&logo=signal" alt="Telemetry"/>
-  </a>
-
-  <a href="https://mlflow.org/" style="display:inline-block;margin-right:6px;">
-    <img src="https://img.shields.io/badge/Insight-MLflow%20%7C%20W%26B-8b5cf6?style=flat&logo=mlflow" alt="Insight Engine"/>
-  </a>
-
-  <img src="https://img.shields.io/badge/Workflow-Active-10b981?style=flat&logo=githubactions" alt="Workflow Active" style="display:inline-block;margin-right:6px;"/>
-
-  <!-- rotation goes last -->
-  <img src="https://img.shields.io/badge/Rotation-%235471-blue?style=flat&logo=clockify" alt="Current Rotation" style="display:inline-block;"/>
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&link=https://github.com/evgeniimatveev/evgeniimatveev" alt="Next Update" style="vertical-align:middle;"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions&link=https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml" alt="Open Schedule" style="vertical-align:middle;"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack&link=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt" alt="Logs tail" style="vertical-align:middle;"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/Telemetry-Tracking-3b82f6?style=flat&logo=signal&link=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.jsonl" alt="Telemetry" style="vertical-align:middle;"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/Insight-MLflow%20%7C%20W%26B-8b5cf6?style=flat&logo=mlflow&link=https://mlflow.org/" alt="Insight Engine" style="vertical-align:middle;"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/Workflow-Active-10b981?style=flat&logo=githubactions" alt="Workflow Active" style="vertical-align:middle;"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/Rotation-%235471-blue?style=flat&logo=clockify" alt="Rotation" style="vertical-align:middle;"/>
 </p>
 
 
