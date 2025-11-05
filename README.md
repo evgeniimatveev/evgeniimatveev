@@ -245,14 +245,29 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <p align="left">
   <span>
-    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&link=https://github.com/evgeniimatveev/evgeniimatveev" alt="Next Update" />
+    <a href="https://github.com/evgeniimatveev/evgeniimatveev">
+      <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next Update"/>
+    </a>
     &nbsp;
-    <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions&link=https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml" alt="Open Actions" />
+    <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">
+      <img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Open Actions"/>
+    </a>
     &nbsp;
-    <img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack&link=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt" alt="Logs tail" />
+    <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt">
+      <img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack" alt="Logs tail"/>
+    </a>
+    &nbsp;
+    <!-- NEW: Telemetry first -->
+    <a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.jsonl">
+      <img src="https://img.shields.io/badge/Telemetry-Tracking-3b82f6?style=flat-square&logo=signal" alt="Telemetry • Tracking"/>
+    </a>
+    &nbsp;
+    <!-- NEW: Insight last -->
+    <a href="#auto-github-insights">
+      <img src="https://img.shields.io/badge/Insight-MLflow%20%7C%20W%26B-8b5cf6?style=flat-square&logo=mlflow" alt="Insight • MLflow | W&B"/>
+    </a>
   </span>
 </p>
-
 
 <details>
 <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
