@@ -69,20 +69,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 🗄️ [Browse logs →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main)
 
-### 🛠️ Tech Stack:
-```python
-{
-  "runtime": "Python 3.10 (pathlib, datetime, colorsys)",
-  "orchestration": "GitHub Actions (schedule, concurrency, artifacts)",
-  "versioning": "Git automation (retry logic, idempotent commits)",
-  "rendering": "Shields.io + HLS colorspace + Markdown",
-  "persistence": "JSONL + tail-rotation + heartbeat"
-}
-```
 
-### 🧭 Philosophy:
-> **Automate everything** · **Log everything** · **Version everything**  
-> *Systems that debug themselves. Documentation that writes itself.*
 
 ---
 
@@ -98,9 +85,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-**🔬 For engineers**: This is MLOps applied to itself — observability, idempotency, zero-toil operations.
-
-🔗 [Explore codebase](https://github.com/evgeniimatveev/evgeniimatveev) · 📈 [View metrics](https://github.com/evgeniimatveev/evgeniimatveev/actions) · 🌟 [Star repo](https://github.com/evgeniimatveev/evgeniimatveev)
 
 </details>
 
