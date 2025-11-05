@@ -265,3 +265,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
     alt="Connect on LinkedIn"/></a>
 </p>
+
+---
+
+<p align="left"><a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json" alt="Next Update"/></a>&nbsp;<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml"><img src="https://img.shields.io/badge/Actions-Open%20Schedule-1f6feb?style=flat-square&logo=githubactions" alt="Open Schedule"/></a>&nbsp;<a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.txt"><img src="https://img.shields.io/badge/Logs-Text%20Tail-success?style=flat-square&logo=bookstack" alt="Logs tail"/></a>&nbsp;<a href="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update_log.jsonl"><img src="https://img.shields.io/badge/Telemetry-Tracking-3b82f6?style=flat&logo=signal" alt="Telemetry"/></a>&nbsp;<a href="https://mlflow.org/"><img src="https://img.shields.io/badge/Insight-MLflow%20%7C%20W%26B-8b5cf6?style=flat&logo=mlflow" alt="Insight Engine"/></a>&nbsp;<img src="https://img.shields.io/badge/Workflow-Active-10b981?style=flat&logo=githubactions" alt="Workflow Active"/>&nbsp;<img src="https://img.shields.io/badge/Mode-auto-6b7280?style=flat" alt="Auto Mode"/></p>
+
+
