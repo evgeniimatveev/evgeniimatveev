@@ -30,7 +30,6 @@
 
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
 
-
 <details>
 <summary>⚡ <b>How it works</b> <em>(architecture deep-dive)</em></summary>
 
@@ -104,9 +103,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 🔗 [Explore codebase](https://github.com/evgeniimatveev/evgeniimatveev) · 📈 [View metrics](https://github.com/evgeniimatveev/evgeniimatveev/actions) · 🌟 [Star repo](https://github.com/evgeniimatveev/evgeniimatveev)
 
 </details>
-
-
-### 🛠️ Tech Stack:
 
 ---
 ## 📚 Learning Journey  
