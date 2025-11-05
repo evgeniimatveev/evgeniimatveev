@@ -181,11 +181,13 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ![Update Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red)
 ![Last Update](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue)
 
-![Next-Update Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg)
-![Total Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/next_update_badge.yml?label=Total%20Runs&color=brightgreen)
-![Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/next_update_badge.yml?label=Failures&color=red)
-![Last Badge Refresh](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Badge%20Refresh&color=0ea5e9)
-
+<p align="left">
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status"/>
+  <img src="https://img.shields.io/badge/Total%20Runs-passing-brightgreen?style=flat&logo=githubactions" alt="Total Runs"/>
+  <img src="https://img.shields.io/badge/Failures-passing-red?style=flat&logo=githubactions" alt="Failures"/>
+  <img src="https://img.shields.io/badge/Cycle-Active-10b981?style=flat&logo=githubactions" alt="Cycle Active"/>
+  <img src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat&logo=clockify" alt="Last Badge Refresh"/>
+</p>
 ---
 
 <!-- INSIGHT:START -->
