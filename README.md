@@ -69,20 +69,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 🗄️ [Browse logs →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main)
 
-
-
----
-
-### 🚀 Roadmap (v7.4+):
-- [ ] 📊 Metrics dashboard (success rate, duration, banner CTR)
-- [ ] 🔔 RSS/Atom feed for profile updates
-- [ ] 🧪 A/B testing banner performance
-- [ ] 🤖 LLM-generated insights from git history
-- [ ] 📡 Real-time WebSocket badge
-- [ ] 🌐 GitHub Pages dashboard (Chart.js/Plotly)
-
-💡 [Suggest features →](https://github.com/evgeniimatveev/evgeniimatveev/issues)
-
 ---
 
 
