@@ -35,6 +35,26 @@
 - 🪄 Focus: **MLOps | SQL | Automation**  
 - ⏳ Over 2 years of continuous learning  
 
+<details>
+<summary>🔧 <b>How it works</b> <em>(for engineers)</em></summary>
+
+This profile is a **self-updating MLOps demo** — a living portfolio that showcases automation principles:
+
+- 🎞️ **Banner rotation**: 367 GIFs, natural sorting, cache-busted URLs
+- 💬 **Dynamic insights**: Context-aware quotes (time, season, day of week)
+- ⏰ **Next Update badge**: Shields.io endpoint with HLS gradient countdown
+- 📊 **Observability**: JSONL telemetry, heartbeat logs, run metadata
+- 🤖 **Zero toil**: 5475+ automated runs, 133 updates, no manual commits
+
+**Stack**: Python 3.10, GitHub Actions, Git automation, HLS colorspace  
+**Philosophy**: *Automate everything, log everything, version everything*
+
+📂 [View source code →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main/python)  
+📜 [Read workflows →](https://github.com/evgeniimatveev/evgeniimatveev/tree/main/.github/workflows)  
+📈 [Check run history →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
+
+</details>
+
 ---
 ## 💎 Stay Connected  
 
