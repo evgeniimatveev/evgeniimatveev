@@ -307,17 +307,19 @@ jobs:
           ' README.md > README.tmp && mv README.tmp README.md
 
       - name: Update STATUS2 line in README
-        shell: bash
-        run: |
-          LOW_STATUS="<p align=\"left\">
-          <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
-          <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
-          </p>"
-          awk -v r="$LOW_STATUS" '
-            /<!-- STATUS2:START -->/ {print; print r; f=1; next}
-            /<!-- STATUS2:END -->/   {f=0}
-            !f
-          ' README.md > README.tmp && mv README.tmp README.md
+  shell: bash
+  run: |
+    NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
+    LOW_STATUS="<p align=\"left\">
+    <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
+    <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
+    <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
+    </p>"
+    awk -v r="$LOW_STATUS" '
+      /<!-- STATUS2:START -->/ {print; print r; f=1; next}
+      /<!-- STATUS2:END -->/   {f=0}
+      !f
+    ' README.md > README.tmp && mv README.tmp README.md
       
       - name: Heartbeat (force a diff on schedule/force)
         if: ${{ github.event_name == 'schedule' || env.COMMIT_MODE == 'force' }}
