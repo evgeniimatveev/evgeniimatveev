@@ -277,3 +277,18 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 
 ---
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=Cycle&message=24h&color=0e8a16&labelColor=30363d&cacheSeconds=86400" />
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json&cacheSeconds=1800" />
+</p>
+
+
+---
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=🕓%20Next%20Cycle&message=24h&color=0ea5e9&labelColor=30363d&cacheSeconds=86400" />
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json&cacheSeconds=1200&t=${GITHUB_RUN_NUMBER}" />
+</p>
+
+---
+
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/rhythm.json&cacheSeconds=1800" />
