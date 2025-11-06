@@ -27,6 +27,9 @@
 
 ---
 
+<!-- STATUS2:START -->
+<!-- STATUS2:END -->
+
 # 🤖 Hi, I'm Evgenii — automating AI & MLOps workflows 
 ## ⚙️ Building production-ready pipelines with CI/CD and intelligent automation  
 
