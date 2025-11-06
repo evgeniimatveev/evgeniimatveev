@@ -246,7 +246,7 @@ jobs:
             echo "update_log.jsonl not found yet"
           fi
 
-       - name: Summary table from JSONL (last N)
+      - name: Summary table from JSONL (last N)
         shell: bash
         run: |
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
