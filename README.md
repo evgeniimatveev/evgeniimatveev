@@ -263,7 +263,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <!-- Total updates counter (updates with README) -->
   <img src="https://img.shields.io/static/v1?label=Updates&message=145&color=0ea5e9&labelColor=30363d&cacheSeconds=600" />
   <!-- GitHub Actions badge for the 20-minute ticker workflow -->
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status (20m)"/>
 
 </p>
 <!-- STATUS2:END -->
