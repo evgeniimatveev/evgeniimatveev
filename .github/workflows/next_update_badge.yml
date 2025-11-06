@@ -1,34 +1,36 @@
-name: next-update-badge-quiet
+name: Update "Next Update" badge
 
 on:
+  # Run every 10 minutes + allow manual dispatch
   schedule:
-    - cron: "*/20 * * * *"   # run every 20 minutes
-  workflow_dispatch:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
+  # Prevent overlapping runs for this workflow
   group: next-update-badge
   cancel-in-progress: true
 
 env:
-  # Daily target (UTC) for the countdown
-  NEXT_UPDATE_HOUR: "12"
-  NEXT_UPDATE_MIN:  "15"
+  # Target UTC time for the next planned update (used for the countdown)
+  NEXT_UPDATE_HOUR: 12
+  NEXT_UPDATE_MIN: 15
 
-  # Jitter to desync repos (quiet for 20m cadence)
-  JITTER_MAX_SEC: "900"
+  # Randomization window to avoid thundering herd when many repos run at once
+  JITTER_MAX_SEC: 1200
 
-  # Shields badge appearance
+  # Shields badge settings
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
 
-  # Gradient sensitivity (pairs well with 20m cadence)
-  NEXT_BADGE_WINDOW_MIN: "20"
+  # Gradient sensitivity window (minutes)
+  NEXT_BADGE_WINDOW_MIN: 20
 
-  # Pastel/Colors
+  # Pastel tuning (keeps right side light so Shields uses black text)
   NEXT_BADGE_PASTELIZE: "1"
   NEXT_BADGE_PASTEL_FACTOR: "0.65"
   NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
@@ -36,22 +38,21 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # Quiet logging (no per-run commits)
-  NEXT_BADGE_LOG_EVERY_RUN:   "0"
-  NEXT_BADGE_LOG_SNAPSHOT_MIN: "120"
-  NEXT_BADGE_LOG_MAX:          "300"
+  # Logging policy (full telemetry each run + rotation)
+  NEXT_BADGE_LOG_EVERY_RUN: "1"
+  NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
+  NEXT_BADGE_LOG_MAX: "1050"
 
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: main              # ensure we work on main
           persist-credentials: true
-          fetch-depth: 0
+          fetch-depth: 0         # full history so rebase works correctly
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -61,26 +62,30 @@ jobs:
       - name: Build JSON for badge
         run: python build_next_badge.py
 
-      - name: Commit badge (quiet: JSON only)
+      - name: Commit badge + logs (if changed)
         run: |
           set -e
-          git add badges/next_update.json || true
+
+          # Stage badge + log artifacts
+          git add badges/next_update.json \
+                 badges/next_update_log.jsonl \
+                 badges/next_update_log.txt || true
+
+          # Exit early if there is nothing to commit
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
+
+          # Configure commit author (local to this repo)
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: refresh next_update badge (quiet v1.1)"
-          git pull --rebase origin main || true
-          git push origin HEAD:main
 
-      - name: Upload telemetry logs (artifact only)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: next_update_logs
-          path: |
-            badges/next_update_log.jsonl
-            badges/next_update_log.txt
-          retention-days: 3
+          git commit -m "chore: refresh next_update badge + logs" || true
+
+          # Rebase on top of the latest main to avoid non-fast-forward errors
+          git fetch origin main
+          git pull --rebase origin main
+
+          # Push our updated main back to origin
+          git push origin HEAD:main
