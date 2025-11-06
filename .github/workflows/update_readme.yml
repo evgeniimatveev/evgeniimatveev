@@ -246,25 +246,39 @@ jobs:
             echo "update_log.jsonl not found yet"
           fi
 
-      - name: Summary table from JSONL (last N)
+       - name: Summary table from JSONL (last N)
         shell: bash
         run: |
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json, pathlib, os
+
           p = pathlib.Path("update_log.jsonl")
           if not p.exists():
               print("No update_log.jsonl yet."); raise SystemExit
+
           N = int(os.getenv("LOG_TABLE_N","5"))
           lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
-          def esc(s): return str(s).replace("|","\\|").replace("\n"," ").strip()
-          print("### Last {} updates".format(N))
+
+          def esc(s): 
+              return str(s).replace("|","\\|").replace("\n"," ").strip()
+
+          print(f"### Last {N} updates")
           print("| Time (UTC) | Run | SHA | Banner | Mode | Event/Actor | Insight |")
           print("|---|---|---|---|---|---|---|")
+
           for line in reversed(lines):
               d = json.loads(line)
-              banner = "{}{}/{} ({})".format("" , d.get('banner_index','?'), d.get('banner_total','?'), d.get('banner_file',''))
-              evt = f\"{d.get('event','')}/{d.get('actor','')}\"
-              print(f\"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |\")
+              banner = f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
+              evt = f"{d.get('event','')}/{d.get('actor','')}"
+              print(
+                  f"| {esc(d.get('ts_utc',''))} "
+                  f"| {esc(d.get('run_number',''))} "
+                  f"| {esc(d.get('sha',''))} "
+                  f"| {esc(banner)} "
+                  f"| {esc(d.get('banner_mode',''))} "
+                  f"| {esc(evt)} "
+                  f"| {esc(d.get('insight_preview',''))[:120]} |"
+              )
           PY
 
       - name: Update STATUS line in README
