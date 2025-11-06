@@ -35,28 +35,35 @@ on:
         type: choice
         options: [auto, dry-run, force]
         default: auto
+      next_update_hour:
+        description: "UTC hour for Next Update badge"
+        type: number
+        default: 12
+      next_update_min:
+        description: "UTC minute for Next Update badge"
+        type: number
+        default: 15
 
 permissions:
   contents: write   # Required to push README/log updates
 
 concurrency:
-  group: auto-update-readme     # Deduplicate overlapping runs
-  cancel-in-progress: true      # If a new run starts, cancel the previous one
+  group: auto-update-readme
+  cancel-in-progress: true
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    # timeout-minutes: 45  # Optional safety
 
     env:
       # ---- Controls for the updater script ----
       BANNER_MODE: ${{ inputs.banner_mode != '' && inputs.banner_mode || 'sequential' }}
       BANNER_CALENDAR_MODE: ${{ inputs.banner_mode == 'calendar' }}
       MLOPS_INSIGHT: ${{ inputs.insight }}
-      SCHEDULE_BADGE: "24h_5m"     # Display-only badge; does not affect schedule
+      SCHEDULE_BADGE: "24h_5m"  # display only
 
       # Emoji control
-      BANNER_EMOJI_MODE: stable    # random | stable
+      BANNER_EMOJI_MODE: stable
       BANNER_EMOJIS: ${{ inputs.emojis != '' && inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
 
       # Logs / tables
@@ -66,6 +73,10 @@ jobs:
 
       # Commit behavior
       COMMIT_MODE: ${{ inputs.commit_mode != '' && inputs.commit_mode || 'auto' }}
+
+      # Next Update badge target (UTC) — keep in sync with cron above
+      NEXT_UPDATE_HOUR: ${{ inputs.next_update_hour != '' && inputs.next_update_hour || '12' }}
+      NEXT_UPDATE_MIN:  ${{ inputs.next_update_min  != '' && inputs.next_update_min  || '15' }}
 
       # ---- JITTER (up to 30 minutes) ----
       JITTER_MAX_SEC: 1800
@@ -99,6 +110,50 @@ jobs:
 
       - name: Run updater
         run: python update_readme.py
+
+      # Read total updates and compute a fallback Next Update text (if endpoint is unavailable)
+      - name: Read totals & fallback text
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os, json, datetime, pathlib
+          env_path = os.environ['GITHUB_ENV']
+
+          # total updates from file the script maintains
+          tot = ''
+          try:
+              tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
+          except Exception:
+              pass
+
+          # next update text from endpoint json or compute
+          msg = ''
+          try:
+              d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
+              msg = d.get('message','')
+          except Exception:
+              pass
+
+          def compute():
+              try:
+                  h=int(os.getenv('NEXT_UPDATE_HOUR','12')); m=int(os.getenv('NEXT_UPDATE_MIN','15'))
+              except Exception:
+                  h=12; m=15
+              now=datetime.datetime.utcnow()
+              eta=now.replace(hour=h, minute=m, second=0, microsecond=0)
+              if now>=eta: eta+=datetime.timedelta(days=1)
+              left=eta-now
+              T=int(left.total_seconds())
+              H=T//3600; M=(T%3600)//60
+              return f"in {M}m" if H==0 else f"in {H}h {M:02d}m"
+
+          if not msg:
+              msg = compute()
+
+          with open(env_path,'a') as env:
+              if tot: env.write(f"TOTAL_UPDATES={tot}\n")
+              env.write(f"NEXT_UPDATE_TEXT={msg}\n")
+          PY
 
       - name: Append & trim update_log.txt
         shell: bash
@@ -208,8 +263,8 @@ jobs:
           for line in reversed(lines):
               d = json.loads(line)
               banner = "{}{}/{} ({})".format("" , d.get('banner_index','?'), d.get('banner_total','?'), d.get('banner_file',''))
-              evt = f"{d.get('event','')}/{d.get('actor','')}"
-              print(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |")
+              evt = f\"{d.get('event','')}/{d.get('actor','')}\"
+              print(f\"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | {esc(d.get('sha',''))} | {esc(banner)} | {esc(d.get('banner_mode',''))} | {esc(evt)} | {esc(d.get('insight_preview',''))[:120]} |\")
           PY
 
       - name: Update STATUS line in README
@@ -219,14 +274,15 @@ jobs:
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
           MODE_BADGE="${COMMIT_MODE}"
-          # shields endpoint points to raw next_update.json in this repo/branch
-          NEXT_UPDATE_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
+          NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
           STATUS="<p align=\"center\">
           <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
-          <img src=\"https://img.shields.io/endpoint?url=${NEXT_UPDATE_URL}&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
           <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
           <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
           </p>"
@@ -249,15 +305,14 @@ jobs:
         shell: bash
         run: |
           set -e
-          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt 2>/dev/null || true
+          # include badge json so endpoint always has latest payload
+          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt badges/next_update.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs)"
-            if [ "${COMMIT_MODE}" = "force" ]; then
-              msg="${msg} [force]"
-            fi
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.4]"
+            [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
@@ -283,23 +338,16 @@ jobs:
       - name: Write job summary
         shell: bash
         run: |
-          # Build a small summary file first (avoids parser quirks with if/else inside a group)
           {
-            echo "## README Auto-Update"
+            echo "## README Auto-Update v7.4"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
             echo "- **Schedule**: ${SCHEDULE_BADGE}"
             echo "- **Mode**: ${COMMIT_MODE}"
-          } > .summary.md
-
-          if [[ "${{ steps.commit.outputs.changed }}" == "true" ]]; then
-            echo "- Pushed: ✅" >> .summary.md
-          else
-            echo "- Pushed: —" >> .summary.md
-          fi
-
-          cat .summary.md >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Total Updates**: ${TOTAL_UPDATES:-?}"
+            echo "- **Next Update (text)**: ${NEXT_UPDATE_TEXT}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
         if: always()
