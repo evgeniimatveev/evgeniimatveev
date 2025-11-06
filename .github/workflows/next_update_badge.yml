@@ -46,6 +46,7 @@ env:
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -81,10 +82,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          # Create the commit (ignore 'nothing to commit' just in case)
           git commit -m "chore: refresh next_update badge + logs" || true
 
           # Rebase on top of the latest main to avoid non-fast-forward errors
-          git fetch origin main
           git pull --rebase origin main
 
           # Push our updated main back to origin
