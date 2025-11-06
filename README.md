@@ -9,15 +9,24 @@
 
 <!-- STATUS:START -->
 <p align="center">
-<img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-06%2022%3A58%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=300&t=5491" />
-<img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=300" />
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5491" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2013h%2016m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/badge/Rotation-%235491-1f6feb?cacheSeconds=60" />
-<img src="https://img.shields.io/badge/Commit-0117498-9cf?cacheSeconds=300" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=145&color=0ea5e9&cacheSeconds=300" />
-<img src="https://img.shields.io/badge/Event-workflow_dispatch-8a2be2?cacheSeconds=300" />
-<img src="https://img.shields.io/badge/Mode-force-grey?cacheSeconds=60" />
+  <!-- Last README update timestamp (changes only on daily/forced update) -->
+  <img src="https://img.shields.io/static/v1?label=Updated&message=YYYY-MM-DD%20HH%3AMM%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=300" />
+
+  <!-- Human label for your daily schedule (purely cosmetic) -->
+  <img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=600" />
+
+  <!-- LIVE timer from the 20-min ticker (pulls badges/next_update.json). Keep cacheSeconds < 20m -->
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=300" />
+
+  <!-- Text fallback (computed in README job). Refreshes only when README updates. -->
+  <img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2013h%2059m&color=757575&labelColor=30363d&cacheSeconds=900" />
+
+  <!-- Run metadata (change only when README updates) -->
+  <img src="https://img.shields.io/badge/Rotation-%235491-1f6feb?cacheSeconds=300" />
+  <img src="https://img.shields.io/badge/Commit-0117498-9cf?cacheSeconds=600" />
+  <img src="https://img.shields.io/static/v1?label=Updates&message=145&color=0ea5e9&cacheSeconds=600" />
+  <img src="https://img.shields.io/badge/Event-workflow_dispatch-8a2be2?cacheSeconds=600" />
+  <img src="https://img.shields.io/badge/Mode-force-grey?cacheSeconds=600" />
 </p>
 <!-- STATUS:END -->
 
@@ -245,9 +254,17 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <!-- STATUS2:START -->
 <p align="left">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=300&t=5491" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2013h%2016m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=145&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
+  <!-- Same LIVE timer from the 20-min ticker (be sure cacheSeconds < 20m) -->
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=300" />
+
+  <!-- Text fallback (only on README updates) -->
+  <img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2013h%2059m&color=757575&labelColor=30363d&cacheSeconds=900" />
+
+  <!-- Total updates counter (updates with README) -->
+  <img src="https://img.shields.io/static/v1?label=Updates&message=145&color=0ea5e9&labelColor=30363d&cacheSeconds=600" />
+  <!-- GitHub Actions badge for the 20-minute ticker workflow -->
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status (20m)"/>
+
 </p>
 <!-- STATUS2:END -->
 
