@@ -9,7 +9,7 @@
 
 <!-- STATUS:START -->
 <p align="center">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=1" />
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=2" />
 <img src="https://img.shields.io/static/v1?label=Next%20Update&message=~13h%2032m&color=757575&labelColor=30363d&cacheSeconds=600" />
 <img src="https://img.shields.io/static/v1?label=Updates&message=144&color=0ea5e9&cacheSeconds=300" />
 </p>
@@ -239,7 +239,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <!-- STATUS2:START -->
 <p align="left">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=1" />
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=2" />
 <img src="https://img.shields.io/static/v1?label=Next%20Update&message=~13h%2032m&color=757575&labelColor=30363d&cacheSeconds=600" />
 <img src="https://img.shields.io/static/v1?label=Updates&message=144&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
 </p>
