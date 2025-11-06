@@ -274,4 +274,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 
 ---
-<img src="https://img.shields.io/badge/Last%20Run-${LAST_STATUS}-red?cacheSeconds=300" />
+
+<!-- STATUS2:START -->
+<!-- STATUS2:END -->
