@@ -1,7 +1,7 @@
 name: Update "Next Update" badge
 
 on:
-  # Run every 10 minutes + allow manual dispatch
+  # Run every 15 minutes + allow manual dispatch
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch: {}
