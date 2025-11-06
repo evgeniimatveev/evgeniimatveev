@@ -1,38 +1,34 @@
-# .github/workflows/next-update-badge.yml
-name: Update "Next Update" badge (v1.1 · quiet)
+name: next-update-badge-quiet
 
 on:
-  # Run every 20 minutes + allow manual dispatch
   schedule:
-    - cron: "*/20 * * * *"
-  workflow_dispatch: {}
+    - cron: "*/20 * * * *"   # run every 20 minutes
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  # Prevent overlapping runs for this workflow
   group: next-update-badge
   cancel-in-progress: true
 
 env:
-  # Target UTC time for the next planned daily update (used for the countdown)
-  NEXT_UPDATE_HOUR: 12
-  NEXT_UPDATE_MIN: 15
+  # Daily target (UTC) for the countdown
+  NEXT_UPDATE_HOUR: "12"
+  NEXT_UPDATE_MIN:  "15"
 
-  # Randomization window (keeps runs de-synchronized across repos)
-  # 600–900s is a good quiet choice for a 20m cadence
-  JITTER_MAX_SEC: 900
+  # Jitter to desync repos (quiet for 20m cadence)
+  JITTER_MAX_SEC: "900"
 
-  # Shields badge settings
+  # Shields badge appearance
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
 
-  # Gradient sensitivity window (minutes). 20 pairs well with a 20m cadence.
-  NEXT_BADGE_WINDOW_MIN: 20
+  # Gradient sensitivity (pairs well with 20m cadence)
+  NEXT_BADGE_WINDOW_MIN: "20"
 
-  # Pastel tuning (light right side so Shields uses black text)
+  # Pastel/Colors
   NEXT_BADGE_PASTELIZE: "1"
   NEXT_BADGE_PASTEL_FACTOR: "0.65"
   NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
@@ -40,13 +36,10 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # QUIET LOGGING POLICY:
-  # - Don't log every run
-  # - Snapshot once in a while (e.g., every 120 min)
-  # - Keep a short tail
-  NEXT_BADGE_LOG_EVERY_RUN: "0"
+  # Quiet logging (no per-run commits)
+  NEXT_BADGE_LOG_EVERY_RUN:   "0"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "120"
-  NEXT_BADGE_LOG_MAX: "300"
+  NEXT_BADGE_LOG_MAX:          "300"
 
 jobs:
   refresh-badge:
@@ -68,29 +61,21 @@ jobs:
       - name: Build JSON for badge
         run: python build_next_badge.py
 
-      - name: Commit badge (quiet: JSON only, no log files)
+      - name: Commit badge (quiet: JSON only)
         run: |
           set -e
-          # Stage only the badge payload to avoid noisy history
           git add badges/next_update.json || true
-
-          # Exit early if there is nothing to commit
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
-          # Configure commit author (local to this repo)
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Commit and push (rebase to avoid non-fast-forward)
           git commit -m "chore: refresh next_update badge (quiet v1.1)"
           git pull --rebase origin main || true
           git push origin HEAD:main
 
-      # OPTIONAL: keep logs as artifacts without committing them
-      - name: Upload telemetry logs (artifact, not committed)
+      - name: Upload telemetry logs (artifact only)
         if: always()
         uses: actions/upload-artifact@v4
         with:
