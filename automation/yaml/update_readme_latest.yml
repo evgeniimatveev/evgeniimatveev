@@ -219,9 +219,12 @@ jobs:
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
           MODE_BADGE="${COMMIT_MODE}"
+          # shields endpoint points to raw next_update.json in this repo/branch
+          NEXT_UPDATE_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
           STATUS="<p align=\"center\">
           <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/endpoint?url=${NEXT_UPDATE_URL}&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
           <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
           <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
