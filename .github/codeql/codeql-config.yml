@@ -1,18 +1,27 @@
 # CodeQL configuration for this repository
 # Docs: https://docs.github.com/code-security/codeql
-name: codeql-config
+name: repo-codeql
+
+# Keep default queries and add extra packs for broader coverage
+disable-default-queries: false
 
 queries:
-  # Good balance of findings vs. noise for Python
   - uses: security-extended
+  - uses: security-and-quality
 
-# Skip generated/non-code areas to speed up scans
+# (Optional) Focus analysis on your real source roots
+# paths:
+#   - .
+#   - src
+#   - app
+
+# Exclude non-code and generated assets to reduce noise
 paths-ignore:
   - badges/**
+  - assets/**               # images, etc.
   - .ci/**
   - .github/workflows/next_update_badge.yml
   - .github/workflows/auto_update_readme.yml
-  - assets/**           # images, etc.
-  - **/*.md
-  - **/*.png
-  - **/*.jpg
+  - "**/*.md"
+  - "**/*.png"
+  - "**/*.jpg"
