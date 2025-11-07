@@ -1,49 +1,178 @@
-# GitHub Actions Workflow for CI/CD
-name: CI/CD Workflow
+name: CI/CD Workflow v1.0
 
 on:
   push:
-    branches: [ "main" ]  # Runs on push to the main branch
+    branches: [ main ]
+    # Avoid CI noise from automation commits
+    paths-ignore:
+      - 'README.md'
+      - 'badges/**'
+      - 'update_log.*'
+      - '.ci/**'
+      - '.github/workflows/next_update_badge.yml'
+      - '.github/workflows/auto_update_readme.yml'
   pull_request:
-    branches: [ "main" ]  # Runs on pull requests targeting the main branch
-  workflow_dispatch:  # Allows manual execution
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'badges/**'
+      - 'update_log.*'
+      - '.ci/**'
+      - '.github/workflows/next_update_badge.yml'
+      - '.github/workflows/auto_update_readme.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Flip to "true" when you want CI to be strict (fail on warnings).
+  CI_STRICT: "false"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Using the latest Ubuntu runner
+  lint-test:
+    name: Lint & Test (Py ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.10", "3.11" ]
 
     steps:
-      # Step 1: Checkout the repository code
-      - name: Checkout repository
+      # 1) Checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python environment
+      # 2) Python + pip cache
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
 
-      # Step 3: Install dependencies
+      # 3) Install dependencies (if file exists)
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        if: hashFiles('requirements.txt') != ''
+        run: pip install -r requirements.txt
 
-      # Step 4: Run linting and security checks
-      - name: Run linting and security checks
+      # 4) Fast lint (ruff) — fails CI on issues (can be relaxed via CI_STRICT)
+      - name: Lint with ruff
         run: |
-          pip install pylint bandit
-          pylint **/*.py || true
-          bandit -r . || true
+          pip install ruff
+          if [ "${CI_STRICT}" = "true" ]; then
+            ruff --output-format=github .
+          else
+            # non-blocking mode prints warnings but doesn't fail the job
+            ruff --output-format=github . || true
+          fi
 
-      # Step 5: Run tests
+      # 5) Deep lint (pylint) — architectural/semantic checks (non-blocking by default)
+      - name: Lint with pylint
+        run: |
+          pip install pylint
+          files="$(git ls-files '*.py')"
+          if [ -n "$files" ]; then
+            if [ "${CI_STRICT}" = "true" ]; then
+              pylint $files
+            else
+              pylint $files || true
+            fi
+          else
+            echo "No Python files found."
+          fi
+
+      # 6) Optional type checking (mypy) — non-blocking helper
+      - name: Type check (mypy)
+        run: |
+          pip install mypy
+          files="$(git ls-files '*.py')"
+          if [ -n "$files" ]; then
+            if [ "${CI_STRICT}" = "true" ]; then
+              mypy --ignore-missing-imports .
+            else
+              mypy --ignore-missing-imports . || true
+            fi
+          fi
+
+      # 7) Security scans (non-blocking)
+      - name: Security scan (bandit)
+        run: |
+          pip install bandit
+          bandit -r . -q || true
+
+      - name: Dependency audit (pip-audit)
+        run: |
+          pip install pip-audit
+          if [ -f requirements.txt ]; then
+            pip-audit -r requirements.txt || true
+          else
+            pip-audit || true
+          fi
+
+      # 8) Tests + coverage
       - name: Run tests
         run: |
-          pip install pytest
-          pytest tests/ --disable-warnings || true
+          pip install pytest pytest-cov
+          set -e
+          pytest -q --maxfail=1 --disable-warnings \
+            --junitxml=reports/junit.xml \
+            --cov=. --cov-report=xml:reports/coverage.xml || {
+              if [ "${CI_STRICT}" = "true" ]; then
+                exit 1
+              else
+                echo "Tests failed but CI_STRICT=false → continuing"; exit 0
+              fi
+            }
 
-      # Step 6: Deployment step (Optional)
-      - name: Deploy application (Optional)
-        if: success()
+      # 9) Upload reports
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ matrix.python-version }}
+          path: reports/
+          retention-days: 7
+
+      # 10) Nice summary in the run page
+      - name: CI summary
+        if: always()
         run: |
-          echo "Deploying application..."
-          # Add deployment commands here (e.g., Docker, FastAPI, Heroku)
+          echo "### CI/CD Summary (Python ${{ matrix.python-version }})" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Ruff: $(ruff --version 2>/dev/null || echo 'n/a')" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pylint: $(pylint --version 2>/dev/null | head -n1 || echo 'n/a')" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Mypy: $(mypy --version 2>/dev/null || echo 'n/a')" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Bandit: $(bandit --version 2>/dev/null || echo 'n/a')" >> "$GITHUB_STEP_SUMMARY"
+          echo "- pip-audit: $(pip-audit --version 2>/dev/null || echo 'n/a')" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Artifacts: coverage.xml & junit.xml under **reports/** (see Artifacts tab)." >> "$GITHUB_STEP_SUMMARY"
+
+  # Example deploy stage (tagged releases only). Safe-by-default.
+  deploy:
+    name: Deploy (on tag)
+    needs: [ lint-test ]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build/package
+        run: |
+          echo "Build your package/app here"
+          # e.g., docker build -t your/app:${GITHUB_REF_NAME} .
+
+      - name: Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Do the real deployment here (Docker/Cloud/etc)."
+          # Examples:
+          # docker login ... && docker push ...
+          # gh release create "${GITHUB_REF_NAME}" --generate-notes
