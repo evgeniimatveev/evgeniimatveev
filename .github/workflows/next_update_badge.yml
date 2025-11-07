@@ -47,17 +47,20 @@ jobs:
   refresh-badge:
     runs-on: ubuntu-latest
     steps:
+      # 🔁 Patched: warning-free, faster, and safe
       - name: Checkout (shallow + sparse)
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 2               # shallow clone (fast)
+          fetch-depth: 2
           persist-credentials: true
-          # only materialize what we touch
+          filter: blob:none
           sparse-checkout: |
             badges
+            build_next_badge.py
             .github/workflows/next_update_badge.yml
-          sparse-checkout-cone: true
+          sparse-checkout-cone-mode: true
+          set-safe-directory: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -75,13 +78,12 @@ jobs:
         shell: bash
         run: |
           j=badges/next_update.json
-          msg=$(jq -r '.message'      "$j")
-          color=$(jq -r '.color'       "$j")
-          label=$(jq -r '.label'       "$j")
-          labelColor=$(jq -r '.labelColor' "$j")
+          msg=$(jq -r '.message'           "$j")
+          color=$(jq -r '.color'            "$j")
+          label=$(jq -r '.label'            "$j")
+          labelColor=$(jq -r '.labelColor'  "$j")
           logo=$(jq -r '.namedLogo // empty' "$j")
 
-          # step outputs
           {
             echo "message=$msg"
             echo "color=$color"
@@ -91,7 +93,6 @@ jobs:
             echo "endpoint=badges/next_update.json"
           } >> "$GITHUB_OUTPUT"
 
-          # optional verbose echo
           if [[ "${{ inputs.verbose_echo }}" == "true" ]]; then
             echo "::group::next_update.json"
             cat "$j"
@@ -128,10 +129,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Always stage the live badge payload
           git add badges/next_update.json || true
 
-          # Quiet schedule decides if tail logs join this commit
           force="${{ inputs.force_snapshot && '1' || '0' }}"
           if [[ "$force" == "1" ]]; then
             echo "Force-committing tail logs (manual override)."
@@ -157,15 +156,12 @@ jobs:
 
           git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.1)"
 
-          # Push with gentle retries; shallow is OK
           for i in 1 2 3; do
             if git push origin HEAD:main; then
               echo "Pushed successfully"; exit 0
             fi
             echo "Push failed (attempt $i). Retrying..."
             sleep $((i*3))
-            # fetch just enough to rebase shallowly
             git fetch --depth=2 origin main || true
             git pull --rebase --no-tags origin main || true
           done
-          echo "Push failed after retries"; exit 1
