@@ -1,0 +1,61 @@
+# .github/dependabot.yml
+# Dependabot configuration for this repository
+# Docs: https://docs.github.com/code-security/dependabot
+
+version: 2
+
+updates:
+  # --- Python (pip) dependencies from requirements*.txt in repo root ---
+  - package-ecosystem: "pip"
+    directory: "/"                     # Look for requirements*.txt in the repo root
+    schedule:
+      interval: "weekly"               # Run once per week
+      day: "monday"                    # Every Monday
+      time: "09:00"                    # At 09:00 local repo time
+      timezone: "America/Los_Angeles"  # Adjust if you move timezones
+    allow:
+      - dependency-type: "direct"      # Safer: only bump direct deps (not transitive)
+    groups:
+      pip-minor-patch:                 # Reduce noise: group non-breaking updates
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    open-pull-requests-limit: 5        # Keep the queue manageable
+    insecure-external-code-execution: "deny"  # Do not execute untrusted install scripts
+    commit-message:
+      prefix: "deps(pip)"              # PR title prefix
+      include: "scope"                 # Include the package name in the title
+    rebase-strategy: "auto"            # Auto-rebase when base branch moves
+    labels:                            # Useful for filters/dashboards
+      - "dependencies"
+      - "pip"
+    # reviewers:
+    #   - "evgeniimatveev"
+    # assignees:
+    #   - "evgeniimatveev"
+    # Optionally ignore breaking majors for specific libs:
+    # ignore:
+    #   - dependency-name: "pytest"
+    #     update-types: ["version-update:semver-major"]
+    #   - dependency-name: "pandas"
+    #     update-types: ["version-update:semver-major"]
+
+  # --- GitHub Actions versions in .github/workflows ---
+  - package-ecosystem: "github-actions"
+    directory: "/"                     # Scan all workflow files
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:15"
+      timezone: "America/Los_Angeles"
+    groups:
+      gha-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "deps(actions)"
+      include: "scope"
+    rebase-strategy: "auto"
+    labels:
+      - "dependencies"
+      - "github-actions"
