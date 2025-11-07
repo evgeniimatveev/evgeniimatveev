@@ -1,17 +1,15 @@
-# .github/workflows/next_update_badge.yml
-name: Update "Next Update" badge (v1.2 · quiet-hybrid+)
+name: Update "Next Update" badge (v1.2.1 · quiet-hybrid+fast)
 
 on:
-  # Run every 20 minutes + allow manual dispatch
   schedule:
     - cron: "*/20 * * * *"
   workflow_dispatch:
     inputs:
-      snapshot_now:
+      force_snapshot:
         description: "Commit tail logs this run (override quiet schedule)"
         type: boolean
         default: false
-      verbose:
+      verbose_echo:
         description: "Verbose build (echo JSON to logs)"
         type: boolean
         default: false
@@ -20,28 +18,19 @@ permissions:
   contents: write
 
 concurrency:
-  # Prevent overlapping runs for this workflow
   group: next-update-badge
   cancel-in-progress: true
 
 env:
-  # Target UTC time for the daily planned update (countdown target)
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Randomization window (keeps runs de-synchronized)
-  # 900–1200s pairs well with a 20m cadence (quiet)
   JITTER_MAX_SEC: 1200
 
-  # Shields badge appearance
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
-
-  # Gradient sensitivity window (minutes). 20m matches the 20m cadence.
   NEXT_BADGE_WINDOW_MIN: 20
-
-  # Pastel tuning (right side stays light so Shields renders black text)
   NEXT_BADGE_PASTELIZE: "1"
   NEXT_BADGE_PASTEL_FACTOR: "0.65"
   NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
@@ -49,34 +38,26 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # Logging policy:
-  # - write telemetry every run (artifacts hold full history)
-  # - rotate to a short tail inside the repo (quiet commit cadence below)
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
   NEXT_BADGE_LOG_MAX: "300"
-
-  # Quiet hybrid controls:
-  # Tail gets committed only every SNAPSHOT_COMMIT_MIN minutes
-  SNAPSHOT_COMMIT_MIN: "240"    # 4h — super quiet
-  ARTIFACT_DAYS: "7"            # artifact retention
+  SNAPSHOT_COMMIT_MIN: "240"
 
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
-
-    outputs:
-      badge_label:  ${{ steps.parse.outputs.label }}
-      badge_msg:    ${{ steps.parse.outputs.message }}
-      badge_color:  ${{ steps.parse.outputs.color }}
-
     steps:
-      - name: Checkout repository
+      - name: Checkout (shallow + sparse)
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 2               # shallow clone (fast)
           persist-credentials: true
-          fetch-depth: 0
+          # only materialize what we touch
+          sparse-checkout: |
+            badges
+            .github/workflows/next_update_badge.yml
+          sparse-checkout-cone: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -87,42 +68,51 @@ jobs:
         run: python build_next_badge.py
 
       - name: Install jq (for JSON parsing)
-        run: sudo apt-get update && sudo apt-get install -y jq
+        run: sudo apt-get -y update && sudo apt-get -y install jq
 
       - name: Parse badge JSON → outputs (+ optional verbose echo)
         id: parse
         shell: bash
-        env:
-          VERBOSE: ${{ inputs.verbose }}
         run: |
-          set -euo pipefail
-          j="badges/next_update.json"
-          echo "label=$(jq -r .label       "$j")" >> "$GITHUB_OUTPUT"
-          echo "message=$(jq -r .message   "$j")" >> "$GITHUB_OUTPUT"
-          echo "color=$(jq -r .color       "$j")" >> "$GITHUB_OUTPUT"
-          echo "labelColor=$(jq -r .labelColor "$j")" >> "$GITHUB_OUTPUT"
-          echo "namedLogo=$(jq -r .namedLogo "$j")" >> "$GITHUB_OUTPUT"
-          if [ "${VERBOSE:-false}" = "true" ]; then
-            echo "Badge JSON:"; cat "$j"
+          j=badges/next_update.json
+          msg=$(jq -r '.message'      "$j")
+          color=$(jq -r '.color'       "$j")
+          label=$(jq -r '.label'       "$j")
+          labelColor=$(jq -r '.labelColor' "$j")
+          logo=$(jq -r '.namedLogo // empty' "$j")
+
+          # step outputs
+          {
+            echo "message=$msg"
+            echo "color=$color"
+            echo "label=$label"
+            echo "labelColor=$labelColor"
+            echo "logo=$logo"
+            echo "endpoint=badges/next_update.json"
+          } >> "$GITHUB_OUTPUT"
+
+          # optional verbose echo
+          if [[ "${{ inputs.verbose_echo }}" == "true" ]]; then
+            echo "::group::next_update.json"
+            cat "$j"
+            echo "::endgroup::"
           fi
 
       - name: Publish run summary
         shell: bash
         run: |
-          set -euo pipefail
           {
             echo "### Next Update badge"
             echo ""
             echo "- **Message:** ${{ steps.parse.outputs.message }}"
-            echo "- **Label:**   ${{ steps.parse.outputs.label }}"
-            echo "- **Color:**   \`${{ steps.parse.outputs.color }}\`"
-            echo "- **LabelColor:** \`${{ steps.parse.outputs.labelColor }}\`"
-            echo "- **Logo:**    \`${{ steps.parse.outputs.namedLogo }}\`"
+            echo "- **Label:** ${{ steps.parse.outputs.label }}"
+            echo "- **Color:** ${{ steps.parse.outputs.color }}"
+            echo "- **LabelColor:** ${{ steps.parse.outputs.labelColor }}"
+            echo "- **Logo:** ${{ steps.parse.outputs.logo || '—' }}"
             echo ""
-            echo "_Shields endpoint: \`badges/next_update.json\`_"
+            echo "_Shields endpoint_: \`${{ steps.parse.outputs.endpoint }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      # Always publish full telemetry as an artifact (no git noise)
       - name: Upload telemetry logs (artifact)
         if: always()
         uses: actions/upload-artifact@v4
@@ -131,47 +121,51 @@ jobs:
           path: |
             badges/next_update_log.jsonl
             badges/next_update_log.txt
-          retention-days: ${{ env.ARTIFACT_DAYS }}
+          retention-days: 7
 
-      # Commit badge at every run; commit tail logs only on schedule/force
       - name: Commit badge (+ tail logs on schedule/force)
         shell: bash
-        env:
-          SNAPSHOT_FORCE: ${{ inputs.snapshot_now }}
         run: |
           set -euo pipefail
 
-          # Always stage the badge payload (drives the live shields endpoint)
+          # Always stage the live badge payload
           git add badges/next_update.json || true
 
-          # Decide if we also commit the tail logs (quiet hybrid)
-          N="${SNAPSHOT_COMMIT_MIN:-240}"
-          MOD=$(( ( $(date -u +%s) / 60 ) % N ))
-          if [ "${SNAPSHOT_FORCE:-false}" = "true" ] || [ "$MOD" -eq 0 ]; then
-            echo "Committing tail logs this run (force=${SNAPSHOT_FORCE:-false}, every ${N} min)."
+          # Quiet schedule decides if tail logs join this commit
+          force="${{ inputs.force_snapshot && '1' || '0' }}"
+          if [[ "$force" == "1" ]]; then
+            echo "Force-committing tail logs (manual override)."
             git add badges/next_update_log.jsonl badges/next_update_log.txt || true
           else
-            echo "Skipping log commit (quiet mode)."
+            N="${SNAPSHOT_COMMIT_MIN:-240}"
+            MOD=$(( ( $(date -u +%s) / 60 ) % N ))
+            if [[ "$MOD" -eq 0 ]]; then
+              echo "Scheduled tail log commit (every ${N} min)."
+              git add badges/next_update_log.jsonl badges/next_update_log.txt || true
+            else
+              echo "Skipping tail log commit (quiet mode)."
+            fi
           fi
 
-          # Exit early if nothing to commit
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          # Configure author
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Commit and push with gentle retries
-          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2)"
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.1)"
+
+          # Push with gentle retries; shallow is OK
           for i in 1 2 3; do
-            if git push; then
+            if git push origin HEAD:main; then
               echo "Pushed successfully"; exit 0
             fi
             echo "Push failed (attempt $i). Retrying..."
             sleep $((i*3))
-            git pull --rebase origin main || true
+            # fetch just enough to rebase shallowly
+            git fetch --depth=2 origin main || true
+            git pull --rebase --no-tags origin main || true
           done
           echo "Push failed after retries"; exit 1
