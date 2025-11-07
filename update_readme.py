@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-README auto-updater (v7.3)
+README auto-updater (v7.4)
 - Rotates banner (stateless) with cache-busted raw URL
 - Emoji before "Banner X/Y": random | stable (configurable)
 - Emoji set overridable via ENV: BANNER_EMOJIS="🎞️,🔁,🪄,🤖,⚙️,📈"
