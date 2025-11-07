@@ -1,9 +1,9 @@
 name: Update "Next Update" badge
 
 on:
-  # Run every 10 minutes + allow manual dispatch
+  # Run every 20 minutes + allow manual dispatch
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/20 * * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -20,7 +20,8 @@ env:
   NEXT_UPDATE_MIN: 15
 
   # Randomization window to avoid thundering herd when many repos run at once
-  JITTER_MAX_SEC: 1200
+  # 600–900s pairs well with a 20m cadence (quiet); bump to 1200s if you like.
+  JITTER_MAX_SEC: 900
 
   # Shields badge settings
   NEXT_BADGE_LABEL: "Next Update"
@@ -28,6 +29,7 @@ env:
   NEXT_BADGE_NAMED_LOGO: "timer"
 
   # Gradient sensitivity window (minutes)
+  # 20m window matches the 20m cadence for smooth color changes.
   NEXT_BADGE_WINDOW_MIN: 20
 
   # Pastel tuning (keeps right side light so Shields uses black text)
@@ -39,6 +41,7 @@ env:
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
   # Logging policy (full telemetry each run + rotation)
+  # (If захочешь «тишь»: set NEXT_BADGE_LOG_EVERY_RUN="0" and SNAPSHOT_MIN="120")
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
   NEXT_BADGE_LOG_MAX: "1050"
@@ -65,7 +68,6 @@ jobs:
       - name: Commit badge + logs (if changed)
         run: |
           set -e
-
           # Stage badge + log artifacts
           git add badges/next_update.json \
                  badges/next_update_log.jsonl \
@@ -85,7 +87,7 @@ jobs:
 
           # Rebase on top of the latest main to avoid non-fast-forward errors
           git fetch origin main
-          git pull --rebase origin main
+          git pull --rebase origin main || true
 
           # Push our updated main back to origin
           git push origin HEAD:main
