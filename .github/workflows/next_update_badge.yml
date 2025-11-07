@@ -116,7 +116,7 @@ jobs:
 
       - name: Upload telemetry logs (artifact)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: next_update_logs
           path: |
