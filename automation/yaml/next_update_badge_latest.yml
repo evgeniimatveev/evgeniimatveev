@@ -1,38 +1,36 @@
-name: Update "Next Update" badge
+name: Update "Next Update" badge (v1.2.1 · quiet-hybrid+fast)
 
 on:
-  # Run every 20 minutes + allow manual dispatch
   schedule:
     - cron: "*/20 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force_snapshot:
+        description: "Commit tail logs this run (override quiet schedule)"
+        type: boolean
+        default: false
+      verbose_echo:
+        description: "Verbose build (echo JSON to logs)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
 
 concurrency:
-  # Prevent overlapping runs for this workflow
   group: next-update-badge
   cancel-in-progress: true
 
 env:
-  # Target UTC time for the next planned update (used for the countdown)
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Randomization window to avoid thundering herd when many repos run at once
-  # 600–900s pairs well with a 20m cadence (quiet); bump to 1200s if you like.
-  JITTER_MAX_SEC: 900
+  JITTER_MAX_SEC: 1200
 
-  # Shields badge settings
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
-
-  # Gradient sensitivity window (minutes)
-  # 20m window matches the 20m cadence for smooth color changes.
   NEXT_BADGE_WINDOW_MIN: 20
-
-  # Pastel tuning (keeps right side light so Shields uses black text)
   NEXT_BADGE_PASTELIZE: "1"
   NEXT_BADGE_PASTEL_FACTOR: "0.65"
   NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
@@ -40,22 +38,29 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # Logging policy (full telemetry each run + rotation)
-  # (If захочешь «тишь»: set NEXT_BADGE_LOG_EVERY_RUN="0" and SNAPSHOT_MIN="120")
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
-  NEXT_BADGE_LOG_MAX: "1050"
+  NEXT_BADGE_LOG_MAX: "300"
+  SNAPSHOT_COMMIT_MIN: "240"
 
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      # 🔁 Patched: warning-free, faster, and safe
+      - name: Checkout (shallow + sparse)
         uses: actions/checkout@v4
         with:
-          ref: main              # ensure we work on main
+          ref: main
+          fetch-depth: 2
           persist-credentials: true
-          fetch-depth: 0         # full history so rebase works correctly
+          filter: blob:none
+          sparse-checkout: |
+            badges
+            build_next_badge.py
+            .github/workflows/next_update_badge.yml
+          sparse-checkout-cone-mode: true
+          set-safe-directory: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -65,29 +70,98 @@ jobs:
       - name: Build JSON for badge
         run: python build_next_badge.py
 
-      - name: Commit badge + logs (if changed)
-        run: |
-          set -e
-          # Stage badge + log artifacts
-          git add badges/next_update.json \
-                 badges/next_update_log.jsonl \
-                 badges/next_update_log.txt || true
+      - name: Install jq (for JSON parsing)
+        run: sudo apt-get -y update && sudo apt-get -y install jq
 
-          # Exit early if there is nothing to commit
+      - name: Parse badge JSON → outputs (+ optional verbose echo)
+        id: parse
+        shell: bash
+        run: |
+          j=badges/next_update.json
+          msg=$(jq -r '.message'           "$j")
+          color=$(jq -r '.color'            "$j")
+          label=$(jq -r '.label'            "$j")
+          labelColor=$(jq -r '.labelColor'  "$j")
+          logo=$(jq -r '.namedLogo // empty' "$j")
+
+          {
+            echo "message=$msg"
+            echo "color=$color"
+            echo "label=$label"
+            echo "labelColor=$labelColor"
+            echo "logo=$logo"
+            echo "endpoint=badges/next_update.json"
+          } >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ inputs.verbose_echo }}" == "true" ]]; then
+            echo "::group::next_update.json"
+            cat "$j"
+            echo "::endgroup::"
+          fi
+
+      - name: Publish run summary
+        shell: bash
+        run: |
+          {
+            echo "### Next Update badge"
+            echo ""
+            echo "- **Message:** ${{ steps.parse.outputs.message }}"
+            echo "- **Label:** ${{ steps.parse.outputs.label }}"
+            echo "- **Color:** ${{ steps.parse.outputs.color }}"
+            echo "- **LabelColor:** ${{ steps.parse.outputs.labelColor }}"
+            echo "- **Logo:** ${{ steps.parse.outputs.logo || '—' }}"
+            echo ""
+            echo "_Shields endpoint_: \`${{ steps.parse.outputs.endpoint }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload telemetry logs (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next_update_logs
+          path: |
+            badges/next_update_log.jsonl
+            badges/next_update_log.txt
+          retention-days: 7
+
+      - name: Commit badge (+ tail logs on schedule/force)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git add badges/next_update.json || true
+
+          force="${{ inputs.force_snapshot && '1' || '0' }}"
+          if [[ "$force" == "1" ]]; then
+            echo "Force-committing tail logs (manual override)."
+            git add badges/next_update_log.jsonl badges/next_update_log.txt || true
+          else
+            N="${SNAPSHOT_COMMIT_MIN:-240}"
+            MOD=$(( ( $(date -u +%s) / 60 ) % N ))
+            if [[ "$MOD" -eq 0 ]]; then
+              echo "Scheduled tail log commit (every ${N} min)."
+              git add badges/next_update_log.jsonl badges/next_update_log.txt || true
+            else
+              echo "Skipping tail log commit (quiet mode)."
+            fi
+          fi
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          # Configure commit author (local to this repo)
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git commit -m "chore: refresh next_update badge + logs" || true
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.1)"
 
-          # Rebase on top of the latest main to avoid non-fast-forward errors
-          git fetch origin main
-          git pull --rebase origin main || true
-
-          # Push our updated main back to origin
-          git push origin HEAD:main
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Pushed successfully"; exit 0
+            fi
+            echo "Push failed (attempt $i). Retrying..."
+            sleep $((i*3))
+            git fetch --depth=2 origin main || true
+            git pull --rebase --no-tags origin main || true
+          done
