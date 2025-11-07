@@ -54,7 +54,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | Workflow | Schedule | Status |
 |----------|----------|--------|
 | [Auto Update README](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml) | Daily 12:15 UTC | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg) |
-| [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) | Every 10min | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg) |
+| [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) | Every 20min | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg) |
 | [CI/CD Pipeline](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml) | On push/PR | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg) |
 
 📊 [View all runs →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
