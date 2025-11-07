@@ -1,4 +1,4 @@
-name: Auto Update README
+name: Auto Update README v7.4
 
 on:
   schedule:
