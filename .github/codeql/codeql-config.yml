@@ -1,0 +1,18 @@
+# CodeQL configuration for this repository
+# Docs: https://docs.github.com/code-security/codeql
+name: codeql-config
+
+queries:
+  # Good balance of findings vs. noise for Python
+  - uses: security-extended
+
+# Skip generated/non-code areas to speed up scans
+paths-ignore:
+  - badges/**
+  - .ci/**
+  - .github/workflows/next_update_badge.yml
+  - .github/workflows/auto_update_readme.yml
+  - assets/**           # images, etc.
+  - **/*.md
+  - **/*.png
+  - **/*.jpg
