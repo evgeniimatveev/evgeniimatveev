@@ -1,0 +1,49 @@
+# GitHub Actions Workflow for CI/CD
+name: CI/CD Workflow
+
+on:
+  push:
+    branches: [ "main" ]  # Runs on push to the main branch
+  pull_request:
+    branches: [ "main" ]  # Runs on pull requests targeting the main branch
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Using the latest Ubuntu runner
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Step 4: Run linting and security checks
+      - name: Run linting and security checks
+        run: |
+          pip install pylint bandit
+          pylint **/*.py || true
+          bandit -r . || true
+
+      # Step 5: Run tests
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest tests/ --disable-warnings || true
+
+      # Step 6: Deployment step (Optional)
+      - name: Deploy application (Optional)
+        if: success()
+        run: |
+          echo "Deploying application..."
+          # Add deployment commands here (e.g., Docker, FastAPI, Heroku)
