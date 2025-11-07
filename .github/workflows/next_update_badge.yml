@@ -1,4 +1,4 @@
-name: Update "Next Update" badge
+name: Update "Next Update" badge (v1.1 · quiet-hybrid)
 
 on:
   # Run every 20 minutes + allow manual dispatch
@@ -15,24 +15,22 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Target UTC time for the next planned update (used for the countdown)
+  # Target UTC time for the daily planned update (countdown target)
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Randomization window to avoid thundering herd when many repos run at once
-  # 600–900s pairs well with a 20m cadence (quiet); bump to 1200s if you like.
-  JITTER_MAX_SEC: 900
+  # Randomization window (keeps runs de-synchronized). 900–1200s is quiet.
+  JITTER_MAX_SEC: 1200
 
-  # Shields badge settings
+  # Shields badge appearance
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
 
-  # Gradient sensitivity window (minutes)
-  # 20m window matches the 20m cadence for smooth color changes.
+  # Gradient sensitivity window (minutes). 20m matches the 20m cadence.
   NEXT_BADGE_WINDOW_MIN: 20
 
-  # Pastel tuning (keeps right side light so Shields uses black text)
+  # Pastel tuning (right side stays light so Shields renders black text)
   NEXT_BADGE_PASTELIZE: "1"
   NEXT_BADGE_PASTEL_FACTOR: "0.65"
   NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
@@ -40,22 +38,29 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # Logging policy (full telemetry each run + rotation)
-  # (If захочешь «тишь»: set NEXT_BADGE_LOG_EVERY_RUN="0" and SNAPSHOT_MIN="120")
+  # Logging policy:
+  # - write telemetry every run (so artifacts have full history)
+  # - rotate to a short tail inside the repo if/when we commit it
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
-  NEXT_BADGE_LOG_MAX: "1050"
+  NEXT_BADGE_LOG_MAX: "300"
+
+  # Quiet hybrid controls:
+  # - snapshot tail gets committed to git only every SNAPSHOT_COMMIT_MIN minutes
+  #   (keep this large for very low repository noise)
+  SNAPSHOT_COMMIT_MIN: "240"   # 240 min = every 4 hours
 
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main              # ensure we work on main
+          ref: main
           persist-credentials: true
-          fetch-depth: 0         # full history so rebase works correctly
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -65,29 +70,54 @@ jobs:
       - name: Build JSON for badge
         run: python build_next_badge.py
 
-      - name: Commit badge + logs (if changed)
+      # Always publish full telemetry as an artifact (no git noise)
+      - name: Upload telemetry logs (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next_update_logs
+          path: |
+            badges/next_update_log.jsonl
+            badges/next_update_log.txt
+          retention-days: 7
+
+      # Commit badge at every run; commit log tail only every N minutes
+      - name: Commit badge (+ tail logs every N minutes)
+        shell: bash
         run: |
           set -e
-          # Stage badge + log artifacts
-          git add badges/next_update.json \
-                 badges/next_update_log.jsonl \
-                 badges/next_update_log.txt || true
 
-          # Exit early if there is nothing to commit
+          # Always stage the badge payload (drives the live shields endpoint)
+          git add badges/next_update.json || true
+
+          # Decide if we also commit the tail logs this run (quiet hybrid)
+          N="${SNAPSHOT_COMMIT_MIN:-240}"
+          MOD=$(( ( $(date -u +%s) / 60 ) % N ))
+          if [ "$MOD" -eq 0 ]; then
+            echo "Committing tail logs this run (every ${N} min)."
+            git add badges/next_update_log.jsonl badges/next_update_log.txt || true
+          else
+            echo "Skipping log commit (quiet mode)."
+          fi
+
+          # Exit early if nothing to commit
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          # Configure commit author (local to this repo)
+          # Configure author
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git commit -m "chore: refresh next_update badge + logs" || true
-
-          # Rebase on top of the latest main to avoid non-fast-forward errors
-          git fetch origin main
-          git pull --rebase origin main || true
-
-          # Push our updated main back to origin
-          git push origin HEAD:main
+          # Commit and push with gentle retries
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.1)"
+          for i in 1 2 3; do
+            if git push; then
+              echo "Pushed successfully"; exit 0
+            fi
+            echo "Push failed (attempt $i). Retrying..."
+            sleep $((i*3))
+            git pull --rebase origin main || true
+          done
+          echo "Push failed after retries"; exit 1
