@@ -1,0 +1,64 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "**/*.py"
+      - ".github/workflows/codeql.yml"
+      - ".github/codeql/**"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "**/*.py"
+      - ".github/workflows/codeql.yml"
+      - ".github/codeql/**"
+  schedule:
+    # Weekly scan (Mon 09:30 PT). Matches your Dependabot cadence.
+    - cron: "30 16 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  security-events: write   # required to upload SARIF
+  actions: read
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (CodeQL)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ python ]
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
+
+      # Optional: use the same Python you lint/test with (not required for CodeQL to parse)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+
+      # For compiled languages you’d build here; for Python this is a no-op.
+      - name: Autofix build (autobuild)
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
