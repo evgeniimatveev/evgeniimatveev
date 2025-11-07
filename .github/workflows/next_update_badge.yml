@@ -1,10 +1,20 @@
-name: Update "Next Update" badge (v1.1 · quiet-hybrid)
+# .github/workflows/next_update_badge.yml
+name: Update "Next Update" badge (v1.2 · quiet-hybrid+)
 
 on:
   # Run every 20 minutes + allow manual dispatch
   schedule:
     - cron: "*/20 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      snapshot_now:
+        description: "Commit tail logs this run (override quiet schedule)"
+        type: boolean
+        default: false
+      verbose:
+        description: "Verbose build (echo JSON to logs)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -19,7 +29,8 @@ env:
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Randomization window (keeps runs de-synchronized). 900–1200s is quiet.
+  # Randomization window (keeps runs de-synchronized)
+  # 900–1200s pairs well with a 20m cadence (quiet)
   JITTER_MAX_SEC: 1200
 
   # Shields badge appearance
@@ -39,20 +50,25 @@ env:
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
   # Logging policy:
-  # - write telemetry every run (so artifacts have full history)
-  # - rotate to a short tail inside the repo if/when we commit it
+  # - write telemetry every run (artifacts hold full history)
+  # - rotate to a short tail inside the repo (quiet commit cadence below)
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
   NEXT_BADGE_LOG_MAX: "300"
 
   # Quiet hybrid controls:
-  # - snapshot tail gets committed to git only every SNAPSHOT_COMMIT_MIN minutes
-  #   (keep this large for very low repository noise)
-  SNAPSHOT_COMMIT_MIN: "240"   # 240 min = every 4 hours
+  # Tail gets committed only every SNAPSHOT_COMMIT_MIN minutes
+  SNAPSHOT_COMMIT_MIN: "240"    # 4h — super quiet
+  ARTIFACT_DAYS: "7"            # artifact retention
 
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
+
+    outputs:
+      badge_label:  ${{ steps.parse.outputs.label }}
+      badge_msg:    ${{ steps.parse.outputs.message }}
+      badge_color:  ${{ steps.parse.outputs.color }}
 
     steps:
       - name: Checkout repository
@@ -70,6 +86,42 @@ jobs:
       - name: Build JSON for badge
         run: python build_next_badge.py
 
+      - name: Install jq (for JSON parsing)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Parse badge JSON → outputs (+ optional verbose echo)
+        id: parse
+        shell: bash
+        env:
+          VERBOSE: ${{ inputs.verbose }}
+        run: |
+          set -euo pipefail
+          j="badges/next_update.json"
+          echo "label=$(jq -r .label       "$j")" >> "$GITHUB_OUTPUT"
+          echo "message=$(jq -r .message   "$j")" >> "$GITHUB_OUTPUT"
+          echo "color=$(jq -r .color       "$j")" >> "$GITHUB_OUTPUT"
+          echo "labelColor=$(jq -r .labelColor "$j")" >> "$GITHUB_OUTPUT"
+          echo "namedLogo=$(jq -r .namedLogo "$j")" >> "$GITHUB_OUTPUT"
+          if [ "${VERBOSE:-false}" = "true" ]; then
+            echo "Badge JSON:"; cat "$j"
+          fi
+
+      - name: Publish run summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "### Next Update badge"
+            echo ""
+            echo "- **Message:** ${{ steps.parse.outputs.message }}"
+            echo "- **Label:**   ${{ steps.parse.outputs.label }}"
+            echo "- **Color:**   \`${{ steps.parse.outputs.color }}\`"
+            echo "- **LabelColor:** \`${{ steps.parse.outputs.labelColor }}\`"
+            echo "- **Logo:**    \`${{ steps.parse.outputs.namedLogo }}\`"
+            echo ""
+            echo "_Shields endpoint: \`badges/next_update.json\`_"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       # Always publish full telemetry as an artifact (no git noise)
       - name: Upload telemetry logs (artifact)
         if: always()
@@ -79,22 +131,24 @@ jobs:
           path: |
             badges/next_update_log.jsonl
             badges/next_update_log.txt
-          retention-days: 7
+          retention-days: ${{ env.ARTIFACT_DAYS }}
 
-      # Commit badge at every run; commit log tail only every N minutes
-      - name: Commit badge (+ tail logs every N minutes)
+      # Commit badge at every run; commit tail logs only on schedule/force
+      - name: Commit badge (+ tail logs on schedule/force)
         shell: bash
+        env:
+          SNAPSHOT_FORCE: ${{ inputs.snapshot_now }}
         run: |
-          set -e
+          set -euo pipefail
 
           # Always stage the badge payload (drives the live shields endpoint)
           git add badges/next_update.json || true
 
-          # Decide if we also commit the tail logs this run (quiet hybrid)
+          # Decide if we also commit the tail logs (quiet hybrid)
           N="${SNAPSHOT_COMMIT_MIN:-240}"
           MOD=$(( ( $(date -u +%s) / 60 ) % N ))
-          if [ "$MOD" -eq 0 ]; then
-            echo "Committing tail logs this run (every ${N} min)."
+          if [ "${SNAPSHOT_FORCE:-false}" = "true" ] || [ "$MOD" -eq 0 ]; then
+            echo "Committing tail logs this run (force=${SNAPSHOT_FORCE:-false}, every ${N} min)."
             git add badges/next_update_log.jsonl badges/next_update_log.txt || true
           else
             echo "Skipping log commit (quiet mode)."
@@ -107,11 +161,11 @@ jobs:
           fi
 
           # Configure author
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           # Commit and push with gentle retries
-          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.1)"
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2)"
           for i in 1 2 3; do
             if git push; then
               echo "Pushed successfully"; exit 0
