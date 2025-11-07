@@ -11,17 +11,17 @@ queries:
 
 # (Optional) Focus analysis on your real source roots
 # paths:
-#   - .
-#   - src
-#   - app
+#   - "."
+#   - "src"
+#   - "app"
 
 # Exclude non-code and generated assets to reduce noise
 paths-ignore:
-  - badges/**
-  - assets/**               # images, etc.
-  - .ci/**
-  - .github/workflows/next_update_badge.yml
-  - .github/workflows/auto_update_readme.yml
+  - "badges/**"
+  - ".ci/**"
+  - ".github/workflows/next_update_badge.yml"
+  - ".github/workflows/auto_update_readme.yml"
+  - "assets/**"         # images, etc.
   - "**/*.md"
   - "**/*.png"
   - "**/*.jpg"
