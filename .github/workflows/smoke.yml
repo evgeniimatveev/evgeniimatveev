@@ -3,7 +3,7 @@ name: Daily Smoke
 on:
   schedule:
     # Run every day at 08:07 UTC 
-    - cron: '7 8 * * *'
+    - cron: '7 8 * * 1'
   workflow_dispatch: {}
 
 permissions:
