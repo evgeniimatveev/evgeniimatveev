@@ -260,7 +260,7 @@ jobs:
           N = int(os.getenv("LOG_TABLE_N","5"))
           lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
 
-          def esc(s): 
+          def esc(s):
               return str(s).replace("|","\\|").replace("\n"," ").strip()
 
           print(f"### Last {N} updates")
@@ -291,9 +291,9 @@ jobs:
           MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
 
-          # Daily Smoke badge/link
+          # Daily Smoke badge/link (show *any* last run)
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
-          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
+          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
 
           STATUS="<p align=\"center\">
           <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
@@ -313,15 +313,15 @@ jobs:
             /<!-- STATUS:END -->/   {f=0}
             !f
           ' README.md > README.tmp && mv README.tmp README.md
-      
+
       - name: Update STATUS2 line in README
         shell: bash
         run: |
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
 
-          # Daily Smoke badge/link
+          # Daily Smoke badge/link (show *any* last run)
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
-          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
+          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
 
           LOW_STATUS="<p align=\"left\">
           <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
