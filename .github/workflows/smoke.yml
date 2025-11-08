@@ -28,8 +28,7 @@ jobs:
       - name: Run smoke
         run: |
           mkdir -p reports
-          # Запускаем только smoke-тесты (или просто pytest, если тестов мало)
-          pytest -q -k smoke --junitxml=reports/junit.xml || true
+          pytest -q -m smoke --junitxml=reports/junit.xml || true
 
       - name: Upload smoke report
         if: always()
