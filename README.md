@@ -246,9 +246,14 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <!-- STATUS2:START -->
 <p align="left">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5500" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%204h%2010m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=151&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
+  <!-- Next Update (HLS) -->
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t={{RUN_ID}}" alt="Next update ETA" />
+  <!-- Total updates -->
+  <img src="https://img.shields.io/static/v1?label=Updates&message={{UPDATES}}&color=8e5e90&labelColor=30363d&cacheSeconds=300" alt="Total automated updates" />
+  <!-- Daily Smoke badge -->
+  <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">
+    <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&event=schedule" alt="Daily Smoke (pytest -m smoke, 08:07 UTC)" />
+  </a>
 </p>
 <!-- STATUS2:END -->
 
