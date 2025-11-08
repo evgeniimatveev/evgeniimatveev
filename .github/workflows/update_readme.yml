@@ -239,10 +239,11 @@ jobs:
       - name: Show last 10 JSONL lines
         shell: bash
         run: |
+          set -euo pipefail
           echo "Last 10 JSONL lines:"
           if [ -f update_log.jsonl ]; then
             tail -n 10 update_log.jsonl
-          else:
+          else
             echo "update_log.jsonl not found yet"
           fi
 
