@@ -242,7 +242,7 @@ jobs:
           echo "Last 10 JSONL lines:"
           if [ -f update_log.jsonl ]; then
             tail -n 10 update_log.jsonl
-          else
+          else:
             echo "update_log.jsonl not found yet"
           fi
 
@@ -289,22 +289,25 @@ jobs:
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
           MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
-          # Daily Smoke badge/link (same as above)
+
           # Daily Smoke badge/link (for Actions workflow "smoke.yml")
-SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
-SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
+          SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
+          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
+
           STATUS="<p align=\"center\">
-<img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
-<img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
-<img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
-<img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
-<img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
-<img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
-<img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&cacheSeconds=300\" />
-<img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
-<img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
-<a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest -m smoke)\" /></a>
-</p>"
+          <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
+          <img src=\"https://img.shields.io/badge/Rotation-%23${GITHUB_RUN_NUMBER}-1f6feb?cacheSeconds=60\" />
+          <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
+          <img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
+          <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest -m smoke)\" /></a>
+          </p>"
+
+          awk -v r="$STATUS" '
             /<!-- STATUS:START -->/ {print; print r; f=1; next}
             /<!-- STATUS:END -->/   {f=0}
             !f
@@ -314,21 +317,24 @@ SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=
         shell: bash
         run: |
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
+
           # Daily Smoke badge/link (same as above)
-SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
-SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
-         LOW_STATUS="<p align=\"left\">
-<img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
-<img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
-<img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
-<a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest -m smoke)\" /></a>
-</p>"
+          SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
+          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
+
+          LOW_STATUS="<p align=\"left\">
+          <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
+          <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
+          <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
+          <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest -m smoke)\" /></a>
+          </p>"
+
           awk -v r="$LOW_STATUS" '
             /<!-- STATUS2:START -->/ {print; print r; f=1; next}
             /<!-- STATUS2:END -->/   {f=0}
             !f
           ' README.md > README.tmp && mv README.tmp README.md
-      
+
       - name: Heartbeat (force a diff on schedule/force)
         if: ${{ github.event_name == 'schedule' || env.COMMIT_MODE == 'force' }}
         shell: bash
