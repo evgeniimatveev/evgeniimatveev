@@ -235,9 +235,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat&logo=clockify" alt="Last Badge Refresh"/>
 </p>
 
-[![Daily Smoke](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg)](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml)
 
 ---
+
 <!-- INSIGHT:START -->
 🤖 MLOPS Insight: 📡 OBSERVE • ALERT • IMPROVE • RUN #5504 — Harvest your best MLOps ideas 🌾 | Weekend automation vibes! 🎉 Kick off with clean pipelines and clear metrics 📊 🌾
 <!-- INSIGHT:END -->
