@@ -291,7 +291,7 @@ jobs:
           MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
 
-          # Daily Smoke badge/link (for Actions workflow "smoke.yml")
+          # Daily Smoke badge/link
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
 
@@ -313,13 +313,13 @@ jobs:
             /<!-- STATUS:END -->/   {f=0}
             !f
           ' README.md > README.tmp && mv README.tmp README.md
-
+      
       - name: Update STATUS2 line in README
         shell: bash
         run: |
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
 
-          # Daily Smoke badge/link (same as above)
+          # Daily Smoke badge/link
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&event=schedule&t=${GITHUB_RUN_NUMBER}"
 
