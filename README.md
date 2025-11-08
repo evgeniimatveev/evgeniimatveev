@@ -225,7 +225,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ![Total Updates](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Total%20Updates&color=yellow)
 ![Update Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red)
 ![Last Update](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue)
-
+[![Daily Smoke](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg)](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml)
 <p align="left">
   <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status"/>
   <img src="https://img.shields.io/badge/Total%20Runs-passing-brightgreen?style=flat&logo=githubactions" alt="Total Runs"/>
