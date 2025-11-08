@@ -1,0 +1,40 @@
+name: Daily Smoke
+
+on:
+  schedule:
+    # Run every day at 08:07 UTC 
+    - cron: '7 8 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run smoke
+        run: |
+          mkdir -p reports
+          # Запускаем только smoke-тесты (или просто pytest, если тестов мало)
+          pytest -q -k smoke --junitxml=reports/junit.xml || true
+
+      - name: Upload smoke report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: smoke-report
+          path: reports/junit.xml
+          retention-days: 3
