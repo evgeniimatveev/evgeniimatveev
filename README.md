@@ -102,8 +102,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📊 **LinkedIn** | [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/) |
 
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)
-![GitHub Followers](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=3600)
-![GitHub Stars](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=3600)
+![GitHub Followers](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600)
+![GitHub Stars](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600)
 
 ---
 ##  💼 Tech Stack
