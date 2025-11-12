@@ -1,23 +1,24 @@
 <!-- BANNER:START -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/238.gif?t=1762484488" alt="Banner" height="420">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/254.gif?t=1762978564" alt="Banner" height="420">
 </p>
-<p align="center"><sub>🎞️ Banner 238/367</sub></p>
+<p align="center"><sub>🌇 Banner 254/367</sub></p>
 <!-- BANNER:END -->
 
 ---
 
 <!-- STATUS:START -->
 <p align="center">
-<img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-07%2003%3A01%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5492" />
+<img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-12%2020%3A16%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5541" />
 <img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=300" />
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5492" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%209h%2013m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/badge/Rotation-%235492-1f6feb?cacheSeconds=60" />
-<img src="https://img.shields.io/badge/Commit-0f2e14f-9cf?cacheSeconds=300" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=146&color=0ea5e9&cacheSeconds=300" />
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5541" />
+<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2015h%2058m&color=757575&labelColor=30363d&cacheSeconds=600" />
+<img src="https://img.shields.io/badge/Rotation-%235541-1f6feb?cacheSeconds=60" />
+<img src="https://img.shields.io/badge/Commit-3969a8d-9cf?cacheSeconds=300" />
+<img src="https://img.shields.io/static/v1?label=Updates&message=162&color=0ea5e9&cacheSeconds=300" />
 <img src="https://img.shields.io/badge/Event-workflow_dispatch-8a2be2?cacheSeconds=300" />
 <img src="https://img.shields.io/badge/Mode-force-grey?cacheSeconds=60" />
+<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5541" alt="Daily Smoke (pytest - m smoke)" /></a>
 </p>
 <!-- STATUS:END -->
 
@@ -33,7 +34,7 @@
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
 
 <details>
-<summary>⚡ <b>How it works</b> <em>( architecture deep-dive 🔬 For engineers)</em></summary>
+<summary>⚡ <b>How it works</b> <em>(architecture deep-dive 🔬 for engineers)</em></summary>
 
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
@@ -47,46 +48,50 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ### 🐍 Core Scripts:
 | File | Version | Description |
 |------|---------|-------------|
-| [`update_readme.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py) | ![v7.3](https://img.shields.io/badge/v7.3-stable-success) | Banner engine + NLG + JSONL pipeline |
-| [`build_next_badge.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py) | ![v1.0](https://img.shields.io/badge/v1.0-stable-success) | HLS gradient renderer + countdown |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.5.7-stable-success"> | Banner engine + NLG + JSONL pipeline |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
 
 ### ⚙️ CI/CD Workflows:
 | Workflow | Schedule | Status |
 |----------|----------|--------|
-| [Auto Update README](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml) | Daily 12:15 UTC | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg) |
-| [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) | Every 10min | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg) |
-| [CI/CD Pipeline](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml) | On push/PR | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg) |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
 
-📊 [View all runs →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
+📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
 ### 📂 Observability Stack:
-```
-.
+<pre><code>.
 ├─ update_log.jsonl          # CI run timeline (1 JSON per run: ts_utc, run_id, run_number, sha, banner_*, insight_*)
 ├─ update_log.txt            # Grep-friendly mirror of update_log.jsonl (ts UTC, run=…, sha=…; rolling tail)
 ├─ badges/
 │  ├─ next_update.json       # Live Shields.io badge state (label, message like '~14h 35m', color bucket)
 │  ├─ next_update_log.jsonl  # Badge countdown snapshots (ts, next_utc, minutes_left, message, color, jitter params)
-│  └─ next_update_log.txt    # Human-readable badge ETA tail ([ts] color=… msg='…' next_utc=… mins_left=…)
+│  ├─ next_update_log.txt    # Human-readable badge ETA tail ([ts] color=… msg='…' next_utc=… mins_left=…)
+│  ├─ github_followers.json  # Endpoint payload for the Followers badge (schemaVersion/label/message/color)
+│  ├─ github_stars.json      # Endpoint payload for the Stars badge
+│  └─ total_updates.json     # Endpoint payload for the Updates badge
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
-   └─ update_count.txt       # Monotonic mutation counter (≈133+; powers the «N mutations shipped» tagline)
-```
+   └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
+</code></pre>
 
 **📋 Browse logs:**  
-📊 [`update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl) · 
-📝 [`update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt) · 
-💓 [`heartbeat.log`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log) · 
-🔢 [`update_count.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt)  
-⏱️ [`next_update.json`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update.json) · 
-📡 [`next_update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.jsonl) · 
-📋 [`next_update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt)
+📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl">update_log.jsonl</a> ·
+📝 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt">update_log.txt</a> ·
+💓 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log">heartbeat.log</a> ·
+🔢 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt">update_count.txt</a>  
+⏱️ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update.json">next_update.json</a> ·
+📡 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.jsonl">next_update_log.jsonl</a> ·
+📋 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt">next_update_log.txt</a>  
+👥 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_followers.json">github_followers.json</a> ·
+⭐ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_stars.json">github_stars.json</a> ·
+📈 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/total_updates.json">total_updates.json</a>
 
 ---
-
 </details>
 
----
+
 ## 📚 Learning Journey  
 - 🎓 Learning @ **SuperDataScience**  
 - 🪄 Focus: **MLOps | SQL | Automation**  
@@ -100,9 +105,14 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📁 **Portfolio** | [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveevusa) |
 | 📊 **LinkedIn** | [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/) |
 
-![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
-![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
-![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
+<!-- BADGES:START -->
+<div align="left">
+<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5541" alt="Last Commit"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5541" alt="GitHub Followers"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5541" alt="GitHub Stars"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5541" alt="Total Updates"></p>
+</div>
+<!-- BADGES:END -->
 
 ---
 ##  💼 Tech Stack
@@ -173,14 +183,14 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <details>
   <summary>🪄 Run Meta (click to expand)</summary>
 
-- 📆 Updated (UTC): **2025-11-07 03:01 UTC**
-- 🤖 Run: **#5492** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19156769292)
-- 🧬 Commit: **0f2e14f** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/0f2e14f2e0a963f9a039114302ec9a1be8d0c95f)
-- ♻️ Updates (total): **146**
+- 📆 Updated (UTC): **2025-11-12 20:16 UTC**
+- 🤖 Run: **#5541** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/19310590265)
+- 🧬 Commit: **3969a8d** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/3969a8dd5432ae0367d865b7a60e8a278bac37e5)
+- ♻️ Updates (total): **162**
 - 🌀 Workflow: **Auto Update README** · Job: **update-readme**
 - ✨ Event: **workflow_dispatch** · 🧑‍💻 Actor: **evgeniimatveev**
 - 🕒 Schedule: **24h_5m**
-- 🌈 Banner: **238/367**
+- 🌈 Banner: **254/367**
 </details>
 
 <!-- RUNMETA:END -->
@@ -188,13 +198,13 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <!-- LOG:START -->
 <details><summary>🗂️<b>Recent updates (last 5)</b></summary>
 
-| Time (UTC) | Run | SHA | Banner | Event/Actor | Insight |
+| Time (UTC) | Run | SHA | Banner | Event/Actor | Insight|
 |---|---|---|---|---|---|
-| 2025-11-07 03:01:28 | 5492 | `0f2e14f` | 238/367 (238.gif) | workflow_dispatch/evgeniimatveev | 📡 OBSERVE • ALERT • IMPROVE • RUN #5492 — Harvest your best MLOps ideas 🌾 &#124; Wrap it up like a pro! ⚡ Park experiments, tag best runs… |
-| 2025-11-06 22:58:01 | 5491 | `0117498` | 237/367 (237.gif) | workflow_dispatch/evgeniimatveev | 📡 TEST • OBSERVE • DEPLOY • RUN #5491 — HARVEST YOUR BEST MLOPS IDEAS 🌾 &#124; TEST, ITERATE, DEPLOY! 🚀 CLOSE ISSUES, OPEN INSIGHTS ✅ 🔧 |
-| 2025-11-06 22:15:02 | 5490 | `2798e12` | 236/367 (236.gif) | workflow_dispatch/evgeniimatveev | 📡 PIPELINES, NOT FIRE-DRILLS • RUN #5490 — RAKE THROUGH LOGS; KEEP INSIGHTS 🍂➡️💡 &#124; TEST, ITERATE, DEPLOY! 🚀 COOL DOWN THE CLUSTER, W… |
-| 2025-11-06 22:03:16 | 5488 | `ac96df8` | 235/367 (235.gif) | workflow_dispatch/evgeniimatveev | 📡 TRACK • TUNE • TRUST • RUN #5488 — COLLECT INSIGHTS LIKE GOLDEN LEAVES 🍁 &#124; TEST, ITERATE, DEPLOY! 🚀 EVENING IS THE BEST TIME TO TR… |
-| 2025-11-06 21:36:38 | 5487 | `199ab86` | 234/367 (234.gif) | workflow_dispatch/evgeniimatveev | 📡 METRICS OVER MYTHS • RUN #5487 — HARVEST YOUR BEST MLOPS IDEAS 🌾 &#124; TEST, ITERATE, DEPLOY! 🚀 ARCHIVE ARTIFACTS, TAG THE BEST RUNS 🏷️ 🧰 |
+| 2025-11-12 20:16:04 | 5541 | `3969a8d` | 254/367 (254.gif) | workflow_dispatch/evgeniimatveev | 📡 REPRODUCIBILITY FIRST • RUN #5541 — Backtest decisions, bank learnings 🏦 &#124; Halfway there — keep automating! 🛠️ Nightly retrains qu… |
+| 2025-11-12 20:05:50 | 5539 | `03a7f72` | 253/367 (253.gif) | workflow_dispatch/evgeniimatveev | 📡 BUILD • MEASURE • LEARN • RUN #5539 — Backfill History, Reconcile Truth Sources 🧾 &#124; Halfway There — Keep Automating! 🛠️ Refactor P… |
+| 2025-11-12 19:20:15 | 5537 | `67e4436` | 252/367 (252.gif) | workflow_dispatch/evgeniimatveev | 📡 DATA • PLATFORMS • VALUE • RUN #5537 — COLLECT INSIGHTS LIKE GOLDEN LEAVES 🍁 &#124; HALFWAY THERE — KEEP AUTOMATING! 🛠️ CLOSE ISSUES, O… |
+| 2025-11-12 19:01:47 | 5536 | `5db45a2` | 251/367 (251.gif) | workflow_dispatch/evgeniimatveev | 📡 METRICS OVER MYTHS • RUN #5536 — Tune models, store wisdom 📦 &#124; Halfway there — keep automating! 🛠️ Small wins today, big gains tom… |
+| 2025-11-12 13:11:28 | 5511 | `ee38c5e` | 250/367 (250.gif) | schedule/evgeniimatveev | 📡 BUILD • MEASURE • LEARN • RUN #5511 — Harvest Your Best Mlops Ideas 🌾 &#124; Halfway There — Keep Automating! 🛠️ Great Window For Backf… |
 
 </details>
 <!-- LOG:END -->
@@ -234,9 +244,11 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat&logo=clockify" alt="Last Badge Refresh"/>
 </p>
 
+
 ---
+
 <!-- INSIGHT:START -->
-🤖 MLOPS Insight: 📡 OBSERVE • ALERT • IMPROVE • RUN #5492 — Harvest your best MLOps ideas 🌾 | Wrap it up like a pro! ⚡ Park experiments, tag best runs, close loops 🏁 🌇
+🤖 MLOPS Insight: 📡 REPRODUCIBILITY FIRST • RUN #5541 — Backtest decisions, bank learnings 🏦 | Halfway there — keep automating! 🛠️ Nightly retrains queued, costs capped 🌙💸 📈
 <!-- INSIGHT:END -->
 
 ---
@@ -245,9 +257,10 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <!-- STATUS2:START -->
 <p align="left">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5492" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%209h%2013m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=146&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5541" />
+<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2015h%2058m&color=757575&labelColor=30363d&cacheSeconds=600" />
+<img src="https://img.shields.io/static/v1?label=Updates&message=162&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
+<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5541" alt="Daily Smoke (pytest - m smoke)" /></a>
 </p>
 <!-- STATUS2:END -->
 
