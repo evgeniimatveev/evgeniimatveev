@@ -1,4 +1,4 @@
-name: Auto Update README v7.5.1
+name: Auto Update README v7.5.2
 
 on:
   schedule:
@@ -78,7 +78,7 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Ensure dirs (idempotent)
+      - name: Ensure dirs
         shell: bash
         run: |
           mkdir -p .ci badges logs
@@ -89,7 +89,7 @@ jobs:
         shell: bash
         run: |
           S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
-          echo "Sleeping for $S sec to spread load..."
+          echo "Sleeping for $S sec…"
           sleep "$S"
 
       - name: Set up Python
@@ -125,7 +125,7 @@ jobs:
           set -euo pipefail
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      # ---------- Read totals & next ETA (to expose TOTAL_UPDATES env) ----------
+      # ---------------- totals & ETA -> env ----------------
       - name: Read totals & fallback text
         shell: bash
         run: |
@@ -160,7 +160,13 @@ with open(env_path,'a') as env:
     env.write(f"NEXT_UPDATE_TEXT={msg}\n")
 PY
 
-      # ---------- Followers/Stars via endpoint JSON ----------
+      # ---------------- metrics via jq (no heredoc in $()) ----------------
+      - name: Install jq
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+
       - name: Update GitHub metrics badges (followers & stars)
         env:
           GH_USER: evgeniimatveev
@@ -169,34 +175,26 @@ PY
         run: |
           set -euo pipefail
           mkdir -p badges
-          followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}" | python - <<'PY'
-import sys, json
-d=json.load(sys.stdin); print(d.get("followers",0))
-PY
-          )
-          stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" | python - <<'PY'
-import sys, json
-d=json.load(sys.stdin); print(sum(i.get("stargazers_count",0) for i in d.get("items",[])))
-PY
-          )
+
+          followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/users/${GH_USER}" | jq -r '.followers // 0')
+
+          stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" \
+            | jq -r '[.items[].stargazers_count] | add // 0')
+
           cat > badges/github_followers.json <<EOF
 {"schemaVersion":1,"label":"followers","message":"$followers","color":"blue","logo":"github"}
 EOF
           cat > badges/github_stars.json <<EOF
 {"schemaVersion":1,"label":"stars","message":"$stars","color":"yellow","logo":"github"}
 EOF
-
-      - name: Update Total Updates badge (endpoint)
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p badges
           val="${TOTAL_UPDATES:-?}"
           cat > badges/total_updates.json <<EOF
 {"schemaVersion":1,"label":"updates","message":"$val","color":"0ea5e9"}
 EOF
 
-      # ---------- BADGES block (vertical) patched via Python ----------
+      # ---------------- vertical BADGES block in README ----------------
       - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
@@ -227,7 +225,7 @@ else:
 p.write_text(txt, encoding="utf-8")
 PY
 
-      # ---------- Logs/table rendering ----------
+      # ---------------- logs/table ----------------
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -351,7 +349,7 @@ PY
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.1]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.2]"
             [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -390,7 +388,7 @@ PY
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5.1"
+            echo "## README Auto-Update v7.5.2"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
