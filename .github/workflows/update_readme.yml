@@ -1,4 +1,4 @@
-name: Auto Update README v7.5.4
+name: Auto Update README v7.5.5
 
 on:
   schedule:
@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: |
           S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
-          echo "Sleeping ${S}s to spread load…"
+          echo "Sleeping ${S}s to spread load..."
           sleep "$S"
 
       - name: Set up Python
@@ -140,7 +140,7 @@ jobs:
               msg="in ${mins}m"
             else
               hours=$(( diff / 3600 ))
-              mins=$(( (diff % 3600) / 60 ))
+              mins=$(( (diff % 3600) / 60  ))
               msg="in ${hours}h $(printf '%02d' "$mins")m"
             fi
           fi
@@ -155,8 +155,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p badges
+
           followers_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")
           followers=$(printf '%s' "$followers_json" | jq -r '.followers // 0')
+
           repos_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")
           stars=$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')
 
@@ -169,23 +171,6 @@ EOF
           cat > badges/total_updates.json <<EOF
 {"schemaVersion":1,"label":"updates","message":"${TOTAL_UPDATES:-?}","color":"0ea5e9"}
 EOF
-
-      - name: Update GitHub metrics badges (followers, stars, total)
-        env:
-          GH_USER: evgeniimatveev
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p badges
-          followers_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")
-          followers=$(printf '%s' "$followers_json" | jq -r '.followers // 0')
-          repos_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")
-          stars=$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')
-
-          printf '%s\n' '{"schemaVersion":1,"label":"followers","message":"'"$followers"'","color":"blue","logo":"github"}' > badges/github_followers.json
-          printf '%s\n' '{"schemaVersion":1,"label":"stars","message":"'"$stars"'","color":"yellow","logo":"github"}' > badges/github_stars.json
-          printf '%s\n' '{"schemaVersion":1,"label":"updates","message":"'"${TOTAL_UPDATES:-?}"'","color":"0ea5e9"}' > badges/total_updates.json
 
       - name: Ensure BADGES block (vertical)
         shell: bash
@@ -336,7 +321,7 @@ PY
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.4]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.5]"
             [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -373,7 +358,7 @@ PY
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5.4"
+            echo "## README Auto-Update v7.5.5"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
