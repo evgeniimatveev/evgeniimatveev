@@ -1,48 +1,19 @@
-name: Auto Update README v7.5.2
+name: Auto Update README v7.5.3
 
 on:
   schedule:
     - cron: "15 12 * * *"
   workflow_dispatch:
     inputs:
-      banner_mode:
-        description: "sequential | random | calendar"
-        type: choice
-        options: [sequential, random, calendar]
-        default: sequential
-      insight:
-        description: "Override MLOPS_INSIGHT"
-        type: string
-        default: ""
-      emojis:
-        description: "Comma-separated emoji list (optional)"
-        type: string
-        default: ""
-      jsonl_keep_lines:
-        description: "Keep last N lines in update_log.jsonl"
-        type: number
-        default: 200
-      txt_keep_lines:
-        description: "Keep last N lines in update_log.txt"
-        type: number
-        default: 70
-      table_n:
-        description: "Show last N rows in README table"
-        type: number
-        default: 5
-      commit_mode:
-        description: "auto | dry-run | force"
-        type: choice
-        options: [auto, dry-run, force]
-        default: auto
-      next_update_hour:
-        description: "UTC hour for Next Update badge"
-        type: number
-        default: 12
-      next_update_min:
-        description: "UTC minute for Next Update badge"
-        type: number
-        default: 15
+      banner_mode: { description: "sequential | random | calendar", type: choice, options: [sequential, random, calendar], default: sequential }
+      insight:      { description: "Override MLOPS_INSIGHT", type: string, default: "" }
+      emojis:       { description: "Comma-separated emoji list (optional)", type: string, default: "" }
+      jsonl_keep_lines: { description: "Keep last N lines in update_log.jsonl", type: number, default: 200 }
+      txt_keep_lines:   { description: "Keep last N lines in update_log.txt",  type: number, default: 70 }
+      table_n:          { description: "Show last N rows in README table",     type: number, default: 5 }
+      commit_mode: { description: "auto | dry-run | force", type: choice, options: [auto, dry-run, force], default: auto }
+      next_update_hour: { description: "UTC hour for Next Update badge", type: number, default: 12 }
+      next_update_min:  { description: "UTC minute for Next Update badge", type: number, default: 15 }
 
 permissions:
   contents: write
@@ -57,19 +28,19 @@ jobs:
     timeout-minutes: 20
 
     env:
-      BANNER_MODE: ${{ (github.event.inputs.banner_mode || 'sequential') }}
-      BANNER_CALENDAR_MODE: ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
-      MLOPS_INSIGHT: ${{ github.event.inputs.insight || '' }}
-      SCHEDULE_BADGE: "24h_5m"
-      BANNER_EMOJI_MODE: stable
-      BANNER_EMOJIS: ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
-      JSONL_KEEP_LINES: ${{ github.event.inputs.jsonl_keep_lines || 200 }}
-      TXT_KEEP_LINES:   ${{ github.event.inputs.txt_keep_lines   || 70  }}
-      LOG_TABLE_N:      ${{ github.event.inputs.table_n          || 5   }}
-      COMMIT_MODE:      ${{ github.event.inputs.commit_mode      || 'auto' }}
-      NEXT_UPDATE_HOUR: ${{ github.event.inputs.next_update_hour || 12 }}
-      NEXT_UPDATE_MIN:  ${{ github.event.inputs.next_update_min  || 15 }}
-      JITTER_MAX_SEC: 600
+      BANNER_MODE:           ${{ github.event.inputs.banner_mode || 'sequential' }}
+      BANNER_CALENDAR_MODE:  ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
+      MLOPS_INSIGHT:         ${{ github.event.inputs.insight || '' }}
+      SCHEDULE_BADGE:        "24h_5m"
+      BANNER_EMOJI_MODE:     stable
+      BANNER_EMOJIS:         ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
+      JSONL_KEEP_LINES:      ${{ github.event.inputs.jsonl_keep_lines || 200 }}
+      TXT_KEEP_LINES:        ${{ github.event.inputs.txt_keep_lines   || 70  }}
+      LOG_TABLE_N:           ${{ github.event.inputs.table_n          || 5   }}
+      COMMIT_MODE:           ${{ github.event.inputs.commit_mode      || 'auto' }}
+      NEXT_UPDATE_HOUR:      ${{ github.event.inputs.next_update_hour || 12 }}
+      NEXT_UPDATE_MIN:       ${{ github.event.inputs.next_update_min  || 15 }}
+      JITTER_MAX_SEC:        600
 
     steps:
       - name: Checkout repository
@@ -81,15 +52,16 @@ jobs:
       - name: Ensure dirs
         shell: bash
         run: |
+          set -euo pipefail
           mkdir -p .ci badges logs
           [ -f badges/next_update.json ] || echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
 
-      - name: Random jitter (sleep up to 10 min)
+      - name: Random jitter (schedule only)
         if: ${{ github.event_name == 'schedule' }}
         shell: bash
         run: |
           S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
-          echo "Sleeping for $S sec…"
+          echo "Sleeping ${S}s to spread load…"
           sleep "$S"
 
       - name: Set up Python
@@ -102,8 +74,7 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          restore-keys: ${{ runner.os }}-pip-
 
       - name: Configure Git author
         shell: bash
@@ -125,7 +96,7 @@ jobs:
           set -euo pipefail
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      # ---------------- totals & ETA -> env ----------------
+      # ---------- Totals & ETA -> env ----------
       - name: Read totals & fallback text
         shell: bash
         run: |
@@ -134,40 +105,38 @@ import os, json, datetime, pathlib
 env_path = os.environ['GITHUB_ENV']
 tot = ''
 try:
-    tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
+  tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
 except Exception:
-    pass
+  pass
 msg = ''
 try:
-    d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
-    msg = d.get('message','')
+  d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
+  msg = d.get('message','')
 except Exception:
-    pass
+  pass
 def compute():
-    try:
-        h=int(os.getenv('NEXT_UPDATE_HOUR','12')); m=int(os.getenv('NEXT_UPDATE_MIN','15'))
-    except Exception:
-        h=12; m=15
-    now=datetime.datetime.utcnow()
-    eta=now.replace(hour=h, minute=m, second=0, microsecond=0)
-    if now>=eta: eta+=datetime.timedelta(days=1)
-    left=eta-now
-    T=int(left.total_seconds()); H=T//3600; M=(T%3600)//60
-    return f"in {M}m" if H==0 else f"in {H}h {M:02d}m"
+  try:
+    h=int(os.getenv('NEXT_UPDATE_HOUR','12')); m=int(os.getenv('NEXT_UPDATE_MIN','15'))
+  except Exception:
+    h=12; m=15
+  now=datetime.datetime.utcnow()
+  eta=now.replace(hour=h, minute=m, second=0, microsecond=0)
+  if now>=eta: eta+=datetime.timedelta(days=1)
+  left=eta-now; T=int(left.total_seconds()); H=T//3600; M=(T%3600)//60
+  return f"in {M}m" if H==0 else f"in {H}h {M:02d}m"
 if not msg: msg = compute()
 with open(env_path,'a') as env:
-    if tot: env.write(f"TOTAL_UPDATES={tot}\n")
-    env.write(f"NEXT_UPDATE_TEXT={msg}\n")
+  if tot: env.write(f"TOTAL_UPDATES={tot}\n")
+  env.write(f"NEXT_UPDATE_TEXT={msg}\n")
 PY
 
-      # ---------------- metrics via jq (no heredoc in $()) ----------------
       - name: Install jq
         shell: bash
         run: |
           sudo apt-get update -y
           sudo apt-get install -y jq
 
-      - name: Update GitHub metrics badges (followers & stars)
+      - name: Update GitHub metrics badges (followers, stars, total)
         env:
           GH_USER: evgeniimatveev
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -175,57 +144,41 @@ PY
         run: |
           set -euo pipefail
           mkdir -p badges
+          followers_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")
+          followers=$(printf '%s' "$followers_json" | jq -r '.followers // 0')
+          repos_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")
+          stars=$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')
 
-          followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/users/${GH_USER}" | jq -r '.followers // 0')
+          printf '%s\n' '{"schemaVersion":1,"label":"followers","message":"'"$followers"'","color":"blue","logo":"github"}' > badges/github_followers.json
+          printf '%s\n' '{"schemaVersion":1,"label":"stars","message":"'"$stars"'","color":"yellow","logo":"github"}' > badges/github_stars.json
+          printf '%s\n' '{"schemaVersion":1,"label":"updates","message":"'"${TOTAL_UPDATES:-?}"'","color":"0ea5e9"}' > badges/total_updates.json
 
-          stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" \
-            | jq -r '[.items[].stargazers_count] | add // 0')
-
-          cat > badges/github_followers.json <<EOF
-{"schemaVersion":1,"label":"followers","message":"$followers","color":"blue","logo":"github"}
-EOF
-          cat > badges/github_stars.json <<EOF
-{"schemaVersion":1,"label":"stars","message":"$stars","color":"yellow","logo":"github"}
-EOF
-          val="${TOTAL_UPDATES:-?}"
-          cat > badges/total_updates.json <<EOF
-{"schemaVersion":1,"label":"updates","message":"$val","color":"0ea5e9"}
-EOF
-
-      # ---------------- vertical BADGES block in README ----------------
       - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
           python - <<'PY'
 import os, pathlib, re
-repo = os.getenv("GITHUB_REPOSITORY")
-ref  = os.getenv("GITHUB_REF_NAME")
-last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
-followers = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
-stars     = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
-total     = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
-block = f"""<!-- BADGES:START -->
+repo=os.getenv("GITHUB_REPOSITORY"); ref=os.getenv("GITHUB_REF_NAME")
+last=f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
+followers=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+stars=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
+total=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+block=f"""<!-- BADGES:START -->
 <div align="left">
-
 <p><img src="{last}" alt="Last Commit"></p>
 <p><img src="{followers}" alt="GitHub Followers"></p>
 <p><img src="{stars}" alt="GitHub Stars"></p>
 <p><img src="{total}" alt="Total Updates"></p>
-
 </div>
 <!-- BADGES:END -->"""
-p = pathlib.Path("README.md")
-txt = p.read_text(encoding="utf-8")
+p=pathlib.Path("README.md"); txt=p.read_text(encoding="utf-8")
 if "<!-- BADGES:START -->" in txt:
-    txt = re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
+  txt=re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
 else:
-    txt = txt.rstrip() + "\n\n" + block + "\n"
+  txt=txt.rstrip()+"\n\n"+block+"\n"
 p.write_text(txt, encoding="utf-8")
 PY
 
-      # ---------------- logs/table ----------------
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -253,28 +206,28 @@ PY
         run: |
           python - <<'PY'
 import json, pathlib, re, os
-N = int(os.getenv("LOG_TABLE_N","5"))
-log = pathlib.Path("update_log.jsonl")
-p = pathlib.Path("README.md")
+N=int(os.getenv("LOG_TABLE_N","5"))
+log=pathlib.Path("update_log.jsonl")
+p=pathlib.Path("README.md")
 def esc(s): return str(s).replace("|","&#124;").replace("\n"," ").strip()
 rows=[]
 if log.exists():
-    lines=[l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
-    for line in reversed(lines):
-        d=json.loads(line)
-        b=f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
-        ins=esc(d.get('insight_preview',''))
-        if len(ins)>140: ins=ins[:137]+"…"
-        rows.append(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | `{esc(d.get('sha',''))}` | {esc(b)} | {esc(d.get('event',''))}/{esc(d.get('actor',''))} | {ins} |")
+  lines=[l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
+  for line in reversed(lines):
+    d=json.loads(line)
+    b=f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
+    ins=esc(d.get('insight_preview',''))
+    if len(ins)>140: ins=ins[:137]+"…"
+    rows.append(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | `{esc(d.get('sha',''))}` | {esc(b)} | {esc(d.get('event',''))}/{esc(d.get('actor',''))} | {ins} |")
 headers=["Time (UTC)","Run","SHA","Banner","Event/Actor","Insight"]
 sep="|"+"|".join(["---"]*len(headers))+"|"
 table=["<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),"","| "+" | ".join(headers)+"|",sep,*(rows or ["| — | — | — | — | — | — |"]),"","</details>"]
 block="<!-- LOG:START -->\n"+"\n".join(table)+"\n<!-- LOG:END -->"
 txt=p.read_text(encoding="utf-8")
 if "<!-- LOG:START -->" in txt:
-    txt=re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->",block,txt,flags=re.S)
+  txt=re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->",block,txt,flags=re.S)
 else:
-    txt=txt.rstrip()+"\n\n"+block+"\n"
+  txt=txt.rstrip()+"\n\n"+block+"\n"
 p.write_text(txt,encoding="utf-8")
 PY
 
@@ -349,7 +302,7 @@ PY
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.2]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.3]"
             [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -363,15 +316,13 @@ PY
         run: |
           for i in 1 2 3; do
             if git push; then
-              echo "Pushed successfully"
-              exit 0
+              echo "Pushed successfully"; exit 0
             fi
-            echo "Push failed (attempt $i). Retrying in $((i*3))s..."
+            echo "Push failed (attempt $i). Retrying..."
             sleep $((i*3))
             git pull --rebase || true
           done
-          echo "Push failed after 3 attempts"
-          exit 1
+          echo "Push failed after 3 attempts"; exit 1
 
       - name: Show updater tail
         if: always()
@@ -388,7 +339,7 @@ PY
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5.2"
+            echo "## README Auto-Update v7.5.3"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
