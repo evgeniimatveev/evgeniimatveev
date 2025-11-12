@@ -104,6 +104,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)
 ![GitHub Followers](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600)
 ![GitHub Stars](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600)
+![Total Updates](https://img.shields.io/static/v1?label=updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&style=for-the-badge)
 
 ---
 ##  💼 Tech Stack
