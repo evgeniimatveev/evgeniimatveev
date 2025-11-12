@@ -196,43 +196,29 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-import os, pathlib, re
-from urllib.parse import quote
-
-repo = os.getenv("GITHUB_REPOSITORY")
-ref  = os.getenv("GITHUB_REF_NAME")
-t    = os.getenv("GITHUB_RUN_NUMBER","0")
-
-def endpoint(raw_path: str, cache: int) -> str:
-    raw_url = f"https://raw.githubusercontent.com/{repo}/{ref}/{raw_path}"
-    return (
-      "https://img.shields.io/endpoint"
-      f"?url={quote(raw_url, safe='')}"
-      f"&style=for-the-badge&cacheSeconds={cache}&t={t}"
-    )
-
-last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge&t={t}"
-followers = endpoint("badges/github_followers.json", 600)
-stars     = endpoint("badges/github_stars.json",     600)
-total     = endpoint("badges/total_updates.json",   1200)
-
-block = f"""<!-- BADGES:START -->
-<div align="left">
-<p><img src="{last}" alt="Last Commit"></p>
-<p><img src="{followers}" alt="GitHub Followers"></p>
-<p><img src="{stars}" alt="GitHub Stars"></p>
-<p><img src="{total}" alt="Total Updates"></p>
-</div>
-<!-- BADGES:END -->"""
-
-p = pathlib.Path("README.md")
-txt = p.read_text(encoding="utf-8")
-if "<!-- BADGES:START -->" in txt:
-    txt = re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
-else:
-    txt = txt.rstrip() + "\n\n" + block + "\n"
-p.write_text(txt, encoding="utf-8")
-PY
+          import os, pathlib, re
+          repo=os.getenv("GITHUB_REPOSITORY")
+          ref=os.getenv("GITHUB_REF_NAME")
+          last=f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
+          followers=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+          stars=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
+          total=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+          block=f"""<!-- BADGES:START -->
+          <div align="left">
+          <p><img src="{last}" alt="Last Commit"></p>
+          <p><img src="{followers}" alt="GitHub Followers"></p>
+          <p><img src="{stars}" alt="GitHub Stars"></p>
+          <p><img src="{total}" alt="Total Updates"></p>
+          </div>
+          <!-- BADGES:END -->"""
+          p=pathlib.Path("README.md")
+          txt=p.read_text(encoding="utf-8")
+          if "<!-- BADGES:START -->" in txt:
+            txt=re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
+          else:
+            txt=txt.rstrip()+"\n\n"+block+"\n"
+          p.write_text(txt, encoding="utf-8")
+          PY
 
       - name: Append & trim update_log.txt
         shell: bash
@@ -260,35 +246,31 @@ PY
         shell: bash
         run: |
           python - <<'PY'
-import json, pathlib, re, os
-N   = int(os.getenv("LOG_TABLE_N","5"))
-log = pathlib.Path("update_log.jsonl")
-p   = pathlib.Path("README.md")
-
-def esc(s): return str(s).replace("|","&#124;").replace("\n"," ").strip()
-
-rows=[]
-if log.exists():
-  lines=[l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
-  for line in reversed(lines):
-    d=json.loads(line)
-    b=f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
-    ins=esc(d.get('insight_preview',''))
-    if len(ins)>140: ins=ins[:137]+"…"
-    rows.append(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | `{esc(d.get('sha',''))}` | {esc(b)} | {esc(d.get('event',''))}/{esc(d.get('actor',''))} | {ins} |")
-
-headers=["Time (UTC)","Run","SHA","Banner","Event/Actor","Insight"]
-sep="|"+"|".join(["---"]*len(headers))+"|"
-table=["<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),"","| "+" | ".join(headers)+"|",sep,*(rows or ["| — | — | — | — | — | — |"]),"","</details>"]
-block="<!-- LOG:START -->\n"+"\n".join(table)+"\n<!-- LOG:END -->"
-
-txt=p.read_text(encoding="utf-8")
-if "<!-- LOG:START -->" in txt:
-  txt=re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->",block,txt,flags=re.S)
-else:
-  txt=txt.rstrip()+"\n\n"+block+"\n"
-p.write_text(txt,encoding="utf-8")
-PY
+          import json, pathlib, re, os
+          N=int(os.getenv("LOG_TABLE_N","5"))
+          log=pathlib.Path("update_log.jsonl")
+          p=pathlib.Path("README.md")
+          def esc(s): return str(s).replace("|","&#124;").replace("\n"," ").strip()
+          rows=[]
+          if log.exists():
+            lines=[l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
+            for line in reversed(lines):
+              d=json.loads(line)
+              b=f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
+              ins=esc(d.get('insight_preview',''))
+              if len(ins)>140: ins=ins[:137]+"…"
+              rows.append(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | `{esc(d.get('sha',''))}` | {esc(b)} | {esc(d.get('event',''))}/{esc(d.get('actor',''))} | {ins} |")
+          headers=["Time (UTC)","Run","SHA","Banner","Event/Actor","Insight"]
+          sep="|"+"|".join(["---"]*len(headers))+"|"
+          table=["<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),"","| "+" | ".join(headers)+"|",sep,*(rows or ["| — | — | — | — | — | — |"]),"","</details>"]
+          block="<!-- LOG:START -->\n"+"\n".join(table)+"\n<!-- LOG:END -->"
+          txt=p.read_text(encoding="utf-8")
+          if "<!-- LOG:START -->" in txt:
+            txt=re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->",block,txt,flags=re.S)
+          else:
+            txt=txt.rstrip()+"\n\n"+block+"\n"
+          p.write_text(txt,encoding="utf-8")
+          PY
 
       - name: Show last 10 JSONL lines
         shell: bash
