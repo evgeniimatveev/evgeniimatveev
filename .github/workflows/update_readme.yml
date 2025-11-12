@@ -1,19 +1,48 @@
-name: Auto Update README v7.5.6
+name: Auto Update README v7.5.7
 
 on:
   schedule:
-    - cron: "15 12 * * *"
+    - cron: "15 12 * * *" # 12:15 UTC daily
   workflow_dispatch:
     inputs:
-      banner_mode:       { description: "sequential | random | calendar", type: choice, options: [sequential, random, calendar], default: sequential }
-      insight:           { description: "Override MLOPS_INSIGHT",         type: string, default: "" }
-      emojis:            { description: "Comma-separated emoji list",     type: string, default: "" }
-      jsonl_keep_lines:  { description: "Keep last N lines in update_log.jsonl", type: number, default: 200 }
-      txt_keep_lines:    { description: "Keep last N lines in update_log.txt",  type: number, default: 70 }
-      table_n:           { description: "Show last N rows in README table",     type: number, default: 5 }
-      commit_mode:       { description: "auto | dry-run | force", type: choice, options: [auto, dry-run, force], default: auto }
-      next_update_hour:  { description: "UTC hour for Next Update badge", type: number, default: 12 }
-      next_update_min:   { description: "UTC minute for Next Update badge", type: number, default: 15 }
+      banner_mode:
+        description: "sequential | random | calendar"
+        type: choice
+        options: [sequential, random, calendar]
+        default: sequential
+      insight:
+        description: "Override MLOPS_INSIGHT"
+        type: string
+        default: ""
+      emojis:
+        description: "Comma-separated emoji list"
+        type: string
+        default: ""
+      jsonl_keep_lines:
+        description: "Keep last N lines in update_log.jsonl"
+        type: number
+        default: 200
+      txt_keep_lines:
+        description: "Keep last N lines in update_log.txt"
+        type: number
+        default: 70
+      table_n:
+        description: "Show last N rows in README table"
+        type: number
+        default: 5
+      commit_mode:
+        description: "auto | dry-run | force"
+        type: choice
+        options: [auto, dry-run, force]
+        default: auto
+      next_update_hour:
+        description: "UTC hour for Next Update badge"
+        type: number
+        default: 12
+      next_update_min:
+        description: "UTC minute for Next Update badge"
+        type: number
+        default: 15
 
 permissions:
   contents: write
@@ -28,19 +57,20 @@ jobs:
     timeout-minutes: 20
 
     env:
-      BANNER_MODE:          ${{ github.event.inputs.banner_mode || 'sequential' }}
+      BANNER_MODE: ${{ github.event.inputs.banner_mode || 'sequential' }}
+      # boolean станет строкой "true"/"false" — это ок
       BANNER_CALENDAR_MODE: ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
-      MLOPS_INSIGHT:        ${{ github.event.inputs.insight || '' }}
-      SCHEDULE_BADGE:       "24h_5m"
-      BANNER_EMOJI_MODE:    stable
-      BANNER_EMOJIS:        ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
-      JSONL_KEEP_LINES:     ${{ github.event.inputs.jsonl_keep_lines || 200 }}
-      TXT_KEEP_LINES:       ${{ github.event.inputs.txt_keep_lines   || 70  }}
-      LOG_TABLE_N:          ${{ github.event.inputs.table_n          || 5   }}
-      COMMIT_MODE:          ${{ github.event.inputs.commit_mode      || 'auto' }}
-      NEXT_UPDATE_HOUR:     ${{ github.event.inputs.next_update_hour || 12 }}
-      NEXT_UPDATE_MIN:      ${{ github.event.inputs.next_update_min  || 15 }}
-      JITTER_MAX_SEC:       600
+      MLOPS_INSIGHT: ${{ github.event.inputs.insight || '' }}
+      SCHEDULE_BADGE: "24h_5m"
+      BANNER_EMOJI_MODE: "stable"
+      BANNER_EMOJIS: ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
+      JSONL_KEEP_LINES: ${{ github.event.inputs.jsonl_keep_lines || 200 }}
+      TXT_KEEP_LINES: ${{ github.event.inputs.txt_keep_lines || 70 }}
+      LOG_TABLE_N: ${{ github.event.inputs.table_n || 5 }}
+      COMMIT_MODE: ${{ github.event.inputs.commit_mode || 'auto' }}
+      NEXT_UPDATE_HOUR: ${{ github.event.inputs.next_update_hour || 12 }}
+      NEXT_UPDATE_MIN: ${{ github.event.inputs.next_update_min || 15 }}
+      JITTER_MAX_SEC: 600
 
     steps:
       - name: Checkout repository
@@ -54,12 +84,15 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .ci badges logs
-          [ -f badges/next_update.json ] || echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
+          if [ ! -f badges/next_update.json ]; then
+            echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
+          fi
 
       - name: Random jitter (schedule only)
         if: ${{ github.event_name == 'schedule' }}
         shell: bash
         run: |
+          set -euo pipefail
           S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
           echo "Sleeping ${S}s to spread load..."
           sleep "$S"
@@ -74,7 +107,8 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Configure Git author
         shell: bash
@@ -87,6 +121,7 @@ jobs:
         if: hashFiles('requirements.txt') != ''
         shell: bash
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -99,6 +134,7 @@ jobs:
       - name: Install jq
         shell: bash
         run: |
+          set -euo pipefail
           sudo apt-get update -y
           sudo apt-get install -y jq
 
@@ -107,13 +143,16 @@ jobs:
         run: |
           set -euo pipefail
           ENV_FILE="$GITHUB_ENV"
+
           if [[ -f .ci/update_count.txt ]]; then
             echo "TOTAL_UPDATES=$(tr -d '\r\n' < .ci/update_count.txt)" >> "$ENV_FILE"
           fi
+
           msg=""
           if [[ -f badges/next_update.json ]]; then
-            msg=$(jq -r '.message // empty' badges/next_update.json 2>/dev/null || true)
+            msg="$(jq -r '.message // empty' badges/next_update.json 2>/dev/null || true)"
           fi
+
           if [[ -z "$msg" ]]; then
             H=${NEXT_UPDATE_HOUR:-12}
             M=${NEXT_UPDATE_MIN:-15}
@@ -132,9 +171,10 @@ jobs:
               msg="in ${hours}h $(printf '%02d' "$mins")m"
             fi
           fi
+
           echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
 
-      - name: Update GitHub metrics badges (followers, stars, total)
+      - name: Update GitHub metrics badges
         env:
           GH_USER: evgeniimatveev
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -142,10 +182,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p badges
-          followers_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")
-          followers=$(printf '%s' "$followers_json" | jq -r '.followers // 0')
-          repos_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")
-          stars=$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')
+
+          followers_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")"
+          followers="$(printf '%s' "$followers_json" | jq -r '.followers // 0')"
+
+          repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
+          stars="$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')"
+
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\",\"logo\":\"github\"}" > badges/github_followers.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\",\"logo\":\"github\"}" > badges/github_stars.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
@@ -190,14 +233,14 @@ PY
             echo "Run number: ${{ github.run_number }}"
             echo "--------------------------------------"
           } >> update_log.txt
-          tail -n ${TXT_KEEP_LINES} update_log.txt > temp_log.txt || true
+          tail -n "${TXT_KEEP_LINES}" update_log.txt > temp_log.txt || true
           mv temp_log.txt update_log.txt || true
 
       - name: Trim JSON log (keep last N lines)
         shell: bash
         run: |
           [ -f update_log.jsonl ] || : > update_log.jsonl
-          tail -n ${JSONL_KEEP_LINES} update_log.jsonl > update_log.jsonl.tmp || true
+          tail -n "${JSONL_KEEP_LINES}" update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
       - name: Render last N updates into README (accordion)
@@ -234,14 +277,19 @@ PY
         shell: bash
         run: |
           echo "Last 10 JSONL lines:"
-          [ -f update_log.jsonl ] && tail -n 10 update_log.jsonl || echo "update_log.jsonl not found yet"
+          if [ -f update_log.jsonl ]; then
+            tail -n 10 update_log.jsonl
+          else
+            echo "update_log.jsonl not found yet"
+          fi
 
       - name: Update STATUS line in README
         shell: bash
         run: |
+          set -euo pipefail
           short_sha="${GITHUB_SHA:0:7}"
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
-          NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
+          NOW_BADGE="$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')"
           MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
@@ -267,6 +315,7 @@ PY
       - name: Update STATUS2 line in README
         shell: bash
         run: |
+          set -euo pipefail
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
@@ -286,6 +335,7 @@ PY
         if: ${{ github.event_name == 'schedule' || env.COMMIT_MODE == 'force' }}
         shell: bash
         run: |
+          set -euo pipefail
           mkdir -p .ci
           echo "$(date -u +'%Y-%m-%d %H:%M:%S') UTC  run=${GITHUB_RUN_NUMBER} sha=${GITHUB_SHA:0:7}" >> .ci/heartbeat.log
 
@@ -294,15 +344,15 @@ PY
         if: env.COMMIT_MODE != 'dry-run'
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
                   badges/next_update.json badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.6]"
-            [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.7]"
+            if [ "${COMMIT_MODE}" = "force" ]; then msg="${msg} [force]"; fi
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
@@ -313,6 +363,7 @@ PY
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
+          set -euo pipefail
           for i in 1 2 3; do
             if git push; then
               echo "Pushed successfully"; exit 0
@@ -338,7 +389,7 @@ PY
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5.6"
+            echo "## README Auto-Update v7.5.7"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
