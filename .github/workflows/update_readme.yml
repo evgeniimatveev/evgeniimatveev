@@ -173,25 +173,25 @@ jobs:
 
           echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
 
-      - name: Update GitHub metrics badges
-        env:
-          GH_USER: evgeniimatveev
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p badges
-          UA="gh-actions-readme-badges"
+     - name: Update GitHub metrics badges
+  env:
+    GH_USER: evgeniimatveev
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  shell: bash
+  run: |
+    set -euo pipefail
+    mkdir -p badges
+    UA="gh-actions-readme-badges"
 
-          followers_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/users/${GH_USER}")"
-          followers="$(printf '%s' "$followers_json" | jq -r '.followers // 0')"
+    followers_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/users/${GH_USER}")"
+    followers="$(printf '%s' "$followers_json" | jq -r '.followers // 0')"
 
-          repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
-          stars="$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')"
+    repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
+    stars="$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')"
 
-          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\",\"logo\":\"github\"}" > badges/github_followers.json
-          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\",\"logo\":\"github\"}" > badges/github_stars.json
-          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
+    printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\"}" > badges/github_followers.json
+    printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\"}" > badges/github_stars.json
+    printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
 
       - name: Ensure BADGES block (vertical)
         shell: bash
