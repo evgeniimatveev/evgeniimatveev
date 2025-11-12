@@ -34,7 +34,7 @@
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
 
 <details>
-<summary>⚡ <b>How it works</b> <em>( architecture deep-dive 🔬 For engineers)</em></summary>
+<summary>⚡ <b>How it works</b> <em>(architecture deep-dive 🔬 for engineers)</em></summary>
 
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
@@ -48,45 +48,48 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ### 🐍 Core Scripts:
 | File | Version | Description |
 |------|---------|-------------|
-| [`update_readme.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py) | ![v7.3](https://img.shields.io/badge/v7.3-stable-success) | Banner engine + NLG + JSONL pipeline |
-| [`build_next_badge.py`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py) | ![v1.0](https://img.shields.io/badge/v1.0-stable-success) | HLS gradient renderer + countdown |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.3" src="https://img.shields.io/badge/v7.3-stable-success"> | Banner engine + NLG + JSONL pipeline |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
 
 ### ⚙️ CI/CD Workflows:
 | Workflow | Schedule | Status |
 |----------|----------|--------|
-| [Auto Update README](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml) | Daily 12:15 UTC | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg) |
-| [Next Update Badge](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml) | Every 20min | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg) |
-| [CI/CD Pipeline](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml) | On push/PR | ![status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg) |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
 
-📊 [View all runs →](https://github.com/evgeniimatveev/evgeniimatveev/actions)
+📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
 ### 📂 Observability Stack:
-```
-.
+<pre><code>.
 ├─ update_log.jsonl          # CI run timeline (1 JSON per run: ts_utc, run_id, run_number, sha, banner_*, insight_*)
 ├─ update_log.txt            # Grep-friendly mirror of update_log.jsonl (ts UTC, run=…, sha=…; rolling tail)
 ├─ badges/
 │  ├─ next_update.json       # Live Shields.io badge state (label, message like '~14h 35m', color bucket)
 │  ├─ next_update_log.jsonl  # Badge countdown snapshots (ts, next_utc, minutes_left, message, color, jitter params)
-│  └─ next_update_log.txt    # Human-readable badge ETA tail ([ts] color=… msg='…' next_utc=… mins_left=…)
+│  ├─ next_update_log.txt    # Human-readable badge ETA tail ([ts] color=… msg='…' next_utc=… mins_left=…)
+│  ├─ github_followers.json  # Endpoint payload for the Followers badge (schemaVersion/label/message/color)
+│  ├─ github_stars.json      # Endpoint payload for the Stars badge
+│  └─ total_updates.json     # Endpoint payload for the Updates badge
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
-   └─ update_count.txt       # Monotonic mutation counter (≈133+; powers the «N mutations shipped» tagline)
-```
+   └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
+</code></pre>
 
 **📋 Browse logs:**  
-📊 [`update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl) · 
-📝 [`update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt) · 
-💓 [`heartbeat.log`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log) · 
-🔢 [`update_count.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt)  
-⏱️ [`next_update.json`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update.json) · 
-📡 [`next_update_log.jsonl`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.jsonl) · 
-📋 [`next_update_log.txt`](https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt)
+📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.jsonl">update_log.jsonl</a> ·
+📝 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_log.txt">update_log.txt</a> ·
+💓 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/heartbeat.log">heartbeat.log</a> ·
+🔢 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/.ci/update_count.txt">update_count.txt</a>  
+⏱️ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update.json">next_update.json</a> ·
+📡 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.jsonl">next_update_log.jsonl</a> ·
+📋 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt">next_update_log.txt</a>  
+👥 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_followers.json">github_followers.json</a> ·
+⭐ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_stars.json">github_stars.json</a> ·
+📈 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/total_updates.json">total_updates.json</a>
 
 ---
-
 </details>
-
 ---
 ## 📚 Learning Journey  
 - 🎓 Learning @ **SuperDataScience**  
