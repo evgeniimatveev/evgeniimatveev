@@ -143,12 +143,47 @@ jobs:
           # Export for subsequent steps (STATUS/STATUS2)
           echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
 
-      - name: Install jq
+        - name: Install jq
         shell: bash
         run: |
           sudo apt-get update -y
           sudo apt-get install -y jq
 
+      # ---------- Totals & ETA -> env ----------
+      - name: Read totals & fallback text
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENV_FILE="$GITHUB_ENV"
+          # If the updater has written total updates, export it for later badges
+          if [[ -f .ci/update_count.txt ]]; then
+            echo "TOTAL_UPDATES=$(tr -d '\r\n' < .ci/update_count.txt)" >> "$ENV_FILE"
+          fi
+          # Try to read the "message" field from badges/next_update.json (shields endpoint)
+          msg=""
+          if [[ -f badges/next_update.json ]]; then
+            msg=$(jq -r '.message // empty' badges/next_update.json 2>/dev/null || true)
+          fi
+          # If there is no message, compute a fallback ETA text in UTC (e.g., "in 2h 05m")
+          if [[ -z "$msg" ]]; then
+            H=${NEXT_UPDATE_HOUR:-12}
+            M=${NEXT_UPDATE_MIN:-15}
+            now=$(date -u +%s)
+            target=$(date -u -d "$(date -u +%Y-%m-%d) $H:$M:00" +%s 2>/dev/null || echo 0)
+            if (( now >= target )); then
+              target=$(date -u -d "tomorrow $H:$M:00" +%s)
+            fi
+            diff=$(( target - now ))
+            if (( diff < 3600 )); then
+              mins=$(( diff / 60 ))
+              msg="in ${mins}m"
+            else
+              hours=$(( diff / 3600 ))
+              mins=$(( (diff % 3600) / 60 ))
+              msg="in ${hours}h $(printf '%02d' "$mins")m"
+            fi
+          fi
+          echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
       - name: Update GitHub metrics badges (followers, stars, total)
         env:
           GH_USER: evgeniimatveev
