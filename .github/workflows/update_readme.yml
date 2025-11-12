@@ -181,11 +181,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p badges
+          UA="gh-actions-readme-badges"
 
-          followers_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")"
+          followers_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/users/${GH_USER}")"
           followers="$(printf '%s' "$followers_json" | jq -r '.followers // 0')"
 
-          repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
+          repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
           stars="$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')"
 
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\",\"logo\":\"github\"}" > badges/github_followers.json
@@ -199,10 +200,13 @@ jobs:
           import os, pathlib, re
           repo=os.getenv("GITHUB_REPOSITORY")
           ref=os.getenv("GITHUB_REF_NAME")
-          last=f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
-          followers=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
-          stars=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
-          total=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+          t=os.getenv("GITHUB_RUN_NUMBER","0")
+
+          last=f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge&t={t}"
+          followers=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t={t}"
+          stars=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t={t}"
+          total=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t={t}"
+
           block=f"""<!-- BADGES:START -->
           <div align="left">
           <p><img src="{last}" alt="Last Commit"></p>
@@ -211,6 +215,7 @@ jobs:
           <p><img src="{total}" alt="Total Updates"></p>
           </div>
           <!-- BADGES:END -->"""
+
           p=pathlib.Path("README.md")
           txt=p.read_text(encoding="utf-8")
           if "<!-- BADGES:START -->" in txt:
