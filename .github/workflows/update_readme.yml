@@ -197,32 +197,32 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-import os, pathlib, re
+          import os, pathlib, re
 
-repo = os.environ.get("GITHUB_REPOSITORY", "")
-ref  = os.environ.get("GITHUB_REF_NAME", "")
+          repo = os.environ.get("GITHUB_REPOSITORY", "")
+          ref  = os.environ.get("GITHUB_REF_NAME", "")
 
-last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
-followers = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
-stars = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
-total = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+          last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
+          followers = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+          stars = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
+          total = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
 
-block = f"""<!-- BADGES:START -->
-<div align="left">
-<p><img src="{last}" alt="Last Commit"></p>
-<p><img src="{followers}" alt="GitHub Followers"></p>
-<p><img src="{stars}" alt="GitHub Stars"></p>
-<p><img src="{total}" alt="Total Updates"></p>
-</div>
-<!-- BADGES:END -->"""
+          block = f"""<!-- BADGES:START -->
+          <div align="left">
+          <p><img src="{last}" alt="Last Commit"></p>
+          <p><img src="{followers}" alt="GitHub Followers"></p>
+          <p><img src="{stars}" alt="GitHub Stars"></p>
+          <p><img src="{total}" alt="Total Updates"></p>
+          </div>
+          <!-- BADGES:END -->"""
 
-p = pathlib.Path("README.md")
-txt = p.read_text(encoding="utf-8")
-if "<!-- BADGES:START -->" in txt:
-    txt = re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
-else:
-    txt = txt.rstrip() + "\n\n" + block + "\n"
-p.write_text(txt, encoding="utf-8")
+          p = pathlib.Path("README.md")
+          txt = p.read_text(encoding="utf-8")
+          if "<!-- BADGES:START -->" in txt:
+              txt = re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
+          else:
+              txt = txt.rstrip() + "\n\n" + block + "\n"
+          p.write_text(txt, encoding="utf-8")
 PY
 
       - name: Append & trim update_log.txt
