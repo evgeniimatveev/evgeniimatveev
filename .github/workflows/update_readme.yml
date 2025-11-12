@@ -212,14 +212,14 @@ jobs:
           <p><img src="{total}" alt="Total Updates"></p>
           </div>
           <!-- BADGES:END -->"""
-          p=pathlib.Path("README.md"); txt=p.read_text(encoding="utf-8")
+          p=pathlib.Path("README.md")
+          txt=p.read_text(encoding="utf-8")
           if "<!-- BADGES:START -->" in txt:
             txt=re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
           else:
             txt=txt.rstrip()+"\n\n"+block+"\n"
           p.write_text(txt, encoding="utf-8")
           PY
-
       - name: Append & trim update_log.txt
         shell: bash
         run: |
