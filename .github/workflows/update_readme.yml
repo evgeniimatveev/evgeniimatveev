@@ -193,18 +193,19 @@ jobs:
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\",\"logo\":\"github\"}" > badges/github_stars.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
 
-      - name: Ensure BADGES block (vertical)
+     - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
-          python - <<'PY'
-import os, pathlib, re
-repo=os.getenv("GITHUB_REPOSITORY")
-ref=os.getenv("GITHUB_REF_NAME")
-last=f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
-followers=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
-stars=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
-total=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
-block=f"""<!-- BADGES:START -->
+          python - "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME" <<'PY'
+import os, pathlib, re, sys
+repo = sys.argv[1] if len(sys.argv) > 1 else os.getenv("GITHUB_REPOSITORY")
+ref  = sys.argv[2] if len(sys.argv) > 2 else os.getenv("GITHUB_REF_NAME")
+last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
+followers = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+stars = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
+total = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+
+block = f"""<!-- BADGES:START -->
 <div align="left">
 <p><img src="{last}" alt="Last Commit"></p>
 <p><img src="{followers}" alt="GitHub Followers"></p>
@@ -212,12 +213,13 @@ block=f"""<!-- BADGES:START -->
 <p><img src="{total}" alt="Total Updates"></p>
 </div>
 <!-- BADGES:END -->"""
-p=pathlib.Path("README.md")
-txt=p.read_text(encoding="utf-8")
+
+p = pathlib.Path("README.md")
+txt = p.read_text(encoding="utf-8")
 if "<!-- BADGES:START -->" in txt:
-  txt=re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
+    txt = re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
 else:
-  txt=txt.rstrip()+"\n\n"+block+"\n"
+    txt = txt.rstrip() + "\n\n" + block + "\n"
 p.write_text(txt, encoding="utf-8")
 PY
 
