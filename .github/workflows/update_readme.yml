@@ -193,7 +193,7 @@ jobs:
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\",\"logo\":\"github\"}" > badges/github_stars.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
 
-            - name: Ensure BADGES block (vertical)
+      - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
           python - <<'PY'
