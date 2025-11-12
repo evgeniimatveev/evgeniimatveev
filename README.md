@@ -101,10 +101,14 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📁 **Portfolio** | [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveevusa) |
 | 📊 **LinkedIn** | [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/) |
 
-![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)
-![GitHub Followers](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600)
-![GitHub Stars](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600)
-![Total Updates](https://img.shields.io/static/v1?label=updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&style=for-the-badge)
+<div align="left">
+
+<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"></p>
+
+</div>
 
 ---
 ##  💼 Tech Stack
