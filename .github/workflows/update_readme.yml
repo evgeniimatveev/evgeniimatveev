@@ -78,8 +78,8 @@ jobs:
       NEXT_UPDATE_HOUR: ${{ inputs.next_update_hour != '' && inputs.next_update_hour || '12' }}
       NEXT_UPDATE_MIN:  ${{ inputs.next_update_min  != '' && inputs.next_update_min  || '15' }}
 
-      # ---- JITTER (up to 30 minutes) ----
-      JITTER_MAX_SEC: 1800
+      # ---- JITTER (up to 10 minutes) ----
+      JITTER_MAX_SEC: 600
 
     steps:
       - name: Checkout repository
@@ -108,8 +108,18 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Run updater
-        run: python update_readme.py
+      - name: Install Python deps
+        if: hashFiles('requirements.txt') != ''
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run updater (with logs)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ci logs
+          python update_readme.py 2>&1 | tee logs/updater.out
 
       # Read total updates and compute a fallback Next Update text (if endpoint is unavailable)
       - name: Read totals & fallback text
@@ -393,12 +403,13 @@ jobs:
             echo "- **Next Update (text)**: ${NEXT_UPDATE_TEXT}"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload logs as artifacts
+            - name: Upload logs as artifacts
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: update_logs
           path: |
+            logs/updater.out
             update_log.txt
             update_log.jsonl
             .ci/heartbeat.log
