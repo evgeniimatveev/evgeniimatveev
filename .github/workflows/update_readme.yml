@@ -1,4 +1,4 @@
-name: Auto Update README v7.4
+name: Auto Update README v7.5
 
 on:
   schedule:
@@ -54,6 +54,7 @@ concurrency:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     env:
       # ---- Controls for the updater script ----
@@ -88,6 +89,12 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
+      - name: Ensure dirs (idempotent)
+        shell: bash
+        run: |
+          mkdir -p .ci badges logs
+          [ -f badges/next_update.json ] || echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
+
       # Apply jitter only for scheduled runs (manual runs start immediately)
       - name: Random jitter (sleep up to 10 min)
         if: ${{ github.event_name == 'schedule' }}
@@ -101,6 +108,14 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.10"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Configure Git author
         shell: bash
@@ -120,10 +135,61 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p .ci logs
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      # Read total updates and compute a fallback Next Update text (if endpoint is unavailable)
+      # ---------- NEW: Stable followers/stars via endpoint JSON ----------
+      - name: Update GitHub metrics badges (followers & stars)
+        env:
+          GH_USER: evgeniimatveev
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # default Actions token (public read is enough)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p badges
+
+          # Followers
+          followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/users/${GH_USER}" \
+            | python - <<'PY'
+import sys, json
+d=json.load(sys.stdin)
+print(d.get("followers",0))
+PY
+          )
+
+          # Stars across owned non-fork repos (first 100; GitHub caps per_page=100)
+          stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" \
+            | python - <<'PY'
+import sys, json
+d=json.load(sys.stdin)
+print(sum(i.get("stargazers_count",0) for i in d.get("items",[])))
+PY
+          )
+
+          # Write shields endpoint JSONs
+          cat > badges/github_followers.json <<EOF
+{"schemaVersion":1,"label":"followers","message":"$followers","color":"blue","logo":"github"}
+EOF
+          cat > badges/github_stars.json <<EOF
+{"schemaVersion":1,"label":"stars","message":"$stars","color":"yellow","logo":"github"}
+EOF
+
+      # ---------- Optional: patch README links to endpoint (idempotent) ----------
+      - name: Patch README followers/stars badges to endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          FOLLOWERS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_followers.json&style=for-the-badge&cacheSeconds=3600"
+          STARS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_stars.json&style=for-the-badge&cacheSeconds=3600"
+
+          awk -v f="$FOLLOWERS_EP" -v s="$STARS_EP" '
+            { gsub(/https:\/\/img\.shields\.io\/github\/followers\/[^ )"]+/, f) }
+            { gsub(/https:\/\/img\.shields\.io\/github\/stars\/[^ )"]+/, s) }
+            { print }
+          ' README.md > README.tmp && mv README.tmp README.md
+
+      # ---------- Badges / logs rendering ----------
       - name: Read totals & fallback text
         shell: bash
         run: |
@@ -131,14 +197,12 @@ jobs:
           import os, json, datetime, pathlib
           env_path = os.environ['GITHUB_ENV']
 
-          # total updates from file the script maintains
           tot = ''
           try:
               tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
           except Exception:
               pass
 
-          # next update text from endpoint json or compute
           msg = ''
           try:
               d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
@@ -259,41 +323,6 @@ jobs:
             echo "update_log.jsonl not found yet"
           fi
 
-      - name: Summary table from JSONL (last N)
-        shell: bash
-        run: |
-          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import json, pathlib, os
-
-          p = pathlib.Path("update_log.jsonl")
-          if not p.exists():
-              print("No update_log.jsonl yet."); raise SystemExit
-
-          N = int(os.getenv("LOG_TABLE_N","5"))
-          lines = [l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
-
-          def esc(s):
-              return str(s).replace("|","\\|").replace("\n"," ").strip()
-
-          print(f"### Last {N} updates")
-          print("| Time (UTC) | Run | SHA | Banner | Mode | Event/Actor | Insight |")
-          print("|---|---|---|---|---|---|---|")
-
-          for line in reversed(lines):
-              d = json.loads(line)
-              banner = f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
-              evt = f"{d.get('event','')}/{d.get('actor','')}"
-              print(
-                  f"| {esc(d.get('ts_utc',''))} "
-                  f"| {esc(d.get('run_number',''))} "
-                  f"| {esc(d.get('sha',''))} "
-                  f"| {esc(banner)} "
-                  f"| {esc(d.get('banner_mode',''))} "
-                  f"| {esc(evt)} "
-                  f"| {esc(d.get('insight_preview',''))[:120]} |"
-              )
-          PY
-
       - name: Update STATUS line in README
         shell: bash
         run: |
@@ -303,7 +332,6 @@ jobs:
           MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
 
-          # Daily Smoke badge/link (show *any* last run)
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
 
@@ -330,8 +358,6 @@ jobs:
         shell: bash
         run: |
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
-
-          # Daily Smoke badge/link (show *any* last run)
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
 
@@ -361,13 +387,13 @@ jobs:
         shell: bash
         run: |
           set -e
-          # include badge json so endpoint always has latest payload
-          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt badges/next_update.json 2>/dev/null || true
+          git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
+                  badges/next_update.json badges/github_followers.json badges/github_stars.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.4]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5]"
             [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -391,11 +417,22 @@ jobs:
           echo "Push failed after 3 attempts"
           exit 1
 
+      - name: Show updater tail
+        if: always()
+        shell: bash
+        run: |
+          if [ -f logs/updater.out ]; then
+            echo "=== updater.out (last 120 lines) ==="
+            tail -n 120 logs/updater.out
+          else
+            echo "logs/updater.out not found"
+          fi
+
       - name: Write job summary
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.4"
+            echo "## README Auto-Update v7.5"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
