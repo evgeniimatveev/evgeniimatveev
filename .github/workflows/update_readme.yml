@@ -1,8 +1,8 @@
-name: Auto Update README v7.5
+name: Auto Update README v7.5.1
 
 on:
   schedule:
-    - cron: "15 12 * * *"   # Run daily at 12:15 UTC (≈ 04:15 PST / 05:15 PDT)
+    - cron: "15 12 * * *"
   workflow_dispatch:
     inputs:
       banner_mode:
@@ -57,29 +57,18 @@ jobs:
     timeout-minutes: 20
 
     env:
-      # ---- Controls for the updater script ----
       BANNER_MODE: ${{ (github.event.inputs.banner_mode || 'sequential') }}
       BANNER_CALENDAR_MODE: ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
       MLOPS_INSIGHT: ${{ github.event.inputs.insight || '' }}
       SCHEDULE_BADGE: "24h_5m"
-
-      # Emoji control
       BANNER_EMOJI_MODE: stable
       BANNER_EMOJIS: ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
-
-      # Logs / tables
       JSONL_KEEP_LINES: ${{ github.event.inputs.jsonl_keep_lines || 200 }}
       TXT_KEEP_LINES:   ${{ github.event.inputs.txt_keep_lines   || 70  }}
       LOG_TABLE_N:      ${{ github.event.inputs.table_n          || 5   }}
-
-      # Commit behavior
       COMMIT_MODE:      ${{ github.event.inputs.commit_mode      || 'auto' }}
-
-      # Next Update badge target (UTC) — keep in sync with cron above
       NEXT_UPDATE_HOUR: ${{ github.event.inputs.next_update_hour || 12 }}
       NEXT_UPDATE_MIN:  ${{ github.event.inputs.next_update_min  || 15 }}
-
-      # ---- JITTER (up to 10 minutes) ----
       JITTER_MAX_SEC: 600
 
     steps:
@@ -136,29 +125,24 @@ jobs:
           set -euo pipefail
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      # ---------- Read totals BEFORE building "total updates" badge ----------
+      # ---------- Read totals & next ETA (to expose TOTAL_UPDATES env) ----------
       - name: Read totals & fallback text
         shell: bash
         run: |
           python - <<'PY'
 import os, json, datetime, pathlib
 env_path = os.environ['GITHUB_ENV']
-
-# total updates from file the script maintains
 tot = ''
 try:
     tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
 except Exception:
     pass
-
-# next update text from endpoint json or compute fallback
 msg = ''
 try:
     d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
     msg = d.get('message','')
 except Exception:
     pass
-
 def compute():
     try:
         h=int(os.getenv('NEXT_UPDATE_HOUR','12')); m=int(os.getenv('NEXT_UPDATE_MIN','15'))
@@ -168,19 +152,15 @@ def compute():
     eta=now.replace(hour=h, minute=m, second=0, microsecond=0)
     if now>=eta: eta+=datetime.timedelta(days=1)
     left=eta-now
-    T=int(left.total_seconds())
-    H=T//3600; M=(T%3600)//60
+    T=int(left.total_seconds()); H=T//3600; M=(T%3600)//60
     return f"in {M}m" if H==0 else f"in {H}h {M:02d}m"
-
-if not msg:
-    msg = compute()
-
+if not msg: msg = compute()
 with open(env_path,'a') as env:
     if tot: env.write(f"TOTAL_UPDATES={tot}\n")
     env.write(f"NEXT_UPDATE_TEXT={msg}\n")
 PY
 
-      # ---------- Stable followers/stars via endpoint JSON ----------
+      # ---------- Followers/Stars via endpoint JSON ----------
       - name: Update GitHub metrics badges (followers & stars)
         env:
           GH_USER: evgeniimatveev
@@ -189,25 +169,16 @@ PY
         run: |
           set -euo pipefail
           mkdir -p badges
-
-          followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/users/${GH_USER}" \
-            | python - <<'PY'
+          followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}" | python - <<'PY'
 import sys, json
-d = json.load(sys.stdin)
-print(d.get("followers", 0))
+d=json.load(sys.stdin); print(d.get("followers",0))
 PY
           )
-
-          stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" \
-            | python - <<'PY'
+          stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" | python - <<'PY'
 import sys, json
-d = json.load(sys.stdin)
-print(sum(i.get("stargazers_count", 0) for i in d.get("items", [])))
+d=json.load(sys.stdin); print(sum(i.get("stargazers_count",0) for i in d.get("items",[])))
 PY
           )
-
           cat > badges/github_followers.json <<EOF
 {"schemaVersion":1,"label":"followers","message":"$followers","color":"blue","logo":"github"}
 EOF
@@ -225,53 +196,38 @@ EOF
 {"schemaVersion":1,"label":"updates","message":"$val","color":"0ea5e9"}
 EOF
 
-      # ---------- Optional: patch old followers/stars links if встречаются ----------
-      - name: Patch old shields links to endpoints (idempotent)
-        shell: bash
-        run: |
-          set -euo pipefail
-          FOLLOWERS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
-          STARS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
-          awk -v f="$FOLLOWERS_EP" -v s="$STARS_EP" '
-            { gsub(/https:\/\/img\.shields\.io\/github\/followers\/[^ )"]+/, f) }
-            { gsub(/https:\/\/img\.shields\.io\/github\/stars\/[^ )"]+/, s) }
-            { print }
-          ' README.md > README.tmp && mv README.tmp README.md
-
-      # ---------- Write vertical BADGES block (column layout) ----------
+      # ---------- BADGES block (vertical) patched via Python ----------
       - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
-          set -euo pipefail
-          FOLLOWERS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
-          STARS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
-          TOTAL_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
-          LAST_COMMIT="https://img.shields.io/github/last-commit/${GITHUB_REPOSITORY}?color=red&style=for-the-badge"
-
-          cat > .ci/badges_block.html <<EOF
-<!-- BADGES:START -->
+          python - <<'PY'
+import os, pathlib, re
+repo = os.getenv("GITHUB_REPOSITORY")
+ref  = os.getenv("GITHUB_REF_NAME")
+last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
+followers = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+stars     = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
+total     = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+block = f"""<!-- BADGES:START -->
 <div align="left">
 
-<p><img src="${LAST_COMMIT}" alt="Last Commit"></p>
-<p><img src="${FOLLOWERS_EP}" alt="GitHub Followers"></p>
-<p><img src="${STARS_EP}" alt="GitHub Stars"></p>
-<p><img src="${TOTAL_EP}" alt="Total Updates"></p>
+<p><img src="{last}" alt="Last Commit"></p>
+<p><img src="{followers}" alt="GitHub Followers"></p>
+<p><img src="{stars}" alt="GitHub Stars"></p>
+<p><img src="{total}" alt="Total Updates"></p>
 
 </div>
-<!-- BADGES:END -->
-EOF
+<!-- BADGES:END -->"""
+p = pathlib.Path("README.md")
+txt = p.read_text(encoding="utf-8")
+if "<!-- BADGES:START -->" in txt:
+    txt = re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
+else:
+    txt = txt.rstrip() + "\n\n" + block + "\n"
+p.write_text(txt, encoding="utf-8")
+PY
 
-          if grep -q "<!-- BADGES:START -->" README.md; then
-            awk -v r="$(sed 's/[&/\]/\\&/g' .ci/badges_block.html)" '
-              /<!-- BADGES:START -->/ {print; print r; f=1; next}
-              /<!-- BADGES:END -->/   {f=0; next}
-              !f
-            ' README.md > README.tmp && mv README.tmp README.md
-          else
-            printf "\n\n%s\n" "$(cat .ci/badges_block.html)" >> README.md
-          fi
-
-      # ---------- Logs rendering ----------
+      # ---------- Logs/table rendering ----------
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -299,70 +255,36 @@ EOF
         run: |
           python - <<'PY'
 import json, pathlib, re, os
-N = int(os.getenv("LOG_TABLE_N", "5"))
+N = int(os.getenv("LOG_TABLE_N","5"))
 log = pathlib.Path("update_log.jsonl")
-readme_p = pathlib.Path("README.md")
-
-def esc_md(s: str) -> str:
-    return str(s).replace("|", "&#124;").replace("\n", " ").strip()
-
-rows = []
+p = pathlib.Path("README.md")
+def esc(s): return str(s).replace("|","&#124;").replace("\n"," ").strip()
+rows=[]
 if log.exists():
-    lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
+    lines=[l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
     for line in reversed(lines):
-        d = json.loads(line)
-        banner_str = "{}/{} ({})".format(
-            d.get("banner_index","?"), d.get("banner_total","?"), d.get("banner_file","")
-        )
-        insight = esc_md(d.get("insight_preview",""))
-        if len(insight) > 140:
-            insight = insight[:137] + "…"
-        row = (
-            "| {} | {} | `{}` | {} | {}/{} | {} |".format(
-                esc_md(d.get("ts_utc","")),
-                esc_md(d.get("run_number","")),
-                esc_md(d.get("sha","")),
-                esc_md(banner_str),
-                esc_md(d.get("event","")),
-                esc_md(d.get("actor","")),
-                insight
-            )
-        )
-        rows.append(row)
-
-headers = ["Time (UTC)", "Run", "SHA", "Banner", "Event/Actor", "Insight"]
-sep = "|" + "|".join(["---"] * len(headers)) + "|"
-
-table = [
-    "<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),
-    "",
-    "| " + " | ".join(headers) + " |",
-    sep,
-    *(rows or ["| — | — | — | — | — | — |"]),
-    "",
-    "</details>",
-]
-new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
-
-readme = readme_p.read_text(encoding="utf-8")
-pattern = r"<!-- LOG:START -->.*?<!-- LOG:END -->"
-if re.search(pattern, readme, flags=re.S):
-    readme = re.sub(pattern, new_block, readme, flags=re.S)
+        d=json.loads(line)
+        b=f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
+        ins=esc(d.get('insight_preview',''))
+        if len(ins)>140: ins=ins[:137]+"…"
+        rows.append(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | `{esc(d.get('sha',''))}` | {esc(b)} | {esc(d.get('event',''))}/{esc(d.get('actor',''))} | {ins} |")
+headers=["Time (UTC)","Run","SHA","Banner","Event/Actor","Insight"]
+sep="|"+"|".join(["---"]*len(headers))+"|"
+table=["<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),"","| "+" | ".join(headers)+"|",sep,*(rows or ["| — | — | — | — | — | — |"]),"","</details>"]
+block="<!-- LOG:START -->\n"+"\n".join(table)+"\n<!-- LOG:END -->"
+txt=p.read_text(encoding="utf-8")
+if "<!-- LOG:START -->" in txt:
+    txt=re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->",block,txt,flags=re.S)
 else:
-    readme = readme.rstrip() + "\n\n" + new_block + "\n"
-readme_p.write_text(readme, encoding="utf-8")
+    txt=txt.rstrip()+"\n\n"+block+"\n"
+p.write_text(txt,encoding="utf-8")
 PY
 
       - name: Show last 10 JSONL lines
         shell: bash
         run: |
-          set -euo pipefail
           echo "Last 10 JSONL lines:"
-          if [ -f update_log.jsonl ]; then
-            tail -n 10 update_log.jsonl
-          else
-            echo "update_log.jsonl not found yet"
-          fi
+          [ -f update_log.jsonl ] && tail -n 10 update_log.jsonl || echo "update_log.jsonl not found yet"
 
       - name: Update STATUS line in README
         shell: bash
@@ -372,10 +294,8 @@ PY
           NOW_BADGE=$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')
           MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
-
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
-
           STATUS="<p align=\"center\">
           <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
@@ -388,7 +308,6 @@ PY
           <img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
           <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest - m smoke)\" /></a>
           </p>"
-
           awk -v r="$STATUS" '
             /<!-- STATUS:START -->/ {print; print r; f=1; next}
             /<!-- STATUS:END -->/   {f=0}
@@ -401,14 +320,12 @@ PY
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
-
           LOW_STATUS="<p align=\"left\">
           <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
           <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
           <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest - m smoke)\" /></a>
           </p>"
-
           awk -v r="$LOW_STATUS" '
             /<!-- STATUS2:START -->/ {print; print r; f=1; next}
             /<!-- STATUS2:END -->/   {f=0}
@@ -434,7 +351,7 @@ PY
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.1]"
             [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -473,7 +390,7 @@ PY
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5"
+            echo "## README Auto-Update v7.5.1"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
