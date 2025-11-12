@@ -102,7 +102,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📊 **LinkedIn** | [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/) |
 
 ![GitHub Followers](https://img.shields.io/github/followers/evgeniimatveev?color=blue&logo=github&style=for-the-badge)  
-![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge)  
+![GitHub Stars](https://img.shields.io/github/stars/evgeniimatveev?affiliations=OWNER&color=yellow&logo=github&style=for-the-badge&token=${{ secrets.GH_TOKEN }})
 ![Last Commit](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge)  
 
 ---
