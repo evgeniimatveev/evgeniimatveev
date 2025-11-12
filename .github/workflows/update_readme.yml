@@ -193,13 +193,15 @@ jobs:
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\",\"logo\":\"github\"}" > badges/github_stars.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
 
-      - name: Ensure BADGES block (vertical)
+            - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
-          python - "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME" <<'PY'
-import os, pathlib, re, sys
-repo = sys.argv[1] if len(sys.argv) > 1 else os.getenv("GITHUB_REPOSITORY")
-ref  = sys.argv[2] if len(sys.argv) > 2 else os.getenv("GITHUB_REF_NAME")
+          python - <<'PY'
+import os, pathlib, re
+
+repo = os.environ.get("GITHUB_REPOSITORY", "")
+ref  = os.environ.get("GITHUB_REF_NAME", "")
+
 last = f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
 followers = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
 stars = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
