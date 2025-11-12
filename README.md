@@ -48,7 +48,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ### 🐍 Core Scripts:
 | File | Version | Description |
 |------|---------|-------------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.3-stable-success"> | Banner engine + NLG + JSONL pipeline |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.5.7-stable-success"> | Banner engine + NLG + JSONL pipeline |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
 
 ### ⚙️ CI/CD Workflows:
