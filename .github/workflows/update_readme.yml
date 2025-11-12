@@ -45,7 +45,7 @@ on:
         default: 15
 
 permissions:
-  contents: write   # Required to push README/log updates
+  contents: write
 
 concurrency:
   group: auto-update-readme
@@ -61,7 +61,7 @@ jobs:
       BANNER_MODE: ${{ (github.event.inputs.banner_mode || 'sequential') }}
       BANNER_CALENDAR_MODE: ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
       MLOPS_INSIGHT: ${{ github.event.inputs.insight || '' }}
-      SCHEDULE_BADGE: "24h_5m"  # display only
+      SCHEDULE_BADGE: "24h_5m"
 
       # Emoji control
       BANNER_EMOJI_MODE: stable
@@ -95,7 +95,6 @@ jobs:
           mkdir -p .ci badges logs
           [ -f badges/next_update.json ] || echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
 
-      # Apply jitter only for scheduled runs (manual runs start immediately)
       - name: Random jitter (sleep up to 10 min)
         if: ${{ github.event_name == 'schedule' }}
         shell: bash
@@ -137,37 +136,78 @@ jobs:
           set -euo pipefail
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      # ---------- NEW: Stable followers/stars via endpoint JSON ----------
+      # ---------- Read totals BEFORE building "total updates" badge ----------
+      - name: Read totals & fallback text
+        shell: bash
+        run: |
+          python - <<'PY'
+import os, json, datetime, pathlib
+env_path = os.environ['GITHUB_ENV']
+
+# total updates from file the script maintains
+tot = ''
+try:
+    tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
+except Exception:
+    pass
+
+# next update text from endpoint json or compute fallback
+msg = ''
+try:
+    d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
+    msg = d.get('message','')
+except Exception:
+    pass
+
+def compute():
+    try:
+        h=int(os.getenv('NEXT_UPDATE_HOUR','12')); m=int(os.getenv('NEXT_UPDATE_MIN','15'))
+    except Exception:
+        h=12; m=15
+    now=datetime.datetime.utcnow()
+    eta=now.replace(hour=h, minute=m, second=0, microsecond=0)
+    if now>=eta: eta+=datetime.timedelta(days=1)
+    left=eta-now
+    T=int(left.total_seconds())
+    H=T//3600; M=(T%3600)//60
+    return f"in {M}m" if H==0 else f"in {H}h {M:02d}m"
+
+if not msg:
+    msg = compute()
+
+with open(env_path,'a') as env:
+    if tot: env.write(f"TOTAL_UPDATES={tot}\n")
+    env.write(f"NEXT_UPDATE_TEXT={msg}\n")
+PY
+
+      # ---------- Stable followers/stars via endpoint JSON ----------
       - name: Update GitHub metrics badges (followers & stars)
         env:
           GH_USER: evgeniimatveev
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # default Actions token (public read is enough)
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p badges
 
-          # Followers
           followers=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/users/${GH_USER}" \
             | python - <<'PY'
 import sys, json
-d=json.load(sys.stdin)
-print(d.get("followers",0))
+d = json.load(sys.stdin)
+print(d.get("followers", 0))
 PY
           )
 
-          # Stars across owned non-fork repos (first 100; GitHub caps per_page=100)
           stars=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100" \
             | python - <<'PY'
 import sys, json
-d=json.load(sys.stdin)
-print(sum(i.get("stargazers_count",0) for i in d.get("items",[])))
+d = json.load(sys.stdin)
+print(sum(i.get("stargazers_count", 0) for i in d.get("items", [])))
 PY
           )
 
-          # Write shields endpoint JSONs
           cat > badges/github_followers.json <<EOF
 {"schemaVersion":1,"label":"followers","message":"$followers","color":"blue","logo":"github"}
 EOF
@@ -175,62 +215,63 @@ EOF
 {"schemaVersion":1,"label":"stars","message":"$stars","color":"yellow","logo":"github"}
 EOF
 
-      # ---------- Optional: patch README links to endpoint (idempotent) ----------
-      - name: Patch README followers/stars badges to endpoint
+      - name: Update Total Updates badge (endpoint)
         shell: bash
         run: |
           set -euo pipefail
-          FOLLOWERS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_followers.json&style=for-the-badge&cacheSeconds=3600"
-          STARS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_stars.json&style=for-the-badge&cacheSeconds=3600"
+          mkdir -p badges
+          val="${TOTAL_UPDATES:-?}"
+          cat > badges/total_updates.json <<EOF
+{"schemaVersion":1,"label":"updates","message":"$val","color":"0ea5e9"}
+EOF
 
+      # ---------- Optional: patch old followers/stars links if встречаются ----------
+      - name: Patch old shields links to endpoints (idempotent)
+        shell: bash
+        run: |
+          set -euo pipefail
+          FOLLOWERS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+          STARS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
           awk -v f="$FOLLOWERS_EP" -v s="$STARS_EP" '
             { gsub(/https:\/\/img\.shields\.io\/github\/followers\/[^ )"]+/, f) }
             { gsub(/https:\/\/img\.shields\.io\/github\/stars\/[^ )"]+/, s) }
             { print }
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # ---------- Badges / logs rendering ----------
-      - name: Read totals & fallback text
+      # ---------- Write vertical BADGES block (column layout) ----------
+      - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
-          python - <<'PY'
-          import os, json, datetime, pathlib
-          env_path = os.environ['GITHUB_ENV']
+          set -euo pipefail
+          FOLLOWERS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
+          STARS_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
+          TOTAL_EP="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/total_updates.json&style=for-the-badge&cacheSeconds=1200"
+          LAST_COMMIT="https://img.shields.io/github/last-commit/${GITHUB_REPOSITORY}?color=red&style=for-the-badge"
 
-          tot = ''
-          try:
-              tot = pathlib.Path('.ci/update_count.txt').read_text(encoding='utf-8').strip()
-          except Exception:
-              pass
+          cat > .ci/badges_block.html <<EOF
+<!-- BADGES:START -->
+<div align="left">
 
-          msg = ''
-          try:
-              d = json.loads(pathlib.Path('badges/next_update.json').read_text(encoding='utf-8'))
-              msg = d.get('message','')
-          except Exception:
-              pass
+<p><img src="${LAST_COMMIT}" alt="Last Commit"></p>
+<p><img src="${FOLLOWERS_EP}" alt="GitHub Followers"></p>
+<p><img src="${STARS_EP}" alt="GitHub Stars"></p>
+<p><img src="${TOTAL_EP}" alt="Total Updates"></p>
 
-          def compute():
-              try:
-                  h=int(os.getenv('NEXT_UPDATE_HOUR','12')); m=int(os.getenv('NEXT_UPDATE_MIN','15'))
-              except Exception:
-                  h=12; m=15
-              now=datetime.datetime.utcnow()
-              eta=now.replace(hour=h, minute=m, second=0, microsecond=0)
-              if now>=eta: eta+=datetime.timedelta(days=1)
-              left=eta-now
-              T=int(left.total_seconds())
-              H=T//3600; M=(T%3600)//60
-              return f"in {M}m" if H==0 else f"in {H}h {M:02d}m"
+</div>
+<!-- BADGES:END -->
+EOF
 
-          if not msg:
-              msg = compute()
+          if grep -q "<!-- BADGES:START -->" README.md; then
+            awk -v r="$(sed 's/[&/\]/\\&/g' .ci/badges_block.html)" '
+              /<!-- BADGES:START -->/ {print; print r; f=1; next}
+              /<!-- BADGES:END -->/   {f=0; next}
+              !f
+            ' README.md > README.tmp && mv README.tmp README.md
+          else
+            printf "\n\n%s\n" "$(cat .ci/badges_block.html)" >> README.md
+          fi
 
-          with open(env_path,'a') as env:
-              if tot: env.write(f"TOTAL_UPDATES={tot}\n")
-              env.write(f"NEXT_UPDATE_TEXT={msg}\n")
-          PY
-
+      # ---------- Logs rendering ----------
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -257,60 +298,60 @@ EOF
         shell: bash
         run: |
           python - <<'PY'
-          import json, pathlib, re, os
-          N = int(os.getenv("LOG_TABLE_N", "5"))
-          log = pathlib.Path("update_log.jsonl")
-          readme_p = pathlib.Path("README.md")
+import json, pathlib, re, os
+N = int(os.getenv("LOG_TABLE_N", "5"))
+log = pathlib.Path("update_log.jsonl")
+readme_p = pathlib.Path("README.md")
 
-          def esc_md(s: str) -> str:
-              return str(s).replace("|", "&#124;").replace("\n", " ").strip()
+def esc_md(s: str) -> str:
+    return str(s).replace("|", "&#124;").replace("\n", " ").strip()
 
-          rows = []
-          if log.exists():
-              lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
-              for line in reversed(lines):
-                  d = json.loads(line)
-                  banner_str = "{}/{} ({})".format(
-                      d.get("banner_index","?"), d.get("banner_total","?"), d.get("banner_file","")
-                  )
-                  insight = esc_md(d.get("insight_preview",""))
-                  if len(insight) > 140:
-                      insight = insight[:137] + "…"
-                  row = (
-                      "| {} | {} | `{}` | {} | {}/{} | {} |".format(
-                          esc_md(d.get("ts_utc","")),
-                          esc_md(d.get("run_number","")),
-                          esc_md(d.get("sha","")),
-                          esc_md(banner_str),
-                          esc_md(d.get("event","")),
-                          esc_md(d.get("actor","")),
-                          insight
-                      )
-                  )
-                  rows.append(row)
+rows = []
+if log.exists():
+    lines = [l for l in log.read_text(encoding="utf-8").splitlines() if l.strip()][-N:]
+    for line in reversed(lines):
+        d = json.loads(line)
+        banner_str = "{}/{} ({})".format(
+            d.get("banner_index","?"), d.get("banner_total","?"), d.get("banner_file","")
+        )
+        insight = esc_md(d.get("insight_preview",""))
+        if len(insight) > 140:
+            insight = insight[:137] + "…"
+        row = (
+            "| {} | {} | `{}` | {} | {}/{} | {} |".format(
+                esc_md(d.get("ts_utc","")),
+                esc_md(d.get("run_number","")),
+                esc_md(d.get("sha","")),
+                esc_md(banner_str),
+                esc_md(d.get("event","")),
+                esc_md(d.get("actor","")),
+                insight
+            )
+        )
+        rows.append(row)
 
-          headers = ["Time (UTC)", "Run", "SHA", "Banner", "Event/Actor", "Insight"]
-          sep = "|" + "|".join(["---"] * len(headers)) + "|"
+headers = ["Time (UTC)", "Run", "SHA", "Banner", "Event/Actor", "Insight"]
+sep = "|" + "|".join(["---"] * len(headers)) + "|"
 
-          table = [
-              "<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),
-              "",
-              "| " + " | ".join(headers) + " |",
-              sep,
-              *(rows or ["| — | — | — | — | — | — |"]),
-              "",
-              "</details>",
-          ]
-          new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
+table = [
+    "<details><summary>🗂️<b>Recent updates (last {})</b></summary>".format(N),
+    "",
+    "| " + " | ".join(headers) + " |",
+    sep,
+    *(rows or ["| — | — | — | — | — | — |"]),
+    "",
+    "</details>",
+]
+new_block = "\n".join(["<!-- LOG:START -->", *table, "<!-- LOG:END -->"])
 
-          readme = readme_p.read_text(encoding="utf-8")
-          pattern = r"<!-- LOG:START -->.*?<!-- LOG:END -->"
-          if re.search(pattern, readme, flags=re.S):
-              readme = re.sub(pattern, new_block, readme, flags=re.S)
-          else:
-              readme = readme.rstrip() + "\n\n" + new_block + "\n"
-          readme_p.write_text(readme, encoding="utf-8")
-          PY
+readme = readme_p.read_text(encoding="utf-8")
+pattern = r"<!-- LOG:START -->.*?<!-- LOG:END -->"
+if re.search(pattern, readme, flags=re.S):
+    readme = re.sub(pattern, new_block, readme, flags=re.S)
+else:
+    readme = readme.rstrip() + "\n\n" + new_block + "\n"
+readme_p.write_text(readme, encoding="utf-8")
+PY
 
       - name: Show last 10 JSONL lines
         shell: bash
@@ -388,7 +429,7 @@ EOF
         run: |
           set -e
           git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
-                  badges/next_update.json badges/github_followers.json badges/github_stars.json 2>/dev/null || true
+                  badges/next_update.json badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
