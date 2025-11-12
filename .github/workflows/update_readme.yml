@@ -1,8 +1,8 @@
-name: Auto Update README v7.5.5
+name: Auto Update README v7.5.6
 
 on:
   schedule:
-    - cron: "15 12 * * *"   # 12:15 UTC daily
+    - cron: "15 12 * * *"
   workflow_dispatch:
     inputs:
       banner_mode:       { description: "sequential | random | calendar", type: choice, options: [sequential, random, calendar], default: sequential }
@@ -28,24 +28,18 @@ jobs:
     timeout-minutes: 20
 
     env:
-      # Updater controls
       BANNER_MODE:          ${{ github.event.inputs.banner_mode || 'sequential' }}
       BANNER_CALENDAR_MODE: ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
       MLOPS_INSIGHT:        ${{ github.event.inputs.insight || '' }}
       SCHEDULE_BADGE:       "24h_5m"
-      # Emojis
       BANNER_EMOJI_MODE:    stable
       BANNER_EMOJIS:        ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
-      # Logs / table
       JSONL_KEEP_LINES:     ${{ github.event.inputs.jsonl_keep_lines || 200 }}
       TXT_KEEP_LINES:       ${{ github.event.inputs.txt_keep_lines   || 70  }}
       LOG_TABLE_N:          ${{ github.event.inputs.table_n          || 5   }}
-      # Commit behavior
       COMMIT_MODE:          ${{ github.event.inputs.commit_mode      || 'auto' }}
-      # Next Update target (UTC)
       NEXT_UPDATE_HOUR:     ${{ github.event.inputs.next_update_hour || 12 }}
       NEXT_UPDATE_MIN:      ${{ github.event.inputs.next_update_min  || 15 }}
-      # jitter
       JITTER_MAX_SEC:       600
 
     steps:
@@ -80,8 +74,7 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          restore-keys: ${{ runner.os }}-pip-
 
       - name: Configure Git author
         shell: bash
@@ -109,42 +102,36 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y jq
 
-      # ---------- Totals & ETA -> env (single step) ----------
       - name: Read totals & fallback text
         shell: bash
         run: |
           set -euo pipefail
           ENV_FILE="$GITHUB_ENV"
-
-          # If the updater has written total updates, export it
           if [[ -f .ci/update_count.txt ]]; then
             echo "TOTAL_UPDATES=$(tr -d '\r\n' < .ci/update_count.txt)" >> "$ENV_FILE"
           fi
-
-          # Try shields endpoint first
           msg=""
           if [[ -f badges/next_update.json ]]; then
             msg=$(jq -r '.message // empty' badges/next_update.json 2>/dev/null || true)
           fi
-
-          # Fallback ETA (UTC)
           if [[ -z "$msg" ]]; then
             H=${NEXT_UPDATE_HOUR:-12}
             M=${NEXT_UPDATE_MIN:-15}
             now=$(date -u +%s)
             target=$(date -u -d "$(date -u +%Y-%m-%d) $H:$M:00" +%s 2>/dev/null || echo 0)
-            (( now >= target )) && target=$(date -u -d "tomorrow $H:$M:00" +%s)
+            if (( now >= target )); then
+              target=$(date -u -d "tomorrow $H:$M:00" +%s)
+            fi
             diff=$(( target - now ))
             if (( diff < 3600 )); then
               mins=$(( diff / 60 ))
               msg="in ${mins}m"
             else
               hours=$(( diff / 3600 ))
-              mins=$(( (diff % 3600) / 60  ))
+              mins=$(( (diff % 3600) / 60 ))
               msg="in ${hours}h $(printf '%02d' "$mins")m"
             fi
           fi
-
           echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
 
       - name: Update GitHub metrics badges (followers, stars, total)
@@ -155,29 +142,21 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p badges
-
           followers_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/${GH_USER}")
           followers=$(printf '%s' "$followers_json" | jq -r '.followers // 0')
-
           repos_json=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")
           stars=$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')
-
-          cat > badges/github_followers.json <<EOF
-{"schemaVersion":1,"label":"followers","message":"$followers","color":"blue","logo":"github"}
-EOF
-          cat > badges/github_stars.json <<EOF
-{"schemaVersion":1,"label":"stars","message":"$stars","color":"yellow","logo":"github"}
-EOF
-          cat > badges/total_updates.json <<EOF
-{"schemaVersion":1,"label":"updates","message":"${TOTAL_UPDATES:-?}","color":"0ea5e9"}
-EOF
+          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\",\"logo\":\"github\"}" > badges/github_followers.json
+          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\",\"logo\":\"github\"}" > badges/github_stars.json
+          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
 
       - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
           python - <<'PY'
 import os, pathlib, re
-repo=os.getenv("GITHUB_REPOSITORY"); ref=os.getenv("GITHUB_REF_NAME")
+repo=os.getenv("GITHUB_REPOSITORY")
+ref=os.getenv("GITHUB_REF_NAME")
 last=f"https://img.shields.io/github/last-commit/{repo}?color=red&style=for-the-badge"
 followers=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_followers.json&style=for-the-badge&cacheSeconds=21600"
 stars=f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{ref}/badges/github_stars.json&style=for-the-badge&cacheSeconds=21600"
@@ -190,7 +169,8 @@ block=f"""<!-- BADGES:START -->
 <p><img src="{total}" alt="Total Updates"></p>
 </div>
 <!-- BADGES:END -->"""
-p=pathlib.Path("README.md"); txt=p.read_text(encoding="utf-8")
+p=pathlib.Path("README.md")
+txt=p.read_text(encoding="utf-8")
 if "<!-- BADGES:START -->" in txt:
   txt=re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
 else:
@@ -321,7 +301,7 @@ PY
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
           else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.5]"
+            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.6]"
             [ "${COMMIT_MODE}" = "force" ] && msg="${msg} [force]"
             git commit -m "$msg"
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -358,7 +338,7 @@ PY
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5.5"
+            echo "## README Auto-Update v7.5.6"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
             echo "- **Commit**: ${{ github.sha }}"
