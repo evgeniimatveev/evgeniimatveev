@@ -88,8 +88,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ⭐ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_stars.json">github_stars.json</a> ·
 📈 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/total_updates.json">total_updates.json</a>
 
-</details>
 ---
+</details>
+
 
 ## 📚 Learning Journey  
 - 🎓 Learning @ **SuperDataScience**  
