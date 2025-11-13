@@ -297,11 +297,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 </details>
 
-
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight" width="800" />
-</p>
-
 ---
 
 <p align="center">
