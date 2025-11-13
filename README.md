@@ -292,7 +292,11 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 <p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/top-langs-by-repo?username=evgeniimatveev&theme=tokyonight" width="800" alt="Top Languages by Repo" />
+  <img
+    src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8"
+    alt="Top languages by percentage"
+    width="600"
+  />
 </p>
 
 </details>
