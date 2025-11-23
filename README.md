@@ -300,11 +300,5 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake-dark.svg#gh-dark-mode-only" />
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake-light.svg#gh-light-mode-only" />
-</p>
-
 ---
 <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake.svg" />
