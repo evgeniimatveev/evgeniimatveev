@@ -1,71 +1,63 @@
-name: Daily Smoke
+name: Generate Snake
 
 on:
   schedule:
-    # Run every day at 08:07 UTC
-    - cron: '7 8 * * *'
-  workflow_dispatch: {}
+    - cron: "0 0 * * *"   # run every day at 00 : 00
+  workflow_dispatch:
 
 permissions:
-  contents: read
-
-# Prevent overlapping runs of the same workflow on the same ref
-concurrency:
-  group: smoke-${{ github.ref }}
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  smoke:
-    name: Smoke (pytest -m smoke)
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5  # hard cap for the whole job
 
     steps:
-      - name: Checkout (sparse & shallow)
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 1                 # shallow clone for speed
-          lfs: false                     # no LFS needed for smoke
-          # Pull only what smoke tests require
-          sparse-checkout: |
-            tests
-            pytest.ini
-            requirements.txt
-          sparse-checkout-cone-mode: true
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Generate both snake variants
+        uses: evgeniimatveev/snk@main
         with:
-          python-version: '3.11'
-          cache: 'pip'                   # pip cache to speed up installs
+          github_user_name: evgeniimatveev
+          outputs: |
+            dist/snake-a.svg?palette=github-dark
+            dist/snake-b.svg?color_snake=#b5179e&color_dots=#31473A,#4CAF50,#6BBF59,#A3F7BF,#E2FFFA
 
-      - name: Install pytest (and optional project deps)
+      
+      - name: Pick next variant and update snake.svg
         run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          if [ -f requirements.txt ]; then
-            # Best-effort: do not fail the smoke if optional deps conflict
-            pip install -r requirements.txt || true
+          MODE_FILE=".github/snake-mode"
+
+          if [ -f "$MODE_FILE" ]; then
+            LAST_MODE=$(cat "$MODE_FILE" || echo "b")
+          else
+            LAST_MODE="b"
           fi
 
-      - name: Run smoke
-        timeout-minutes: 2               # cap the test step itself
-        run: |
-          mkdir -p reports
-          pytest -m smoke -q --maxfail=1 --disable-warnings \
-            --junitxml=reports/junit.xml || true
+          if [ "$LAST_MODE" = "a" ]; then
+            NEXT_MODE="b"
+            cp dist/snake-b.svg dist/snake.svg
+            echo "Switched to variant B"
+          else
+            NEXT_MODE="a"
+            cp dist/snake-a.svg dist/snake.svg
+            echo "Switched to variant A"
+          fi
 
-      - name: Upload smoke report
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: smoke-report
-          path: reports/junit.xml
-          retention-days: 2
+          echo "$NEXT_MODE" > "$MODE_FILE"
 
-      - name: Summary
-        if: always()
+      - name: Commit and push snake
         run: |
-          echo "### Daily Smoke ✅" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Schedule: 08:07 UTC daily" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Python: 3.11" >> "$GITHUB_STEP_SUMMARY"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add dist/snake-a.svg dist/snake-b.svg dist/snake.svg .github/snake-mode || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: update dynamic snake"
+          git push origin main
