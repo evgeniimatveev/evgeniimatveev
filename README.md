@@ -300,9 +300,17 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-### 🐍 GitHub Contribution Snake
+## 🐍 GitHub Contribution Snake
 
-![Snake animation dark](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake-dark.svg#gh-dark-mode-only)
-![Snake animation light](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake-light.svg#gh-light-mode-only)
+<!-- GIF always visible -->
+<p align="center">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake.gif" alt="snake animation" />
+</p>
+
+<!-- SVG fallback + theme support -->
+<p align="center">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake-dark.svg#gh-dark-mode-only" />
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake-light.svg#gh-light-mode-only" />
+</p>
 
 ---
