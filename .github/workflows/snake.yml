@@ -21,13 +21,13 @@ jobs:
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake-a.svg?palette=github-dark
-            dist/snake-b.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
-            dist/snake-c.svg?color_snake=#3f8cff&color_dots=#0f1e33,#78c7ff
-            dist/snake-d.svg?color_snake=#ff7a29&color_dots=#2d1f0d,#ffb07c
-            dist/snake-e.svg?color_snake=#ff2f92&color_dots=#260b1c,#ff84c8
-            dist/snake-f.svg?color_snake=#a5ff27&color_dots=#1a260b,#caff6b
-            dist/snake-g.svg?color_snake=#2fffd3&color_dots=#07261e,#94ffe7
+            dist/snake-a.svg?palette=github-dark&background=#0d1117
+            dist/snake-b.svg?color_snake=#ff007f&color_dots=#ffd6e7,#ff8cba,#ff4d9d&background=#1a0011
+            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#a6e6ff,#5fd1ff,#008ecc&background=#00111a
+            dist/snake-d.svg?color_snake=#ffa600&color_dots=#ffe5b3,#ffc766,#ffb145&background=#1a0f00
+            dist/snake-e.svg?color_snake=#8fff00&color_dots=#e0ffb3,#c4ff66,#9ddb00&background=#0f1a00
+            dist/snake-f.svg?color_snake=#c200ff&color_dots=#f2baff,#de72ff,#bc25ff&background=#15001a
+            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#b8fff0,#72ffe3,#1affe0&background=#001a15
 
       - name: Pick next variant (A–G) and update snake.svg
         run: |
