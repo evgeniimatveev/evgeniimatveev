@@ -1,15 +1,14 @@
+name: Smoke
+
 on:
   schedule:
-    # Run every Monday at 08:07 UTC
-    - cron: '7 8 * * 1'
-    # Run every day at 08:07 UTC
-    - cron: '7 8 * * *'
-  workflow_dispatch: {}
+    - cron: '7 8 * * 1'   # Every Monday 08:07 UTC
+    - cron: '7 8 * * *'   # Every day 08:07 UTC
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-# Prevent overlapping runs of the same workflow on the same ref
 concurrency:
   group: smoke-${{ github.ref }}
   cancel-in-progress: true
@@ -18,16 +17,14 @@ jobs:
   smoke:
     name: Smoke (pytest -m smoke)
     runs-on: ubuntu-latest
-    timeout-minutes: 5  # hard cap for the whole job
+    timeout-minutes: 5
 
     steps:
-      - name: Checkout
       - name: Checkout (sparse & shallow)
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 1                 # shallow clone for speed
-          lfs: false                     # no LFS needed for smoke
-          # Pull only what smoke tests require
+          fetch-depth: 1
+          lfs: false
           sparse-checkout: |
             tests
             pytest.ini
@@ -35,38 +32,32 @@ jobs:
           sparse-checkout-cone-mode: true
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-          сache: 'pip'                   # pip cache to speed up installs
+          cache: 'pip'
 
-      - name: Install pytest
-        run: pip install pytest
-      - name: Install pytest (and optional project deps)
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pytest
           if [ -f requirements.txt ]; then
-            # Best-effort: do not fail the smoke if optional deps conflict
             pip install -r requirements.txt || true
           fi
 
-      - name: Run smoke
-        timeout-minutes: 2               # cap the test step itself
+      - name: Run smoke tests
+        timeout-minutes: 2
         run: |
           mkdir -p reports
           pytest -q -m smoke --junitxml=reports/junit.xml || true
-          pytest -m smoke -q --maxfail=1 --disable-warnings \
-            --junitxml=reports/junit.xml || true
 
       - name: Upload smoke report
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: smoke-report
           path: reports/junit.xml
           retention-days: 3
-          retention-days: 2
 
       - name: Summary
         if: always()
