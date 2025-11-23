@@ -316,3 +316,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ![snake-dark](snake-dark.svg#gh-dark-mode-only)
 ![snake-light](snake-light.svg#gh-light-mode-only)
+
+---
+
+<p align="center">
+  <img src="dist/snake.svg" alt="snake animation" />
+</p>
