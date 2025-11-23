@@ -2,6 +2,7 @@ name: Generate Snake
 
 on:
   schedule:
+    # run every day at  (00:00 UTC)
     - cron: "0 0 * * *"
   workflow_dispatch:
 
@@ -16,19 +17,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate snake SVG
+      # --- Dark theme version ---
+      - name: Generate snake (dark)
         uses: evgeniimatveev/snk@main
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake.svg
+            dist/snake-dark.svg
+
+      # --- Light theme version ---
+      - name: Generate snake (light)
+        uses: evgeniimatveev/snk@main
+        with:
+          github_user_name: evgeniimatveev
+          outputs: |
+            dist/snake-light.svg
 
       - name: Commit and push snake
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake.svg || true
+          git add dist/snake-dark.svg dist/snake-light.svg || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit"
