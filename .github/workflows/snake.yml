@@ -16,47 +16,65 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate both snake variants
+      - name: Generate snake variants (A–G)
         uses: evgeniimatveev/snk@main
         with:
           github_user_name: evgeniimatveev
           outputs: |
             dist/snake-a.svg?palette=github-dark
-            dist/snake-b.svg?color_snake=#b5179e&color_dots=#31473A,#4CAF50,#6BBF59,#A3F7BF,#E2FFFA
+            dist/snake-b.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
+            dist/snake-c.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
+            dist/snake-d.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
+            dist/snake-e.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
+            dist/snake-f.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
+            dist/snake-g.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
 
-      - name: Pick next variant and update snake.svg
+      - name: Pick next variant (A–G) and update snake.svg
         run: |
+          set -e
+
           MODE_FILE=".github/snake-mode"
+          ORDER=(a b c d e f g)
+
+          mkdir -p dist
 
           if [ -f "$MODE_FILE" ]; then
-            LAST_MODE=$(cat "$MODE_FILE" || echo "b")
+            LAST_MODE=$(cat "$MODE_FILE" || echo "g")
           else
-            LAST_MODE="b"
+            LAST_MODE="g"
           fi
 
-          if [ "$LAST_MODE" = "a" ]; then
-            NEXT_MODE="b"
-            cp dist/snake-b.svg dist/snake.svg
-            echo "Switched to variant B"
-          else
-            NEXT_MODE="a"
-            cp dist/snake-a.svg dist/snake.svg
-            echo "Switched to variant A"
-          fi
+          # default next mode
+          NEXT_MODE="a"
+
+          for i in "${!ORDER[@]}"; do
+            if [ "${ORDER[$i]}" = "$LAST_MODE" ]; then
+              NEXT_INDEX=$(( (i + 1) % ${#ORDER[@]} ))
+              NEXT_MODE="${ORDER[$NEXT_INDEX]}"
+              break
+            fi
+          done
+
+          echo "Last mode: $LAST_MODE"
+          echo "Next mode: $NEXT_MODE"
+
+          cp -f "dist/snake-${NEXT_MODE}.svg" dist/snake.svg
 
           echo "$NEXT_MODE" > "$MODE_FILE"
+        shell: bash
 
       - name: Commit and push snake
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-a.svg dist/snake-b.svg dist/snake.svg .github/snake-mode || true
+          git add dist/snake-*.svg .github/snake-mode || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
 
-          git commit -m "chore: update dynamic snake"
+          git commit -m "chore: update dynamic snake (A–G rotation)"
           git push origin main
+        shell: bash
