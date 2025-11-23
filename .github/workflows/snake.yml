@@ -30,7 +30,7 @@ jobs:
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake-light.svg?color_snake=#b5179e&color_dots=#31473A,#6BBF59,#A3F7BF,#C9F9E8
+            dist/snake-light.svg?color_snake=##8A2BE2&color_dots=#1F2937,#4C1D95,#3B82F6,#22D3EE,#A78BFA
 
       - name: Commit and push snake
         run: |
