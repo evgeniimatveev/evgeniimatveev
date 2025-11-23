@@ -38,8 +38,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-          cache: 'pip'
-          cache: 'pip'                   # pip cache to speed up installs
+          сache: 'pip'                   # pip cache to speed up installs
 
       - name: Install pytest
         run: pip install pytest
