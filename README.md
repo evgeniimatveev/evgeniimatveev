@@ -300,4 +300,4 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 
 ---
-![GitHub Snake](https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake.svg)
+![Snake animation](./dist/snake.svg)
