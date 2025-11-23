@@ -22,7 +22,7 @@ jobs:
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake-dark.svg
+            dist/snake-dark.svg?palette=github-dark
 
       # --- LIGHT SVG ---
       - name: Generate snake (light SVG)
@@ -30,7 +30,7 @@ jobs:
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake-light.svg
+            dist/snake-light.svg?palette=github-light
 
       - name: Commit and push snake
         run: |
