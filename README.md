@@ -300,4 +300,8 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 
 ---
-![Snake animation](./dist/snake.svg)
+<h2 align="center">🐍 Contribution Snake</h2>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake.svg" alt="Snake animation" />
+</p>
