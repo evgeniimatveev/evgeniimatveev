@@ -298,27 +298,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     alt="Connect on LinkedIn"/></a>
 </p>
 
-
----
-<h2 align="center">🐍 Contribution Snake</h2>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake.svg" alt="Snake animation" />
-</p>
-
----
-
-<p align="center">
-  <img width="90%" src="dist/snake.svg"/>
-</p>
-
 ---
 
 ![snake-dark](snake-dark.svg#gh-dark-mode-only)
 ![snake-light](snake-light.svg#gh-light-mode-only)
 
 ---
-
-<p align="center">
-  <img src="dist/snake.svg" alt="snake animation" />
-</p>
