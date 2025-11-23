@@ -307,3 +307,4 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 ---
+<img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/dist/snake.svg" />
