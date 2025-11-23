@@ -23,11 +23,11 @@ jobs:
           outputs: |
             dist/snake-a.svg?palette=github-dark
             dist/snake-b.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
-            dist/snake-c.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
-            dist/snake-d.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
-            dist/snake-e.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
-            dist/snake-f.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
-            dist/snake-g.svg?color_snake=#c72bf7&color_dots=#1f402a,#3d7a44,#5ec46a,#a9ffd1
+            dist/snake-c.svg?color_snake=#3f8cff&color_dots=#0f1e33,#78c7ff
+            dist/snake-d.svg?color_snake=##ff7a29&color_dots=#2d1f0d,#ffb07c
+            dist/snake-e.svg?color_snake=#ff2f92&color_dots=#260b1c,#ff84c8
+            dist/snake-f.svg?color_snake=#a5ff27&color_dots=#1a260b,#caff6b
+            dist/snake-g.svg?color_snake=#2fffd3&color_dots=#07261e,#94ffe7
 
       - name: Pick next variant (A–G) and update snake.svg
         run: |
