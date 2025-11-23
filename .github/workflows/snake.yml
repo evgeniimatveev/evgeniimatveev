@@ -2,7 +2,7 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # run every day at 00 : 00  
+    - cron: "0 0 * * *"   # run every day at 00:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -16,33 +16,47 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- DARK SVG ---
-      - name: Generate snake (dark SVG)
+      - name: Generate both snake variants
         uses: evgeniimatveev/snk@main
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake-dark.svg?palette=github-dark
+            dist/snake-a.svg?palette=github-dark
+            dist/snake-b.svg?color_snake=#b5179e&color_dots=#31473A,#4CAF50,#6BBF59,#A3F7BF,#E2FFFA
 
-      # --- LIGHT SVG (custom colors) ---
-      - name: Generate snake (light SVG custom)
-        uses: evgeniimatveev/snk@main
-        with:
-          github_user_name: evgeniimatveev
-          outputs: |
-            dist/snake-light.svg?color_snake=#8E44AD&color_dots=#1F2937,#4C1D95,#3B82F6,#22D3EE,#A78BFA
+      - name: Pick next variant and update snake.svg
+        run: |
+          MODE_FILE=".github/snake-mode"
+
+          if [ -f "$MODE_FILE" ]; then
+            LAST_MODE=$(cat "$MODE_FILE" || echo "b")
+          else
+            LAST_MODE="b"
+          fi
+
+          if [ "$LAST_MODE" = "a" ]; then
+            NEXT_MODE="b"
+            cp dist/snake-b.svg dist/snake.svg
+            echo "Switched to variant B"
+          else
+            NEXT_MODE="a"
+            cp dist/snake-a.svg dist/snake.svg
+            echo "Switched to variant A"
+          fi
+
+          echo "$NEXT_MODE" > "$MODE_FILE"
 
       - name: Commit and push snake
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-dark.svg dist/snake-light.svg || true
+          git add dist/snake-a.svg dist/snake-b.svg dist/snake.svg .github/snake-mode || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
 
-          git commit -m "chore: update snake"
+          git commit -m "chore: update dynamic snake"
           git push origin main
