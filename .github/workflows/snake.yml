@@ -17,30 +17,30 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate snake variants (A–G)
-        uses: evgeniimatveev/snk@main
+        uses: Platane/snk/svg-only@v3
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            # A – GitHub dark baseline (классика)
+            # A — classic GitHub dark
             dist/snake-a.svg?palette=github-dark
 
-            # B – Pink Neon (все ячейки в розовой палитре)
-            dist/snake-b.svg?color_snake=#ff007f&color_dots=#260414,#4a0b2a,#ff4d9d,#ff8cba,#ffd6e7
+            # B — Neon Pink
+            dist/snake-b.svg?color_snake=#ff007f&color_dots=#14000d,#4b0128,#b81263,#ff4d9d,#ffd6e7
 
-            # C – Ice Blue
-            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#021018,#04324a,#008ecc,#5fd1ff,#a6e6ff
+            # C — Cyber Blue
+            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#001018,#00324a,#006a96,#5fd1ff,#a6e6ff
 
-            # D – Orange Lava
-            dist/snake-d.svg?color_snake=#ffa600&color_dots=#1a0c00,#3b1a00,#ff8c1a,#ffb145,#ffe5b3
+            # D — Sunset Orange
+            dist/snake-d.svg?color_snake=#ffa600&color_dots=#1a0f00,#4d3100,#ff8a1a,#ffb145,#ffe0b3
 
-            # E – Lime Signal
-            dist/snake-e.svg?color_snake=#8fff00&color_dots=#081002,#113006,#5fbf00,#9ddb00,#e0ffb3
+            # E — Lime Hacker
+            dist/snake-e.svg?color_snake=#8fff00&color_dots=#0f1a00,#304d00,#6ec700,#9ddb00,#e0ffb3
 
-            # F – Purple Galaxy
-            dist/snake-f.svg?color_snake=#c200ff&color_dots=#0a0010,#220033,#bc25ff,#de72ff,#f2baff
+            # F — Royal Purple
+            dist/snake-f.svg?color_snake=#c200ff&color_dots=#15001a,#3a0047,#7c00b8,#de72ff,#f2baff
 
-            # G – Aqua Breeze
-            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#02100c,#04382b,#1affe0,#72ffe3,#b8fff0
+            # G — Aqua Teal
+            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#001a15,#004136,#008f73,#1affe0,#b8fff0
 
       - name: Pick next variant (A–G) and update snake.svg
         run: |
@@ -68,25 +68,16 @@ jobs:
             fi
           done
 
-          # safety: if file missing, fall back to A
-          if [ ! -f "dist/snake-${NEXT_MODE}.svg" ]; then
-            echo "Fallback: dist/snake-${NEXT_MODE}.svg not found, using snake-a.svg"
-            NEXT_MODE="a"
-          fi
-
           echo "Last mode: $LAST_MODE"
           echo "Next mode: $NEXT_MODE"
-          echo "::notice title=Snake Variant::Using variant '${NEXT_MODE}'"
 
           cp -f "dist/snake-${NEXT_MODE}.svg" dist/snake.svg
-          echo "$NEXT_MODE" > "$MODE_FILE"
-        shell: bash
 
-      - name: Upload latest snake artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: snake-latest
-          path: dist/snake.svg
+          echo "$NEXT_MODE" > "$MODE_FILE"
+
+          echo "Snake Variant" >> "$GITHUB_STEP_SUMMARY"
+          echo "Using variant '${NEXT_MODE}'" >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
 
       - name: Commit and push snake
         run: |
