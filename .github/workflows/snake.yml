@@ -2,7 +2,7 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # run every day at 00:00 UTC
+    - cron: "0 0 * * *"   # Run daily at 00:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -16,38 +16,44 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 1) Generate all 7 snake variants (A–G)
+      # Each variant uses a different palette and snake/dot colors.
       - name: Generate snake variants (A–G)
         uses: Platane/snk/svg-only@v3
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            dist/snake-a.svg?palette=github-dark&background=#0d1117
-            dist/snake-b.svg?color_snake=#ff007f&color_dots=#ffd6e7,#ff8cba,#ff4d9d&background=#1a0011
-            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#a6e6ff,#5fd1ff,#008ecc&background=#00111a
-            dist/snake-d.svg?color_snake=#ffa600&color_dots=#ffe5b3,#ffc766,#ffb145&background=#1a0f00
-            dist/snake-e.svg?color_snake=#8fff00&color_dots=#e0ffb3,#c4ff66,#9ddb00&background=#0f1a00
-            dist/snake-f.svg?color_snake=#c200ff&color_dots=#f2baff,#de72ff,#bc25ff&background=#15001a
-            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#b8fff0,#72ffe3,#1affe0&background=#001a15
+            dist/snake-a.svg?palette=github-dark&color_snake=#ff66c4&color_dots=#0e4429,#006d32,#26a641,#39d353
+            dist/snake-b.svg?palette=github-dark&color_snake=#5fd1ff&color_dots=#0b1020,#004d75,#0094d4,#4dd2ff
+            dist/snake-c.svg?palette=github-dark&color_snake=#ffb86c&color_dots=#22130b,#7c3f00,#ff9f1a,#ffd27f
+            dist/snake-d.svg?palette=github-dark&color_snake=#ff79c6&color_dots=#251022,#9b287b,#ff4fa3,#ffc1e3
+            dist/snake-e.svg?palette=github-dark&color_snake=#a2ff5e&color_dots=#101a0c,#3f6f22,#71c837,#c9ff9d
+            dist/snake-f.svg?palette=github-dark&color_snake=#ffd166&color_dots=#261a00,#8c5e00,#ffba08,#ffe08a
+            dist/snake-g.svg?palette=github-dark&color_snake=#64fff2&color_dots=#011b1a,#007872,#00c4b8,#89fff7
 
+      # 2) Rotate snake modes (A -> B -> C -> ... -> G -> back to A)
+      # The selected variant is copied to dist/snake.svg
       - name: Pick next variant (A–G) and update snake.svg
+        shell: bash
         run: |
           set -e
 
           MODE_FILE=".github/snake-mode"
           ORDER=(a b c d e f g)
 
-          mkdir -p dist
+          mkdir -p .github dist
 
-          if [ -f "$MODE_FILE" ]; then
-            LAST_MODE=$(cat "$MODE_FILE" || echo "g")
+          # Read last used mode or initialize with 'g' (so first run becomes 'a')
+          if [[ -f "$MODE_FILE" ]]; then
+            LAST_MODE=$(tr -d '\n\r' < "$MODE_FILE")
           else
             LAST_MODE="g"
           fi
 
+          # Find next mode in rotation
           NEXT_MODE="a"
-
           for i in "${!ORDER[@]}"; do
-            if [ "${ORDER[$i]}" = "$LAST_MODE" ]; then
+            if [[ "${ORDER[$i]}" == "$LAST_MODE" ]]; then
               NEXT_INDEX=$(( (i + 1) % ${#ORDER[@]} ))
               NEXT_MODE="${ORDER[$NEXT_INDEX]}"
               break
@@ -56,47 +62,37 @@ jobs:
 
           echo "Last mode: $LAST_MODE"
           echo "Next mode: $NEXT_MODE"
+          echo "::notice title=Snake Variant::Using variant '$NEXT_MODE'"
 
-          cp -f "dist/snake-${NEXT_MODE}.svg" dist/snake.svg
+          SRC="dist/snake-${NEXT_MODE}.svg"
 
-          echo "$NEXT_MODE" > "$MODE_FILE"
-
-          # красивая нотификашка в логах
-          echo "::notice title=Snake Variant::Using variant '${NEXT_MODE}'"
-        shell: bash
-
-      - name: Update README snake URL (cache bust)
-        run: |
-          set -e
-
-          BASE="dist/snake.svg"
-          NEW="${BASE}?cache_bust=${GITHUB_RUN_ID}"
-
-          if [ -f README.md ]; then
-            echo "Updating README.md snake URL to ${NEW}"
-
-            # 1) убираем старые cache_bust, если были
-            sed -i 's#dist/snake\.svg?cache_bust=[0-9]*#dist/snake.svg#g' README.md
-
-            # 2) добавляем свежий параметр
-            sed -i "s#dist/snake.svg#${NEW}#g" README.md
-          else
-            echo "README.md not found, skipping update."
+          # Safety check — make sure the variant actually exists
+          if [[ ! -f "$SRC" ]]; then
+            echo "ERROR: Expected file '$SRC' not found."
+            echo "Listing dist folder:"
+            ls -l dist || true
+            exit 1
           fi
-        shell: bash
 
-      - name: Commit and push snake
+          # Copy the selected variant as the public snake.svg
+          cp -f "$SRC" dist/snake.svg
+
+          # Save next mode for the next workflow run
+          printf '%s\n' "$NEXT_MODE" > "$MODE_FILE"
+
+      # 3) Commit & push updated snake.svg + all variant updates
+      - name: Commit and push changes
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-*.svg .github/snake-mode README.md || true
+          git add dist/snake-*.svg dist/snake.svg .github/snake-mode || true
 
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit."
             exit 0
           fi
 
           git commit -m "chore: update dynamic snake (A–G rotation)"
           git push origin main
-        shell: bash
