@@ -1,28 +1,21 @@
 name: Generate Snake
 
 on:
-  schedule:
-    # Every 5 minutes (testing mode)
-    - cron: "*/5 * * * *"
   workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
 
-concurrency:
-  group: github-snake
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       # 1) Generate all 7 snake variants (A–G)
-      # Each variant uses a different palette and snake/dot colors.
       - name: Generate snake variants (A–G)
         uses: Platane/snk/svg-only@v3
         with:
@@ -36,26 +29,21 @@ jobs:
             dist/snake-f.svg?palette=github-dark&color_snake=#ffd166&color_dots=#261a00,#8c5e00,#ffba08,#ffe08a
             dist/snake-g.svg?palette=github-dark&color_snake=#64fff2&color_dots=#011b1a,#007872,#00c4b8,#89fff7
 
-      # 2) Rotate snake modes (A -> B -> C -> ... -> G -> back to A)
-      # The selected variant is copied to dist/snake.svg
+      # 2) Rotate snake modes (A -> B -> ... -> G -> A)
       - name: Pick next variant (A–G) and update snake.svg
         shell: bash
         run: |
           set -e
-
           MODE_FILE=".github/snake-mode"
           ORDER=(a b c d e f g)
-
           mkdir -p .github dist
 
-          # Read last used mode or initialize with 'g' (so first run becomes 'a')
           if [[ -f "$MODE_FILE" ]]; then
             LAST_MODE=$(tr -d '\n\r' < "$MODE_FILE")
           else
             LAST_MODE="g"
           fi
 
-          # Find next mode in rotation
           NEXT_MODE="a"
           for i in "${!ORDER[@]}"; do
             if [[ "${ORDER[$i]}" == "$LAST_MODE" ]]; then
@@ -70,22 +58,16 @@ jobs:
           echo "::notice title=Snake Variant::Using variant '$NEXT_MODE'"
 
           SRC="dist/snake-${NEXT_MODE}.svg"
-
-          # Safety check — make sure the variant actually exists
           if [[ ! -f "$SRC" ]]; then
             echo "ERROR: Expected file '$SRC' not found."
-            echo "Listing dist folder:"
             ls -l dist || true
             exit 1
           fi
 
-          # Copy the selected variant as the public snake.svg
           cp -f "$SRC" dist/snake.svg
-
-          # Save next mode for the next workflow run
           printf '%s\n' "$NEXT_MODE" > "$MODE_FILE"
 
-      # 3) Commit & push updated snake.svg + all variant updates
+      # 3) Commit & push updated snake.svg + variants
       - name: Commit and push changes
         shell: bash
         run: |
