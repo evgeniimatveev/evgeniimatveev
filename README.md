@@ -213,6 +213,18 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <!-- END: AUTOMATION -->
 
 ---
+
+### 🐍 Auto-Rotating GitHub Snake
+
+<p align="center">
+  <img src="./dist/snake.svg" alt="Auto-updating GitHub contribution snake" />
+</p>
+
+<p align="center">
+  <sub><b>Night-mode palettes · A–G rotation · updated daily by GitHub Actions</b></sub>
+</p>
+
+---
 | 🧩 Workflow | ⚙️ Automation | 📊 Insights |
 |-------------|---------------|-------------|
 | Design → Build → Scale |  Deploy	CI/CD with intelligence | Measure → Learn → Improve |
@@ -300,5 +312,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
----
-![GitHub Contribution Snake](dist/snake.svg?cache_bust=19619680838)
