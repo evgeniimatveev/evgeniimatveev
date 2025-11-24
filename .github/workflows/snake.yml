@@ -21,26 +21,26 @@ jobs:
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            # A – GitHub dark baseline
-            dist/snake-a.svg?palette=github-dark&background=#050816
+            # A – GitHub dark baseline (классика)
+            dist/snake-a.svg?palette=github-dark
 
-            # B – Pink neon (darker cells in same hue)
-            dist/snake-b.svg?color_snake=#ff007f&color_dots=#4a0b2a,#ff4d9d,#ffd6e7&background=#05040a
+            # B – Pink Neon (все ячейки в розовой палитре)
+            dist/snake-b.svg?color_snake=#ff007f&color_dots=#260414,#4a0b2a,#ff4d9d,#ff8cba,#ffd6e7
 
-            # C – Ice blue
-            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#041923,#008ecc,#a6e6ff&background=#020712
+            # C – Ice Blue
+            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#021018,#04324a,#008ecc,#5fd1ff,#a6e6ff
 
-            # D – Orange lava
-            dist/snake-d.svg?color_snake=#ffa600&color_dots=#261300,#ffb145,#ffe5b3&background=#120803
+            # D – Orange Lava
+            dist/snake-d.svg?color_snake=#ffa600&color_dots=#1a0c00,#3b1a00,#ff8c1a,#ffb145,#ffe5b3
 
-            # E – Lime signal
-            dist/snake-e.svg?color_snake=#8fff00&color_dots=#101a03,#9ddb00,#e0ffb3&background=#050c02
+            # E – Lime Signal
+            dist/snake-e.svg?color_snake=#8fff00&color_dots=#081002,#113006,#5fbf00,#9ddb00,#e0ffb3
 
-            # F – Purple galaxy
-            dist/snake-f.svg?color_snake=#c200ff&color_dots=#140022,#bc25ff,#f2baff&background=#080212
+            # F – Purple Galaxy
+            dist/snake-f.svg?color_snake=#c200ff&color_dots=#0a0010,#220033,#bc25ff,#de72ff,#f2baff
 
-            # G – Aqua breeze
-            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#021914,#1affe0,#b8fff0&background=#02100c
+            # G – Aqua Breeze
+            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#02100c,#04382b,#1affe0,#72ffe3,#b8fff0
 
       - name: Pick next variant (A–G) and update snake.svg
         run: |
