@@ -21,26 +21,13 @@ jobs:
         with:
           github_user_name: evgeniimatveev
           outputs: |
-            # A — classic GitHub dark
-            dist/snake-a.svg?palette=github-dark
-
-            # B — Neon Pink
-            dist/snake-b.svg?color_snake=#ff007f&color_dots=#14000d,#4b0128,#b81263,#ff4d9d,#ffd6e7
-
-            # C — Cyber Blue
-            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#001018,#00324a,#006a96,#5fd1ff,#a6e6ff
-
-            # D — Sunset Orange
-            dist/snake-d.svg?color_snake=#ffa600&color_dots=#1a0f00,#4d3100,#ff8a1a,#ffb145,#ffe0b3
-
-            # E — Lime Hacker
-            dist/snake-e.svg?color_snake=#8fff00&color_dots=#0f1a00,#304d00,#6ec700,#9ddb00,#e0ffb3
-
-            # F — Royal Purple
-            dist/snake-f.svg?color_snake=#c200ff&color_dots=#15001a,#3a0047,#7c00b8,#de72ff,#f2baff
-
-            # G — Aqua Teal
-            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#001a15,#004136,#008f73,#1affe0,#b8fff0
+            dist/snake-a.svg?palette=github-dark&background=#0d1117
+            dist/snake-b.svg?color_snake=#ff007f&color_dots=#ffd6e7,#ff8cba,#ff4d9d&background=#1a0011
+            dist/snake-c.svg?color_snake=#00b7ff&color_dots=#a6e6ff,#5fd1ff,#008ecc&background=#00111a
+            dist/snake-d.svg?color_snake=#ffa600&color_dots=#ffe5b3,#ffc766,#ffb145&background=#1a0f00
+            dist/snake-e.svg?color_snake=#8fff00&color_dots=#e0ffb3,#c4ff66,#9ddb00&background=#0f1a00
+            dist/snake-f.svg?color_snake=#c200ff&color_dots=#f2baff,#de72ff,#bc25ff&background=#15001a
+            dist/snake-g.svg?color_snake=#00ffc8&color_dots=#b8fff0,#72ffe3,#1affe0&background=#001a15
 
       - name: Pick next variant (A–G) and update snake.svg
         run: |
@@ -57,7 +44,6 @@ jobs:
             LAST_MODE="g"
           fi
 
-          # default next mode
           NEXT_MODE="a"
 
           for i in "${!ORDER[@]}"; do
@@ -75,8 +61,28 @@ jobs:
 
           echo "$NEXT_MODE" > "$MODE_FILE"
 
-          echo "Snake Variant" >> "$GITHUB_STEP_SUMMARY"
-          echo "Using variant '${NEXT_MODE}'" >> "$GITHUB_STEP_SUMMARY"
+          # красивая нотификашка в логах
+          echo "::notice title=Snake Variant::Using variant '${NEXT_MODE}'"
+        shell: bash
+
+      - name: Update README snake URL (cache bust)
+        run: |
+          set -e
+
+          BASE="dist/snake.svg"
+          NEW="${BASE}?cache_bust=${GITHUB_RUN_ID}"
+
+          if [ -f README.md ]; then
+            echo "Updating README.md snake URL to ${NEW}"
+
+            # 1) убираем старые cache_bust, если были
+            sed -i 's#dist/snake\.svg?cache_bust=[0-9]*#dist/snake.svg#g' README.md
+
+            # 2) добавляем свежий параметр
+            sed -i "s#dist/snake.svg#${NEW}#g" README.md
+          else
+            echo "README.md not found, skipping update."
+          fi
         shell: bash
 
       - name: Commit and push snake
@@ -84,7 +90,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-*.svg .github/snake-mode || true
+          git add dist/snake-*.svg .github/snake-mode README.md || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit"
