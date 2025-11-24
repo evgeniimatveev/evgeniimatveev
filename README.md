@@ -301,4 +301,4 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ---
 
 ---
-![GitHub Contribution Snake](dist/snake.svg)
+![GitHub Contribution Snake](dist/snake.svg?cache_bust=19619680838)
