@@ -217,7 +217,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ### 🐍 Auto-Rotating GitHub Snake
 
 <p align="center">
-  <img src="./dist/snake.svg" alt="Auto-updating GitHub contribution snake" />
+  <img src="./dist/snake.svg" alt="Auto-updating GitHub contribution snake" width="900" />
 </p>
 
 <p align="center">
