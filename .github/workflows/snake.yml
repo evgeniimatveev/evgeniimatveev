@@ -2,11 +2,16 @@ name: Generate Snake
 
 on:
   schedule:
+    # Every 5 minutes (testing mode)
     - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: github-snake
+  cancel-in-progress: true
 
 jobs:
   build:
