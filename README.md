@@ -6,11 +6,7 @@
 <!-- BANNER:END -->
 
 ---
-## 🏆 Achievements
 
-<img src="https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=tokyonight" />
-
----
 <!-- STATUS:START -->
 <p align="center">
 <img src="https://img.shields.io/static/v1?label=Updated&message=2025-11-26%2013%3A10%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5556" />
