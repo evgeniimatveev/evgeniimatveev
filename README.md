@@ -238,9 +238,11 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-## 🔥 My GitHub Streak
+## 🔥 GitHub Stats & Streak
+
 <p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com?user=Evgenii-Matveev&theme=dark&hide_border=true" />
+  <img src="https://github-readme-stats.vercel.app/api?username=Evgenii-Matveev&show_icons=true&theme=dark&hide_border=true" width="48%" />
+  <img src="https://github-readme-streak-stats.herokuapp.com?user=Evgenii-Matveev&theme=dark&hide_border=true&date_format=j%20M[%20Y]" width="48%" />
 </p>
 
 ---
