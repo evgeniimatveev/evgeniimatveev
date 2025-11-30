@@ -238,6 +238,13 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
+## 🔥 My GitHub Streak
+<p align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com?user=Evgenii-Matveev&theme=dark&hide_border=true" />
+</p>
+
+---
+
 ![CI/CD Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg)
 ![Total Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen)
 ![Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red)
