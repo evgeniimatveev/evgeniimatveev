@@ -242,9 +242,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <p align="center">
   <img 
-    src="https://streak-stats.demolab.com?user=Evgenii-Matveev&theme=dark&hide_border=true&date_format=j%20M%5B%20Y%5D" 
-    alt="GitHub Streak"
-  />
+    <img src="https://streak-stats.demolab.com?user=Evgenii-Matveev&theme=tokyonight&hide_border=true" />
 </p>
 
 ---
