@@ -92,10 +92,21 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </details>
 
 
-## 📚 Learning Journey  
-- 🎓 Learning @ **SuperDataScience**  
-- 🪄 Focus: **MLOps | SQL | Automation**  
-- ⏳ Over 2 years of continuous learning  
+## 📚 Learning Journey
+
+**Now**
+- ☁️ **AWS CCP (CLF-C02)** — CloudWolf (active learning)
+- 🧱 **Azure Data Engineering Projects** (Udemy):
+  - Databricks Lakehouse (Formula1)
+  - Data Factory pipelines (Covid19)
+
+**Next**
+- 🌊 Streaming & cloud systems: Kafka / Spark / Flink / Airflow + AWS
+- 🧪 More portfolio releases: architecture diagrams, CI/CD, and production-style enhancements
+
+**Focus**
+- **Data Engineering | MLOps | SQL | Automation**
+
 ---
 ## 💎 Stay Connected  
 
