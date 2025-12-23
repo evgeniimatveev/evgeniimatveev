@@ -107,6 +107,13 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 **Focus**
 - **Data Engineering | MLOps | SQL | Automation**
 > 🧭 2+ years of continuous, hands-on learning with a strong focus on real-world projects and automation
+
+---
+### Learning Platforms
+- 🎓 SuperDataScience — MLOps & AI specialization
+- 📘 Udemy — Data Engineering & Cloud projects
+- ☁️ CloudWolf — AWS Cloud & Certification preparation
+
 ---
 ## 💎 Stay Connected  
 
