@@ -126,7 +126,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 <!-- BADGES:END -->
 
 ---
-##  💼 Tech Stack
+## 💼 Tech Stack (Production & Portfolio)
 
 ### Languages & Databases
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
