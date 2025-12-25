@@ -107,7 +107,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 **Focus**
 - **Data Engineering | MLOps | SQL | Automation**
--  Building cloud-native, cost-aware data platforms
+-  **Building cloud-native, cost-aware data platforms**
 > 🧭 2+ years of continuous, hands-on learning with a strong focus on real-world projects and automation
 
 ---
