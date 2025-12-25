@@ -97,9 +97,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 **Now**
 - ☁️ **AWS CCP (CLF-C02)** — CloudWolf (active learning)
 - 🧱 **Azure Data Engineering Projects** (Udemy):
-  - Databricks Lakehouse (Formula1)
-  - Data Factory pipelines (Covid19)
-  - Azure Synapse Analytics(NYC Taxi)
+- Databricks Lakehouse (Formula1 — batch & lakehouse design)
+- Data Factory pipelines (Covid19 — ingestion & orchestration)
+- Azure Synapse Analytics (NYC Taxi — analytics & SQL warehouse)
 
 **Next**
 - 🌊 Streaming & cloud systems: Kafka / Spark / Flink / Airflow + AWS
