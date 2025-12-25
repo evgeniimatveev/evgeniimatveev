@@ -99,6 +99,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🧱 **Azure Data Engineering Projects** (Udemy):
   - Databricks Lakehouse (Formula1)
   - Data Factory pipelines (Covid19)
+  - Azure Synapse Analytics(NYC Taxi)
 
 **Next**
 - 🌊 Streaming & cloud systems: Kafka / Spark / Flink / Airflow + AWS
