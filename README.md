@@ -102,7 +102,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - Azure Synapse Analytics (NYC Taxi — analytics & SQL warehouse)
 
 **Next**
-- 🌊 Streaming & cloud systems: Kafka / Spark / Flink / Airflow + AWS
 - 🧪 More portfolio releases: architecture diagrams, CI/CD, and production-style enhancements
 
 **Focus**
