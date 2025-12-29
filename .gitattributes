@@ -22,5 +22,3 @@ dist/** linguist-generated=true
 update_log.jsonl linguist-generated=true
 update_log.txt linguist-generated=true
 
-# Snapshots should not affect language stats
-stats/** linguist-generated=true
