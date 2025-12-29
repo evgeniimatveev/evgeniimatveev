@@ -1,0 +1,53 @@
+name: Render Top Languages (stable)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1" # every Monday 09:00 UTC
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-top-langs
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare output folder
+        run: |
+          mkdir -p assets
+
+      # Fetch SVG from github-readme-stats and store it locally
+      - name: Download top-langs SVG
+        run: |
+          curl -L \
+            "https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8" \
+            -o assets/top-langs.svg
+
+      # Optional: also render a PNG (some platforms preview PNG nicer)
+      - name: Convert SVG to PNG
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin
+          rsvg-convert assets/top-langs.svg -o assets/top-langs.png
+
+      - name: Commit changes (if any)
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add assets/top-langs.svg assets/top-langs.png
+          git commit -m "chore(stats): update top-langs snapshot"
+          git push
