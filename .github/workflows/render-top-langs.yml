@@ -19,41 +19,74 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Prepare output folder
-        run: |
-          mkdir -p assets
+        run: mkdir -p assets
 
-      - name: Download top-langs SVG (validated)
+      - name: Download top-langs SVG (retry + fallback)
+        shell: bash
         run: |
           set -euo pipefail
 
           URL="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8"
+          OUT="assets/top-langs.svg"
+          TMP="$(mktemp)"
 
-          # Download with headers (force svg accept) + fail on HTTP errors
-          curl -fL \
-            -H "Accept: image/svg+xml" \
-            -H "User-Agent: github-actions" \
-            "$URL" \
-            -o assets/top-langs.svg
+          # Retry with exponential-ish backoff
+          success=0
+          for attempt in 1 2 3 4 5; do
+            echo "Attempt $attempt/5: downloading SVG..."
+            if curl -fL \
+              -H "Accept: image/svg+xml" \
+              -H "User-Agent: github-actions" \
+              --connect-timeout 10 \
+              --max-time 30 \
+              "$URL" \
+              -o "$TMP"; then
 
-          # Quick debug: show first lines
-          head -n 5 assets/top-langs.svg || true
+              # Validate it's actually an SVG
+              if grep -qi "<svg" "$TMP"; then
+                mv "$TMP" "$OUT"
+                echo "SVG downloaded and validated."
+                success=1
+                break
+              else
+                echo "Downloaded content is not SVG. First 20 lines:"
+                sed -n '1,20p' "$TMP" || true
+              fi
+            else
+              echo "curl failed (likely 503/429)."
+            fi
 
-          # Basic validation: must contain <svg
-          if ! grep -qi "<svg" assets/top-langs.svg; then
-            echo "ERROR: Downloaded file is not SVG. Dumping first 40 lines:"
-            sed -n '1,40p' assets/top-langs.svg || true
-            exit 1
+            sleep $((attempt * 15))  # 15s, 30s, 45s, 60s, 75s
+          done
+
+          if [ "$success" -ne 1 ]; then
+            echo "WARNING: Could not refresh SVG (service down). Keeping existing $OUT if present."
+            if [ ! -f "$OUT" ]; then
+              echo "ERROR: No existing $OUT to fall back to. Failing."
+              exit 1
+            fi
           fi
 
-      - name: Convert SVG to PNG
+      # Optional: PNG (only if SVG exists/valid)
+      - name: Convert SVG to PNG (best effort)
+        shell: bash
         run: |
+          set -euo pipefail
+          if [ ! -f assets/top-langs.svg ]; then
+            echo "No SVG found, skipping PNG conversion."
+            exit 0
+          fi
+
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin
-          rsvg-convert assets/top-langs.svg -o assets/top-langs.png
+          rsvg-convert assets/top-langs.svg -o assets/top-langs.png || true
 
       - name: Commit changes (if any)
+        shell: bash
         run: |
           set -euo pipefail
 
@@ -65,9 +98,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add assets/top-langs.svg assets/top-langs.png
+          git add assets/top-langs.svg assets/top-langs.png || true
           git commit -m "chore(stats): update top-langs snapshot"
 
-          # Avoid conflicts with other workflows that push to main
           git pull --rebase
           git push
