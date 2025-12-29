@@ -25,17 +25,34 @@ jobs:
           mkdir -p assets
 
       # Fetch SVG from github-readme-stats and store it locally
-      - name: Download top-langs SVG
+       - name: Download top-langs SVG (validated)
         run: |
-          curl -L \
-            "https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8" \
+          set -euo pipefail
+
+          URL="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8"
+
+          # Download with headers (force svg accept) + fail on HTTP errors
+          curl -fL \
+            -H "Accept: image/svg+xml" \
+            -H "User-Agent: github-actions" \
+            "$URL" \
             -o assets/top-langs.svg
 
-      # Optional: also render a PNG (some platforms preview PNG nicer)
+          # Basic validation: SVG should contain <svg on the first few lines
+          head -n 5 assets/top-langs.svg || true
+
+          if ! grep -qi "<svg" assets/top-langs.svg; then
+            echo "ERROR: Downloaded file is not SVG. Dumping first 40 lines:"
+            sed -n '1,40p' assets/top-langs.svg || true
+            exit 1
+          fi
+
       - name: Convert SVG to PNG
         run: |
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin
+
+          # Convert only if valid SVG
           rsvg-convert assets/top-langs.svg -o assets/top-langs.png
 
       - name: Commit changes (if any)
