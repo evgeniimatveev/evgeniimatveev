@@ -317,10 +317,15 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=12%20Month%20Activity%20Graph" alt="Activity Graph" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&height=300" width="96%" alt="Contribution Graph" />
+</p>
+
+<p align="center">
+  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D&card_width=800" alt="Contribution Streak" />
 </p>
 
 </details>
+
 
 ---
 
@@ -335,110 +340,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-<details>
-<summary><b>📈 GitHub Analytics</b> <em>(real-time stats)</em></summary>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true" width="49%" alt="GitHub Stats" />
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D" width="49%" alt="GitHub Streak" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&hide_border=true&langs_count=8&exclude_repo=repo1,repo2" alt="Top Languages" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&height=300" width="96%" alt="Contribution Graph" />
-</p>
-
-</details>
-
----
-
-<details>
-<summary><b>📊 GitHub Stats</b> <em>(click to expand)</em></summary>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="Stats" />
-</p>
-
-<p align="center">
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" alt="Streak" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&hide_border=true&langs_count=6" alt="Languages" />
-</p>
-
-</details>
-
----
-details>
-<summary><b>📈 MLOps Analytics Dashboard</b> <em>(powered by GitHub API)</em></summary>
-
-### 🎯 Core Metrics
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&custom_title=📊%20GitHub%20Performance" width="52%" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&hide_border=true&langs_count=8" width="44%" />
-</p>
-
-### 🔥 Contribution Streak
-<p align="center">
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D&card_width=800" alt="Contribution Streak" />
-</p>
-
-### 📈 Activity Timeline
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=Annual%20Contribution%20Activity" alt="Activity Graph" />
-</p>
-
-### 🏆 Achievements
-<p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=tokyonight&no-frame=true&no-bg=false&margin-w=4&row=1&column=7" alt="Trophy Collection" />
-</p>
-
-</details>
-
----
-
-<details>
-<summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true&card_width=800" alt="Profile Details" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true" width="400" alt="Stats" />
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="400" alt="Streak" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&hide_border=true&langs_count=8" width="600" alt="Top Languages" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true" alt="Activity Graph" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=Contribution%20Activity&height=300" width="96%" alt="Activity Graph" />
-</p>
-
-</details>
-
----
-
-<details>
-<summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight" width="800" alt="Profile Details" />
-</p>
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight" width="400" alt="Stats" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
-</p>
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=12%20Month%20Activity%20Graph" alt="Activity Graph" />
-</p>
-</details>
