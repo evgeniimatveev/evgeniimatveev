@@ -316,13 +316,10 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
 </p>
 
-</p>
 <p align="center">
-  <img
-  src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8&cache_seconds=604800"
-  width="600"
-/>
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=12%20Month%20Activity%20Graph" alt="Activity Graph" />
 </p>
+
 </details>
 
 ---
@@ -337,27 +334,5 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 ---
-<details>
-<summary><b>📈 GitHub Stats</b> <em>(click to expand)</em></summary>
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true" width="48%" alt="GitHub Stats" />
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D" width="48%" alt="GitHub Streak" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true" width="96%" alt="Activity Graph" />
-</p>
-
-</details>
-
----
-
-
-### 📈 Contribution Activity
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=12%20Month%20Activity%20Graph" alt="Activity Graph" />
-</p>
-
-[![trophy](https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=tokyonight&no-frame=true&row=1&column=7)](https://github.com/ryo-ma/github-profile-trophy)
 
