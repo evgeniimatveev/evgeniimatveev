@@ -333,4 +333,13 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
     alt="Connect on LinkedIn"/></a>
 </p>
+---
 
+<p align="center">
+  <img src="YOUR_STATS_CARD_URL" width="400" alt="Stats" />
+  <img src="YOUR_PRODUCTIVE_TIME_URL" width="400" alt="Commits by time (UTC)" />
+</p>
+
+<p align="center">
+  <img src="YOUR_DAILY_CONTRIB_URL" width="820" alt="Daily contributions" />
+</p>
