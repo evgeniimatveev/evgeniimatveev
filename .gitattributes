@@ -20,9 +20,6 @@
 badges/** linguist-generated=true
 dist/**   linguist-generated=true
 
-# If you ever store snapshots/stats there:
-stats/**  linguist-generated=true
-
 # Root logs (yours)
 update_log.jsonl linguist-generated=true
 update_log.txt   linguist-generated=true
