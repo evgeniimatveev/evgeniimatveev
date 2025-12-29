@@ -316,13 +316,21 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
 </p>
 
+p align="center">
+  <img
+    src="assets/top-langs.svg"
+    alt="Top languages (stable)"
+    width="600"
+  />
+</p>
+--- 
+</p>
 <p align="center">
   <img
   src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8&cache_seconds=604800"
   width="600"
 />
 </p>
-
 </details>
 
 ---
