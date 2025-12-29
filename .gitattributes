@@ -23,6 +23,7 @@ dist/**   linguist-generated=true
 # Root logs (yours)
 update_log.jsonl linguist-generated=true
 update_log.txt   linguist-generated=true
+update_log.json  linguist-generated=true
 
 # If badges folder contains JSON logs, they are already covered by badges/**
 # but if you have any JSON logs outside badges/dist, add explicit lines like:
