@@ -320,6 +320,14 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D&card_width=800" alt="Contribution Streak" />
 </p>
 
+<p align="center">
+  <img
+    src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8"
+    alt="Top languages by percentage"
+    width="600"
+  />
+</p>
+
 </details>
 
 
