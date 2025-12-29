@@ -1,16 +1,26 @@
 # Python scripts
-*.py   linguist-detectable=true linguist-language=Python
+*.py linguist-detectable=true linguist-language=Python
 
 # Notebooks (Colab / Jupyter)
 *.ipynb linguist-detectable=true linguist-language=Jupyter\ Notebook
 
 # Data files: do not count as programming languages
-*.csv   linguist-detectable=false
-*.tsv   linguist-detectable=false
-*.xls   linguist-detectable=false
-*.xlsx  linguist-detectable=false
+*.csv linguist-detectable=false
+*.tsv linguist-detectable=false
+*.xls linguist-detectable=false
+*.xlsx linguist-detectable=false
 *.parquet linguist-detectable=false
 
-# JSON configs / logs / endpoints
-*.json  linguist-detectable=true linguist-language=JSON
-*.jsonl linguist-detectable=true linguist-language=JSON
+# --- IMPORTANT: do NOT force all JSON to count as a language ---
+# Remove these global rules (they make JSON dominate):
+# *.json  linguist-detectable=true linguist-language=JSON
+# *.jsonl linguist-detectable=true linguist-language=JSON
+
+# Generated logs/artifacts (keep in repo, don't dominate language stats)
+badges/** linguist-generated=true
+dist/** linguist-generated=true
+update_log.jsonl linguist-generated=true
+update_log.txt linguist-generated=true
+
+# Our rendered snapshots
+stats/** linguist-generated=true
