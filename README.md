@@ -316,11 +316,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
 </p>
 
-<p align="center">
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D&card_width=800" alt="Contribution Streak" />
-</p>
-
-
 </details>
 
 
