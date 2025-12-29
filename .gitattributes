@@ -1,24 +1,32 @@
-# Python scripts
-*.py linguist-detectable=true linguist-language=Python
+# ----------------------------
+# Source code (count normally)
+# ----------------------------
+*.py    linguist-language=Python
+*.ipynb linguist-language=Jupyter Notebook
 
-# Notebooks (Colab / Jupyter)
-*.ipynb linguist-detectable=true linguist-language=Jupyter\ Notebook
-
-# Data files: do not count as programming languages
-*.csv linguist-detectable=false
-*.tsv linguist-detectable=false
-*.xls linguist-detectable=false
-*.xlsx linguist-detectable=false
+# ----------------------------
+# Data files (do NOT count)
+# ----------------------------
+*.csv     linguist-detectable=false
+*.tsv     linguist-detectable=false
+*.xls     linguist-detectable=false
+*.xlsx    linguist-detectable=false
 *.parquet linguist-detectable=false
 
-# --- IMPORTANT: do NOT force all JSON to count as a language ---
-# Remove these global rules (they make JSON dominate):
-# *.json  linguist-detectable=true linguist-language=JSON
-# *.jsonl linguist-detectable=true linguist-language=JSON
-
-# Generated logs/artifacts (keep in repo, don't dominate language stats)
+# ----------------------------
+# Generated artifacts / logs
+# (keep in repo, don't dominate)
+# ----------------------------
 badges/** linguist-generated=true
-dist/** linguist-generated=true
-update_log.jsonl linguist-generated=true
-update_log.txt linguist-generated=true
+dist/**   linguist-generated=true
 
+# If you ever store snapshots/stats there:
+stats/**  linguist-generated=true
+
+# Root logs (yours)
+update_log.jsonl linguist-generated=true
+update_log.txt   linguist-generated=true
+
+# If badges folder contains JSON logs, they are already covered by badges/**
+# but if you have any JSON logs outside badges/dist, add explicit lines like:
+# some/path/*.jsonl linguist-generated=true
