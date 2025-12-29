@@ -1,24 +1,24 @@
 <!-- BANNER:START -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/303.gif?t=1766927354" alt="Banner" height="420">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/304.gif?t=1767000071" alt="Banner" height="420">
 </p>
-<p align="center"><sub>☕ Banner 303/367</sub></p>
+<p align="center"><sub>🤖 Banner 304/367</sub></p>
 <!-- BANNER:END -->
 
 ---
 
 <!-- STATUS:START -->
 <p align="center">
-<img src="https://img.shields.io/static/v1?label=Updated&message=2025-12-28%2013%3A09%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5588" />
+<img src="https://img.shields.io/static/v1?label=Updated&message=2025-12-29%2009%3A21%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5589" />
 <img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=300" />
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5588" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2023h%2005m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/badge/Rotation-%235588-1f6feb?cacheSeconds=60" />
-<img src="https://img.shields.io/badge/Commit-cd0dcfd-9cf?cacheSeconds=300" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=209&color=0ea5e9&cacheSeconds=300" />
-<img src="https://img.shields.io/badge/Event-schedule-8a2be2?cacheSeconds=300" />
-<img src="https://img.shields.io/badge/Mode-auto-grey?cacheSeconds=60" />
-<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5588" alt="Daily Smoke (pytest - m smoke)" /></a>
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5589" />
+<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%202h%2053m&color=757575&labelColor=30363d&cacheSeconds=600" />
+<img src="https://img.shields.io/badge/Rotation-%235589-1f6feb?cacheSeconds=60" />
+<img src="https://img.shields.io/badge/Commit-cced741-9cf?cacheSeconds=300" />
+<img src="https://img.shields.io/static/v1?label=Updates&message=210&color=0ea5e9&cacheSeconds=300" />
+<img src="https://img.shields.io/badge/Event-workflow_dispatch-8a2be2?cacheSeconds=300" />
+<img src="https://img.shields.io/badge/Mode-force-grey?cacheSeconds=60" />
+<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5589" alt="Daily Smoke (pytest - m smoke)" /></a>
 </p>
 <!-- STATUS:END -->
 
@@ -126,10 +126,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 <!-- BADGES:START -->
 <div align="left">
-<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5588" alt="Last Commit"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5588" alt="GitHub Followers"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5588" alt="GitHub Stars"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5588" alt="Total Updates"></p>
+<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5589" alt="Last Commit"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5589" alt="GitHub Followers"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5589" alt="GitHub Stars"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5589" alt="Total Updates"></p>
 </div>
 <!-- BADGES:END -->
 
@@ -210,14 +210,14 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <details>
   <summary>🪄 Run Meta (click to expand)</summary>
 
-- 📆 Updated (UTC): **2025-12-28 13:09 UTC**
-- 🤖 Run: **#5588** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/20554111534)
-- 🧬 Commit: **cd0dcfd** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/cd0dcfd145c25532496cf6578a9bf8a47f25f015)
-- ♻️ Updates (total): **209**
+- 📆 Updated (UTC): **2025-12-29 09:21 UTC**
+- 🤖 Run: **#5589** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/20569339404)
+- 🧬 Commit: **cced741** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/cced74179a0b61eed967d128b88e11c3370dfb33)
+- ♻️ Updates (total): **210**
 - 🌀 Workflow: **Auto Update README** · Job: **update-readme**
-- ✨ Event: **schedule** · 🧑‍💻 Actor: **evgeniimatveev**
+- ✨ Event: **workflow_dispatch** · 🧑‍💻 Actor: **evgeniimatveev**
 - 🕒 Schedule: **24h_5m**
-- 🌈 Banner: **303/367**
+- 🌈 Banner: **304/367**
 </details>
 
 <!-- RUNMETA:END -->
@@ -227,11 +227,11 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 | Time (UTC) | Run | SHA | Banner | Event/Actor | Insight|
 |---|---|---|---|---|---|
+| 2025-12-29 09:21:11 | 5589 | `cced741` | 304/367 (304.gif) | workflow_dispatch/evgeniimatveev | 📡 TRACK • TUNE • TRUST • RUN #5589 — Dark mode dashboards, bright KPIs 🌌 &#124; Start your week strong! 🚀 Kick off with clean pipelines a… |
 | 2025-12-28 13:09:14 | 5588 | `cd0dcfd` | 303/367 (303.gif) | schedule/evgeniimatveev | 📡 RELIABLE ML BY DESIGN • RUN #5588 — GREAT TIME FOR INFRA UPGRADES 🛠️ &#124; PREP FOR AN MLOPS-FILLED WEEK! ⏳ MAKE IT BORING: STABLE, PR… |
 | 2025-12-27 13:02:33 | 5587 | `827dfce` | 302/367 (302.gif) | schedule/evgeniimatveev | 📡 PIPELINES, NOT FIRE-DRILLS • RUN #5587 — Hibernate and optimize 🧊 &#124; Weekend automation vibes! 🎉 Keep pushing your MLOps pipeline f… |
 | 2025-12-26 13:07:57 | 5586 | `e11dea6` | 301/367 (301.gif) | schedule/evgeniimatveev | 📡 PIPELINES, NOT FIRE-DRILLS • RUN #5586 — HIBERNATE AND OPTIMIZE 🧊 &#124; WRAP IT UP LIKE A PRO! ⚡ TIGHTEN SLAS, WIDEN OBSERVABILITY, RE… |
 | 2025-12-25 13:12:06 | 5585 | `5bb3d97` | 300/367 (300.gif) | schedule/evgeniimatveev | 📡 LOW TOIL, HIGH LEVERAGE • RUN #5585 — Deep focus and model tuning ❄️ &#124; Test, iterate, deploy! 🚀 Perfect time for CI/CD magic ⚡ 🧭 |
-| 2025-12-24 13:07:24 | 5584 | `4bab068` | 299/367 (299.gif) | schedule/evgeniimatveev | 📡 TRACK • TUNE • TRUST • RUN #5584 — Harden CI, cache models, reduce cold starts 🧊 &#124; Halfway there — keep automating! 🛠️ Measure → i… |
 
 </details>
 <!-- LOG:END -->
@@ -287,7 +287,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ---
 
 <!-- INSIGHT:START -->
-🤖 MLOPS Insight: 📡 RELIABLE ML BY DESIGN • RUN #5588 — GREAT TIME FOR INFRA UPGRADES 🛠️ | PREP FOR AN MLOPS-FILLED WEEK! ⏳ MAKE IT BORING: STABLE, PREDICTABLE RELEASES 🫡 🌅
+🤖 MLOPS Insight: 📡 TRACK • TUNE • TRUST • RUN #5589 — Dark mode dashboards, bright KPIs 🌌 | Start your week strong! 🚀 Kick off with clean pipelines and clear metrics 📊 🧰
 <!-- INSIGHT:END -->
 
 ---
@@ -296,10 +296,10 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 <!-- STATUS2:START -->
 <p align="left">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5588" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2023h%2005m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=209&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
-<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5588" alt="Daily Smoke (pytest - m smoke)" /></a>
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5589" />
+<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%202h%2053m&color=757575&labelColor=30363d&cacheSeconds=600" />
+<img src="https://img.shields.io/static/v1?label=Updates&message=210&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
+<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5589" alt="Daily Smoke (pytest - m smoke)" /></a>
 </p>
 <!-- STATUS2:END -->
 
