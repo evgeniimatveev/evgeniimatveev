@@ -1,30 +1,29 @@
 # ----------------------------
 # Source code (count normally)
 # ----------------------------
-*.py    linguist-language=Python
+*.py linguist-language=Python
 *.ipynb linguist-language=Jupyter Notebook
 
 # ----------------------------
 # Data files (do NOT count)
 # ----------------------------
-*.csv     linguist-detectable=false
-*.tsv     linguist-detectable=false
-*.xls     linguist-detectable=false
-*.xlsx    linguist-detectable=false
+*.csv linguist-detectable=false
+*.tsv linguist-detectable=false
+*.xls linguist-detectable=false
+*.xlsx linguist-detectable=false
 *.parquet linguist-detectable=false
 
 # ----------------------------
 # Generated artifacts / logs
-# (keep in repo, don't dominate)
 # ----------------------------
+*.json linguist-generated=true
+*.jsonl linguist-generated=true
+*.log linguist-generated=true
+
 badges/** linguist-generated=true
-dist/**   linguist-generated=true
+dist/** linguist-generated=true
 
-# Root logs (yours)
+# Root logs
 update_log.jsonl linguist-generated=true
-update_log.txt   linguist-generated=true
-update_log.json  linguist-generated=true
-
-# If badges folder contains JSON logs, they are already covered by badges/**
-# but if you have any JSON logs outside badges/dist, add explicit lines like:
-# some/path/*.jsonl linguist-generated=true
+update_log.json linguist-generated=true
+update_log.txt linguist-generated=true
