@@ -334,3 +334,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     alt="Connect on LinkedIn"/></a>
 </p>
 
+---
+
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true" />
