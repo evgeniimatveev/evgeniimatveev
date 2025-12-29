@@ -317,7 +317,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="820" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="800" />
 </p>
 
 </details>
@@ -334,12 +334,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     alt="Connect on LinkedIn"/></a>
 </p>
 ---
-
-<p align="center">
-  <img src="YOUR_STATS_CARD_URL" width="400" alt="Stats" />
-  <img src="YOUR_PRODUCTIVE_TIME_URL" width="400" alt="Commits by time (UTC)" />
-</p>
-
-<p align="center">
-  <img src="YOUR_DAILY_CONTRIB_URL" width="820" alt="Daily contributions" />
-</p>
