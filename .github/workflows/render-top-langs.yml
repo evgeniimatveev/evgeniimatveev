@@ -24,8 +24,7 @@ jobs:
         run: |
           mkdir -p assets
 
-      # Fetch SVG from github-readme-stats and store it locally
-       - name: Download top-langs SVG (validated)
+      - name: Download top-langs SVG (validated)
         run: |
           set -euo pipefail
 
@@ -38,9 +37,10 @@ jobs:
             "$URL" \
             -o assets/top-langs.svg
 
-          # Basic validation: SVG should contain <svg on the first few lines
+          # Quick debug: show first lines
           head -n 5 assets/top-langs.svg || true
 
+          # Basic validation: must contain <svg
           if ! grep -qi "<svg" assets/top-langs.svg; then
             echo "ERROR: Downloaded file is not SVG. Dumping first 40 lines:"
             sed -n '1,40p' assets/top-langs.svg || true
@@ -51,12 +51,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin
-
-          # Convert only if valid SVG
           rsvg-convert assets/top-langs.svg -o assets/top-langs.png
 
       - name: Commit changes (if any)
         run: |
+          set -euo pipefail
+
           if git diff --quiet; then
             echo "No changes to commit."
             exit 0
@@ -67,4 +67,7 @@ jobs:
 
           git add assets/top-langs.svg assets/top-langs.png
           git commit -m "chore(stats): update top-langs snapshot"
+
+          # Avoid conflicts with other workflows that push to main
+          git pull --rebase
           git push
