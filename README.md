@@ -328,7 +328,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <p align="center">
   <img
     src="https://metrics.lecoq.io/evgeniimatveev?template=terminal&activity=1&isocalendar=1&theme=tokyonight"
-    width="800"
+    width="700"
     alt="GitHub Metrics"
   />
 </p>
