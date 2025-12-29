@@ -347,3 +347,5 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 <img src="https://github-profile-3d-contrib.vercel.app/api/profile?username=evgeniimatveev&theme=tokyo-night" />
 
 <img src="https://github-readme-streak-stats.herokuapp.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" />
+
+<img src="https://github-readme-streak-stats.herokuapp.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" />
