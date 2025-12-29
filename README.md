@@ -421,6 +421,10 @@ details>
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true" alt="Activity Graph" />
 </p>
 
+<p align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=Contribution%20Activity&height=300" width="96%" alt="Activity Graph" />
+</p>
+
 </details>
 
 ---
