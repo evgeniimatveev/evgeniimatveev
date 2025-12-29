@@ -320,13 +320,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D&card_width=800" alt="Contribution Streak" />
 </p>
 
-<p align="center">
-  <img
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&langs_count=8"
-    alt="Top languages by percentage"
-    width="600"
-  />
-</p>
 
 </details>
 
@@ -342,27 +335,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     alt="Connect on LinkedIn"/></a>
 </p>
 
----
-## 🧰 Tech Stack
-
-### Core
-![Python](https://img.shields.io/badge/Python-0b0f14?style=for-the-badge&logo=python&logoColor=yellow)
-![SQL](https://img.shields.io/badge/SQL-0b0f14?style=for-the-badge&logo=postgresql&logoColor=blue)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-0b0f14?style=for-the-badge&logo=postgresql&logoColor=blue)
-![Tableau](https://img.shields.io/badge/Tableau-0b0f14?style=for-the-badge&logo=tableau&logoColor=white)
-
-### MLOps & Automation
-![Docker](https://img.shields.io/badge/Docker-0b0f14?style=for-the-badge&logo=docker&logoColor=blue)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-0b0f14?style=for-the-badge&logo=githubactions&logoColor=white)
-![MLflow](https://img.shields.io/badge/MLflow-0b0f14?style=for-the-badge&logo=mlflow&logoColor=blue)
-![Weights & Biases](https://img.shields.io/badge/W%26B-0b0f14?style=for-the-badge&logo=weightsandbiases&logoColor=yellow)
-
-### Data & BI
-![Pandas](https://img.shields.io/badge/Pandas-0b0f14?style=for-the-badge&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-0b0f14?style=for-the-badge&logo=numpy&logoColor=blue)
-![Polars](https://img.shields.io/badge/Polars-0b0f14?style=for-the-badge&logo=polars&logoColor=purple)
-
-### Cloud & Tools
-![Azure](https://img.shields.io/badge/Azure-0b0f14?style=for-the-badge&logo=microsoftazure&logoColor=blue)
-![Linux](https://img.shields.io/badge/Linux-0b0f14?style=for-the-badge&logo=linux&logoColor=white)
-![VS Code](https://img.shields.io/badge/VS_Code-0b0f14?style=for-the-badge&logo=visualstudiocode&logoColor=blue)
