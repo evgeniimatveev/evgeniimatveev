@@ -317,10 +317,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&height=300" width="96%" alt="Contribution Graph" />
-</p>
-
-<p align="center">
   <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D&card_width=800" alt="Contribution Streak" />
 </p>
 
@@ -339,20 +335,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 ---
-<details>
-<summary><b>📈 GitHub Analytics</b> <em>(real-time stats)</em></summary>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true" width="49%" alt="GitHub Stats" />
-  <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true&date_format=j%20M%5B%20Y%5D" width="49%" alt="GitHub Streak" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&layout=compact&theme=tokyonight&hide_border=true&langs_count=8" alt="Top Languages" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true&area=true&custom_title=Contribution%20Activity&height=300" width="96%" alt="Activity Graph" />
-</p>
-
-</details>
