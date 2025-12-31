@@ -29,12 +29,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Run metrics container. It may exit with code 1 even if the SVG was generated.
-          # We treat "file exists" as success.
+          # Mount repo ./metrics directly to the container output directory
           docker run --rm \
             -e INPUT_USER=evgeniimatveev \
             -e INPUT_TOKEN="${METRICS_TOKEN}" \
-            -e INPUT_FILENAME="/repo/metrics/github-metrics.svg" \
+            -e INPUT_FILENAME="github-metrics.svg" \
             -e INPUT_TEMPLATE="terminal" \
             -e INPUT_THEME="tokyonight" \
             -e INPUT_BASE="header,activity,community,repositories" \
@@ -45,12 +44,13 @@ jobs:
             -e INPUT_PLUGIN_LANGUAGES_INDEPTH="no" \
             -e INPUT_PLUGIN_LANGUAGES_LIMIT="6" \
             -e INPUT_CONFIG_TIMEZONE="UTC" \
-            -v "${GITHUB_WORKSPACE}:/repo" \
-            ghcr.io/lowlighter/metrics:latest || true
+            -v "${GITHUB_WORKSPACE}/metrics:/metrics_renders" \
+            ghcr.io/lowlighter/metrics:latest
 
-          # Fail only if the output file is missing/empty
+          # Validate output
           if [ ! -s "metrics/github-metrics.svg" ]; then
             echo "❌ metrics/github-metrics.svg was not created."
+            ls -la metrics || true
             exit 1
           fi
 
