@@ -23,13 +23,12 @@ jobs:
       - name: Ensure metrics folder exists
         run: mkdir -p metrics
 
-      - name: Generate metrics SVG (Docker + docker cp, stable)
+      - name: Generate metrics SVG (Docker, auto-find output)
         env:
           METRICS_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
           set -euo pipefail
 
-          # Create container (do not rely on volume mount for output)
           CID=$(docker create \
             -e INPUT_USER=evgeniimatveev \
             -e INPUT_TOKEN="${METRICS_TOKEN}" \
@@ -46,18 +45,28 @@ jobs:
             -e INPUT_CONFIG_TIMEZONE="UTC" \
             ghcr.io/lowlighter/metrics:latest)
 
-          # Run container (it may exit with non-zero even if SVG is produced)
+          # Run container (may exit non-zero even when output exists)
           docker start -a "${CID}" || true
 
-          # Extract SVG from container (based on your logs: /metrics_renders/github-metrics.svg)
-          docker cp "${CID}:/metrics_renders/github-metrics.svg" "metrics/github-metrics.svg"
+          echo "🔎 Searching for generated SVG inside container..."
+          # Find the svg anywhere (limit to first hit)
+          SVG_PATH=$(docker exec "${CID}" sh -lc 'find / -maxdepth 6 -type f -name "github-metrics.svg" 2>/dev/null | head -n 1' || true)
 
-          # Cleanup
+          if [ -z "${SVG_PATH}" ]; then
+            echo "❌ Could not find github-metrics.svg inside container."
+            echo "Debug: listing common dirs:"
+            docker exec "${CID}" sh -lc 'ls -la / 2>/dev/null || true; ls -la /metrics_renders 2>/dev/null || true; ls -la /output 2>/dev/null || true'
+            docker rm -f "${CID}" >/dev/null 2>&1 || true
+            exit 1
+          fi
+
+          echo "✅ Found SVG at: ${SVG_PATH}"
+          docker cp "${CID}:${SVG_PATH}" "metrics/github-metrics.svg"
+
           docker rm -f "${CID}" >/dev/null 2>&1 || true
 
-          # Validate output exists
           test -s "metrics/github-metrics.svg"
-          echo "✅ Generated metrics/github-metrics.svg"
+          echo "✅ Saved to metrics/github-metrics.svg"
 
       - name: Commit changes (only if changed)
         run: |
