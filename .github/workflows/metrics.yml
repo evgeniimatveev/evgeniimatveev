@@ -20,7 +20,7 @@ jobs:
         uses: lowlighter/metrics@v3.34
         with:
           user: evgeniimatveev
-          token: ${{ secrets.METRICS_TOKEN }}
+          token: ${{ secrets.CLASSIC_PAT }}
 
           # Save to repo (NOT assets/)
           filename: metrics/github-metrics.svg
