@@ -1,0 +1,47 @@
+name: Update GitHub Metrics (local SVG)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 10 * * *" # daily (UTC) — время можно поменять
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-readme-updates
+  cancel-in-progress: false
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate metrics SVG
+        uses: lowlighter/metrics@latest
+        with:
+          user: evgeniimatveev
+          token: ${{ secrets.METRICS_TOKEN }}
+
+          # Save to repo (NOT assets/)
+          filename: metrics/github-metrics.svg
+
+          # Commit to repo only when changed
+          output_action: commit
+          committer_message: "chore: update github metrics"
+          config_timezone: UTC
+
+          # Style
+          template: terminal
+          theme: tokyonight
+
+          # Content (good default set)
+          base: header, activity, community, repositories
+
+          # Nice plugins (optional but solid)
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+
+          plugin_languages: yes
+          plugin_languages_details: yes
+          plugin_languages_indepth: yes
+          plugin_languages_limit: 6
