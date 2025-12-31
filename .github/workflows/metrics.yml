@@ -3,7 +3,7 @@ name: Update GitHub Metrics (local SVG)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "23 10 * * *" # daily (UTC) — время можно поменять
+    - cron: "23 10 * * *" # daily (UTC) 
 
 permissions:
   contents: write
