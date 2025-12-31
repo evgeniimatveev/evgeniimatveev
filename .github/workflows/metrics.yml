@@ -23,14 +23,14 @@ jobs:
       - name: Ensure metrics folder exists
         run: mkdir -p metrics
 
-      - name: Generate metrics SVG (Docker, local output)
+      - name: Generate metrics SVG (Docker + docker cp, stable)
         env:
           METRICS_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
           set -euo pipefail
 
-          # Mount repo ./metrics directly to the container output directory
-          docker run --rm \
+          # Create container (do not rely on volume mount for output)
+          CID=$(docker create \
             -e INPUT_USER=evgeniimatveev \
             -e INPUT_TOKEN="${METRICS_TOKEN}" \
             -e INPUT_FILENAME="github-metrics.svg" \
@@ -44,16 +44,19 @@ jobs:
             -e INPUT_PLUGIN_LANGUAGES_INDEPTH="no" \
             -e INPUT_PLUGIN_LANGUAGES_LIMIT="6" \
             -e INPUT_CONFIG_TIMEZONE="UTC" \
-            -v "${GITHUB_WORKSPACE}/metrics:/metrics_renders" \
-            ghcr.io/lowlighter/metrics:latest
+            ghcr.io/lowlighter/metrics:latest)
 
-          # Validate output
-          if [ ! -s "metrics/github-metrics.svg" ]; then
-            echo "❌ metrics/github-metrics.svg was not created."
-            ls -la metrics || true
-            exit 1
-          fi
+          # Run container (it may exit with non-zero even if SVG is produced)
+          docker start -a "${CID}" || true
 
+          # Extract SVG from container (based on your logs: /metrics_renders/github-metrics.svg)
+          docker cp "${CID}:/metrics_renders/github-metrics.svg" "metrics/github-metrics.svg"
+
+          # Cleanup
+          docker rm -f "${CID}" >/dev/null 2>&1 || true
+
+          # Validate output exists
+          test -s "metrics/github-metrics.svg"
           echo "✅ Generated metrics/github-metrics.svg"
 
       - name: Commit changes (only if changed)
