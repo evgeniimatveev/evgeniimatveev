@@ -27,10 +27,13 @@ jobs:
         env:
           METRICS_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
+          set -euo pipefail
+
+          # Generate SVG into the repository workspace (mounted into the container)
           docker run --rm \
             -e INPUT_USER=evgeniimatveev \
             -e INPUT_TOKEN="${METRICS_TOKEN}" \
-            -e INPUT_FILENAME="metrics/github-metrics.svg" \
+            -e INPUT_FILENAME="/repo/metrics/github-metrics.svg" \
             -e INPUT_TEMPLATE="terminal" \
             -e INPUT_THEME="tokyonight" \
             -e INPUT_BASE="header,activity,community,repositories" \
@@ -41,12 +44,17 @@ jobs:
             -e INPUT_PLUGIN_LANGUAGES_INDEPTH="yes" \
             -e INPUT_PLUGIN_LANGUAGES_LIMIT="6" \
             -e INPUT_CONFIG_TIMEZONE="UTC" \
-            -v "${GITHUB_WORKSPACE}:/metrics" \
-            ghcr.io/lowlighter/metrics:3.34
+            -v "${GITHUB_WORKSPACE}:/repo" \
+            ghcr.io/lowlighter/metrics:latest
+
+          # Sanity check (fail fast if file wasn't created)
+          test -s "metrics/github-metrics.svg"
+          echo "✅ Generated metrics/github-metrics.svg"
 
       - name: Commit changes (only if changed)
         run: |
-          git status --porcelain
+          set -euo pipefail
+
           if git diff --quiet; then
             echo "No changes to commit."
             exit 0
