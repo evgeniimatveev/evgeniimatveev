@@ -3,7 +3,7 @@ name: Update GitHub Metrics (local SVG)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "23 10 * * *" # daily (UTC) 
+    - cron: "23 10 * * *" # daily (UTC)
 
 permissions:
   contents: write
@@ -15,33 +15,46 @@ concurrency:
 jobs:
   metrics:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Generate metrics SVG
-        uses: lowlighter/metrics@v3.34
-        with:
-          user: evgeniimatveev
-          token: ${{ secrets.CLASSIC_PAT }}
+      - name: Checkout
+        uses: actions/checkout@v4
 
-          # Save to repo (NOT assets/)
-          filename: metrics/github-metrics.svg
+      - name: Ensure metrics folder exists
+        run: mkdir -p metrics
 
-          # Commit to repo only when changed
-          output_action: commit
-          committer_message: "chore: update github metrics"
-          config_timezone: UTC
+      - name: Generate metrics SVG (Docker, no third-party action)
+        env:
+          METRICS_TOKEN: ${{ secrets.CLASSIC_PAT }}
+        run: |
+          docker run --rm \
+            -e INPUT_USER=evgeniimatveev \
+            -e INPUT_TOKEN="${METRICS_TOKEN}" \
+            -e INPUT_FILENAME="metrics/github-metrics.svg" \
+            -e INPUT_TEMPLATE="terminal" \
+            -e INPUT_THEME="tokyonight" \
+            -e INPUT_BASE="header,activity,community,repositories" \
+            -e INPUT_PLUGIN_ISOCALENDAR="yes" \
+            -e INPUT_PLUGIN_ISOCALENDAR_DURATION="full-year" \
+            -e INPUT_PLUGIN_LANGUAGES="yes" \
+            -e INPUT_PLUGIN_LANGUAGES_DETAILS="yes" \
+            -e INPUT_PLUGIN_LANGUAGES_INDEPTH="yes" \
+            -e INPUT_PLUGIN_LANGUAGES_LIMIT="6" \
+            -e INPUT_CONFIG_TIMEZONE="UTC" \
+            -v "${GITHUB_WORKSPACE}:/metrics" \
+            ghcr.io/lowlighter/metrics:3.34
 
-          # Style
-          template: terminal
-          theme: tokyonight
+      - name: Commit changes (only if changed)
+        run: |
+          git status --porcelain
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
 
-          # Content (good default set)
-          base: header, activity, community, repositories
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Nice plugins (optional but solid)
-          plugin_isocalendar: yes
-          plugin_isocalendar_duration: full-year
-
-          plugin_languages: yes
-          plugin_languages_details: yes
-          plugin_languages_indepth: yes
-          plugin_languages_limit: 6
+          git add metrics/github-metrics.svg
+          git commit -m "chore: update github metrics (local)"
+          git push
