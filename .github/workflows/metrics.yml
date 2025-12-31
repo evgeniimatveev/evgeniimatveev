@@ -3,7 +3,7 @@ name: Update GitHub Metrics (local SVG)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "23 10 * * *" # daily (UTC)
+    - cron: "23 10 * * 1" # weekly on Monday (UTC)
 
 permissions:
   contents: write
@@ -23,13 +23,14 @@ jobs:
       - name: Ensure metrics folder exists
         run: mkdir -p metrics
 
-      - name: Generate metrics SVG (Docker, no third-party action)
+      - name: Generate metrics SVG (Docker, local output)
         env:
           METRICS_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
           set -euo pipefail
 
-          # Generate SVG into the repository workspace (mounted into the container)
+          # Run metrics container. It may exit with code 1 even if the SVG was generated.
+          # We treat "file exists" as success.
           docker run --rm \
             -e INPUT_USER=evgeniimatveev \
             -e INPUT_TOKEN="${METRICS_TOKEN}" \
@@ -41,14 +42,18 @@ jobs:
             -e INPUT_PLUGIN_ISOCALENDAR_DURATION="full-year" \
             -e INPUT_PLUGIN_LANGUAGES="yes" \
             -e INPUT_PLUGIN_LANGUAGES_DETAILS="yes" \
-            -e INPUT_PLUGIN_LANGUAGES_INDEPTH="yes" \
+            -e INPUT_PLUGIN_LANGUAGES_INDEPTH="no" \
             -e INPUT_PLUGIN_LANGUAGES_LIMIT="6" \
             -e INPUT_CONFIG_TIMEZONE="UTC" \
             -v "${GITHUB_WORKSPACE}:/repo" \
-            ghcr.io/lowlighter/metrics:latest
+            ghcr.io/lowlighter/metrics:latest || true
 
-          # Sanity check (fail fast if file wasn't created)
-          test -s "metrics/github-metrics.svg"
+          # Fail only if the output file is missing/empty
+          if [ ! -s "metrics/github-metrics.svg" ]; then
+            echo "❌ metrics/github-metrics.svg was not created."
+            exit 1
+          fi
+
           echo "✅ Generated metrics/github-metrics.svg"
 
       - name: Commit changes (only if changed)
