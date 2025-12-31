@@ -23,7 +23,7 @@ jobs:
       - name: Ensure metrics folder exists
         run: mkdir -p metrics
 
-      - name: Generate metrics SVG (Docker, auto-find output)
+      - name: Generate metrics SVG (Docker + docker cp)
         env:
           METRICS_TOKEN: ${{ secrets.CLASSIC_PAT }}
         run: |
@@ -45,24 +45,32 @@ jobs:
             -e INPUT_CONFIG_TIMEZONE="UTC" \
             ghcr.io/lowlighter/metrics:latest)
 
-          # Run container (may exit non-zero even when output exists)
+          # Run (container will exit when done)
           docker start -a "${CID}" || true
 
-          echo "🔎 Searching for generated SVG inside container..."
-          # Find the svg anywhere (limit to first hit)
-          SVG_PATH=$(docker exec "${CID}" sh -lc 'find / -maxdepth 6 -type f -name "github-metrics.svg" 2>/dev/null | head -n 1' || true)
+          # Try to copy from the most common output dirs (works even if container is stopped)
+          rm -f metrics/github-metrics.svg
+          rm -rf /tmp/metrics_out
+          mkdir -p /tmp/metrics_out
+
+          echo "📦 Trying to copy /metrics_renders..."
+          docker cp "${CID}:/metrics_renders" "/tmp/metrics_out/metrics_renders" 2>/dev/null || true
+
+          echo "📦 Trying to copy /output..."
+          docker cp "${CID}:/output" "/tmp/metrics_out/output" 2>/dev/null || true
+
+          # Find the file in copied dirs
+          SVG_PATH=$(find /tmp/metrics_out -type f -name "github-metrics.svg" 2>/dev/null | head -n 1 || true)
 
           if [ -z "${SVG_PATH}" ]; then
-            echo "❌ Could not find github-metrics.svg inside container."
-            echo "Debug: listing common dirs:"
-            docker exec "${CID}" sh -lc 'ls -la / 2>/dev/null || true; ls -la /metrics_renders 2>/dev/null || true; ls -la /output 2>/dev/null || true'
+            echo "❌ Could not locate github-metrics.svg in copied outputs."
+            echo "Debug tree:"
+            find /tmp/metrics_out -maxdepth 4 -type f 2>/dev/null || true
             docker rm -f "${CID}" >/dev/null 2>&1 || true
             exit 1
           fi
 
-          echo "✅ Found SVG at: ${SVG_PATH}"
-          docker cp "${CID}:${SVG_PATH}" "metrics/github-metrics.svg"
-
+          cp "${SVG_PATH}" "metrics/github-metrics.svg"
           docker rm -f "${CID}" >/dev/null 2>&1 || true
 
           test -s "metrics/github-metrics.svg"
