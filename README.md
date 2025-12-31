@@ -339,3 +339,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 ---
+<p align="center">
+  <img src="metrics/github-metrics.svg" width="700" alt="GitHub Metrics" />
+</p>
