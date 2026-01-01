@@ -316,20 +316,10 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
 </p>
 
-<!-- Footer: Daily Contributions -->
 <p align="center">
-  <img
-    src="PATH_TO_YOUR_DAILY_GRAPH.svg"
-    alt="Daily contributions graph"
-    width="820"
-  />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=evgeniimatveev&theme=tokyonight" width="400" />
+  <img src="https://ghchart.rshah.org/409ba5/evgeniimatveev" width="400" />
 </p>
-
-<p align="center">
-  <sub>
-    Daily contributions (last 30 days)
-  </sub>
-</p>>
 
 
 </details>
