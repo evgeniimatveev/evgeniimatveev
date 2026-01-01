@@ -317,7 +317,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=dracula" width="800" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"" width="800" />
 </p>
 
 
@@ -336,16 +336,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 
----
-
-<img
-  src="https://github-readme-activity-graph.vercel.app/graph
-    ?username=evgeniimatveev
-    &bg_color=0d1117
-    &color=9e9e9e
-    &line=c084fc
-    &point=7c3aed
-    &area=true
-    &area_color=c084fc"
-  width="800"
-/>
