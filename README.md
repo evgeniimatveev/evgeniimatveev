@@ -316,6 +316,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
 </p>
 
+<p align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="820" />
+</p>
 
 
 </details>
@@ -333,22 +336,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 
----
 
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="820" />
-</p>
 
----
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" />
-  <img src="https://ghchart.rshah.org/9d7cd8/evgeniimatveev" width="400" />
-</p>
 
-<p align="center">
-  <img src="YOUR_DAILY_CONTRIB_URL" width="820" alt="Daily contributions" />
-</p>
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night&hide_border=true" />
-
-<img src="https://github-readme-streak-stats.herokuapp.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" />
