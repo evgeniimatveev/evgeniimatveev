@@ -317,7 +317,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="700" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="800" />
 </p>
 
 
