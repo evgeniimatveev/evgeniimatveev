@@ -316,9 +316,20 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
 </p>
 
+<!-- Footer: Daily Contributions -->
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="820" />
+  <img
+    src="PATH_TO_YOUR_DAILY_GRAPH.svg"
+    alt="Daily contributions graph"
+    width="820"
+  />
 </p>
+
+<p align="center">
+  <sub>
+    Daily contributions (last 30 days)
+  </sub>
+</p>>
 
 
 </details>
