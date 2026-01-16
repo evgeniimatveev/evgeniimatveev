@@ -16,18 +16,18 @@ jobs:
         uses: actions/checkout@v4
 
       # 1) Generate all 7 snake variants (A–G)
-     - name: Generate snake variants (A–G)
-  uses: platane/snk/svg-only@v3
-  with:
-    github_user_name: evgeniimatveev
-    outputs: |
-      dist/snake-a.svg?palette=github-dark&color_snake=%23ff66c4&color_dots=%230e4429,%23006d32,%2326a641,%2339d353
-      dist/snake-b.svg?palette=github-dark&color_snake=%235fd1ff&color_dots=%230b1020,%23004d75,%230094d4,%234dd2ff
-      dist/snake-c.svg?palette=github-dark&color_snake=%23ffb86c&color_dots=%2322130b,%237c3f00,%23ff9f1a,%23ffd27f
-      dist/snake-d.svg?palette=github-dark&color_snake=%23ff79c6&color_dots=%23251022,%239b287b,%23ff4fa3,%23ffc1e3
-      dist/snake-e.svg?palette=github-dark&color_snake=%23a2ff5e&color_dots=%23101a0c,%233f6f22,%2371c837,%23c9ff9d
-      dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a
-      dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7
+      - name: Generate snake variants (A–G)
+        uses: platane/snk/svg-only@v3
+        with:
+          github_user_name: evgeniimatveev
+          outputs: |
+            dist/snake-a.svg?palette=github-dark&color_snake=%23ff66c4&color_dots=%230e4429,%23006d32,%2326a641,%2339d353
+            dist/snake-b.svg?palette=github-dark&color_snake=%235fd1ff&color_dots=%230b1020,%23004d75,%230094d4,%234dd2ff
+            dist/snake-c.svg?palette=github-dark&color_snake=%23ffb86c&color_dots=%2322130b,%237c3f00,%23ff9f1a,%23ffd27f
+            dist/snake-d.svg?palette=github-dark&color_snake=%23ff79c6&color_dots=%23251022,%239b287b,%23ff4fa3,%23ffc1e3
+            dist/snake-e.svg?palette=github-dark&color_snake=%23a2ff5e&color_dots=%23101a0c,%233f6f22,%2371c837,%23c9ff9d
+            dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a
+            dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7
 
       # 2) Rotate snake modes (A -> B -> ... -> G -> A)
       - name: Pick next variant (A–G) and update snake.svg
