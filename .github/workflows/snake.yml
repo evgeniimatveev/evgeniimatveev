@@ -1,4 +1,3 @@
-tane/snk… вообще)
 name: Generate Snake (stable)
 
 on:
@@ -19,7 +18,7 @@ jobs:
       - name: Generate snake.svg (Docker)
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           mkdir -p dist
 
           docker run --rm \
@@ -36,6 +35,8 @@ jobs:
       - name: Commit & push
         shell: bash
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
