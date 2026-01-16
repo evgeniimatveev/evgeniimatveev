@@ -29,7 +29,21 @@ jobs:
           set -euo pipefail
           mkdir -p dist
 
-          docker pull ghcr.io/platane/snk:latest
+          # Try common tags (GHCR often doesn't provide "latest")
+          IMAGE=""
+          for tag in v3 main master; do
+            if docker pull "ghcr.io/platane/snk:${tag}"; then
+              IMAGE="ghcr.io/platane/snk:${tag}"
+              break
+            fi
+          done
+
+          if [[ -z "$IMAGE" ]]; then
+            echo "ERROR: Could not find a usable tag for ghcr.io/platane/snk (tried: v3, main, master)"
+            exit 1
+          fi
+
+          echo "Using image: $IMAGE"
 
           docker run --rm \
             -e GITHUB_USER=evgeniimatveev \
@@ -38,8 +52,9 @@ jobs:
             -e COLOR_SNAKE=#ff66c4 \
             -e COLOR_DOTS=#0e4429,#006d32,#26a641,#39d353 \
             -v "${PWD}:/work" \
-            ghcr.io/platane/snk:latest
+            "$IMAGE"
 
+          echo "Generated files:"
           ls -la dist
 
       - name: Commit & push
