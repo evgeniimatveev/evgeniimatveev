@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  packages: read
 
 jobs:
   snake:
@@ -15,11 +16,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Login to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate snake.svg (Docker)
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p dist
+
+          docker pull ghcr.io/platane/snk:latest
 
           docker run --rm \
             -e GITHUB_USER=evgeniimatveev \
