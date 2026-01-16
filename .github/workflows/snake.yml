@@ -1,85 +1,50 @@
-name: Generate Snake
+tane/snk… вообще)
+name: Generate Snake (stable)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 0 * * *'
+    - cron: "30 0 * * *"
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  snake:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 1) Generate all 7 snake variants (A–G)
-      - name: Generate snake variants (A–G)
-        uses: platane/snk/svg-only@v3
-        with:
-          github_user_name: evgeniimatveev
-          outputs: |
-            dist/snake-a.svg?palette=github-dark&color_snake=%23ff66c4&color_dots=%230e4429,%23006d32,%2326a641,%2339d353
-            dist/snake-b.svg?palette=github-dark&color_snake=%235fd1ff&color_dots=%230b1020,%23004d75,%230094d4,%234dd2ff
-            dist/snake-c.svg?palette=github-dark&color_snake=%23ffb86c&color_dots=%2322130b,%237c3f00,%23ff9f1a,%23ffd27f
-            dist/snake-d.svg?palette=github-dark&color_snake=%23ff79c6&color_dots=%23251022,%239b287b,%23ff4fa3,%23ffc1e3
-            dist/snake-e.svg?palette=github-dark&color_snake=%23a2ff5e&color_dots=%23101a0c,%233f6f22,%2371c837,%23c9ff9d
-            dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a
-            dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7
-
-      # 2) Rotate snake modes (A -> B -> ... -> G -> A)
-      - name: Pick next variant (A–G) and update snake.svg
+      - name: Generate snake.svg (Docker)
         shell: bash
         run: |
           set -e
-          MODE_FILE=".github/snake-mode"
-          ORDER=(a b c d e f g)
-          mkdir -p .github dist
+          mkdir -p dist
 
-          if [[ -f "$MODE_FILE" ]]; then
-            LAST_MODE=$(tr -d '\n\r' < "$MODE_FILE")
-          else
-            LAST_MODE="g"
-          fi
+          docker run --rm \
+            -e GITHUB_USER=evgeniimatveev \
+            -e OUTPUT=dist/snake.svg \
+            -e PALETTE=github-dark \
+            -e COLOR_SNAKE=#ff66c4 \
+            -e COLOR_DOTS=#0e4429,#006d32,#26a641,#39d353 \
+            -v "${PWD}:/work" \
+            ghcr.io/platane/snk:latest
 
-          NEXT_MODE="a"
-          for i in "${!ORDER[@]}"; do
-            if [[ "${ORDER[$i]}" == "$LAST_MODE" ]]; then
-              NEXT_INDEX=$(( (i + 1) % ${#ORDER[@]} ))
-              NEXT_MODE="${ORDER[$NEXT_INDEX]}"
-              break
-            fi
-          done
+          ls -la dist
 
-          echo "Last mode: $LAST_MODE"
-          echo "Next mode: $NEXT_MODE"
-          echo "::notice title=Snake Variant::Using variant '$NEXT_MODE'"
-
-          SRC="dist/snake-${NEXT_MODE}.svg"
-          if [[ ! -f "$SRC" ]]; then
-            echo "ERROR: Expected file '$SRC' not found."
-            ls -l dist || true
-            exit 1
-          fi
-
-          cp -f "$SRC" dist/snake.svg
-          printf '%s\n' "$NEXT_MODE" > "$MODE_FILE"
-
-      # 3) Commit & push updated snake.svg + variants
-      - name: Commit and push changes
+      - name: Commit & push
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-*.svg dist/snake.svg .github/snake-mode || true
+          git add dist/snake.svg
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "chore: update dynamic snake (A–G rotation)"
-          git push origin main
+          git commit -m "chore: update snake"
+          git push
