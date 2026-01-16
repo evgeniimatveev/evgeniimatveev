@@ -15,8 +15,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 1) Generate all 7 snake variants (A–G) using YOUR fork
-     - name: Generate snake variants (A–G)
+      # 1) Generate all 7 snake variants (A–G) using your fork
+      - name: Generate snake variants (A–G)
         uses: evgeniimatveev/snk/svg-only@main
         with:
           github_user_name: evgeniimatveev
@@ -28,7 +28,6 @@ jobs:
             dist/snake-e.svg?palette=github-dark&color_snake=%23a2ff5e&color_dots=%23101a0c,%233f6f22,%2371c837,%23c9ff9d
             dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a
             dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7
-
 
       # 2) Rotate snake modes (A -> B -> ... -> G -> A)
       - name: Pick next variant (A–G) and update snake.svg
