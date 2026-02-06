@@ -1,4 +1,4 @@
-name: Auto Update README v7.5.7
+name: Auto Update README v7.6.0
 
 on:
   schedule:
@@ -36,17 +36,18 @@ on:
         options: [auto, dry-run, force]
         default: auto
       next_update_hour:
-        description: "UTC hour for Next Update badge"
+        description: "UTC hour for Next Update text fallback"
         type: number
         default: 12
       next_update_min:
-        description: "UTC minute for Next Update badge"
+        description: "UTC minute for Next Update text fallback"
         type: number
         default: 15
 
 permissions:
   contents: write
 
+# 🔒 One writer to main across ALL workflows
 concurrency:
   group: repo-main-writer
   cancel-in-progress: true
@@ -57,44 +58,69 @@ jobs:
     timeout-minutes: 20
 
     env:
+      # Inputs
       BANNER_MODE: ${{ github.event.inputs.banner_mode || 'sequential' }}
       BANNER_CALENDAR_MODE: ${{ (github.event.inputs.banner_mode || '') == 'calendar' }}
       MLOPS_INSIGHT: ${{ github.event.inputs.insight || '' }}
-      SCHEDULE_BADGE: "24h_5m"
       BANNER_EMOJI_MODE: "stable"
       BANNER_EMOJIS: ${{ github.event.inputs.emojis || '🎞️,☕,🪄,🤖,🌅,🌇,📊,🌊,🌈,⚡' }}
+
       JSONL_KEEP_LINES: ${{ github.event.inputs.jsonl_keep_lines || 200 }}
       TXT_KEEP_LINES: ${{ github.event.inputs.txt_keep_lines || 70 }}
       LOG_TABLE_N: ${{ github.event.inputs.table_n || 5 }}
       COMMIT_MODE: ${{ github.event.inputs.commit_mode || 'auto' }}
+
+      # Schedule badge display
+      SCHEDULE_BADGE: "24h_5m"
+
+      # Fallback next-update text calc
       NEXT_UPDATE_HOUR: ${{ github.event.inputs.next_update_hour || 12 }}
       NEXT_UPDATE_MIN: ${{ github.event.inputs.next_update_min || 15 }}
+
+      # Jitter (seconds) - safe when 0
       JITTER_MAX_SEC: 600
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
-          persist-credentials: true
+          ref: main
           fetch-depth: 0
+          persist-credentials: true
 
-      - name: Ensure dirs
+      - name: Pre-sync with origin/main (no rebase)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Ensure dirs + bootstrap files
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p .ci badges logs
+
+          # Only bootstrap if missing. This workflow does NOT own next_update.json (badge workflow owns it).
           if [ ! -f badges/next_update.json ]; then
-            echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
+            echo '{"schemaVersion":1,"label":"Next Update","message":"—","color":"lightgrey","labelColor":"e5e7eb","namedLogo":"timer"}' > badges/next_update.json
           fi
 
-      - name: Random jitter (schedule only)
+          # Bootstrap logs if missing
+          [ -f update_log.jsonl ] || : > update_log.jsonl
+          [ -f update_log.txt ]  || : > update_log.txt
+
+      - name: Random jitter (schedule only, safe)
         if: ${{ github.event_name == 'schedule' }}
         shell: bash
         run: |
           set -euo pipefail
-          S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
-          echo "Sleeping ${S}s to spread load..."
-          sleep "$S"
+          max="${JITTER_MAX_SEC:-0}"
+          if [[ "$max" -gt 0 ]]; then
+            s=$(( RANDOM % (max + 1) ))
+            echo "Sleeping ${s}s to spread load..."
+            sleep "$s"
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -109,11 +135,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Configure Git author
+      - name: Configure Git author (stable)
         shell: bash
         run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          set -euo pipefail
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Install Python deps
@@ -130,14 +157,7 @@ jobs:
           set -euo pipefail
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      - name: Install jq
-        shell: bash
-        run: |
-          set -euo pipefail
-          sudo apt-get update -y
-          sudo apt-get install -y jq
-
-      - name: Read totals & fallback text
+      - name: Read totals & compute NEXT_UPDATE_TEXT (no jq)
         shell: bash
         run: |
           set -euo pipefail
@@ -147,11 +167,17 @@ jobs:
             echo "TOTAL_UPDATES=$(tr -d '\r\n' < .ci/update_count.txt)" >> "$ENV_FILE"
           fi
 
-          msg=""
-          if [[ -f badges/next_update.json ]]; then
-            msg="$(jq -r '.message // empty' badges/next_update.json 2>/dev/null || true)"
-          fi
-
+          # Try message from next_update.json; fallback to local ETA calculation
+          msg="$(python - <<'PY'
+import json
+try:
+  with open("badges/next_update.json","r",encoding="utf-8") as f:
+    data=json.load(f)
+  print((data.get("message") or "").strip())
+except Exception:
+  print("")
+PY
+)"
           if [[ -z "$msg" ]]; then
             H=${NEXT_UPDATE_HOUR:-12}
             M=${NEXT_UPDATE_MIN:-15}
@@ -173,7 +199,7 @@ jobs:
 
           echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
 
-      - name: Update GitHub metrics badges
+      - name: Update GitHub metrics badges (followers/stars/updates)
         env:
           GH_USER: evgeniimatveev
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -184,15 +210,30 @@ jobs:
           UA="gh-actions-readme-badges"
 
           followers_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/users/${GH_USER}")"
-          followers="$(printf '%s' "$followers_json" | jq -r '.followers // 0')"
 
           repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
-          stars="$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')"
 
-          # NOTE: no "logo" key (endpoint JSON doesn’t allow it)
-          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\"}" > badges/github_followers.json
-          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\"}" > badges/github_stars.json
-          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
+          python - <<'PY'
+import json, os
+
+followers_json=os.environ["followers_json"]
+repos_json=os.environ["repos_json"]
+
+f=json.loads(followers_json).get("followers",0)
+items=json.loads(repos_json).get("items",[])
+stars=sum(int(x.get("stargazers_count",0)) for x in items)
+
+total=os.environ.get("TOTAL_UPDATES","?")
+
+def write(path, d):
+  with open(path,"w",encoding="utf-8") as fp:
+    json.dump(d, fp, separators=(",",":"))
+
+write("badges/github_followers.json", {"schemaVersion":1,"label":"followers","message":str(f),"color":"blue"})
+write("badges/github_stars.json", {"schemaVersion":1,"label":"stars","message":str(stars),"color":"yellow"})
+write("badges/total_updates.json", {"schemaVersion":1,"label":"updates","message":str(total),"color":"0ea5e9"})
+PY
+
       - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
@@ -228,6 +269,7 @@ jobs:
       - name: Append & trim update_log.txt
         shell: bash
         run: |
+          set -euo pipefail
           {
             echo "--------------------------------------"
             echo "Updated on: $(date -u) (UTC)"
@@ -243,7 +285,7 @@ jobs:
       - name: Trim JSON log (keep last N lines)
         shell: bash
         run: |
-          [ -f update_log.jsonl ] || : > update_log.jsonl
+          set -euo pipefail
           tail -n "${JSONL_KEEP_LINES}" update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
@@ -280,12 +322,9 @@ jobs:
       - name: Show last 10 JSONL lines
         shell: bash
         run: |
+          set -euo pipefail
           echo "Last 10 JSONL lines:"
-          if [ -f update_log.jsonl ]; then
-            tail -n 10 update_log.jsonl
-          else
-            echo "update_log.jsonl not found yet"
-          fi
+          tail -n 10 update_log.jsonl || true
 
       - name: Update STATUS line in README
         shell: bash
@@ -298,6 +337,7 @@ jobs:
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
+
           STATUS="<p align=\"center\">
           <img src=\"https://img.shields.io/static/v1?label=Updated&message=${NOW_BADGE}&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=${GITHUB_RUN_NUMBER}\" />
           <img src=\"https://img.shields.io/badge/Schedule-${SCHEDULE_BADGE}-2ea44f?cacheSeconds=300\" />
@@ -310,6 +350,7 @@ jobs:
           <img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
           <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest - m smoke)\" /></a>
           </p>"
+
           awk -v r="$STATUS" '
             /<!-- STATUS:START -->/ {print; print r; f=1; next}
             /<!-- STATUS:END -->/   {f=0}
@@ -329,6 +370,7 @@ jobs:
           <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
           <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest - m smoke)\" /></a>
           </p>"
+
           awk -v r="$LOW_STATUS" '
             /<!-- STATUS2:START -->/ {print; print r; f=1; next}
             /<!-- STATUS2:END -->/   {f=0}
@@ -349,34 +391,54 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
+          # NOTE: This workflow does NOT add badges/next_update.json (badge workflow owns it).
           git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
-                  badges/next_update.json badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
+                  badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
+
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
-          else
-            msg="Auto-update README (banner/status/insight rotation + logs) [v7.5.7]"
-            if [ "${COMMIT_MODE}" = "force" ]; then msg="${msg} [force]"; fi
-            git commit -m "$msg"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: Push changes
+          msg="Auto-update README (banner/status/insight rotation + logs) [v7.6.0]"
+          if [ "${COMMIT_MODE}" = "force" ]; then msg="${msg} [force]"; fi
+          git commit -m "$msg"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push changes (conflict-proof, no rebase)
         if: env.COMMIT_MODE != 'dry-run' && steps.commit.outputs.changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
+
+          COMMIT_SHA="$(git rev-parse HEAD)"
+
           for i in 1 2 3; do
-            if git push; then
-              echo "Pushed successfully"; exit 0
+            echo "Attempt $i: syncing to origin/main..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Re-apply our commit on top of latest remote main
+            if ! git cherry-pick "$COMMIT_SHA"; then
+              echo "Cherry-pick conflict. Aborting and retrying..."
+              git cherry-pick --abort || true
+              sleep $((i*3))
+              continue
             fi
-            echo "Push failed (attempt $i). Retrying..."
+
+            if git push origin HEAD:main; then
+              echo "Pushed successfully"
+              exit 0
+            fi
+
+            echo "Push failed. Retrying..."
             sleep $((i*3))
-            git pull --rebase || true
           done
-          echo "Push failed after 3 attempts"; exit 1
+
+          echo "Push failed after 3 attempts"
+          exit 1
 
       - name: Show updater tail
         if: always()
@@ -393,10 +455,9 @@ jobs:
         shell: bash
         run: |
           {
-            echo "## README Auto-Update v7.5.7"
+            echo "## README Auto-Update v7.6.0"
             echo "- **Run**: #${{ github.run_number }}"
             echo "- **Event**: ${{ github.event_name }}"
-            echo "- **Commit**: ${{ github.sha }}"
             echo "- **Schedule**: ${SCHEDULE_BADGE}"
             echo "- **Mode**: ${COMMIT_MODE}"
             echo "- **Total Updates**: ${TOTAL_UPDATES:-?}"
