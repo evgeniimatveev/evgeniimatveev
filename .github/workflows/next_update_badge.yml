@@ -18,7 +18,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: next-update-badge
+  group: repo-main-writer
   cancel-in-progress: true
 
 env:
