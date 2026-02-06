@@ -48,7 +48,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: auto-update-readme
+  group: repo-main-writer
   cancel-in-progress: true
 
 jobs:
