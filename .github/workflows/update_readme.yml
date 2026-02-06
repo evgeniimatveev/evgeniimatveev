@@ -1,4 +1,4 @@
-name: Auto Update README v7.7.0
+name: Auto Update README v7.8.0
 
 on:
   schedule:
@@ -47,7 +47,6 @@ on:
 permissions:
   contents: write
 
-# 🔒 One writer to main across ALL workflows
 concurrency:
   group: repo-main-writer
   cancel-in-progress: true
@@ -70,32 +69,32 @@ jobs:
       LOG_TABLE_N: ${{ github.event.inputs.table_n || 5 }}
       COMMIT_MODE: ${{ github.event.inputs.commit_mode || 'auto' }}
 
-      # Schedule badge display
+      # Display-only
       SCHEDULE_BADGE: "24h_5m"
 
-      # Fallback next-update text calc (if next_update.json missing or unreadable)
+      # Fallback next-update text calc
       NEXT_UPDATE_HOUR: ${{ github.event.inputs.next_update_hour || 12 }}
       NEXT_UPDATE_MIN: ${{ github.event.inputs.next_update_min || 15 }}
 
-      # Jitter (seconds) - safe when 0
+      # Jitter (seconds)
       JITTER_MAX_SEC: 600
 
-      # Safety
+      # Curl safety
       CURL_RETRY: "3"
       CURL_DELAY: "2"
 
+      # GitHub user (for API calls)
+      GH_USER: evgeniimatveev
+
     steps:
-      # ─────────────────────────────────────────────────────────────
-      # Checkout + pre-sync (fast + consistent)
-      # ─────────────────────────────────────────────────────────────
-      - name: Checkout (shallow, but push-safe)
+      - name: Checkout (push-safe)
         uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Pre-sync with origin/main (hard reset, no rebase)
+      - name: Sync workspace to origin/main (hard reset)
         shell: bash
         run: |
           set -euo pipefail
@@ -110,9 +109,9 @@ jobs:
 
           # Bootstrap logs if missing
           [ -f update_log.jsonl ] || : > update_log.jsonl
-          [ -f update_log.txt  ] || : > update_log.txt
+          [ -f update_log.txt ]  || : > update_log.txt
 
-          # Bootstrap next_update.json only if missing (badge workflow OWNS it; we won't commit it)
+          # Bootstrap next_update.json only if missing (badge workflow OWNS it; this workflow won't commit it)
           if [ ! -f badges/next_update.json ]; then
             echo '{"schemaVersion":1,"label":"Next Update","message":"—","color":"lightgrey","labelColor":"e5e7eb","namedLogo":"timer"}' > badges/next_update.json
           fi
@@ -125,13 +124,10 @@ jobs:
           max="${JITTER_MAX_SEC:-0}"
           if [[ "$max" -gt 0 ]]; then
             s=$(( RANDOM % (max + 1) ))
-            echo "Sleeping ${s}s to spread load..."
+            echo "Sleeping ${s}s..."
             sleep "$s"
           fi
 
-      # ─────────────────────────────────────────────────────────────
-      # Python setup
-      # ─────────────────────────────────────────────────────────────
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -145,7 +141,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Configure Git author (stable)
+      - name: Configure Git author
         shell: bash
         run: |
           set -euo pipefail
@@ -161,18 +157,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # ─────────────────────────────────────────────────────────────
-      # Core update script
-      # ─────────────────────────────────────────────────────────────
-      - name: Run updater (with logs)
+      - name: Run updater (capture logs)
         shell: bash
         run: |
           set -euo pipefail
           python update_readme.py 2>&1 | tee logs/updater.out
 
-      # ─────────────────────────────────────────────────────────────
-      # Compute TOTAL_UPDATES and NEXT_UPDATE_TEXT (no jq required)
-      # ─────────────────────────────────────────────────────────────
       - name: Read totals & compute NEXT_UPDATE_TEXT
         shell: bash
         run: |
@@ -214,12 +204,8 @@ PY
 
           echo "NEXT_UPDATE_TEXT=$msg" >> "$ENV_FILE"
 
-      # ─────────────────────────────────────────────────────────────
-      # Metrics badges (followers/stars/updates) — FIXED
-      # ─────────────────────────────────────────────────────────────
       - name: Update GitHub metrics badges (followers/stars/updates)
         env:
-          GH_USER: evgeniimatveev
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
@@ -227,13 +213,20 @@ PY
           mkdir -p badges
           UA="gh-actions-readme-badges"
 
-          export FOLLOWERS_JSON="$(curl -fsSL --retry "${CURL_RETRY}" --retry-delay "${CURL_DELAY}" --retry-all-errors \
-            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" \
+          FOLLOWERS_JSON="$(curl -fsSL --retry "${CURL_RETRY}" --retry-delay "${CURL_DELAY}" --retry-all-errors \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "User-Agent: ${UA}" \
             "https://api.github.com/users/${GH_USER}")"
 
-          export REPOS_JSON="$(curl -fsSL --retry "${CURL_RETRY}" --retry-delay "${CURL_DELAY}" --retry-all-errors \
-            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" \
+          REPOS_JSON="$(curl -fsSL --retry "${CURL_RETRY}" --retry-delay "${CURL_DELAY}" --retry-all-errors \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "User-Agent: ${UA}" \
             "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
+
+          export FOLLOWERS_JSON
+          export REPOS_JSON
 
           python - <<'PY'
 import json, os
@@ -256,10 +249,7 @@ write("badges/github_stars.json", {"schemaVersion":1,"label":"stars","message":s
 write("badges/total_updates.json", {"schemaVersion":1,"label":"updates","message":str(total),"color":"0ea5e9"})
 PY
 
-      # ─────────────────────────────────────────────────────────────
-      # Ensure README markers exist (prevents “no-op” awk)
-      # ─────────────────────────────────────────────────────────────
-      - name: Ensure README blocks exist (STATUS/STATUS2/BADGES/LOG)
+      - name: Ensure README marker blocks exist
         shell: bash
         run: |
           set -euo pipefail
@@ -282,15 +272,13 @@ ensure_block("<!-- LOG:START -->","<!-- LOG:END -->")
 p.write_text(txt, encoding="utf-8")
 PY
 
-      # ─────────────────────────────────────────────────────────────
-      # BADGES block (vertical)
-      # ─────────────────────────────────────────────────────────────
-      - name: Ensure BADGES block (vertical)
+      - name: Render BADGES block (vertical)
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-import os, pathlib, re
+import os, re
+from pathlib import Path
 
 repo=os.getenv("GITHUB_REPOSITORY")
 ref=os.getenv("GITHUB_REF_NAME")
@@ -310,15 +298,12 @@ block=f"""<!-- BADGES:START -->
 </div>
 <!-- BADGES:END -->"""
 
-p=pathlib.Path("README.md")
+p=Path("README.md")
 txt=p.read_text(encoding="utf-8")
 txt=re.sub(r"<!-- BADGES:START -->.*?<!-- BADGES:END -->", block, txt, flags=re.S)
 p.write_text(txt, encoding="utf-8")
 PY
 
-      # ─────────────────────────────────────────────────────────────
-      # Logs maintenance
-      # ─────────────────────────────────────────────────────────────
       - name: Append & trim update_log.txt
         shell: bash
         run: |
@@ -335,25 +320,26 @@ PY
           tail -n "${TXT_KEEP_LINES}" update_log.txt > update_log.txt.tmp || true
           mv update_log.txt.tmp update_log.txt || true
 
-      - name: Trim JSON log (keep last N lines)
+      - name: Trim update_log.jsonl (keep last N lines)
         shell: bash
         run: |
           set -euo pipefail
           tail -n "${JSONL_KEEP_LINES}" update_log.jsonl > update_log.jsonl.tmp || true
           mv update_log.jsonl.tmp update_log.jsonl || true
 
-      - name: Render last N updates into README (accordion)
+      - name: Render last N updates into README (accordion table)
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-import json, pathlib, re, os
+import json, re, os
+from pathlib import Path
 
 N=int(os.getenv("LOG_TABLE_N","5"))
-log=pathlib.Path("update_log.jsonl")
-p=pathlib.Path("README.md")
+log=Path("update_log.jsonl")
+p=Path("README.md")
 
-def esc(s): 
+def esc(s):
   return str(s).replace("|","&#124;").replace("\n"," ").strip()
 
 rows=[]
@@ -363,13 +349,15 @@ if log.exists():
     d=json.loads(line)
     b=f"{d.get('banner_index','?')}/{d.get('banner_total','?')} ({d.get('banner_file','')})"
     ins=esc(d.get('insight_preview',''))
-    if len(ins)>140: ins=ins[:137]+"…"
+    if len(ins)>140:
+      ins=ins[:137]+"…"
     rows.append(f"| {esc(d.get('ts_utc',''))} | {esc(d.get('run_number',''))} | `{esc(d.get('sha',''))}` | {esc(b)} | {esc(d.get('event',''))}/{esc(d.get('actor',''))} | {ins} |")
 
 headers=["Time (UTC)","Run","SHA","Banner","Event/Actor","Insight"]
 sep="|"+"|".join(["---"]*len(headers))+"|"
+
 table=[
-  f"<details><summary>🗂️<b>Recent updates (last {N})</b></summary>",
+  f"<details><summary><b>Recent updates (last {N})</b></summary>",
   "",
   "| "+" | ".join(headers)+"|",
   sep,
@@ -384,15 +372,15 @@ txt=re.sub(r"<!-- LOG:START -->.*?<!-- LOG:END -->", block, txt, flags=re.S)
 p.write_text(txt, encoding="utf-8")
 PY
 
-      - name: Update STATUS line in README
+      - name: Update STATUS block
         shell: bash
         run: |
           set -euo pipefail
           short_sha="${GITHUB_SHA:0:7}"
           NOW_UTC="$(date -u +"%Y-%m-%d %H:%M UTC")"
           NOW_BADGE="$(printf "%s" "$NOW_UTC" | sed 's/ /%20/g; s/:/%3A/g')"
-          MODE_BADGE="${COMMIT_MODE}"
           NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
+
           SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
           SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
 
@@ -405,7 +393,7 @@ PY
 <img src=\"https://img.shields.io/badge/Commit-${short_sha}-9cf?cacheSeconds=300\" />
 <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&cacheSeconds=300\" />
 <img src=\"https://img.shields.io/badge/Event-${GITHUB_EVENT_NAME}-8a2be2?cacheSeconds=300\" />
-<img src=\"https://img.shields.io/badge/Mode-${MODE_BADGE}-grey?cacheSeconds=60\" />
+<img src=\"https://img.shields.io/badge/Mode-${COMMIT_MODE}-grey?cacheSeconds=60\" />
 <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke\" /></a>
 </p>"
 
@@ -415,7 +403,7 @@ PY
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      - name: Update STATUS2 line in README
+      - name: Update STATUS2 block
         shell: bash
         run: |
           set -euo pipefail
@@ -442,11 +430,8 @@ PY
         run: |
           set -euo pipefail
           mkdir -p .ci
-          echo "$(date -u +'%Y-%m-%d %H:%M:%S') UTC  run=${GITHUB_RUN_NUMBER} sha=${GITHUB_SHA:0:7}" >> .ci/heartbeat.log
+          echo "$(date -u +'%Y-%m-%d %H:%M:%S') UTC run=${GITHUB_RUN_NUMBER} sha=${GITHUB_SHA:0:7}" >> .ci/heartbeat.log
 
-      # ─────────────────────────────────────────────────────────────
-      # Commit + push (conflict-proof) — cherry-pick strategy
-      # ─────────────────────────────────────────────────────────────
       - name: Commit changes (if any)
         id: commit
         if: env.COMMIT_MODE != 'dry-run'
@@ -454,9 +439,10 @@ PY
         run: |
           set -euo pipefail
 
-          # NOTE: this workflow does NOT add badges/next_update.json (owned by badge workflow).
+          # Do NOT commit badges/next_update.json (owned by the next_update workflow)
           git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
-                 badges/github_followers.json badges/github_stars.json badges/total_updates.json logs/updater.out 2>/dev/null || true
+                 badges/github_followers.json badges/github_stars.json badges/total_updates.json \
+                 logs/updater.out 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -464,12 +450,15 @@ PY
             exit 0
           fi
 
-          msg="Auto-update README (banner/status/insight rotation + logs) [v7.7.0]"
-          if [ "${COMMIT_MODE}" = "force" ]; then msg="${msg} [force]"; fi
+          msg="Auto-update README (banner/status/insight rotation + logs) [v7.8.0]"
+          if [ "${COMMIT_MODE}" = "force" ]; then
+            msg="${msg} [force]"
+          fi
+
           git commit -m "$msg"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Push changes (conflict-proof, no rebase)
+      - name: Push changes (conflict-proof, cherry-pick)
         if: env.COMMIT_MODE != 'dry-run' && steps.commit.outputs.changed == 'true'
         shell: bash
         run: |
@@ -477,20 +466,19 @@ PY
           COMMIT_SHA="$(git rev-parse HEAD)"
 
           for i in 1 2 3; do
-            echo "Attempt $i: syncing to origin/main..."
+            echo "Attempt $i: sync to origin/main..."
             git fetch --no-tags origin main
             git reset --hard origin/main
 
-            # Re-apply our commit on top of latest remote main
             if ! git cherry-pick "$COMMIT_SHA"; then
-              echo "Cherry-pick conflict. Aborting and retrying..."
+              echo "Cherry-pick conflict. Abort and retry..."
               git cherry-pick --abort || true
               sleep $((i*3))
               continue
             fi
 
             if git push origin HEAD:main; then
-              echo "Pushed successfully"
+              echo "Pushed successfully."
               exit 0
             fi
 
@@ -498,37 +486,8 @@ PY
             sleep $((i*3))
           done
 
-          echo "Push failed after 3 attempts"
+          echo "Push failed after 3 attempts."
           exit 1
-
-      # ─────────────────────────────────────────────────────────────
-      # Debug/summary + artifacts
-      # ─────────────────────────────────────────────────────────────
-      - name: Show updater tail
-        if: always()
-        shell: bash
-        run: |
-          if [ -f logs/updater.out ]; then
-            echo "=== updater.out (last 120 lines) ==="
-            tail -n 120 logs/updater.out
-          else
-            echo "logs/updater.out not found"
-          fi
-
-      - name: Write job summary
-        if: always()
-        shell: bash
-        run: |
-          {
-            echo "## README Auto-Update v7.7.0"
-            echo "- **Run**: #${{ github.run_number }}"
-            echo "- **Event**: ${{ github.event_name }}"
-            echo "- **Mode**: ${COMMIT_MODE}"
-            echo "- **Schedule**: ${SCHEDULE_BADGE}"
-            echo "- **Total Updates**: ${TOTAL_UPDATES:-?}"
-            echo "- **Next Update (text)**: ${NEXT_UPDATE_TEXT}"
-            echo "- **Concurrency group**: repo-main-writer"
-          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
         if: always()
@@ -536,7 +495,6 @@ PY
         with:
           name: update_logs
           path: |
-            logs/updater.out
             logs/updater.out
             update_log.txt
             update_log.jsonl
@@ -546,3 +504,17 @@ PY
             badges/github_stars.json
             badges/total_updates.json
           retention-days: 7
+
+      - name: Job summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## README Auto-Update v7.8.0"
+            echo "- Run: #${{ github.run_number }}"
+            echo "- Event: ${{ github.event_name }}"
+            echo "- Mode: ${COMMIT_MODE}"
+            echo "- Total Updates: ${TOTAL_UPDATES:-?}"
+            echo "- Next Update (text): ${NEXT_UPDATE_TEXT}"
+            echo "- Concurrency group: repo-main-writer"
+          } >> "$GITHUB_STEP_SUMMARY"
