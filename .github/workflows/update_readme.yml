@@ -1,4 +1,3 @@
-# .github/workflows/auto_update_readme.yml
 name: Auto Update README v7.5.7
 
 on:
@@ -48,7 +47,6 @@ on:
 permissions:
   contents: write
 
-# ✅ One shared writer-lock for ALL workflows that push to main
 concurrency:
   group: repo-main-writer
   cancel-in-progress: false
@@ -85,7 +83,6 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .ci badges logs
-          # NOTE: This is a one-time bootstrap fallback. The badge workflow owns this file long-term.
           if [ ! -f badges/next_update.json ]; then
             echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
           fi
@@ -280,16 +277,6 @@ jobs:
           p.write_text(txt,encoding="utf-8")
           PY
 
-      - name: Show last 10 JSONL lines
-        shell: bash
-        run: |
-          echo "Last 10 JSONL lines:"
-          if [ -f update_log.jsonl ]; then
-            tail -n 10 update_log.jsonl
-          else
-            echo "update_log.jsonl not found yet"
-          fi
-
       - name: Update STATUS line in README
         shell: bash
         run: |
@@ -319,25 +306,6 @@ jobs:
             !f
           ' README.md > README.tmp && mv README.tmp README.md
 
-      - name: Update STATUS2 line in README
-        shell: bash
-        run: |
-          set -euo pipefail
-          NEXT_ENDPOINT="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/badges/next_update.json"
-          SMOKE_LINK="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/smoke.yml"
-          SMOKE_BADGE="${SMOKE_LINK}/badge.svg?branch=${GITHUB_REF_NAME}&t=${GITHUB_RUN_NUMBER}"
-          LOW_STATUS="<p align=\"left\">
-          <img src=\"https://img.shields.io/endpoint?url=${NEXT_ENDPOINT}&cacheSeconds=120&t=${GITHUB_RUN_NUMBER}\" />
-          <img src=\"https://img.shields.io/static/v1?label=Next%20Update&message=${NEXT_UPDATE_TEXT// /%20}&color=757575&labelColor=30363d&cacheSeconds=600\" />
-          <img src=\"https://img.shields.io/static/v1?label=Updates&message=${TOTAL_UPDATES:-?}&color=0ea5e9&labelColor=30363d&cacheSeconds=300\" />
-          <a href=\"${SMOKE_LINK}\"><img src=\"${SMOKE_BADGE}\" alt=\"Daily Smoke (pytest - m smoke)\" /></a>
-          </p>"
-          awk -v r="$LOW_STATUS" '
-            /<!-- STATUS2:START -->/ {print; print r; f=1; next}
-            /<!-- STATUS2:END -->/   {f=0}
-            !f
-          ' README.md > README.tmp && mv README.tmp README.md
-
       - name: Heartbeat (force a diff on schedule/force)
         if: ${{ github.event_name == 'schedule' || env.COMMIT_MODE == 'force' }}
         shell: bash
@@ -352,9 +320,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # ✅ IMPORTANT: README workflow does NOT own badges/next_update.json (badge workflow owns it)
           git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
-                  badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
+                  badges/next_update.json badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
@@ -365,7 +332,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Push changes
+      - name: Push changes (rebase + retries)
         if: env.COMMIT_MODE != 'dry-run' && steps.commit.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -378,34 +345,10 @@ jobs:
             fi
             echo "Push failed (attempt $i). Retrying..."
             sleep $((i*3))
-            git pull --rebase || true
+            git fetch origin main || true
+            git pull --rebase origin main || true
           done
           echo "Push failed after 3 attempts"; exit 1
-
-      - name: Show updater tail
-        if: always()
-        shell: bash
-        run: |
-          if [ -f logs/updater.out ]; then
-            echo "=== updater.out (last 120 lines) ==="
-            tail -n 120 logs/updater.out
-          else
-            echo "logs/updater.out not found"
-          fi
-
-      - name: Write job summary
-        shell: bash
-        run: |
-          {
-            echo "## README Auto-Update v7.5.7"
-            echo "- **Run**: #${{ github.run_number }}"
-            echo "- **Event**: ${{ github.event_name }}"
-            echo "- **Commit**: ${{ github.sha }}"
-            echo "- **Schedule**: ${SCHEDULE_BADGE}"
-            echo "- **Mode**: ${COMMIT_MODE}"
-            echo "- **Total Updates**: ${TOTAL_UPDATES:-?}"
-            echo "- **Next Update (text)**: ${NEXT_UPDATE_TEXT}"
-          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs as artifacts
         if: always()
