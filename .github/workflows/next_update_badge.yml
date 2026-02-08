@@ -2,7 +2,7 @@ name: Update "Next Update" badge v1.0
 
 on:
   schedule:
-    - cron: "0,30 * * * *"   # every 30 minutes (less noise than */20)
+    - cron: "0 * * * *"   # every Hour (less noise than */20)
   workflow_dispatch:
     inputs:
       force_snapshot:
