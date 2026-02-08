@@ -19,7 +19,7 @@ permissions:
 
 concurrency:
   group: repo-main-writer
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   NEXT_UPDATE_HOUR: 12
