@@ -1,11 +1,8 @@
-# .github/workflows/next_update_badge.yml
 name: Update "Next Update" badge v1.0
 
 on:
-  # ✅ Less noise than */20:
-  # Runs at minute 9 every hour (quiet + still fresh enough)
   schedule:
-    - cron: "9 * * * *"
+    - cron: "0,30 * * * *"   # every 30 minutes (less noise than */20)
   workflow_dispatch:
     inputs:
       force_snapshot:
@@ -16,11 +13,14 @@ on:
         description: "Verbose build (echo JSON to logs)"
         type: boolean
         default: false
+      skip_jitter:
+        description: "Skip sleep/jitter (recommended for manual tests)"
+        type: boolean
+        default: true
 
 permissions:
   contents: write
 
-# ✅ Same writer-lock as README workflow
 concurrency:
   group: repo-main-writer
   cancel-in-progress: false
@@ -29,12 +29,12 @@ env:
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  JITTER_MAX_SEC: 600
+  JITTER_MAX_SEC: 1200
 
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
-  NEXT_BADGE_WINDOW_MIN: 20
+  NEXT_BADGE_WINDOW_MIN: 30
   NEXT_BADGE_PASTELIZE: "1"
   NEXT_BADGE_PASTEL_FACTOR: "0.65"
   NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
@@ -42,8 +42,7 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # ✅ Reduce “log churn” (script can still log internally; commits remain rare)
-  NEXT_BADGE_LOG_EVERY_RUN: "0"
+  NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
   NEXT_BADGE_LOG_MAX: "300"
   SNAPSHOT_COMMIT_MIN: "240"
@@ -51,6 +50,8 @@ env:
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - name: Checkout (shallow + sparse)
         uses: actions/checkout@v5
@@ -66,8 +67,8 @@ jobs:
           sparse-checkout-cone-mode: true
           set-safe-directory: true
 
-      - name: Random jitter (schedule only)
-        if: ${{ github.event_name == 'schedule' }}
+      - name: Random jitter (schedule only, optional)
+        if: ${{ github.event_name == 'schedule' && (inputs.skip_jitter != true) }}
         shell: bash
         run: |
           set -euo pipefail
@@ -90,11 +91,12 @@ jobs:
         id: parse
         shell: bash
         run: |
+          set -euo pipefail
           j=badges/next_update.json
-          msg=$(jq -r '.message'           "$j")
-          color=$(jq -r '.color'            "$j")
-          label=$(jq -r '.label'            "$j")
-          labelColor=$(jq -r '.labelColor'  "$j")
+          msg=$(jq -r '.message'            "$j")
+          color=$(jq -r '.color'           "$j")
+          label=$(jq -r '.label'           "$j")
+          labelColor=$(jq -r '.labelColor' "$j")
           logo=$(jq -r '.namedLogo // empty' "$j")
 
           {
@@ -142,10 +144,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # ✅ Always rebase onto latest main BEFORE committing (extra stability)
-          git fetch --depth=2 origin main || true
-          git pull --rebase --no-tags origin main || true
-
           git add badges/next_update.json || true
 
           force="${{ inputs.force_snapshot && '1' || '0' }}"
@@ -171,7 +169,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.2)"
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.1)"
 
           for i in 1 2 3; do
             if git push origin HEAD:main; then
@@ -183,4 +181,5 @@ jobs:
             git pull --rebase --no-tags origin main || true
           done
 
-          echo "Push failed after 3 attempts"; exit 1
+          echo "Push failed after 3 attempts"
+          exit 1
