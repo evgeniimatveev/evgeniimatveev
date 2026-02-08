@@ -1,3 +1,4 @@
+# .github/workflows/auto_update_readme.yml
 name: Auto Update README v7.5.7
 
 on:
@@ -47,6 +48,7 @@ on:
 permissions:
   contents: write
 
+# ✅ One shared writer-lock for ALL workflows that push to main
 concurrency:
   group: repo-main-writer
   cancel-in-progress: false
@@ -83,6 +85,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .ci badges logs
+          # NOTE: This is a one-time bootstrap fallback. The badge workflow owns this file long-term.
           if [ ! -f badges/next_update.json ]; then
             echo '{"schemaVersion":1,"label":"Next","message":"—","color":"lightgrey"}' > badges/next_update.json
           fi
@@ -189,10 +192,10 @@ jobs:
           repos_json="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "User-Agent: $UA" "https://api.github.com/search/repositories?q=user:${GH_USER}+fork:false&per_page=100")"
           stars="$(printf '%s' "$repos_json" | jq -r '[.items[].stargazers_count] | add // 0')"
 
-          # NOTE: no "logo" key (endpoint JSON doesn’t allow it)
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"followers\",\"message\":\"${followers}\",\"color\":\"blue\"}" > badges/github_followers.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"stars\",\"message\":\"${stars}\",\"color\":\"yellow\"}" > badges/github_stars.json
           printf '%s\n' "{\"schemaVersion\":1,\"label\":\"updates\",\"message\":\"${TOTAL_UPDATES:-?}\",\"color\":\"0ea5e9\"}" > badges/total_updates.json
+
       - name: Ensure BADGES block (vertical)
         shell: bash
         run: |
@@ -349,8 +352,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # ✅ IMPORTANT: README workflow does NOT own badges/next_update.json (badge workflow owns it)
           git add README.md update_log.txt update_log.jsonl .ci/heartbeat.log .ci/update_count.txt \
-                  badges/next_update.json badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
+                  badges/github_followers.json badges/github_stars.json badges/total_updates.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
