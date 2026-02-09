@@ -2,7 +2,7 @@ name: Update "Next Update" badge v1.0
 
 on:
   schedule:
-    - cron: "0 * * * *"   # every Hour (less noise than */20)
+    - cron: "0 * * * *"   # every hour
   workflow_dispatch:
     inputs:
       force_snapshot:
@@ -26,11 +26,14 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  # Your “next update” target time (used by build_next_badge.py)
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  JITTER_MAX_SEC: 1200
+  # Jitter (spread load) — MUST be <= timeout-minutes * 60 to avoid cancels
+  JITTER_MAX_SEC: 300
 
+  # Badge tuning
   NEXT_BADGE_LABEL: "Next Update"
   NEXT_BADGE_LABEL_COLOR: "e5e7eb"
   NEXT_BADGE_NAMED_LOGO: "timer"
@@ -42,9 +45,12 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
+  # Logs behavior (your script may use these)
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
   NEXT_BADGE_LOG_MAX: "300"
+
+  # Commit tail logs every N minutes (schedule runs)
   SNAPSHOT_COMMIT_MIN: "240"
 
 jobs:
@@ -67,12 +73,39 @@ jobs:
           sparse-checkout-cone-mode: true
           set-safe-directory: true
 
+      # ✅ FIXED: schedule has no inputs; control jitter via env + allow skipping on manual runs
       - name: Random jitter (schedule only, optional)
-        if: ${{ github.event_name == 'schedule' && (inputs.skip_jitter != true) }}
+        if: >-
+          ${{
+            github.event_name == 'schedule' &&
+            env.JITTER_MAX_SEC != '0' &&
+            env.JITTER_MAX_SEC != ''
+          }}
         shell: bash
         run: |
           set -euo pipefail
-          S=$(( RANDOM % ${JITTER_MAX_SEC:-0} + 1 ))
+          MAX="${JITTER_MAX_SEC:-0}"
+          if [[ "$MAX" -le 0 ]]; then
+            echo "Jitter disabled (JITTER_MAX_SEC=$MAX)."
+            exit 0
+          fi
+
+          # allow 0..MAX seconds (sometimes no wait)
+          S=$(( RANDOM % (MAX + 1) ))
+          echo "Sleeping ${S}s to spread load..."
+          sleep "$S"
+
+      - name: Random jitter (manual only, unless skipped)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.skip_jitter != true }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAX="${JITTER_MAX_SEC:-0}"
+          if [[ "$MAX" -le 0 ]]; then
+            echo "Jitter disabled (JITTER_MAX_SEC=$MAX)."
+            exit 0
+          fi
+          S=$(( RANDOM % (MAX + 1) ))
           echo "Sleeping ${S}s to spread load..."
           sleep "$S"
 
@@ -82,25 +115,36 @@ jobs:
           python-version: "3.10"
 
       - name: Build JSON for badge
-        run: python build_next_badge.py
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build_next_badge.py
 
       - name: Install jq (for JSON parsing)
-        run: sudo apt-get -y update && sudo apt-get -y install jq
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y jq
 
       - name: Parse badge JSON → outputs (+ optional verbose echo)
         id: parse
         shell: bash
         run: |
           set -euo pipefail
-          j=badges/next_update.json
-          msg=$(jq -r '.message'            "$j")
-          color=$(jq -r '.color'           "$j")
-          label=$(jq -r '.label'           "$j")
-          labelColor=$(jq -r '.labelColor' "$j")
-          logo=$(jq -r '.namedLogo // empty' "$j")
+          j="badges/next_update.json"
 
+          msg="$(jq -r '.message'            "$j")"
+          color="$(jq -r '.color'           "$j")"
+          label="$(jq -r '.label'           "$j")"
+          labelColor="$(jq -r '.labelColor' "$j")"
+          logo="$(jq -r '.namedLogo // empty' "$j")"
+
+          # safer output writing (handles spaces/special chars)
           {
-            echo "message=$msg"
+            echo "message<<EOF"
+            echo "$msg"
+            echo "EOF"
             echo "color=$color"
             echo "label=$label"
             echo "labelColor=$labelColor"
@@ -137,6 +181,7 @@ jobs:
           path: |
             badges/next_update_log.jsonl
             badges/next_update_log.txt
+          if-no-files-found: ignore
           retention-days: 7
 
       - name: Commit badge (+ tail logs on schedule/force)
@@ -169,11 +214,12 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.1)"
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.2)"
 
           for i in 1 2 3; do
             if git push origin HEAD:main; then
-              echo "Pushed successfully"; exit 0
+              echo "Pushed successfully"
+              exit 0
             fi
             echo "Push failed (attempt $i). Retrying..."
             sleep $((i*3))
