@@ -2,7 +2,7 @@ name: Update "Next Update" badge v1.0
 
 on:
   schedule:
-    - cron: "0 * * * *"   # every hour
+    - cron: "*/5 * * * *"   # every hour "*/5 * * * *"  "0 * * * *"
   workflow_dispatch:
     inputs:
       force_snapshot:
