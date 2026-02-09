@@ -2,7 +2,7 @@ name: Auto Update README v7.5.7
 
 on:
   schedule:
-    - cron: "15 12 * * *" # 12:15 UTC daily
+    - cron: "52 12 * * *" # 12:37 UTC daily
   workflow_dispatch:
     inputs:
       banner_mode:
