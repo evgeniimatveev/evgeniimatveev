@@ -2,7 +2,7 @@ name: Update "Next Update" badge v1.0
 
 on:
   schedule:
-    - cron: "37 * * * *"   # every 5 min(testing) "*/5 * * * *"  # every hour  "0 * * * *"
+    - cron: "37 * * * *"   # hourly at :37 UTC (avoid :00 crowd)
   workflow_dispatch:
     inputs:
       force_snapshot:
@@ -26,11 +26,11 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Your “next update” target time (used by build_next_badge.py)
+  # Used by build_next_badge.py
   NEXT_UPDATE_HOUR: 12
   NEXT_UPDATE_MIN: 15
 
-  # Jitter (spread load) — MUST be <= timeout-minutes * 60 to avoid cancels
+  # Jitter safety: <= timeout-minutes * 60
   JITTER_MAX_SEC: 300
 
   # Badge tuning
@@ -45,7 +45,7 @@ env:
   NEXT_BADGE_YELLOW_COLOR:  "fde68a"
   NEXT_BADGE_GREEN_COLOR:   "86efac"
 
-  # Logs behavior (your script may use these)
+  # Logs behavior
   NEXT_BADGE_LOG_EVERY_RUN: "1"
   NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
   NEXT_BADGE_LOG_MAX: "300"
@@ -56,7 +56,7 @@ env:
 jobs:
   refresh-badge:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
 
     steps:
       - name: Checkout (shallow + sparse)
@@ -73,8 +73,7 @@ jobs:
           sparse-checkout-cone-mode: true
           set-safe-directory: true
 
-      # ✅ FIXED: schedule has no inputs; control jitter via env + allow skipping on manual runs
-      - name: Random jitter (schedule only, optional)
+      - name: Random jitter (schedule only)
         if: >-
           ${{
             github.event_name == 'schedule' &&
@@ -89,8 +88,6 @@ jobs:
             echo "Jitter disabled (JITTER_MAX_SEC=$MAX)."
             exit 0
           fi
-
-          # allow 0..MAX seconds (sometimes no wait)
           S=$(( RANDOM % (MAX + 1) ))
           echo "Sleeping ${S}s to spread load..."
           sleep "$S"
@@ -120,10 +117,14 @@ jobs:
           set -euo pipefail
           python build_next_badge.py
 
-      - name: Install jq (for JSON parsing)
+      - name: Ensure jq exists
         shell: bash
         run: |
           set -euo pipefail
+          if command -v jq >/dev/null 2>&1; then
+            echo "jq already installed"
+            exit 0
+          fi
           sudo apt-get -qq update
           sudo apt-get -qq install -y jq
 
@@ -140,7 +141,6 @@ jobs:
           labelColor="$(jq -r '.labelColor' "$j")"
           logo="$(jq -r '.namedLogo // empty' "$j")"
 
-          # safer output writing (handles spaces/special chars)
           {
             echo "message<<EOF"
             echo "$msg"
