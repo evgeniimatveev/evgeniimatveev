@@ -1,0 +1,231 @@
+name: Update "Next Update" badge v1.0
+
+on:
+  schedule:
+    - cron: "37 * * * *"   # every 5 min(testing) "*/5 * * * *"  # every hour  "0 * * * *"
+  workflow_dispatch:
+    inputs:
+      force_snapshot:
+        description: "Commit tail logs this run (override quiet schedule)"
+        type: boolean
+        default: false
+      verbose_echo:
+        description: "Verbose build (echo JSON to logs)"
+        type: boolean
+        default: false
+      skip_jitter:
+        description: "Skip sleep/jitter (recommended for manual tests)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
+
+env:
+  # Your “next update” target time (used by build_next_badge.py)
+  NEXT_UPDATE_HOUR: 12
+  NEXT_UPDATE_MIN: 15
+
+  # Jitter (spread load) — MUST be <= timeout-minutes * 60 to avoid cancels
+  JITTER_MAX_SEC: 300
+
+  # Badge tuning
+  NEXT_BADGE_LABEL: "Next Update"
+  NEXT_BADGE_LABEL_COLOR: "e5e7eb"
+  NEXT_BADGE_NAMED_LOGO: "timer"
+  NEXT_BADGE_WINDOW_MIN: 30
+  NEXT_BADGE_PASTELIZE: "1"
+  NEXT_BADGE_PASTEL_FACTOR: "0.65"
+  NEXT_BADGE_OVERDUE_COLOR: "fca5a5"
+  NEXT_BADGE_RED_COLOR:     "f87171"
+  NEXT_BADGE_YELLOW_COLOR:  "fde68a"
+  NEXT_BADGE_GREEN_COLOR:   "86efac"
+
+  # Logs behavior (your script may use these)
+  NEXT_BADGE_LOG_EVERY_RUN: "1"
+  NEXT_BADGE_LOG_SNAPSHOT_MIN: "0"
+  NEXT_BADGE_LOG_MAX: "300"
+
+  # Commit tail logs every N minutes (schedule runs)
+  SNAPSHOT_COMMIT_MIN: "240"
+
+jobs:
+  refresh-badge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout (shallow + sparse)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 2
+          persist-credentials: true
+          filter: blob:none
+          sparse-checkout: |
+            badges
+            build_next_badge.py
+            .github/workflows/next_update_badge.yml
+          sparse-checkout-cone-mode: true
+          set-safe-directory: true
+
+      # ✅ FIXED: schedule has no inputs; control jitter via env + allow skipping on manual runs
+      - name: Random jitter (schedule only, optional)
+        if: >-
+          ${{
+            github.event_name == 'schedule' &&
+            env.JITTER_MAX_SEC != '0' &&
+            env.JITTER_MAX_SEC != ''
+          }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAX="${JITTER_MAX_SEC:-0}"
+          if [[ "$MAX" -le 0 ]]; then
+            echo "Jitter disabled (JITTER_MAX_SEC=$MAX)."
+            exit 0
+          fi
+
+          # allow 0..MAX seconds (sometimes no wait)
+          S=$(( RANDOM % (MAX + 1) ))
+          echo "Sleeping ${S}s to spread load..."
+          sleep "$S"
+
+      - name: Random jitter (manual only, unless skipped)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.skip_jitter != true }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAX="${JITTER_MAX_SEC:-0}"
+          if [[ "$MAX" -le 0 ]]; then
+            echo "Jitter disabled (JITTER_MAX_SEC=$MAX)."
+            exit 0
+          fi
+          S=$(( RANDOM % (MAX + 1) ))
+          echo "Sleeping ${S}s to spread load..."
+          sleep "$S"
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Build JSON for badge
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build_next_badge.py
+
+      - name: Install jq (for JSON parsing)
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y jq
+
+      - name: Parse badge JSON → outputs (+ optional verbose echo)
+        id: parse
+        shell: bash
+        run: |
+          set -euo pipefail
+          j="badges/next_update.json"
+
+          msg="$(jq -r '.message'            "$j")"
+          color="$(jq -r '.color'           "$j")"
+          label="$(jq -r '.label'           "$j")"
+          labelColor="$(jq -r '.labelColor' "$j")"
+          logo="$(jq -r '.namedLogo // empty' "$j")"
+
+          # safer output writing (handles spaces/special chars)
+          {
+            echo "message<<EOF"
+            echo "$msg"
+            echo "EOF"
+            echo "color=$color"
+            echo "label=$label"
+            echo "labelColor=$labelColor"
+            echo "logo=$logo"
+            echo "endpoint=badges/next_update.json"
+          } >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ inputs.verbose_echo }}" == "true" ]]; then
+            echo "::group::next_update.json"
+            cat "$j"
+            echo "::endgroup::"
+          fi
+
+      - name: Publish run summary
+        shell: bash
+        run: |
+          {
+            echo "### Next Update badge"
+            echo ""
+            echo "- **Message:** ${{ steps.parse.outputs.message }}"
+            echo "- **Label:** ${{ steps.parse.outputs.label }}"
+            echo "- **Color:** ${{ steps.parse.outputs.color }}"
+            echo "- **LabelColor:** ${{ steps.parse.outputs.labelColor }}"
+            echo "- **Logo:** ${{ steps.parse.outputs.logo || '—' }}"
+            echo ""
+            echo "_Shields endpoint_: \`${{ steps.parse.outputs.endpoint }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload telemetry logs (artifact)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: next_update_logs
+          path: |
+            badges/next_update_log.jsonl
+            badges/next_update_log.txt
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Commit badge (+ tail logs on schedule/force)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git add badges/next_update.json || true
+
+          force="${{ inputs.force_snapshot && '1' || '0' }}"
+          if [[ "$force" == "1" ]]; then
+            echo "Force-committing tail logs (manual override)."
+            git add badges/next_update_log.jsonl badges/next_update_log.txt || true
+          else
+            N="${SNAPSHOT_COMMIT_MIN:-240}"
+            MOD=$(( ( $(date -u +%s) / 60 ) % N ))
+            if [[ "$MOD" -eq 0 ]]; then
+              echo "Scheduled tail log commit (every ${N} min)."
+              git add badges/next_update_log.jsonl badges/next_update_log.txt || true
+            else
+              echo "Skipping tail log commit (quiet mode)."
+            fi
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git commit -m "chore: refresh next_update badge (quiet-hybrid v1.2.2)"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Pushed successfully"
+              exit 0
+            fi
+            echo "Push failed (attempt $i). Retrying..."
+            sleep $((i*3))
+            git fetch --depth=2 origin main || true
+            git pull --rebase --no-tags origin main || true
+          done
+
+          echo "Push failed after 3 attempts"
+          exit 1
