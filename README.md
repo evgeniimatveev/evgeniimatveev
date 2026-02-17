@@ -345,6 +345,9 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
     alt="Connect on LinkedIn"/></a>
 </p>
 
+
 ---
 
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&duration=2600&pause=850&color=%23094059&background=%23F6F8FA&center=true&vCenter=true&width=1200&lines=🚀+MLOps+Automation+%7C+AI+%26+Data+Ops;📊+SQL+for+ML+Experiments+%7C+PostgreSQL;🧪+Tracking%3A+MLflow+%2B+Weights+%26+Biases;⚡+CI%2FCD+Pipelines+with+GitHub+Actions;🐳+Dockerized+ETL+%26+Deployments;📈+Dashboards%3A+Tableau+%7C+Power+BI;🔬+Tuning%3A+W%26B+Sweeps+%7C+Bayesian+Search;🛡️+Reliable%2C+reproducible+ML+systems+end-to-end)](https://git.io/typing-svg)
 
+---
