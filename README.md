@@ -33,6 +33,8 @@
 
 ### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
 
+---
+
 <details>
 <summary>⚡ <b>How it works</b> <em>(architecture deep-dive 🔬 for engineers)</em></summary>
 
@@ -91,6 +93,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ---
 </details>
 
+---
 
 ## 📚 Learning Journey
 
