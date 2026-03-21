@@ -167,6 +167,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ### Testing & Data Tools
 ![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
 ![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)
+![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
 
 ### CI/CD & Automation
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
