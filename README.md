@@ -179,6 +179,54 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
+## 💼 Tech Stack (Production & Portfolio)
+
+### Languages & Databases
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+
+### Data & Analytics
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge)
+![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+
+### IDE & Workflow
+![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
+
+### DevOps & MLOps
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
+![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
+
+### BI Tools
+![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
+![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
+
+### Testing & Data Tools
+![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
+![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)
+
+### CI/CD & Automation
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AUTOMATION-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![GitHub Workflows](https://img.shields.io/badge/GitHub_Workflows-CI/CD-2088FF?style=for-the-badge&logo=github&logoColor=white)
+![AutoLint](https://img.shields.io/badge/AutoLint-grey?style=for-the-badge&logo=github&logoColor=white)
+![SQL & Python](https://img.shields.io/badge/SQL_&_Python-2088FF?style=for-the-badge)
+
+### AI Assistants
+![AI Assistant – ChatGPT](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=ChatGPT&color=00A67E&labelColor=555555&logo=openai&logoColor=white&style=for-the-badge)
+![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
+
+### ☁️ Cloud & Data Platforms (Azure)
+![Microsoft Azure](https://img.shields.io/badge/Microsoft_Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Azure Databricks](https://img.shields.io/badge/Azure_Databricks-EF3D2F?style=for-the-badge&logo=databricks&logoColor=white)
+![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Azure Data Lake Gen2](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
+---
+
+
 <!-- BEGIN: COPILOTS -->
 <details>
   <summary>💫 AI Copilot Ecosystem</summary>
