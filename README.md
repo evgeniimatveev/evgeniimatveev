@@ -99,7 +99,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 📚 Learning Journey
 
 **Now**
-- ☁️ **AWS CCP (CLF-C02)** — CloudWolf (active learning)
 - 🧱 **Azure Data Engineering Projects** (Udemy):
 - Databricks Lakehouse (Formula1 — batch & lakehouse design)
 - Data Factory pipelines (Covid19 — ingestion & orchestration)
