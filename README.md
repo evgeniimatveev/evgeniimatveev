@@ -114,13 +114,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - ☁️ CloudWolf — AWS fundamentals for data workflows
 
 ---
-## 💎 Stay Connected  
-
-| 🌐 Platform | 🔗 Link |
-|-------------|---------|
-| 🧠 **GitHub** | [Evgenii Matveev](https://github.com/evgeniimatveev) |
-| 📁 **Portfolio** | [Data Science Portfolio](https://www.datascienceportfol.io/evgeniimatveevusa) |
-| 📊 **LinkedIn** | [Evgenii Matveev](https://www.linkedin.com/in/evgenii-matveev-510926276/) |
 
 <!-- BADGES:START -->
 <div align="left">
