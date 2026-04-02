@@ -29,10 +29,11 @@
 
 ---
 
-# 🤖 Hi, I'm Evgenii — Data Analyst
+## 🤖 Hi, I'm Evgenii — Data Analyst
 
-Turning data into dashboards and actionable insights
-## ⚙️ Building production-ready pipelines with CI/CD and intelligent automation
+## Turning data into dashboards and actionable insights
+
+## ⚙️ Building dashboards, analytics workflows, and data-driven insights
 
 ### 💼  SQL | 📊 Tableau |  🧩 Python | 📈 Data Storytelling
 
