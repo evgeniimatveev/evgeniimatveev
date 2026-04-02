@@ -29,10 +29,12 @@
 
 ---
 
-# 🤖 Hi, I'm Evgenii — turning data into insights, dashboards, and automated analytics workflows
-## ⚙️ Building production-ready pipelines with CI/CD and intelligent automation  
+# 🤖 Hi, I'm Evgenii — Data Analyst
 
-### 🧠 MLOps | ⚙️ Automation | 🐍 SQL | 📊 Data Science | 📈 Experiment Tracking | 📉 Tableau 
+Turning data into dashboards and actionable insights
+## ⚙️ Building production-ready pipelines with CI/CD and intelligent automation
+
+### 💼  SQL | 📊 Tableau |  🧩 Python | 📈 Data Storytelling
 
 ---
 
