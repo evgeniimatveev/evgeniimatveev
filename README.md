@@ -98,25 +98,20 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ## 📚 Learning Journey
 
-**Now**
-- 🧱 **Azure Data Engineering Projects** (Udemy):
-- Databricks Lakehouse (Formula1 — batch & lakehouse design)
-- Data Factory pipelines (Covid19 — ingestion & orchestration)
-- Azure Synapse Analytics (NYC Taxi — analytics & SQL warehouse)
-
-**Next**
-- 🧪 More portfolio releases: architecture diagrams, CI/CD, and production-style enhancements
-
 **Focus**
-- **Data Engineering | MLOps | SQL | Automation**
--  **Building cloud-native, cost-aware data platforms**
-> 🧭 2+ years of continuous, hands-on learning with a strong focus on real-world projects and automation
+- 📊 Data Analytics & Business Intelligence
+- 🧠 SQL, Data Modeling & Analytical Thinking
+- ⚙️ Automation & ETL workflows for analytics
+- ☁️ Cloud fundamentals for data analysis (AWS basics)
+
+> 🧭 2+ years of hands-on learning focused on real-world projects, dashboards, and automation
 
 ---
+
 ### Learning Platforms
-- 🎓 SuperDataScience — MLOps & AI specialization
-- 📘 Udemy — Data Engineering & Cloud projects
-- ☁️ CloudWolf — AWS Cloud & Certification preparation
+- 🎓 SuperDataScience — Data Analytics, ML & Automation
+- 📘 Udemy — SQL, Tableau & Data Projects
+- ☁️ CloudWolf — AWS fundamentals for data workflows
 
 ---
 ## 💎 Stay Connected  
