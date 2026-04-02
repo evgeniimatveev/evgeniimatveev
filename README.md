@@ -29,13 +29,19 @@
 
 ---
 
-## 🤖 Hi, I'm Evgenii — Data Analyst
+## 👋 Hi, I'm Evgenii — Data Analyst
 
-## Turning data into dashboards and actionable insights
+> Turning data into dashboards and actionable insights
 
-## ⚙️ Building dashboards, analytics workflows, and data-driven insights
+💡 I build clean dashboards, automate analytics workflows, and deliver data-driven insights.
 
-### 💼  SQL | 📊 Tableau |  🧩 Python | 📈 Data Storytelling
+---
+
+**🛠️ Core Stack**  
+`SQL` • `Tableau` • `Python` • `PostgreSQL` • `Excel`
+
+**📊 Focus**  
+Data Analytics • BI • Data Storytelling • Automation
 
 ---
 
