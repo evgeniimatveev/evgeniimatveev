@@ -135,7 +135,16 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-## 💼 Tech Stack (Production & Portfolio)
+## 🧠 What I Actually Do
+
+- Build dashboards that answer business questions  
+- Write SQL for real analytics (not just SELECT *)  
+- Automate data pipelines (ETL → dashboards)  
+- Turn raw data into decisions 
+
+---
+
+##  💼 Analytics Stack (Production-Level)
 
 ### Languages & Databases
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -181,6 +190,54 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
 ![Azure Data Lake Gen2](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
 
+---
+
+## ⚙️ Analytics Stack (Production-Level)
+
+### 🛢️ Languages & Databases
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+
+---
+
+### 📊 Data & Analytics
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge)
+![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+
+---
+
+### 📈 BI & Visualization
+![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
+![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
+
+---
+
+### ⚙️ Automation & Workflow
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+
+---
+
+### 🐳 Reproducibility & MLOps
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
+![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
+
+---
+
+### 🧪 Data Tools
+![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
+![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)
+![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
+
+---
+
+### ☁️ Cloud (Learning)
+![Microsoft Azure](https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Databricks](https://img.shields.io/badge/Databricks-EF3D2F?style=for-the-badge&logo=databricks&logoColor=white)
+![Data Factory](https://img.shields.io/badge/Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
 ---
 
 
