@@ -263,10 +263,12 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
   <sub><em>Night-mode palettes · Daily A–G theme rotation · Fully automated via GitHub Actions</em></sub>
 </p>
 
----
-| 🧩 Workflow | ⚙️ Automation | 📊 Insights |
-|-------------|---------------|-------------|
-| Design → Build → Scale |  Deploy	CI/CD with intelligence | Measure → Learn → Improve |
+## ⚙️ Workflow | 🤖 Automation | 📊 Insights
+
+| 🧩 Workflow                  | ⚙️ Automation                        | 📊 Insights                      |
+|----------------------------|-------------------------------------|----------------------------------|
+| Collect → Clean → Analyze  | ETL → CI/CD → Scheduled Pipelines   | Dashboards → Trends → Decisions  |
+| Build → Visualize → Scale  | Python → GitHub Actions → Docker    | Measure → Learn → Improve        |
 
 
 
