@@ -194,7 +194,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | Assistant | Role | Usage |
 |------------|------|--------|
 |  ChatGPT 5.2 | Core copilot for architecture & automation | Rapid execution |
-|  Claude Sonnet 4.5 | Contextual planner & strategic reasoner | Long-range thinking |
+|  Claude Sonnet 4.6 | Contextual planner & strategic reasoner | Long-range thinking |
 
   <details>
     <summary>💡 <b>Note: Dual-Copilot Workflow</b></summary>
