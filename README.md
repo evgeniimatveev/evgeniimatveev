@@ -184,11 +184,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ![AI Assistant – ChatGPT](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=ChatGPT&color=00A67E&labelColor=555555&logo=openai&logoColor=white&style=for-the-badge)
 ![AI Assistant – Claude Sonnet 4.5](https://img.shields.io/static/v1?label=AI%20ASSISTANT&message=Claude%20Sonnet%204.5&color=FF7F50&labelColor=555555&logo=anthropic&logoColor=FF7F50&style=for-the-badge)
 
-### ☁️ Cloud & Data Platforms (Azure)
-![Microsoft Azure](https://img.shields.io/badge/Microsoft_Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Azure Databricks](https://img.shields.io/badge/Azure_Databricks-EF3D2F?style=for-the-badge&logo=databricks&logoColor=white)
-![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Azure Data Lake Gen2](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
 
 ---
 
@@ -233,13 +229,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
 
 ---
-
-### ☁️ Cloud (Learning)
-![Microsoft Azure](https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Databricks](https://img.shields.io/badge/Databricks-EF3D2F?style=for-the-badge&logo=databricks&logoColor=white)
-![Data Factory](https://img.shields.io/badge/Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
----
-
 
 <!-- BEGIN: COPILOTS -->
 <details>
