@@ -268,12 +268,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 |-------------|---------------|-------------|
 | Design → Build → Scale |  Deploy	CI/CD with intelligence | Measure → Learn → Improve |
 
----
-## 💯 What I Do
 
-- ⚙️ **Automate** end-to-end ML pipelines *(train → eval → deploy)*  
-- 📈 **Track experiments** with MLflow & W&B; analyze runs via PostgreSQL/SQL  
-- 📉 **Build stakeholder dashboards** in Tableau / Power BI
 
 ---
 
@@ -356,3 +351,165 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 ---
+
+
+
+<div align="center">
+Evgenii Matveev
+Data Analyst · Data Engineer · MLOps
+Turning raw data into pipelines, dashboards, and actionable decisions
+Show Image
+Show Image
+Show Image
+Show Image
+</div>
+
+About Me
+I'm a self-taught data professional with 2+ years of hands-on experience building production-ready analytics systems. My background is unconventional — I come from engineering and transportation — which shaped how I think: precision-first, systems-minded, always asking why before how.
+I build end-to-end: from raw SQL and ETL pipelines, to Tableau dashboards, to automated CI/CD systems with real observability. Currently deepening expertise in Azure Data Engineering (Databricks, Data Factory, Synapse) and AWS fundamentals.
+
+5,500+ automated CI/CD runs shipped · 0 manual maintenance · real production reliability
+
+
+Tech Stack
+Languages & Databases
+Python · SQL · PostgreSQL · DuckDB · MotherDuck · MySQL · MS SQL Server · R
+BI & Visualization
+Tableau · Power BI · Excel · Matplotlib · Seaborn
+ML & AI
+Scikit-learn · XGBoost · CatBoost · LightGBM · Prophet · YOLOv5 · OpenCV · NLP · FastAPI
+MLOps & Automation
+MLflow · Weights & Biases · GitHub Actions · Docker · CI/CD · DVC
+Cloud (in progress)
+Azure Databricks · Azure Data Factory · Azure Synapse · AWS SAA-C03
+Tools
+VS Code · Git · DBeaver · Jupyter · Google Colab · Postman
+
+Featured Projects
+NYC 311 Analytics Pipeline — DuckDB + MotherDuck + Docker
+
+Python · DuckDB · MotherDuck · Docker · SQL · Parquet
+
+Reproducible ELT pipeline processing NYC 311 complaint data with in-process DuckDB analytics and MotherDuck cloud storage. Automated CSV/Parquet validation with Python smoke tests — 100% format consistency. SQL analytics revealed seasonal complaint spikes and borough-level disparities (Bronx highest volume). Containerized for one-command reproducible execution.
+
+HR BI Platform — PostgreSQL + Python + Tableau
+
+PostgreSQL · SQL Views · Python · Tableau · DBeaver
+
+End-to-end BI platform on real HR data: PostgreSQL schema + analytical SQL views + automated Python CSV export pipeline. Built 5 Tableau Story dashboards covering headcount, salary trends, hiring patterns, and department analytics. Reduced manual reporting effort by ~40% through automated exports with dotenv config management.
+
+MLOps End-to-End Pipeline — XGBoost + MLflow + W&B
+
+Python · XGBoost · MLflow · W&B Sweeps · PostgreSQL · GitHub Actions · Docker
+
+Full ML lifecycle: ingestion → cleaning → feature engineering → training → experiment tracking → visualization. W&B hyperparameter sweeps for XGBoost optimization. MLflow for experiment registry and model versioning. Reproducible feature engineering module with validation scripts.
+
+FastAPI + Ollama — Dockerized LLM Inference Playground
+
+FastAPI · Docker · Ollama · REST API · phi3 · llama2 · deepseek-r1
+
+Local LLM inference system with FastAPI + Ollama supporting multiple models via REST API and web UI. Clean separation of model layer and application layer. Docker Compose setup for fully reproducible deployment — ideal for rapid AI experimentation.
+
+Automated GitHub MLOps Dashboard — CI/CD & Observability
+
+GitHub Actions · Python · NLG · JSONL · pytest · Shields.io
+
+Self-updating portfolio system with 5,500+ automated CI runs and 310+ README updates — zero manual maintenance. NLG engine generates contextual time/season-aware MLOps insights per run. JSONL observability stack with telemetry logs, heartbeat monitoring, and monotonic counters. Daily smoke tests (pytest) validate pipeline health on every scheduled run.
+<details>
+<summary>More projects →</summary>
+Advanced SQL & Data Management A-Z — Window functions, CTEs, stored procedures, PIVOT/UNPIVOT, query optimization. Employee management database with normalization (1NF/2NF/3NF) and ER diagrams. Final project: raw data → ML-ready datasets using pure SQL.
+Python Projects Hub — ML, NLP & Computer Vision — Avocado price forecasting with Prophet + FastAPI + Streamlit. Amazon Reviews NLP sentiment analysis. Real-Time AI detection with YOLOv5 + MediaPipe. ML-based movie recommendation engine using collaborative filtering.
+Germany Remote Job Tracker — Python ETL pipeline + Tableau Story automating collection and visualization of remote-friendly tech job listings via Arbeitnow API.
+</details>
+
+Experience
+QA Web & Software Tester · Jul 2023 – Sep 2023
+Identified critical bugs improving application reliability across web and API layers. Created structured test cases and detailed bug reports using Chrome DevTools and Postman.
+Uber Driver · Oct 2022 – Present
+3,291+ trips · 1,500+ five-star ratings · Excellent Service & Above and Beyond awards. Real-time route optimization using GPS and live data — translated directly into an interest in analytics and automation.
+
+Education & Certifications
+SuperDataScience (SDS) — Data Science & MLOps Specialization · Oct 2023 – Present
+SQL, Tableau, Python, CI/CD, ML automation, Docker, PostgreSQL, experiment tracking
+Udemy — Azure Data Engineering (Ramesh Retnasamy) · In Progress
+Azure Databricks + Data Factory + Synapse Analytics
+CloudWolf — AWS Solutions Architect Associate (SAA-C03) · In Progress
+<details>
+<summary>All certifications →</summary>
+Cloud & Data Engineering
+
+Azure Data Engineering End-to-end Course (Udemy) — Dec 2025 · 77 hrs
+Azure Databricks + Data Factory + Synapse (Udemy) — expected May 2026
+
+SQL & Databases
+
+SQL & Database Design A-Z: MS SQL Server + PostgreSQL (SDS) — Aug–Sep 2024
+Advanced SQL & Data Management (SDS) — Sep 2024
+Feature Engineering & Data Preparation (SDS) — Mar 2025
+
+Machine Learning & Python
+
+Machine Learning Algorithms (SDS) — Feb 2025
+CatBoost & LightGBM (SDS) — Mar 2025
+Python A-Z: Programming Language (SDS) — Feb & Apr 2025
+NumPy & Pandas (SDS) — Sep 2024
+MLOps & MLflow (SDS) — Apr 2025
+Prompt Engineering & LLMs (SDS) — Oct 2025
+R Programming A-Z + RStudio (SDS) — Dec 2024
+
+BI, Analytics & Visualization
+
+Tableau Advanced Analytics (SDS) — Apr 2024
+Power BI & Data Visualization (SDS) — Aug 2024
+Data Science & Data Analysis (SDS) — Jul 2024
+
+DevOps & Automation
+
+GitHub Actions & CI/CD Automation (SDS) — Apr 2025
+Git & GitHub (SDS) — Apr 2025
+
+</details>
+
+<details>
+<summary>⚙️ MLOps Dashboard — architecture deep-dive</summary>
+This profile is a self-updating MLOps demo — a living portfolio showcasing production-grade automation.
+Architecture
+
+Banner rotation: 367 GIFs · natural sorting · cache-busted CDN URLs
+Dynamic insights: Context-aware NLG (time/season/DOW algorithms)
+Observability: JSONL telemetry · heartbeat pings · state persistence
+Zero-touch ops: 5,500+ runs · 133 mutations · idempotent commits
+
+CI/CD Workflows
+WorkflowScheduleStatusAuto Update READMEDaily 12:15 UTCShow ImageNext Update BadgeEvery 20minShow ImageDaily Smoke TestsDailyShow Image
+Observability Stack
+.
+├── update_log.jsonl          # CI run timeline (ts_utc, run_id, sha, banner_*, insight_*)
+├── update_log.txt            # Human-readable mirror
+├── badges/
+│   ├── next_update.json      # Live Shields.io badge state
+│   ├── github_followers.json # Followers badge endpoint
+│   ├── github_stars.json     # Stars badge endpoint
+│   └── total_updates.json    # Updates badge endpoint
+└── .ci/
+    ├── heartbeat.log         # GitHub Actions heartbeat ledger
+    └── update_count.txt      # Monotonic mutation counter
+</details>
+
+<div align="center">
+GitHub Activity
+<p align="center">
+  <img src="./dist/snake.svg" alt="GitHub contribution snake" />
+</p>
+<p align="center">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight" width="700"/>
+</p>
+<p align="center">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight" width="340"/>
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="340"/>
+</p>
+
+Show Image
+Show Image
+Show Image
+</div>
