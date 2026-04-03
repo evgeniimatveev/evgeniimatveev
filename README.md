@@ -213,6 +213,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ### ⚙️ Automation & Workflow
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![AutoLint](https://img.shields.io/badge/AutoLint-grey?style=for-the-badge&logo=github&logoColor=white)
 
 ---
 
