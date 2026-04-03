@@ -267,7 +267,7 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 | 🧩 Workflow                  | ⚙️ Automation                        | 📊 Insights                      |
 |----------------------------|-------------------------------------|----------------------------------|
-| Collect → Clean → Analyze  | ETL → CI/CD → Scheduled Pipelines   | Dashboards → Trends → Decisions  |
+| Raw Data → Clean → Analyze | ETL → CI/CD → Automated Pipelines   | Dashboards → KPIs → Decisions    |
 | Build → Visualize → Scale  | Python → GitHub Actions → Docker    | Measure → Learn → Improve        |
 
 
