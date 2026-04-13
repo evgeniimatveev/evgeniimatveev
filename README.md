@@ -353,7 +353,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-
 <!-- BANNER:START -->
 <p align="center">
   <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/48.gif?t=1776086963" alt="Banner" height="420">
@@ -582,21 +581,23 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Assistant | Role | Usage |
 |------------|------|--------|
-|  ChatGPT | Core copilot for architecture & automation | Rapid execution |
-|  Claude Sonnet 4.6 | Contextual planner & strategic reasoner | Long-range thinking |
+| 🧠 Claude Sonnet 4.6 | **Primary** — deep analysis, long-context planning, code architecture | Strategic thinking + execution |
+| ⚡ ChatGPT | Secondary — rapid prototyping & quick lookups | Fast iteration |
+| 🤖 GitHub Copilot | In-editor — autocomplete & PR automation via Agents | Zero-friction coding |
 
   <details>
-    <summary>💡 <b>Note: Dual-Copilot Workflow</b></summary>
+    <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
 
-This ecosystem operates as a **dual-copilot workflow** — two AI systems working in synergy:
--  **ChatGPT** → architecture, reasoning, documentation
--  **Claude Sonnet 4.6** → long-context planning & strategic alignment
+This ecosystem operates as a **multi-copilot workflow** — three AI systems, each with a defined role:
 
-> This dual-copilot system balances speed and depth —
-> **ChatGPT** executes and refines · **Claude** plans and connects.
-> Together they form my **AI-powered engineering loop** for continuous innovation.
+- 🧠 **Claude Sonnet 4.6** → leads architecture decisions, long-context analysis & analytics strategy
+- ⚡ **ChatGPT** → supports rapid prototyping, quick lookups & iteration
+- 🤖 **GitHub Copilot** → handles in-editor autocomplete & automated PRs via Agents
 
-✨ Optimized for precision, powered by **automation**, evolving through insight.
+> Claude leads the thinking · ChatGPT accelerates the pace · GitHub Copilot closes the loop in code.  
+> Together they form my **AI-powered data engineering workflow** — precision-first, automation-driven.
+
+✨ Optimized for data analytics · powered by **automation** · evolving through insight.
 
   </details>
 </details>
