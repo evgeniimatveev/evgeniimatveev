@@ -223,26 +223,24 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-<!-- BEGIN: COPILOTS -->
+markdown<!-- BEGIN: COPILOTS -->
 <details>
   <summary>💫 AI Copilot Ecosystem</summary>
 
 | Assistant | Role | Usage |
-|------------|------|--------|
+|-----------|------|--------|
 | 🧠 Claude Sonnet 4.6 | **Primary** — deep analysis, long-context planning, code architecture | Strategic thinking + execution |
 | ⚡ ChatGPT | Secondary — rapid prototyping & quick lookups | Fast iteration |
 
-
   <details>
-    <summary>💡 <b>Note: Multi-Copilot Workflow</b></summary>
+    <summary>💡 <b>Note: Dual-Copilot Workflow</b></summary>
 
-This ecosystem operates as a **multi-copilot workflow** — three AI systems, each with a defined role:
+This ecosystem operates as a **dual-copilot workflow** — two AI systems, each with a defined role:
 
 - 🧠 **Claude Sonnet 4.6** → leads architecture decisions, long-context analysis & analytics strategy
 - ⚡ **ChatGPT** → supports rapid prototyping, quick lookups & iteration
 
-
-> Claude leads the thinking · ChatGPT accelerates the pace.  
+> Claude leads the thinking · ChatGPT accelerates the pace.
 > Together they form my **AI-powered data engineering workflow** — precision-first, automation-driven.
 
 ✨ Optimized for data analytics · powered by **automation** · evolving through insight.
