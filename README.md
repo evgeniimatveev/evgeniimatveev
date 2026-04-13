@@ -353,6 +353,8 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
+
+
 <!-- BANNER:START -->
 <p align="center">
   <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/48.gif?t=1776086963" alt="Banner" height="420">
@@ -659,14 +661,19 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 
 ---
 
-![CI/CD Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg)
-![Total Runs](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen)
-![Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red)
-![Last Run](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20CI/CD%20Run&color=blue)
-![Update Status](https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg)
-![Total Updates](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Total%20Updates&color=yellow)
-![Update Failures](https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red)
-![Last Update](https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue)
+<p align="left">
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg" alt="CI/CD Status"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen" alt="Total Runs"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red" alt="Failures"/>
+  <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20CI/CD%20Run&color=blue" alt="Last Run"/>
+</p>
+
+<p align="left">
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg" alt="Update Status"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Total%20Updates&color=yellow" alt="Total Updates"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red" alt="Update Failures"/>
+  <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue" alt="Last Update"/>
+</p>
 
 <p align="left">
   <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status"/>
@@ -730,4 +737,3 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 </p>
 
 ---
-
