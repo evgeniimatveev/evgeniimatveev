@@ -354,7 +354,6 @@ This ecosystem operates as a **dual-copilot workflow** — two AI systems workin
 ---
 
 
-
 <!-- BANNER:START -->
 <p align="center">
   <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/48.gif?t=1776086963" alt="Banner" height="420">
@@ -508,11 +507,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Stack | Description |
 |---------|-------|-------------|
-| 🏢 [HR BI Analytics](https://github.com/evgeniimatveev) | PostgreSQL · Tableau · Python | End-to-end HR dashboard: headcount, attrition, compensation KPIs |
-| 📊 [Business Analysis DB](https://github.com/evgeniimatveev) | PostgreSQL · SQL · Python | Multi-domain analytical models with automated ETL workflows |
-| 🎬 [Films Analytics](https://github.com/evgeniimatveev) | PostgreSQL · DuckDB · Pandas | Exploratory analysis + BI reporting on film industry data |
-| 🔄 [ELT Pipeline](https://github.com/evgeniimatveev) | Docker · GitHub Actions · DuckDB | Production ELT pipeline with CI/CD, testing & observability |
-| 🤖 [MLOps HR BI](https://github.com/evgeniimatveev) | MLflow · PostgreSQL · Python | ML experiment tracking integrated with HR analytics |
+| 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python | End-to-end HR dashboard: headcount, attrition, compensation KPIs |
+| 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | PostgreSQL · SQL · Python | Multi-domain analytical models with automated ETL workflows |
+| 🦆 [NYC 311 DuckDB Analysis](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | DuckDB · MotherDuck · Pandas | Large-scale urban data analysis with modern cloud-native stack |
+| 🔄 [ELT Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Docker · GitHub Actions · DuckDB | Production ELT pipeline with CI/CD, testing & observability |
+| 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | MLflow · PostgreSQL · Python | ML experiment tracking integrated with HR analytics |
 
 ---
 
