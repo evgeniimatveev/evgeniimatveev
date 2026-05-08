@@ -150,22 +150,19 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-  ## 🗂️ Featured Projects
-
-  | Project | Stack | Description |
-  |---------|-------|-------------|
-  | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python |
-  30 employees · 5 depts · Sales avg $102K |
-  | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | PostgreSQL · Python ·
-  Tableau | $2.58M revenue · 2,314 customers · 59.8% returning |
+  | Project | Highlights |
+  |---------|-----------|
+  | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Python · Tableau · 5
+   departments |
+  | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | $2.58M revenue · 2,314
+  customers · 26+ queries |
   | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | DuckDB · MotherDuck ·
-  Docker | 22,504 complaints · Bronx leads at 41.5% |
-  | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Python · PostgreSQL · Docker |
-  Production ETL + SQLFluff CI/CD linting |
-  | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · W&B | R²=0.8326 · 729
-  evals · 10 Bayesian sweeps |
-  | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | Python · REST API · Tableau | 100
-  listings · only 5% truly remote |
+  22,504 complaints |
+  | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Python · PostgreSQL · 2,500+ CI
+  runs |
+  | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · W&B · R²=0.8326 |
+  | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | REST API · Tableau · 100 listings ·
+   5% remote ||
 
 ---
 
