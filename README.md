@@ -215,17 +215,15 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-### 🧪 Data Tools
+ ### 🧪 Data Tools
 
-![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
-![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)
-![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
+  ![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
 
 ---
 
   <!-- BEGIN: COPILOTS -->
   <details>
-    <summary>🧠 AI-Powered Engineering Workflow</summary>
+    <summary>⚡ AI-Powered Engineering Workflow</summary>
 
   | Assistant | Role | Usage |
   |-----------|------|--------|
