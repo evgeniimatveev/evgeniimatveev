@@ -229,8 +229,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Assistant | Role | Usage |
   |-----------|------|--------|
-  | 🧠 Claude Sonnet 4.6 | **Primary AI Partner** — architecture · code · analytics · docs · review | Full-stack AI
-  workflow |
+   | 🧠 Claude Sonnet 4.6 | **Primary AI Partner** — architecture · code · analytics · docs · review | Primary |
 
    <details>
       <summary>💡 <b>How Claude fits into my workflow</b></summary>
