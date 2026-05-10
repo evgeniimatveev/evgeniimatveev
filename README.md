@@ -44,7 +44,7 @@
 `SQL` • `Python` • `PostgreSQL` • `DuckDB` • `Docker` • `GitHub Actions` • `MLflow` • `Tableau` • `Power BI`• `Excel`
 
 **📊 Focus**
-Data Analytics • Business Intelligence • Analytics Engineering • ETL/ELT Automation • Cloud Data (Azure)
+ Data Engineering • MLOps Automation • Business Intelligence • ETL/ELT Pipelines • Analytics Engineering
 
 ---
 
