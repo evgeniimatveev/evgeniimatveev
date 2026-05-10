@@ -232,7 +232,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | 🧠 Claude Sonnet 4.6 | **Primary AI Partner** — architecture decisions, long-context analysis, code generation, data
    strategy | End-to-end engineering workflow |
 
-    <details>
+   <details>
       <summary>💡 <b>How Claude fits into my workflow</b></summary>
 
   Claude Sonnet 4.6 is my primary AI engineering partner across all stages of the data & MLOps lifecycle:
@@ -245,7 +245,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   > Precision-first · Context-aware · Production-grade output.
 
-    </details>
+   </details>
   </details>
   <!-- END: COPILOTS -->
 
