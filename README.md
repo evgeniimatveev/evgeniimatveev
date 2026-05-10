@@ -35,7 +35,8 @@
 
 > Turning raw data into dashboards, pipelines into insights, and complexity into clarity
 
-💡 I build end-to-end analytics solutions — from raw data ingestion to production-ready dashboards — with a focus on clean SQL, automated ETL/ELT workflows, and data storytelling that drives real business decisions.
+💡  I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a
+     focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
 
 ---
 
