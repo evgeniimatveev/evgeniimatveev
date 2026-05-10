@@ -31,7 +31,7 @@
 
 ---
 
-## 👋 Hi, I'm Evgenii — Data Analyst | Analytics Engineer | BI Developer
+ ## 👋 Hi, I'm Evgenii — Data & MLOps Engineer | Analytics Engineer | BI Developer
 
 > Turning raw data into dashboards, pipelines into insights, and complexity into clarity
 
