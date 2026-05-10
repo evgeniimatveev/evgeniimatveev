@@ -223,31 +223,31 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-markdown<!-- BEGIN: COPILOTS -->
-<details>
-  <summary>💫 AI Copilot Ecosystem</summary>
-
-| Assistant | Role | Usage |
-|-----------|------|--------|
-| 🧠 Claude Sonnet 4.6 | **Primary** — deep analysis, long-context planning, code architecture | Strategic thinking + execution |
-| ⚡ ChatGPT | Secondary — rapid prototyping & quick lookups | Fast iteration |
-
+  <!-- BEGIN: COPILOTS -->
   <details>
-    <summary>💡 <b>Note: Dual-Copilot Workflow</b></summary>
+    <summary>🧠 AI-Powered Engineering Workflow</summary>
 
-This ecosystem operates as a **dual-copilot workflow** — two AI systems, each with a defined role:
+  | Assistant | Role | Usage |
+  |-----------|------|--------|
+  | 🧠 Claude Sonnet 4.6 | **Primary AI Partner** — architecture decisions, long-context analysis, code generation, data
+   strategy | End-to-end engineering workflow |
 
-- 🧠 **Claude Sonnet 4.6** → leads architecture decisions, long-context analysis & analytics strategy
-- ⚡ **ChatGPT** → supports rapid prototyping, quick lookups & iteration
+    <details>
+      <summary>💡 <b>How Claude fits into my workflow</b></summary>
 
-> Claude leads the thinking · ChatGPT accelerates the pace.
-> Together they form my **AI-powered data engineering workflow** — precision-first, automation-driven.
+  Claude Sonnet 4.6 is my primary AI engineering partner across all stages of the data & MLOps lifecycle:
 
-✨ Optimized for data analytics · powered by **automation** · evolving through insight.
+  - 🏗️ **Architecture** → pipeline design, schema decisions, project structure
+  - 🐍 **Code** → Python scripts, SQL queries, Docker configs, GitHub Actions workflows
+  - 📊 **Analytics** → data modeling, query optimization, business logic translation
+  - 📝 **Documentation** → READMEs, project descriptions, technical write-ups
+  - 🔍 **Review** → debugging, code quality, edge case analysis
 
+  > Precision-first · Context-aware · Production-grade output.
+
+    </details>
   </details>
-</details>
-<!-- END: COPILOTS -->
+  <!-- END: COPILOTS -->
 
 ---
 <!-- BEGIN: AUTOMATION -->
