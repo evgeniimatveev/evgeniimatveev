@@ -41,7 +41,7 @@
 ---
 
 **🛠️ Core Stack**
-`SQL` • `Tableau` • `Power BI` • `Python` • `R` • `PostgreSQL` • `DuckDB` • `Excel` • `Azure`
+`SQL` • `Python` • `PostgreSQL` • `DuckDB` • `Docker` • `GitHub Actions` • `MLflow` • `Tableau` • `Power BI`• `Excel`
 
 **📊 Focus**
 Data Analytics • Business Intelligence • Analytics Engineering • ETL/ELT Automation • Cloud Data (Azure)
