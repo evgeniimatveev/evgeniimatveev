@@ -31,19 +31,6 @@
 
 ---
 
-
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lin
-  es=⚙️+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;🔍+SQL+Expert+·+PostgreSQL+·+DuckDB+·+MotherDuck
-  📈+Tableau+%26+Power+BI+·+Dashboards+That+Drive+Decisions;⚙️+ETL%2FELT+Pipelines+·+Python+·+Pandas+·+Automation;☁️+Azu
-  +Databricks+·+Data+Factory+·+Synapse+Analytics;🐍+Python+·+R+·+Scikit-learn+·+Data+Science+Workflows;🐳+Docker+·+GitHu
-  b+Actions+·+CI%2FCD+for+Data+Pipelines;🎯+Turn+Raw+Data+Into+Business+Insights;📊+10%2B+Real-World+Analytics+Projects;
-  🔄+End-to-End+BI+Solutions+·+From+Data+to+Dashboard;⚡+Data+Storytelling+·+KPIs+·+Executive+Dashboards;🛢️+Advanced+SQL
-  ·+Window+Functions+·+CTEs+·+Optimization;📡+REST+APIs+·+Automated+Analytics+Workflows;🧠+Data+Modeling+·+Star+Schema+·
-  +Dimensional+Thinking;🌊+DuckDB+·+MotherDuck+·+Modern+Data+Stack;🔒+Data+Quality+·+Testing+·+Validated+Pipelines;💼+Op
-  en+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
-
-
-
  ## 👋 Hi, I'm Evgenii — Data & MLOps Engineer | Analytics Engineer | BI Developer
 
 > Turning raw data into dashboards, pipelines into insights, and complexity into clarity
