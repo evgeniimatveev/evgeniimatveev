@@ -300,13 +300,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-| 🧩 Workflow                  | ⚙️ Automation                        | 📊 Insights                      |
-|----------------------------|-------------------------------------|----------------------------------|
-| Raw Data → Clean → Analyze | ETL → CI/CD → Automated Pipelines   | Dashboards → KPIs → Decisions    |
-| Build → Visualize → Scale  | Python · R · GitHub Actions · Docker | Measure → Learn → Improve        |
-
----
-
  | 📊 Data Analyst              | 🔧 Data Engineer                        | 🤖 MLOps Engineer                    |
   |-----------------------------|----------------------------------------|--------------------------------------|
   | SQL · Tableau · Power BI    | PostgreSQL · DuckDB · dbt · Docker     | MLflow · W&B · XGBoost · FastAPI     |
