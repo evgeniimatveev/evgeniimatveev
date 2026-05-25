@@ -153,6 +153,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Project | Highlights |
   |---------|-----------|
+  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · DuckDB · $13.2M |
   | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | Supabase · Streamlit ·Docker |
   | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python |
   | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | $2.58M rev · 2,314cust. |
@@ -161,23 +162,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · R²=0.8326 |
   | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | REST API · Tableau · 100 jobs |
   
-
----
-
-  | Project | Highlights |
-  |---------|-----------|
-  | 🛒 [Olist E-Commerce Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · DuckDB ·
-  $13.2M |
-  | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | Supabase · Streamlit · Docker
-  |
-  | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python |
-  | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | $2.58M rev · 2,314 cust. |
-  | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | DuckDB · MotherDuck · 3M
-   rows |
-  | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Python · Docker · 2,500+ CI |
-  | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · R²=0.8326 |
-  | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | REST API · Tableau · 100 jobs |
-
 
 ---
 
