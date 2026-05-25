@@ -58,7 +58,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence
-- ⚙️ **Zero-touch ops**: 5,700+ runs · 350+ mutations · idempotent commits
+- ⚙️ **Zero-touch ops**: 18,200+ runs · 367 mutations · idempotent commits
 
 ### 🐍 Core Scripts:
 
@@ -335,6 +335,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 🤖 MLOPS Insight: 📡 BUILD • MEASURE • LEARN • RUN #5754 — Pollinate features across teams 🐝 | Prep for an MLOps-filled week! ⏳ Profile the hotspots, cache the wins 🧠 🧼
 <!-- INSIGHT:END -->
 
+---
+
  <details>
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
@@ -352,8 +354,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
   </p>
   <p align="center">
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
-  width="780" />
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="780" />
   </p>
   <p align="center">
     <sub>Daily contributions (last 30 days)</sub>
@@ -373,6 +374,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
+
 
 
 
