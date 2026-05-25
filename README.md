@@ -58,7 +58,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence
-- ⚙️ **Zero-touch ops**: 18,200+ runs · 367 mutations · idempotent commits
+- ⚙️ **Zero-touch ops**: 5,700+ scheduled runs · 18,200+ total CI events · 367 mutations · idempotent commits
 
 ### 🐍 Core Scripts:
 
@@ -69,11 +69,12 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ### ⚙️ CI/CD Workflows:
 
-| Workflow | Schedule | Status |
-|----------|----------|--------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| Workflow | Schedule | Runs | Status |
+|----------|----------|------|--------|
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **5,131** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,145** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,684** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **240** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
@@ -374,6 +375,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
+
 
 
 
