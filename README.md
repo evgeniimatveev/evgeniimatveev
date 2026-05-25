@@ -307,6 +307,13 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
+ | 📊 Data Analyst              | 🔧 Data Engineer                        | 🤖 MLOps Engineer                    |
+  |-----------------------------|----------------------------------------|--------------------------------------|
+  | SQL · Tableau · Power BI    | PostgreSQL · DuckDB · dbt · Docker     | MLflow · W&B · XGBoost · FastAPI     |
+  | Dashboards → KPIs → Decisions | Raw Data → Pipelines → Production    | Train → Track → Deploy → Monitor     |
+
+---
+
 <p align="left">
   <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg" alt="CI/CD Status"/>
   <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen" alt="Total Runs"/>
