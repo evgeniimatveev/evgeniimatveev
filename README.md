@@ -383,3 +383,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
+<p align="center">
+    <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true"
+         width="500" alt="GitHub Streak" />
+  </p>
+
+---
