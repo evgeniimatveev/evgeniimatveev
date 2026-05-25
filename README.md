@@ -384,14 +384,19 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-<details>
+ <details>
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
   <p align="center">
-    <img src="https://github-readme-stats.vercel.app/api?username=evgeniimatveev&theme=tokyonight&show_icons=true&hid
-  e_border=true&count_private=true" width="500" alt="GitHub Stats" />
-    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&theme=tokyonight&layout=c
-  ompact&hide_border=true&langs_count=8" width="350" alt="Top Languages" />
+    <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme
+  =tokyonight" width="800" alt="Profile Details" />
+  </p>
+  <p align="center">
+    <img
+  src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight"
+  width="400" alt="Stats" />
+    <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme
+  =tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
   </p>
   <p align="center">
     <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="600"
