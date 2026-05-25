@@ -349,19 +349,19 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 <!-- STATUS2:END -->
 
- <details>
+<details>
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
   <p align="center">
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme
-  =tokyonight" width="800" alt="Profile Details" />
+  =tokyonight&v=2" width="800" alt="Profile Details" />
   </p>
   <p align="center">
     <img
   src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight"
   width="400" alt="Stats" />
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme
-  =tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
+  =tokyonight&utcOffset=0&v=2" width="400" alt="Commits by time (UTC)" />
   </p>
   <p align="center">
     <img
