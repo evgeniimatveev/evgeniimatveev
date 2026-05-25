@@ -364,10 +364,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   =tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
   </p>
   <p align="center">
-    <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="600"
-  alt="GitHub Streak" />
-  </p>
-  <p align="center">
     <img
       src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
       width="780"
