@@ -383,9 +383,31 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
-<p align="center">
-    <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true"
-         width="500" alt="GitHub Streak" />
+
+<details>
+  <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
+
+  <p align="center">
+    <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme
+  =tokyonight" width="800" alt="Profile Details" />
+  </p>
+  <p align="center">
+    <img
+  src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight"
+  width="400" alt="Stats" />
+    <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme
+  =tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
+  </p>
+  <p align="center">
+    <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="600"
+  alt="GitHub Streak" />
+  </p>
+  <p align="center">
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
+  width="780" />
+  </p>
+  <p align="center">
+    <sub>Daily contributions (last 30 days)</sub>
   </p>
 
----
+  </details>
