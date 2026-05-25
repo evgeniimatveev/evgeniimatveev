@@ -335,20 +335,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 🤖 MLOPS Insight: 📡 BUILD • MEASURE • LEARN • RUN #5754 — Pollinate features across teams 🐝 | Prep for an MLOps-filled week! ⏳ Profile the hotspots, cache the wins 🧠 🧼
 <!-- INSIGHT:END -->
 
----
-
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lines=⚙️+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;🔍+SQL+Expert+·+PostgreSQL+·+DuckDB+·+MotherDuck;📈+Tableau+%26+Power+BI+·+Dashboards+That+Drive+Decisions;⚙️+ETL%2FELT+Pipelines+·+Python+·+Pandas+·+Automation;☁️+Azure+Databricks+·+Data+Factory+·+Synapse+Analytics;🐍+Python+·+R+·+Scikit-learn+·+Data+Science+Workflows;🐳+Docker+·+GitHub+Actions+·+CI%2FCD+for+Data+Pipelines;🎯+Turn+Raw+Data+Into+Business+Insights;📊+10%2B+Real-World+Analytics+Projects;🔄+End-to-End+BI+Solutions+·+From+Data+to+Dashboard;⚡+Data+Storytelling+·+KPIs+·+Executive+Dashboards;🛢️+Advanced+SQL+·+Window+Functions+·+CTEs+·+Optimization;📡+REST+APIs+·+Automated+Analytics+Workflows;🧠+Data+Modeling+·+Star+Schema+·+Dimensional+Thinking;🌊+DuckDB+·+MotherDuck+·+Modern+Data+Stack;🔒+Data+Quality+·+Testing+·+Validated+Pipelines;💼+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
-
----
-
-<p align="left">
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5637" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2023h%2043m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=251&color=0ea5e9&labelColor=30363d&cacheSeconds=300" />
-<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5637" alt="Daily Smoke (pytest - m smoke)" /></a>
-</p>
-<!-- STATUS2:END -->
-
  <details>
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
@@ -384,5 +370,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
+
 
 
