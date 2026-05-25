@@ -349,7 +349,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </p>
   <p align="center">
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
-    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&theme=tokyonight&layout=compact&langs_count=8&hide_border=true" width="400" alt="Top Languages" />
+    <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
   </p>
   <p align="center">
     <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
@@ -373,6 +373,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
+
 
 
 
