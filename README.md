@@ -339,6 +339,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
   <p align="center">
+    <img src="https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=1&column=6&no-frame=true&margin-w=8" width="800" alt="GitHub Trophy" />
+  </p>
+  <p align="center">
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight&v=2" width="800" alt="Profile Details" />
   </p>
   <p align="center">
@@ -346,7 +349,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </p>
   <p align="center">
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
-    <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0&v=2" width="400" alt="Commits by time (UTC)" />
+    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=evgeniimatveev&theme=tokyonight&layout=compact&langs_count=8&hide_border=true" width="400" alt="Top Languages" />
   </p>
   <p align="center">
     <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
@@ -370,6 +373,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
+
 
 
 
