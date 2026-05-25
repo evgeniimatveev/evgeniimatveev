@@ -153,7 +153,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Project | Highlights |
   |---------|-----------|
-  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · DuckDB · $13.2M |
+  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests  · $13.2M |
   | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | Supabase · Streamlit ·Docker |
   | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python |
   | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | $2.58M rev · 2,314cust. |
