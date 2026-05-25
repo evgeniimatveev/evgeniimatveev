@@ -349,41 +349,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 <!-- STATUS2:END -->
 
-<details>
-<summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
-
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight" width="800" alt="Profile Details" />
-</p>
-<p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight" width="400" alt="Stats" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0" width="400" alt="Commits by time (UTC)" />
-</p>
-<p align="center">
-  <img
-    src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
-    width="780"
-  />
-</p>
-<p align="center">
-  <sub>Daily contributions (last 30 days)</sub>
-</p>
-
-</details>
-
----
-
-<p align="center">
-  <a href="https://github.com/evgeniimatveev"><img
-    src="https://img.shields.io/badge/Follow%20%40evgeniimatveev-181717?style=for-the-badge&logo=github&logoColor=white"
-    alt="Follow @evgeniimatveev"/></a>&nbsp;&nbsp;
-  <a href="https://www.linkedin.com/in/evgenii-matveev-510926276/"><img
-    src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
-    alt="Connect on LinkedIn"/></a>
-</p>
-
----
-
  <details>
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
@@ -403,11 +368,27 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   alt="GitHub Streak" />
   </p>
   <p align="center">
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
-  width="780" />
+    <img
+      src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night"
+      width="780"
+    />
   </p>
   <p align="center">
     <sub>Daily contributions (last 30 days)</sub>
   </p>
 
   </details>
+
+---
+
+<p align="center">
+  <a href="https://github.com/evgeniimatveev"><img
+    src="https://img.shields.io/badge/Follow%20%40evgeniimatveev-181717?style=for-the-badge&logo=github&logoColor=white"
+    alt="Follow @evgeniimatveev"/></a>&nbsp;&nbsp;
+  <a href="https://www.linkedin.com/in/evgenii-matveev-510926276/"><img
+    src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
+    alt="Connect on LinkedIn"/></a>
+</p>
+
+---
+
