@@ -356,6 +356,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight&v=2" width="800" alt="Profile Details" />
   </p>
   <p align="center">
+    <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="500" alt="GitHub Streak" />
+  </p>
+  <p align="center">
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&utcOffset=0&v=2" width="400" alt="Commits by time (UTC)" />
   </p>
@@ -382,8 +385,3 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
----
-<p align="center">
-    <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true"
-         width="500" alt="GitHub Streak" />
-</p>
