@@ -176,15 +176,15 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Project | Highlights | Demo |
   |---------|-----------|------|
-  | 🌤️ [US Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | Open-Meteo · DuckDB · GitHub Actions 2×/day | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
-  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M revenue | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
-  | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · Supabase · Streamlit | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
-  | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python | — |
-  | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | $2.58M rev · 2,314 cust. | — |
-  | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | DuckDB · MotherDuck | — |
-  | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Python · Docker · 2,500+ CI | — |
-  | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · R²=0.8326 | — |
-  | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | REST API · Tableau · 100 jobs | — |
+  | 🌤️ [US Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 10 cities · Comfort Index · Severity Score · 2×/day auto | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
+  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
+  | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
+  | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
+  | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
+  | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
+  | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
+  | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
+  | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
   
 
 ---
