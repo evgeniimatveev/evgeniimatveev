@@ -2,6 +2,11 @@ name: Generate Snake
 
 on:
   workflow_dispatch:
+    inputs:
+      variant:
+        description: "Force variant: a-n (blank = auto-rotate)"
+        type: string
+        default: ""
   schedule:
     - cron: "30 0 * * *"
 
@@ -15,6 +20,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -22,7 +28,9 @@ jobs:
           fetch-depth: 2
           persist-credentials: true
 
-      - name: Generate snake variants (A–G)
+      # 14 variants A–N
+      # A-G: original palette   H-N: new palette (violet/coral/silver/gold/lime/indigo/crimson)
+      - name: Generate snake variants (A–N)
         uses: evgeniimatveev/snk/svg-only@main
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -36,42 +44,63 @@ jobs:
             dist/snake-e.svg?palette=github-dark&color_snake=%23a2ff5e&color_dots=%23101a0c,%233f6f22,%2371c837,%23c9ff9d
             dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a
             dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7
+            dist/snake-h.svg?palette=github-dark&color_snake=%23c084fc&color_dots=%231a0a2e,%236b21a8,%23a855f7,%23e9d5ff
+            dist/snake-i.svg?palette=github-dark&color_snake=%23ff6b6b&color_dots=%232d0a0a,%23991b1b,%23ef4444,%23fca5a5
+            dist/snake-j.svg?palette=github-dark&color_snake=%23e2e8f0&color_dots=%230f172a,%23334155,%2364748b,%23cbd5e1
+            dist/snake-k.svg?palette=github-dark&color_snake=%23fbbf24&color_dots=%231c1007,%2378350f,%23f59e0b,%23fde68a
+            dist/snake-l.svg?palette=github-dark&color_snake=%2384cc16&color_dots=%230a1a02,%23365314,%2365a30d,%23bef264
+            dist/snake-m.svg?palette=github-dark&color_snake=%23818cf8&color_dots=%230f0c2e,%23312e81,%234f46e5,%23c7d2fe
+            dist/snake-n.svg?palette=github-dark&color_snake=%23f43f5e&color_dots=%231f0a0e,%23881337,%23e11d48,%23fda4af
 
-      - name: Pick next variant (A–G) and update snake.svg
+      - name: Pick next variant (A–N) and update snake.svg
+        id: pick
         shell: bash
         run: |
           set -euo pipefail
           MODE_FILE=".github/snake-mode"
-          ORDER=(a b c d e f g)
+          ORDER=(a b c d e f g h i j k l m n)
+          declare -A LABELS=(
+            [a]="Pink"    [b]="Cyan"    [c]="Orange"  [d]="Magenta"
+            [e]="Green"   [f]="Yellow"  [g]="Teal"    [h]="Violet"
+            [i]="Coral"   [j]="Silver"  [k]="Gold"    [l]="Lime"
+            [m]="Indigo"  [n]="Crimson"
+          )
           mkdir -p .github dist
 
-          if [[ -f "$MODE_FILE" ]]; then
-            LAST_MODE=$(tr -d '\n\r' < "$MODE_FILE")
+          FORCED="${{ inputs.variant }}"
+          if [[ -n "$FORCED" ]]; then
+            NEXT_MODE="$FORCED"
+            echo "Forced variant: $NEXT_MODE (${LABELS[$NEXT_MODE]:-unknown})"
           else
-            LAST_MODE="g"
-          fi
-
-          NEXT_MODE="a"
-          for i in "${!ORDER[@]}"; do
-            if [[ "${ORDER[$i]}" == "$LAST_MODE" ]]; then
-              NEXT_INDEX=$(( (i + 1) % ${#ORDER[@]} ))
-              NEXT_MODE="${ORDER[$NEXT_INDEX]}"
-              break
+            if [[ -f "$MODE_FILE" ]]; then
+              LAST_MODE=$(tr -d '\n\r' < "$MODE_FILE")
+            else
+              LAST_MODE="n"
             fi
-          done
 
-          echo "Last mode: $LAST_MODE"
-          echo "Next mode: $NEXT_MODE"
+            NEXT_MODE="a"
+            for i in "${!ORDER[@]}"; do
+              if [[ "${ORDER[$i]}" == "$LAST_MODE" ]]; then
+                NEXT_INDEX=$(( (i + 1) % ${#ORDER[@]} ))
+                NEXT_MODE="${ORDER[$NEXT_INDEX]}"
+                break
+              fi
+            done
+            echo "Last: $LAST_MODE (${LABELS[$LAST_MODE]:-?}) → Next: $NEXT_MODE (${LABELS[$NEXT_MODE]:-?})"
+          fi
 
           SRC="dist/snake-${NEXT_MODE}.svg"
           if [[ ! -f "$SRC" ]]; then
-            echo "ERROR: Expected file '$SRC' not found."
+            echo "ERROR: '$SRC' not found."
             ls -la dist || true
             exit 1
           fi
 
           cp -f "$SRC" dist/snake.svg
           printf '%s\n' "$NEXT_MODE" > "$MODE_FILE"
+
+          echo "variant=$NEXT_MODE"           >> "$GITHUB_OUTPUT"
+          echo "label=${LABELS[$NEXT_MODE]}"  >> "$GITHUB_OUTPUT"
 
       - name: Commit and push changes (with retry)
         shell: bash
@@ -87,7 +116,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore: update dynamic snake (A–G rotation)"
+          git commit -m "🐍 snake: variant-${{ steps.pick.outputs.variant }} (${{ steps.pick.outputs.label }}) · $(date -u +%Y-%m-%d)"
 
           for i in 1 2 3; do
             if git push origin main; then
@@ -102,3 +131,21 @@ jobs:
 
           echo "❌ Push failed after 3 attempts"
           exit 1
+
+      - name: Run summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### 🐍 Generate Snake"
+            echo ""
+            echo "| Key | Value |"
+            echo "|-----|-------|"
+            echo "| Active variant | \`${{ steps.pick.outputs.variant }}\` — ${{ steps.pick.outputs.label }} |"
+            echo "| Total variants | 14 (A–N) |"
+            echo "| Palette | \`github-dark\` |"
+            echo ""
+            echo "**Palette map:**"
+            echo "\`a\` Pink · \`b\` Cyan · \`c\` Orange · \`d\` Magenta · \`e\` Green · \`f\` Yellow · \`g\` Teal"
+            echo "\`h\` Violet · \`i\` Coral · \`j\` Silver · \`k\` Gold · \`l\` Lime · \`m\` Indigo · \`n\` Crimson"
+          } >> "$GITHUB_STEP_SUMMARY"
