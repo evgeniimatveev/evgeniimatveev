@@ -75,6 +75,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,145** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,684** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **240** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | On demand | **3** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
@@ -104,7 +105,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 📋 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/next_update_log.txt">next_update_log.txt</a>
 👥 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_followers.json">github_followers.json</a> ·
 ⭐ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_stars.json">github_stars.json</a> ·
-📈 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/total_updates.json">total_updates.json</a>
+📈 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/total_updates.json">total_updates.json</a> ·
+🏆 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/trophies.svg">trophies.svg</a>
 
 </details>
 
