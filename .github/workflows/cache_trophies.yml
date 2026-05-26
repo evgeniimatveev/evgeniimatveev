@@ -19,18 +19,17 @@ jobs:
             "https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=1&column=6&no-frame=true&margin-w=8")
           echo "HTTP status: $HTTP_CODE"
           if [ "$HTTP_CODE" = "200" ] && grep -q "<svg" /tmp/trophies_new.svg; then
-            cp /tmp/trophies_new.svg assets/trophies.svg
+            cp /tmp/trophies_new.svg badges/trophies.svg
             echo "✅ Trophies cache updated"
           else
             echo "⚠️ Service returned $HTTP_CODE — keeping cached version"
-            cat /tmp/trophies_new.svg | head -5
           fi
 
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/trophies.svg
+          git add badges/trophies.svg
           if git diff --staged --quiet; then
             echo "No changes, skip commit"
           else
