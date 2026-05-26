@@ -1,0 +1,124 @@
+# badges_extra.yml — auto-update contributions + PRs badges
+# Isolated from update_readme.yml — writes ONLY badges/github_contributions.json
+# and badges/github_prs.json. Zero risk to other workflows.
+
+name: Update Extra Badges
+
+on:
+  schedule:
+    - cron: '30 10 * * *'   # 10:30 UTC — clear of all other workflows
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
+
+jobs:
+  update-badges:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout (sparse — badges only)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: true
+          filter: blob:none
+          sparse-checkout: |
+            badges
+          sparse-checkout-cone-mode: true
+
+      - name: Fetch contributions (GitHub GraphQL)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          YEAR=$(date -u +%Y)
+          FROM="${YEAR}-01-01T00:00:00Z"
+          TO="${YEAR}-12-31T23:59:59Z"
+
+          QUERY=$(printf '{
+            "query": "query { user(login: \"evgeniimatveev\") { contributionsCollection(from: \"%s\", to: \"%s\") { contributionCalendar { totalContributions } } } }"
+          }' "$FROM" "$TO")
+
+          RESP=$(curl -fsSL -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$QUERY" \
+            https://api.github.com/graphql)
+
+          TOTAL=$(printf '%s' "$RESP" | jq -r '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
+          echo "Contributions $YEAR: $TOTAL"
+
+          mkdir -p badges
+          printf '%s\n' \
+            "{\"schemaVersion\":1,\"label\":\"contributions ${YEAR}\",\"message\":\"${TOTAL}\",\"color\":\"0ea5e9\"}" \
+            > badges/github_contributions.json
+
+      - name: Fetch merged PRs (GitHub REST)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PR_COUNT=$(curl -fsSL \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/search/issues?q=is:pr+is:merged+author:evgeniimatveev" \
+            | jq -r '.total_count // 0')
+
+          echo "Merged PRs: $PR_COUNT"
+
+          mkdir -p badges
+          printf '%s\n' \
+            "{\"schemaVersion\":1,\"label\":\"PRs merged\",\"message\":\"${PR_COUNT}\",\"color\":\"8b5cf6\"}" \
+            > badges/github_prs.json
+
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add badges/github_contributions.json badges/github_prs.json
+
+          if git diff --staged --quiet; then
+            echo "No changes — skip commit"
+            exit 0
+          fi
+
+          git commit -m "chore: refresh contributions + PRs badges [skip ci]"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "✅ Pushed (attempt $i)"
+              exit 0
+            fi
+            echo "Push failed (attempt $i) — rebasing..."
+            sleep $((i * 3))
+            git fetch --depth=2 origin main
+            git pull --rebase --no-tags origin main
+          done
+
+          echo "❌ Push failed after 3 attempts"
+          exit 1
+
+      - name: Run summary
+        if: always()
+        shell: bash
+        run: |
+          CONTRIB=$(cat badges/github_contributions.json 2>/dev/null | jq -r '.message // "?"')
+          PRS=$(cat badges/github_prs.json 2>/dev/null | jq -r '.message // "?"')
+          {
+            echo "### 📊 Extra Badges"
+            echo "| Badge | Value |"
+            echo "|-------|-------|"
+            echo "| Contributions $(date -u +%Y) | \`${CONTRIB}\` |"
+            echo "| PRs Merged | \`${PRS}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
