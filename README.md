@@ -75,7 +75,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,145** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,684** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **240** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | On demand | **3** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **3** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **—** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **—** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
@@ -90,7 +92,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ github_followers.json  # Endpoint payload for the Followers badge (schemaVersion/label/message/color)
 │  ├─ github_stars.json      # Endpoint payload for the Stars badge
 │  ├─ total_updates.json     # Endpoint payload for the Updates badge
-│  └─ trophies.svg           # Cached GitHub Trophies SVG (via Cache GitHub Trophies workflow)
+│  ├─ trophies.svg           # Cached GitHub Trophies SVG (via Cache GitHub Trophies workflow)
+│  ├─ snake_variant.json     # Active snake color variant (label/color, updated by snake.yml)
+│  ├─ github_contributions.json  # Total contributions this year (GraphQL, via badges_extra.yml)
+│  ├─ github_commits.json    # Commit count this year (GraphQL, via badges_extra.yml)
+│  └─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
@@ -107,7 +113,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 👥 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_followers.json">github_followers.json</a> ·
 ⭐ <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_stars.json">github_stars.json</a> ·
 📈 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/total_updates.json">total_updates.json</a> ·
-🏆 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/trophies.svg">trophies.svg</a>
+🏆 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/trophies.svg">trophies.svg</a> ·
+🐍 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/snake_variant.json">snake_variant.json</a> ·
+📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_contributions.json">github_contributions.json</a> ·
+🔨 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_commits.json">github_commits.json</a> ·
+🐛 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_issues.json">github_issues.json</a>
 
 </details>
 
