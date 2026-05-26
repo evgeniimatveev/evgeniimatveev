@@ -1,7 +1,6 @@
-# badges_extra.yml — auto-update contributions + PRs badges
-# Isolated from update_readme.yml — writes ONLY:
-#   badges/github_contributions.json
-#   badges/github_prs.json
+# badges_extra.yml — auto-update extra badges
+# One GraphQL call → 3 badge files (contributions, commits, issues)
+# Isolated from update_readme.yml — safe to run independently
 
 name: Update Extra Badges
 
@@ -37,44 +36,57 @@ jobs:
             badges
           sparse-checkout-cone-mode: true
 
-      - name: Fetch contributions (GitHub GraphQL via gh CLI)
+      - name: Fetch all metrics (one GraphQL call)
+        id: metrics
         shell: bash
         run: |
           set -euo pipefail
           YEAR=$(date -u +%Y)
 
-          TOTAL=$(gh api graphql \
+          RESP=$(gh api graphql \
             -f query='query($login:String!,$from:DateTime!,$to:DateTime!){
               user(login:$login){
                 contributionsCollection(from:$from,to:$to){
+                  totalCommitContributions
+                  totalIssueContributions
                   contributionCalendar{ totalContributions }
                 }
               }
             }' \
             -f login="evgeniimatveev" \
             -f from="${YEAR}-01-01T00:00:00Z" \
-            -f to="${YEAR}-12-31T23:59:59Z" \
-            --jq '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
+            -f to="${YEAR}-12-31T23:59:59Z")
 
-          echo "Contributions ${YEAR}: ${TOTAL}"
-          mkdir -p badges
-          printf '%s\n' \
-            "{\"schemaVersion\":1,\"label\":\"contributions ${YEAR}\",\"message\":\"${TOTAL}\",\"color\":\"0ea5e9\"}" \
-            > badges/github_contributions.json
+          TOTAL=$(printf '%s' "$RESP"  | jq -r '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
+          COMMITS=$(printf '%s' "$RESP" | jq -r '.data.user.contributionsCollection.totalCommitContributions // 0')
+          ISSUES=$(printf '%s' "$RESP"  | jq -r '.data.user.contributionsCollection.totalIssueContributions // 0')
 
-      - name: Fetch merged PRs (GitHub REST via gh CLI)
+          echo "Contributions ${YEAR}: ${TOTAL} (commits: ${COMMITS}, issues: ${ISSUES})"
+
+          echo "total=$TOTAL"   >> "$GITHUB_OUTPUT"
+          echo "commits=$COMMITS" >> "$GITHUB_OUTPUT"
+          echo "issues=$ISSUES"  >> "$GITHUB_OUTPUT"
+          echo "year=$YEAR"      >> "$GITHUB_OUTPUT"
+
+      - name: Write badge JSON files
         shell: bash
         run: |
           set -euo pipefail
-          PR_COUNT=$(gh api \
-            "search/issues?q=is:pr+is:merged+author:evgeniimatveev" \
-            --jq '.total_count // 0')
-
-          echo "Merged PRs: ${PR_COUNT}"
           mkdir -p badges
+
           printf '%s\n' \
-            "{\"schemaVersion\":1,\"label\":\"PRs merged\",\"message\":\"${PR_COUNT}\",\"color\":\"8b5cf6\"}" \
-            > badges/github_prs.json
+            "{\"schemaVersion\":1,\"label\":\"contributions ${{ steps.metrics.outputs.year }}\",\"message\":\"${{ steps.metrics.outputs.total }}\",\"color\":\"0ea5e9\"}" \
+            > badges/github_contributions.json
+
+          printf '%s\n' \
+            "{\"schemaVersion\":1,\"label\":\"commits ${{ steps.metrics.outputs.year }}\",\"message\":\"${{ steps.metrics.outputs.commits }}\",\"color\":\"22c55e\"}" \
+            > badges/github_commits.json
+
+          printf '%s\n' \
+            "{\"schemaVersion\":1,\"label\":\"issues ${{ steps.metrics.outputs.year }}\",\"message\":\"${{ steps.metrics.outputs.issues }}\",\"color\":\"f97316\"}" \
+            > badges/github_issues.json
+
+          echo "✅ 3 badge files written"
 
       - name: Commit if changed
         shell: bash
@@ -82,14 +94,14 @@ jobs:
           set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add badges/github_contributions.json badges/github_prs.json
+          git add badges/github_contributions.json badges/github_commits.json badges/github_issues.json
 
           if git diff --staged --quiet; then
             echo "No changes — skip commit"
             exit 0
           fi
 
-          git commit -m "chore: refresh contributions + PRs badges [skip ci]"
+          git commit -m "chore: refresh extra badges (contributions/commits/issues) [skip ci]"
 
           for i in 1 2 3; do
             if git push origin HEAD:main; then
@@ -109,12 +121,11 @@ jobs:
         if: always()
         shell: bash
         run: |
-          CONTRIB=$(jq -r '.message // "?"' badges/github_contributions.json 2>/dev/null || echo "?")
-          PRS=$(jq -r '.message // "?"' badges/github_prs.json 2>/dev/null || echo "?")
           {
-            echo "### 📊 Extra Badges"
+            echo "### 📊 Extra Badges — ${{ steps.metrics.outputs.year }}"
             echo "| Badge | Value |"
             echo "|-------|-------|"
-            echo "| Contributions $(date -u +%Y) | \`${CONTRIB}\` |"
-            echo "| PRs Merged | \`${PRS}\` |"
+            echo "| Contributions | \`${{ steps.metrics.outputs.total }}\` |"
+            echo "| Commits | \`${{ steps.metrics.outputs.commits }}\` |"
+            echo "| Issues | \`${{ steps.metrics.outputs.issues }}\` |"
           } >> "$GITHUB_STEP_SUMMARY"
