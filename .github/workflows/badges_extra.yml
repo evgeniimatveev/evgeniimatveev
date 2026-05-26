@@ -1,6 +1,7 @@
 # badges_extra.yml — auto-update contributions + PRs badges
-# Isolated from update_readme.yml — writes ONLY badges/github_contributions.json
-# and badges/github_prs.json. Zero risk to other workflows.
+# Isolated from update_readme.yml — writes ONLY:
+#   badges/github_contributions.json
+#   badges/github_prs.json
 
 name: Update Extra Badges
 
@@ -15,6 +16,9 @@ permissions:
 concurrency:
   group: repo-main-writer
   cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   update-badges:
@@ -33,48 +37,40 @@ jobs:
             badges
           sparse-checkout-cone-mode: true
 
-      - name: Fetch contributions (GitHub GraphQL)
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fetch contributions (GitHub GraphQL via gh CLI)
         shell: bash
         run: |
           set -euo pipefail
           YEAR=$(date -u +%Y)
-          FROM="${YEAR}-01-01T00:00:00Z"
-          TO="${YEAR}-12-31T23:59:59Z"
 
-          QUERY=$(printf '{
-            "query": "query { user(login: \"evgeniimatveev\") { contributionsCollection(from: \"%s\", to: \"%s\") { contributionCalendar { totalContributions } } } }"
-          }' "$FROM" "$TO")
+          TOTAL=$(gh api graphql \
+            -f query='query($login:String!,$from:DateTime!,$to:DateTime!){
+              user(login:$login){
+                contributionsCollection(from:$from,to:$to){
+                  contributionCalendar{ totalContributions }
+                }
+              }
+            }' \
+            -f login="evgeniimatveev" \
+            -f from="${YEAR}-01-01T00:00:00Z" \
+            -f to="${YEAR}-12-31T23:59:59Z" \
+            --jq '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
 
-          RESP=$(curl -fsSL -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "$QUERY" \
-            https://api.github.com/graphql)
-
-          TOTAL=$(printf '%s' "$RESP" | jq -r '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
-          echo "Contributions $YEAR: $TOTAL"
-
+          echo "Contributions ${YEAR}: ${TOTAL}"
           mkdir -p badges
           printf '%s\n' \
             "{\"schemaVersion\":1,\"label\":\"contributions ${YEAR}\",\"message\":\"${TOTAL}\",\"color\":\"0ea5e9\"}" \
             > badges/github_contributions.json
 
-      - name: Fetch merged PRs (GitHub REST)
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fetch merged PRs (GitHub REST via gh CLI)
         shell: bash
         run: |
           set -euo pipefail
-          PR_COUNT=$(curl -fsSL \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/search/issues?q=is:pr+is:merged+author:evgeniimatveev" \
-            | jq -r '.total_count // 0')
+          PR_COUNT=$(gh api \
+            "search/issues?q=is:pr+is:merged+author:evgeniimatveev" \
+            --jq '.total_count // 0')
 
-          echo "Merged PRs: $PR_COUNT"
-
+          echo "Merged PRs: ${PR_COUNT}"
           mkdir -p badges
           printf '%s\n' \
             "{\"schemaVersion\":1,\"label\":\"PRs merged\",\"message\":\"${PR_COUNT}\",\"color\":\"8b5cf6\"}" \
@@ -113,8 +109,8 @@ jobs:
         if: always()
         shell: bash
         run: |
-          CONTRIB=$(cat badges/github_contributions.json 2>/dev/null | jq -r '.message // "?"')
-          PRS=$(cat badges/github_prs.json 2>/dev/null | jq -r '.message // "?"')
+          CONTRIB=$(jq -r '.message // "?"' badges/github_contributions.json 2>/dev/null || echo "?")
+          PRS=$(jq -r '.message // "?"' badges/github_prs.json 2>/dev/null || echo "?")
           {
             echo "### 📊 Extra Badges"
             echo "| Badge | Value |"
