@@ -89,7 +89,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ next_update_log.txt    # Human-readable badge ETA tail ([ts] color=… msg='…' next_utc=… mins_left=…)
 │  ├─ github_followers.json  # Endpoint payload for the Followers badge (schemaVersion/label/message/color)
 │  ├─ github_stars.json      # Endpoint payload for the Stars badge
-│  └─ total_updates.json     # Endpoint payload for the Updates badge
+│  ├─ total_updates.json     # Endpoint payload for the Updates badge
+│  └─ trophies.svg           # Cached GitHub Trophies SVG (via Cache GitHub Trophies workflow)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
