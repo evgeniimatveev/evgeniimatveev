@@ -102,6 +102,24 @@ jobs:
           echo "variant=$NEXT_MODE"           >> "$GITHUB_OUTPUT"
           echo "label=${LABELS[$NEXT_MODE]}"  >> "$GITHUB_OUTPUT"
 
+      - name: Update snake badge
+        shell: bash
+        run: |
+          set -euo pipefail
+          declare -A COLORS=(
+            [a]="ff66c4" [b]="5fd1ff" [c]="ffb86c" [d]="ff79c6"
+            [e]="a2ff5e" [f]="ffd166" [g]="64fff2" [h]="c084fc"
+            [i]="ff6b6b" [j]="e2e8f0" [k]="fbbf24" [l]="84cc16"
+            [m]="818cf8" [n]="f43f5e"
+          )
+          VARIANT="${{ steps.pick.outputs.variant }}"
+          LABEL="${{ steps.pick.outputs.label }}"
+          COLOR="${COLORS[$VARIANT]}"
+          mkdir -p badges
+          printf '%s\n' "{\"schemaVersion\":1,\"label\":\"snake\",\"message\":\"${LABEL} (${VARIANT})\",\"color\":\"${COLOR}\"}" \
+            > badges/snake_variant.json
+          echo "✅ Badge: $LABEL ($VARIANT) #$COLOR"
+
       - name: Commit and push changes (with retry)
         shell: bash
         run: |
@@ -109,7 +127,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-*.svg dist/snake.svg .github/snake-mode || true
+          git add dist/snake-*.svg dist/snake.svg .github/snake-mode badges/snake_variant.json || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
