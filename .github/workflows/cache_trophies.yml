@@ -1,38 +1,117 @@
+# cache_trophies.yml  ·  v2.0  (conflict-safe + retry + summary)
+#
+# Schedule map (UTC) — zero conflicts:
+#   02:00  cache-trophies   ← slot 1
+#   08:00  cache-trophies   ← slot 2
+#   12:15  update_readme    ← anchor, untouched
+#   14:00  cache-trophies   ← slot 3  (was 12:00 → direct conflict with update_readme!)
+#   20:00  cache-trophies   ← slot 4
+#   :37    next_update_badge (every hour, same concurrency group → queues safely)
+
 name: Cache GitHub Trophies
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 2,8,14,20 * * *'   # 02:00 · 08:00 · 14:00 · 20:00 UTC
   workflow_dispatch:
+    inputs:
+      force_commit:
+        description: "Force commit even if SVG unchanged"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Same concurrency group as next_update_badge — prevents simultaneous pushes
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
 
 jobs:
   cache-trophies:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
+    timeout-minutes: 10
 
-      - name: Fetch trophy SVG
+    steps:
+      - name: Checkout (sparse — badges only)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+          persist-credentials: true
+          filter: blob:none
+          sparse-checkout: |
+            badges
+          sparse-checkout-cone-mode: true
+
+      - name: Fetch trophy SVG (3 attempts)
+        id: fetch
+        shell: bash
         run: |
-          HTTP_CODE=$(curl -s -o /tmp/trophies_new.svg -w "%{http_code}" \
-            "https://github-profile-trophy-black-ten.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=1&column=6&no-frame=true&margin-w=8")
-          echo "HTTP status: $HTTP_CODE"
-          if [ "$HTTP_CODE" = "200" ] && grep -q "<svg" /tmp/trophies_new.svg; then
-            cp /tmp/trophies_new.svg badges/trophies.svg
-            echo "✅ Trophies cache updated"
-          else
-            echo "⚠️ Service returned $HTTP_CODE — keeping cached version"
-          fi
+          set -euo pipefail
+          URL="https://github-profile-trophy-black-ten.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=1&column=6&no-frame=true&margin-w=8"
+          STATUS="cached"
+
+          for attempt in 1 2 3; do
+            HTTP_CODE=$(curl -sL -o /tmp/trophies_new.svg -w "%{http_code}" \
+              --connect-timeout 15 --max-time 30 "$URL")
+            echo "Attempt $attempt — HTTP: $HTTP_CODE"
+
+            if [ "$HTTP_CODE" = "200" ] && grep -q "<svg" /tmp/trophies_new.svg; then
+              cp /tmp/trophies_new.svg badges/trophies.svg
+              STATUS="updated"
+              echo "✅ Fetched successfully (attempt $attempt)"
+              break
+            fi
+
+            [ "$attempt" -lt 3 ] && { echo "⚠️ Failed — retry in 10s..."; sleep 10; }
+          done
+
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          [ "$STATUS" = "cached" ] && echo "⚠️ All attempts failed — keeping cached SVG"
 
       - name: Commit if changed
+        shell: bash
         run: |
-          git config user.name "github-actions[bot]"
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add badges/trophies.svg
-          if git diff --staged --quiet; then
-            echo "No changes, skip commit"
-          else
-            git commit -m "🏆 Cache trophies SVG [skip ci]"
-            git push
+
+          FORCE="${{ inputs.force_commit && '1' || '0' }}"
+          if git diff --staged --quiet && [ "$FORCE" != "1" ]; then
+            echo "No changes — skip commit"
+            exit 0
           fi
+
+          git commit -m "🏆 Cache trophies SVG [skip ci]"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "✅ Pushed (attempt $i)"
+              exit 0
+            fi
+            echo "Push failed (attempt $i) — rebasing..."
+            sleep $((i * 3))
+            git fetch --depth=2 origin main
+            git pull --rebase --no-tags origin main
+          done
+
+          echo "❌ Push failed after 3 attempts"
+          exit 1
+
+      - name: Run summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### 🏆 Cache GitHub Trophies"
+            echo ""
+            echo "| Key | Value |"
+            echo "|-----|-------|"
+            echo "| Fetch status | \`${{ steps.fetch.outputs.status || 'unknown' }}\` |"
+            echo "| Schedule | \`0 2,8,14,20 * * *\` |"
+            echo "| Conflict with update_readme (12:15) | ✅ None |"
+            echo "| Concurrency group | \`repo-main-writer\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
