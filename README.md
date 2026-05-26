@@ -184,6 +184,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Python · Docker · 2,500+ CI | — |
   | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · R²=0.8326 | — |
   | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | REST API · Tableau · 100 jobs | — |
+  | 🌤️ [US Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | Open-Meteo · DuckDB · GitHub Actions 2×/day | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
   
 
 ---
