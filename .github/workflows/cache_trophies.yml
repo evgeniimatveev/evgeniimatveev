@@ -16,7 +16,7 @@ jobs:
       - name: Fetch trophy SVG
         run: |
           HTTP_CODE=$(curl -s -o /tmp/trophies_new.svg -w "%{http_code}" \
-            "https://github-profile-trophy.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=1&column=6&no-frame=true&margin-w=8")
+            "https://github-profile-trophy-black-ten.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=1&column=6&no-frame=true&margin-w=8")
           echo "HTTP status: $HTTP_CODE"
           if [ "$HTTP_CODE" = "200" ] && grep -q "<svg" /tmp/trophies_new.svg; then
             cp /tmp/trophies_new.svg badges/trophies.svg
