@@ -71,11 +71,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Workflow | Schedule | Runs | Status |
 |----------|----------|------|--------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **5,131** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,145** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,684** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **240** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **3** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **5,097** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,170** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,665** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **244** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **8** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **243** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **3** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
 
