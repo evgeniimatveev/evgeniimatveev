@@ -1,12 +1,12 @@
-# cache_trophies.yml  ·  v2.0  (conflict-safe + retry + summary)
+# cache_trophies.yml  ·  v2.1  (conflict-safe + retry + summary)
 #
 # Schedule map (UTC) — zero conflicts:
-#   02:00  cache-trophies   ← slot 1
-#   08:00  cache-trophies   ← slot 2
+#   02:00  cache-trophies
+#   08:00  cache-trophies
 #   12:15  update_readme    ← anchor, untouched
-#   14:00  cache-trophies   ← slot 3  (was 12:00 → direct conflict with update_readme!)
-#   20:00  cache-trophies   ← slot 4
-#   :37    next_update_badge (every hour, same concurrency group → queues safely)
+#   14:00  cache-trophies   (was 12:00 → direct conflict!)
+#   20:00  cache-trophies
+#   :37    next_update_badge (same concurrency group → queues safely)
 
 name: Cache GitHub Trophies
 
@@ -23,7 +23,6 @@ on:
 permissions:
   contents: write
 
-# Same concurrency group as next_update_badge — prevents simultaneous pushes
 concurrency:
   group: repo-main-writer
   cancel-in-progress: false
@@ -65,11 +64,16 @@ jobs:
               break
             fi
 
-            [ "$attempt" -lt 3 ] && { echo "⚠️ Failed — retry in 10s..."; sleep 10; }
+            if [ "$attempt" -lt 3 ]; then
+              echo "⚠️ Failed — retry in 10s..."
+              sleep 10
+            fi
           done
 
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
-          [ "$STATUS" = "cached" ] && echo "⚠️ All attempts failed — keeping cached SVG"
+          if [ "$STATUS" = "cached" ]; then
+            echo "⚠️ All attempts failed — keeping cached SVG"
+          fi
 
       - name: Commit if changed
         shell: bash
