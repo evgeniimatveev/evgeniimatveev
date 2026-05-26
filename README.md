@@ -176,7 +176,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Project | Highlights | Demo |
   |---------|-----------|------|
-  | 🌤️ [US Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 10 cities · Comfort Index · Severity Score · 2×/day auto | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
+  | 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best City Score · 7d Forecast · Quality Layer | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
   | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
   | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
   | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
