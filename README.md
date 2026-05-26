@@ -176,15 +176,15 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Project | Highlights | Demo |
   |---------|-----------|------|
-  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
-  | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | Supabase · Streamlit · Docker | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
+  | 🌤️ [US Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | Open-Meteo · DuckDB · GitHub Actions 2×/day | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
+  | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M revenue | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
+  | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · Supabase · Streamlit | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
   | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | PostgreSQL · Tableau · Python | — |
   | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | $2.58M rev · 2,314 cust. | — |
   | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | DuckDB · MotherDuck | — |
   | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Python · Docker · 2,500+ CI | — |
   | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | XGBoost · MLflow · R²=0.8326 | — |
   | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | REST API · Tableau · 100 jobs | — |
-  | 🌤️ [US Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | Open-Meteo · DuckDB · GitHub Actions 2×/day | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
   
 
 ---
