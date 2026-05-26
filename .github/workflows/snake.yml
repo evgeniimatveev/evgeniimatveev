@@ -8,16 +8,24 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+          persist-credentials: true
 
-      # 1) Generate all 7 snake variants (A–G) using your fork
       - name: Generate snake variants (A–G)
         uses: evgeniimatveev/snk/svg-only@main
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
         with:
           github_user_name: evgeniimatveev
           outputs: |
@@ -29,7 +37,6 @@ jobs:
             dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a
             dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7
 
-      # 2) Rotate snake modes (A -> B -> ... -> G -> A)
       - name: Pick next variant (A–G) and update snake.svg
         shell: bash
         run: |
@@ -66,12 +73,11 @@ jobs:
           cp -f "$SRC" dist/snake.svg
           printf '%s\n' "$NEXT_MODE" > "$MODE_FILE"
 
-      # 3) Commit & push updated snake.svg + variants
-      - name: Commit and push changes
+      - name: Commit and push changes (with retry)
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add dist/snake-*.svg dist/snake.svg .github/snake-mode || true
@@ -82,4 +88,17 @@ jobs:
           fi
 
           git commit -m "chore: update dynamic snake (A–G rotation)"
-          git push origin main
+
+          for i in 1 2 3; do
+            if git push origin main; then
+              echo "✅ Pushed (attempt $i)"
+              exit 0
+            fi
+            echo "Push failed (attempt $i) — rebasing..."
+            sleep $((i * 3))
+            git fetch --depth=2 origin main
+            git pull --rebase --no-tags origin main
+          done
+
+          echo "❌ Push failed after 3 attempts"
+          exit 1
