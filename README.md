@@ -142,6 +142,14 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </div>
 <!-- BADGES:END -->
 
+<!-- EXTRA_BADGES:START -->
+<p>
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_contributions.json&style=for-the-badge&cacheSeconds=3600" alt="Contributions 2026" />
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_prs.json&style=for-the-badge&cacheSeconds=3600" alt="PRs Merged" />
+  <img src="https://komarev.com/ghpvc/?username=evgeniimatveev&style=for-the-badge&color=0078D4&label=Profile+Views" alt="Profile Views" />
+</p>
+<!-- EXTRA_BADGES:END -->
+
 ---
 
 ## 🧠 What I Actually Do
