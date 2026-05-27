@@ -176,7 +176,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
-| 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote+51% · DuckDB · 23 CI tests | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/so-survey-analytics) |
+| 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote +51% · DuckDB · 23 CI tests | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/so-survey-analytics) |
 | 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best City Score · 7d Forecast · Quality Layer | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/weather-pipeline) |
 | 📈 [Job Market Pulse](https://github.com/evgeniimatveev/job-market-pulse) | 10 stacks · 11 cities · 110 API calls/day · DuckDB · daily pipeline | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/job-market-pulse) |
 | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
