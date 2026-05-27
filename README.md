@@ -172,6 +172,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - Work with cloud analytics stacks (Azure Databricks, Data Factory, Synapse)
 - Turn raw data into decisions — fast, reproducible, and production-grade
 
+--- 
+
  | Project | Highlights | Demo |
   |---------|-----------|------|
   | 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best
@@ -195,6 +197,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   GridSearch | — |
   | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich
   36% · API→Tableau | — |
+
+---
 
 ## ⚙️ Analytics Stack (Production-Level)
 
