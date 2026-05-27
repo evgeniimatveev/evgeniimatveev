@@ -184,8 +184,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
 | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
 | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
-| 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
 | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
+| 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
+| 🧠 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
 
 ---
 
