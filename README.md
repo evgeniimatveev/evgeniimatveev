@@ -1,4 +1,3 @@
-
 ---
 
 <!-- BANNER:START -->
