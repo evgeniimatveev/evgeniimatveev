@@ -123,7 +123,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
-## 📚 Learning Journey
+## 🚀 Engineering Background
 
 **Focus**
 - 📊 Data Analytics & Business Intelligence
@@ -132,11 +132,12 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - ☁️ Cloud Analytics — Azure Databricks, Data Factory, Synapse Analytics
 - 🐍 Python & R for data science workflows
 
-> 🧭 2+ years of hands-on learning focused on real-world projects, production dashboards, and automated data pipelines
+> 🧭 2+ years delivering production data pipelines, live analytics dashboards,
+> and automated MLOps workflows — from raw ingestion to deployed applications
 
 ---
 
-### Learning Platforms
+### Continuous Learning
 - 🎓 SuperDataScience — Data Analytics, ML & Automation
 - 📘 Udemy — SQL, Tableau, Power BI & Data Projects
 - ☁️ CloudWolf — AWS & Azure fundamentals for data workflows
