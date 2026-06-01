@@ -2,25 +2,25 @@
 
 <!-- BANNER:START -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/97.gif?t=1780234094" alt="Banner" height="420">
+  <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/assets/98.gif?t=1780325743" alt="Banner" height="420">
 </p>
-<p align="center"><sub>⚡ Banner 97/367</sub></p>
+<p align="center"><sub>☕ Banner 98/367</sub></p>
 <!-- BANNER:END -->
 
 ---
 
 <!-- STATUS:START -->
 <p align="center">
-<img src="https://img.shields.io/static/v1?label=Updated&message=2026-05-31%2013%3A28%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5762" />
+<img src="https://img.shields.io/static/v1?label=Updated&message=2026-06-01%2014%3A55%20UTC&color=0e8a16&labelColor=30363d&logo=clock&cacheSeconds=60&t=5763" />
 <img src="https://img.shields.io/badge/Schedule-24h_5m-2ea44f?cacheSeconds=300" />
-<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5762" />
-<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2022h%2046m&color=757575&labelColor=30363d&cacheSeconds=600" />
-<img src="https://img.shields.io/badge/Rotation-%235762-1f6feb?cacheSeconds=60" />
-<img src="https://img.shields.io/badge/Commit-274c70a-9cf?cacheSeconds=300" />
-<img src="https://img.shields.io/static/v1?label=Updates&message=375&color=0ea5e9&cacheSeconds=300" />
+<img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/next_update.json&cacheSeconds=120&t=5763" />
+<img src="https://img.shields.io/static/v1?label=Next%20Update&message=in%2021h%2019m&color=757575&labelColor=30363d&cacheSeconds=600" />
+<img src="https://img.shields.io/badge/Rotation-%235763-1f6feb?cacheSeconds=60" />
+<img src="https://img.shields.io/badge/Commit-90bf168-9cf?cacheSeconds=300" />
+<img src="https://img.shields.io/static/v1?label=Updates&message=376&color=0ea5e9&cacheSeconds=300" />
 <img src="https://img.shields.io/badge/Event-schedule-8a2be2?cacheSeconds=300" />
 <img src="https://img.shields.io/badge/Mode-auto-grey?cacheSeconds=60" />
-<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5762" alt="Daily Smoke (pytest - m smoke)" /></a>
+<a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml"><img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg?branch=main&t=5763" alt="Daily Smoke (pytest - m smoke)" /></a>
 </p>
 <!-- STATUS:END -->
 
@@ -145,10 +145,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 <!-- BADGES:START -->
 <div align="left">
-<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5762" alt="Last Commit"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5762" alt="GitHub Followers"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5762" alt="GitHub Stars"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5762" alt="Total Updates"></p>
+<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5763" alt="Last Commit"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5763" alt="GitHub Followers"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5763" alt="GitHub Stars"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5763" alt="Total Updates"></p>
 </div>
 <!-- BADGES:END -->
 
@@ -286,14 +286,14 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 <details>
   <summary>🪄 Run Meta (click to expand)</summary>
 
-- 📆 Updated (UTC): **2026-05-31 13:28 UTC**
-- 🤖 Run: **#5762** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/26713753183)
-- 🧬 Commit: **274c70a** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/274c70ab317d7f4a54d1cf45e0a906b9e745cf2b)
-- ♻️ Updates (total): **375**
+- 📆 Updated (UTC): **2026-06-01 14:55 UTC**
+- 🤖 Run: **#5763** — [open run](https://github.com/evgeniimatveev/evgeniimatveev/actions/runs/26762541494)
+- 🧬 Commit: **90bf168** — [open commit](https://github.com/evgeniimatveev/evgeniimatveev/commit/90bf1682df85457d42dcb91c8dff406601180d5e)
+- ♻️ Updates (total): **376**
 - 🌀 Workflow: **Auto Update README** · Job: **update-readme**
 - ✨ Event: **schedule** · 🧑‍💻 Actor: **evgeniimatveev**
 - 🕒 Schedule: **24h_5m**
-- 🌈 Banner: **97/367**
+- 🌈 Banner: **98/367**
 </details>
 
 <!-- RUNMETA:END -->
@@ -303,11 +303,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Time (UTC) | Run | SHA | Banner | Event/Actor | Insight|
 |---|---|---|---|---|---|
+| 2026-06-01 14:55:43 | 5763 | `90bf168` | 98/367 (98.gif) | schedule/evgeniimatveev | 📡 ETL → FEATURES → IMPACT • RUN #5763 — BATCH BY NIGHT, STREAM BY DAY 🌅 &#124; START YOUR WEEK STRONG! 🚀 REVIEW METRICS, CUT TOIL, ADD VA… |
 | 2026-05-31 13:28:14 | 5762 | `274c70a` | 97/367 (97.gif) | schedule/evgeniimatveev | 📡 DATA • PLATFORMS • VALUE • RUN #5762 — Rebuild With Lighter Dependencies 🌿 &#124; Prep For An Mlops-filled Week! ⏳ Profile The Hotspots… |
 | 2026-05-30 13:21:10 | 5761 | `45816ce` | 96/367 (96.gif) | schedule/evgeniimatveev | 📡 TEST • OBSERVE • DEPLOY • RUN #5761 — Refactor And Bloom 🌼 &#124; Weekend Automation Vibes! 🎉 Keep Pushing Your Mlops Pipeline Forward!… |
 | 2026-05-29 13:58:52 | 5760 | `187a63c` | 95/367 (95.gif) | schedule/evgeniimatveev | 📡 TRACK • TUNE • TRUST • RUN #5760 — SPRING-CLEAN ORPHAN TABLES AND DAGS 🧽 &#124; WRAP IT UP LIKE A PRO! ⚡ SHIP A THIN SLICE: API → MODEL… |
 | 2026-05-28 14:11:26 | 5759 | `dcabb6b` | 94/367 (94.gif) | schedule/evgeniimatveev | 📡 BATCH & STREAM IN HARMONY • RUN #5759 — Pollinate features across teams 🐝 &#124; Test, iterate, deploy! 🚀 Guardrails on, feature flags … |
-| 2026-05-28 13:53:07 | 5758 | `32861e7` | 93/367 (93.gif) | workflow_dispatch/evgeniimatveev | 📡 PIPELINES, NOT FIRE-DRILLS • RUN #5758 — Spring-clean orphan tables and dags 🧽 &#124; Test, iterate, deploy! 🚀 Optimize, deploy, repeat… |
 
 </details>
 <!-- LOG:END -->
@@ -363,7 +363,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ---
 
 <!-- INSIGHT:START -->
-🤖 MLOPS Insight: 📡 DATA • PLATFORMS • VALUE • RUN #5762 — Rebuild With Lighter Dependencies 🌿 | Prep For An Mlops-filled Week! ⏳ Profile The Hotspots, Cache The Wins 🧠 📦
+🤖 MLOPS Insight: 📡 ETL → FEATURES → IMPACT • RUN #5763 — BATCH BY NIGHT, STREAM BY DAY 🌅 | START YOUR WEEK STRONG! 🚀 REVIEW METRICS, CUT TOIL, ADD VALUE 📉→📈 🌾
 <!-- INSIGHT:END -->
 
 ---
