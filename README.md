@@ -26,7 +26,7 @@
 
 ---
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lines=⚙️+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;🔍+SQL+Expert+·+PostgreSQL+·+DuckDB+·+MotherDuck;📈+Tableau+%26+Power+BI+·+Dashboards+That+Drive+Decisions;⚙️+ETL%2FELT+Pipelines+·+Python+·+Pandas+·+Automation;☁️+Azure+Databricks+·+Data+Factory+·+Synapse+Analytics;🐍+Python+·+R+·+Scikit-learn+·+Data+Science+Workflows;🐳+Docker+·+GitHub+Actions+·+CI%2FCD+for+Data+Pipelines;🎯+Turn+Raw+Data+Into+Business+Insights;📊+10%2B+Real-World+Analytics+Projects;🔄+End-to-End+BI+Solutions+·+From+Data+to+Dashboard;⚡+Data+Storytelling+·+KPIs+·+Executive+Dashboards;🛢️+Advanced+SQL+·+Window+Functions+·+CTEs+·+Optimization;📡+REST+APIs+·+Automated+Analytics+Workflows;🧠+Data+Modeling+·+Star+Schema+·+Dimensional+Thinking;🌊+DuckDB+·+MotherDuck+·+Modern+Data+Stack;🔒+Data+Quality+·+Testing+·+Validated+Pipelines;💼+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lines=⚙️+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;🔍+SQL+Expert+·+PostgreSQL+·+DuckDB+·+MotherDuck;📈+Tableau+%26+Power+BI+·+Dashboards+That+Drive+Decisions;⚙️+ETL%2FELT+Pipelines+·+Python+·+Pandas+·+Automation;☁️+Azure+Databricks+·+Data+Factory+·+Synapse+Analytics;🐍+Python+·+R+·+Scikit-learn+·+Data+Science+Workflows;🐳+Docker+·+GitHub+Actions+·+CI%2FCD+for+Data+Pipelines;🎯+Turn+Raw+Data+Into+Business+Insights;📊+14%2B+Real-World+Portfolio+Projects;🔄+End-to-End+BI+Solutions+·+From+Data+to+Dashboard;⚡+Data+Storytelling+·+KPIs+·+Executive+Dashboards;🛢️+Advanced+SQL+·+Window+Functions+·+CTEs+·+Optimization;📡+REST+APIs+·+Automated+Analytics+Workflows;🧠+Data+Modeling+·+Star+Schema+·+Dimensional+Thinking;🌊+DuckDB+·+MotherDuck+·+Modern+Data+Stack;🔒+Data+Quality+·+Testing+·+Validated+Pipelines;💼+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
 
 ---
 
@@ -57,7 +57,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence
-- ⚙️ **Zero-touch ops**: 5,700+ scheduled runs · 18,200+ total CI events · 367 mutations · idempotent commits
+- ⚙️ **Zero-touch ops**: 5,700+ scheduled runs · 18,200+ total CI events · 377 mutations · idempotent commits
 
 ### 🐍 Core Scripts:
 
@@ -70,13 +70,13 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Workflow | Schedule | Runs | Status |
 |----------|----------|------|--------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **5,097** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,170** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,665** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **244** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **8** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **243** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **3** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **4,949** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **7,290** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **5,501** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **252** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **36** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **250** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **10** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
