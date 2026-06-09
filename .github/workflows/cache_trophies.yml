@@ -49,7 +49,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          URL="https://github-profile-trophy-black-ten.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=2&column=3&no-frame=true&margin-w=8"
+          URL="https://github-profile-trophy-black-ten.vercel.app/?username=evgeniimatveev&theme=tokyonight&row=2&column=3&no-frame=true&margin-w=30"
           STATUS="cached"
 
           for attempt in 1 2 3; do
