@@ -372,7 +372,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   <summary><b>📈 Auto GitHub Insights</b> <em>(UTC · auto-refresh)</em></summary>
 
   <p align="center">
-    <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/trophies.svg" width="660" alt="GitHub Trophy" />
+    <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/trophies.svg" width="800" alt="GitHub Trophy" />
   </p>
   <p align="center">
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight&v=2" width="800" alt="Profile Details" />
