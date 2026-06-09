@@ -1,8 +1,8 @@
 
     <svg
-      width="700"
-      height="110"
-      viewBox="0 0 700 110"
+      width="346"
+      height="220"
+      viewBox="0 0 346 220"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -90,7 +90,7 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         width: 0px;
       }
       to {
-        width: 4.16px;
+        width: 4.2px;
       }
     }
     #Commits-rank-progress{
@@ -347,8 +347,8 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         </svg>
         
         <svg
-          x="354"
-          y="0"
+          x="0"
+          y="110"
           width="110"
           height="110"
           viewBox="0 0 110 110"
@@ -457,8 +457,8 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         </svg>
         
         <svg
-          x="472"
-          y="0"
+          x="118"
+          y="110"
           width="110"
           height="110"
           viewBox="0 0 110 110"
@@ -558,8 +558,8 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         </svg>
         
         <svg
-          x="590"
-          y="0"
+          x="236"
+          y="110"
           width="110"
           height="110"
           viewBox="0 0 110 110"
@@ -639,7 +639,7 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         
         <svg
           x="0"
-          y="110"
+          y="220"
           width="110"
           height="110"
           viewBox="0 0 110 110"
@@ -719,7 +719,7 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         
         <svg
           x="118"
-          y="110"
+          y="220"
           width="110"
           height="110"
           viewBox="0 0 110 110"
