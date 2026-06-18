@@ -323,14 +323,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/snake_variant.json&cacheSeconds=600&style=flat-square" alt="Active snake variant" />
 </p>
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./dist/snake.svg">
-    <source media="(prefers-color-scheme: light)" srcset="./dist/snake-light.svg">
-    <img src="./dist/snake.svg" alt="GitHub contribution snake — auto-rotating palettes" />
-  </picture>
+  <img src="./dist/snake.svg" alt="GitHub contribution snake — auto-rotating dark palettes" />
 </p>
 <p align="center">
-  <sub><em>Dark & light palettes · Daily A–N theme rotation · 14 colors · Fully automated via GitHub Actions</em></sub>
+  <sub><em>Night-mode palettes · Daily A–N theme rotation · 14 colors · Fully automated via GitHub Actions</em></sub>
 </p>
 
 ---
