@@ -51,7 +51,20 @@ jobs:
             dist/snake-l.svg?palette=github-dark&color_snake=%2384cc16&color_dots=%230a1a02,%23365314,%2365a30d,%23bef264
             dist/snake-m.svg?palette=github-dark&color_snake=%23818cf8&color_dots=%230f0c2e,%23312e81,%234f46e5,%23c7d2fe
             dist/snake-n.svg?palette=github-dark&color_snake=%23f43f5e&color_dots=%231f0a0e,%23881337,%23e11d48,%23fda4af
-
+            dist/snake-a-light.svg?palette=github&color_snake=%23e6007a&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-b-light.svg?palette=github&color_snake=%230077aa&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-c-light.svg?palette=github&color_snake=%23d97706&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-d-light.svg?palette=github&color_snake=%23c026d3&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-e-light.svg?palette=github&color_snake=%2316a34a&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-f-light.svg?palette=github&color_snake=%23ca8a04&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-g-light.svg?palette=github&color_snake=%230891b2&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-h-light.svg?palette=github&color_snake=%237c3aed&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-i-light.svg?palette=github&color_snake=%23dc2626&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-j-light.svg?palette=github&color_snake=%23475569&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-k-light.svg?palette=github&color_snake=%23b45309&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-l-light.svg?palette=github&color_snake=%2365a30d&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-m-light.svg?palette=github&color_snake=%234338ca&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
+            dist/snake-n-light.svg?palette=github&color_snake=%23be123c&color_dots=%23ebedf0,%239be9a8,%2340c463,%2330a14e
       - name: Pick next variant (A–N) and update snake.svg
         id: pick
         shell: bash
@@ -97,6 +110,7 @@ jobs:
           fi
 
           cp -f "$SRC" dist/snake.svg
+          cp -f "dist/snake-${NEXT_MODE}-light.svg" dist/snake-light.svg
           printf '%s\n' "$NEXT_MODE" > "$MODE_FILE"
 
           echo "variant=$NEXT_MODE"           >> "$GITHUB_OUTPUT"
@@ -127,7 +141,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add dist/snake-*.svg dist/snake.svg .github/snake-mode badges/snake_variant.json || true
+          git add dist/snake-*.svg dist/snake.svg dist/snake-light.svg .github/snake-mode badges/snake_variant.json || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
