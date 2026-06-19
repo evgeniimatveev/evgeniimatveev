@@ -28,7 +28,7 @@
             fetch-depth: 2
             persist-credentials: true
 
-        # 14 variants A–N · palette=github · themed color progressions (white-background friendly)
+        # 14 variants A–N · palette=github-dark + color_bg · dark card on any background
         - name: Generate snake variants (A–N)
           uses: evgeniimatveev/snk/svg-only@main
           env:
@@ -36,20 +36,20 @@
           with:
             github_user_name: evgeniimatveev
             outputs: |
-              dist/snake-a.svg?palette=github&color_snake=%23ec4899&color_dots=%23fce7f3,%23f9a8d4,%23db2777,%239d174d
-              dist/snake-b.svg?palette=github&color_snake=%2306b6d4&color_dots=%23cffafe,%2367e8f9,%230891b2,%23164e63
-              dist/snake-c.svg?palette=github&color_snake=%23f97316&color_dots=%23ffedd5,%23fdba74,%23ea580c,%237c2d12
-              dist/snake-d.svg?palette=github&color_snake=%23d946ef&color_dots=%23fdf4ff,%23e879f9,%23a21caf,%23701a75
-              dist/snake-e.svg?palette=github&color_snake=%2322c55e&color_dots=%23dcfce7,%2386efac,%2316a34a,%2314532d
-              dist/snake-f.svg?palette=github&color_snake=%23eab308&color_dots=%23fef9c3,%23fde047,%23ca8a04,%23713f12
-              dist/snake-g.svg?palette=github&color_snake=%2314b8a6&color_dots=%23ccfbf1,%235eead4,%230d9488,%23134e4a
-              dist/snake-h.svg?palette=github&color_snake=%238b5cf6&color_dots=%23ede9fe,%23c4b5fd,%237c3aed,%234c1d95
-              dist/snake-i.svg?palette=github&color_snake=%23fb7185&color_dots=%23fff1f2,%23fecdd3,%23e11d48,%239f1239
-              dist/snake-j.svg?palette=github&color_snake=%2394a3b8&color_dots=%23f1f5f9,%23e2e8f0,%23475569,%231e293b
-              dist/snake-k.svg?palette=github&color_snake=%23f59e0b&color_dots=%23fffbeb,%23fde68a,%23d97706,%2378350f
-              dist/snake-l.svg?palette=github&color_snake=%2384cc16&color_dots=%23f7fee7,%23d9f99d,%2365a30d,%23365314
-              dist/snake-m.svg?palette=github&color_snake=%236366f1&color_dots=%23eef2ff,%23c7d2fe,%234f46e5,%23312e81
-              dist/snake-n.svg?palette=github&color_snake=%23ef4444&color_dots=%23fef2f2,%23fca5a5,%23dc2626,%237f1d1d
+              dist/snake-a.svg?palette=github-dark&color_snake=%23ff66c4&color_dots=%230e4429,%23006d32,%2326a641,%2339d353&color_bg=%230d1117
+              dist/snake-b.svg?palette=github-dark&color_snake=%235fd1ff&color_dots=%230b1020,%23004d75,%230094d4,%234dd2ff&color_bg=%230d1117
+              dist/snake-c.svg?palette=github-dark&color_snake=%23ffb86c&color_dots=%2322130b,%237c3f00,%23ff9f1a,%23ffd27f&color_bg=%230d1117
+              dist/snake-d.svg?palette=github-dark&color_snake=%23ff79c6&color_dots=%23251022,%239b287b,%23ff4fa3,%23ffc1e3&color_bg=%230d1117
+              dist/snake-e.svg?palette=github-dark&color_snake=%23a2ff5e&color_dots=%23101a0c,%233f6f22,%2371c837,%23c9ff9d&color_bg=%230d1117
+              dist/snake-f.svg?palette=github-dark&color_snake=%23ffd166&color_dots=%23261a00,%238c5e00,%23ffba08,%23ffe08a&color_bg=%230d1117
+              dist/snake-g.svg?palette=github-dark&color_snake=%2364fff2&color_dots=%23011b1a,%23007872,%2300c4b8,%2389fff7&color_bg=%230d1117
+              dist/snake-h.svg?palette=github-dark&color_snake=%23c084fc&color_dots=%231a0a2e,%236b21a8,%23a855f7,%23e9d5ff&color_bg=%230d1117
+              dist/snake-i.svg?palette=github-dark&color_snake=%23ff6b6b&color_dots=%232d0a0a,%23991b1b,%23ef4444,%23fca5a5&color_bg=%230d1117
+              dist/snake-j.svg?palette=github-dark&color_snake=%23e2e8f0&color_dots=%230f172a,%23334155,%2364748b,%23cbd5e1&color_bg=%230d1117
+              dist/snake-k.svg?palette=github-dark&color_snake=%23fbbf24&color_dots=%231c1007,%2378350f,%23f59e0b,%23fde68a&color_bg=%230d1117
+              dist/snake-l.svg?palette=github-dark&color_snake=%2384cc16&color_dots=%230a1a02,%23365314,%2365a30d,%23bef264&color_bg=%230d1117
+              dist/snake-m.svg?palette=github-dark&color_snake=%23818cf8&color_dots=%230f0c2e,%23312e81,%234f46e5,%23c7d2fe&color_bg=%230d1117
+              dist/snake-n.svg?palette=github-dark&color_snake=%23f43f5e&color_dots=%231f0a0e,%23881337,%23e11d48,%23fda4af&color_bg=%230d1117
 
         - name: Pick next variant (A–N) and update snake.svg
           id: pick
@@ -106,10 +106,10 @@
           run: |
             set -euo pipefail
             declare -A COLORS=(
-              [a]="ec4899" [b]="06b6d4" [c]="f97316" [d]="d946ef"
-              [e]="22c55e" [f]="eab308" [g]="14b8a6" [h]="8b5cf6"
-              [i]="fb7185" [j]="94a3b8" [k]="f59e0b" [l]="84cc16"
-              [m]="6366f1" [n]="ef4444"
+              [a]="ff66c4" [b]="5fd1ff" [c]="ffb86c" [d]="ff79c6"
+              [e]="a2ff5e" [f]="ffd166" [g]="64fff2" [h]="c084fc"
+              [i]="ff6b6b" [j]="e2e8f0" [k]="fbbf24" [l]="84cc16"
+              [m]="818cf8" [n]="f43f5e"
             )
             VARIANT="${{ steps.pick.outputs.variant }}"
             LABEL="${{ steps.pick.outputs.label }}"
@@ -165,7 +165,7 @@
               echo "|-----|-------|"
               echo "| Active variant | \`${{ steps.pick.outputs.variant }}\` — ${{ steps.pick.outputs.label }} |"
               echo "| Total variants | 14 (A–N) |"
-              echo "| Palette | \`github\` (white-background friendly) |"
+              echo "| Palette | \`github-dark\` + dark card background |"
               echo ""
               echo "**Palette map:**"
               echo "\`a\` Pink · \`b\` Cyan · \`c\` Orange · \`d\` Magenta · \`e\` Green · \`f\` Yellow · \`g\` Teal"
