@@ -176,6 +176,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
+| 📉 [Tech Layoffs Tracker](https://github.com/evgeniimatveev/layoffs-tracker) | 2,412 events · 747K people · 49 countries · DuckDB · weekly refresh | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://layoffs-tracker-mdndinr8hfct5afvjwvjno.streamlit.app) |
 | 🔌 [MCP Data Quality Agent](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 19 MCP tools · 5 databases · Claude AI · natural language analytics | — |
 | 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 20 questions · SQL + Behavioral + Project · Claude API · streaming feedback · SQLite | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/interview-coach) |
 | 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote +51% · DuckDB · 23 CI tests | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/so-survey-analytics) |
