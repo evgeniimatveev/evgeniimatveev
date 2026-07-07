@@ -185,6 +185,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📈 [Job Market Pulse](https://github.com/evgeniimatveev/job-market-pulse) | 10 stacks · 10 US cities + remote · 110 API calls/day · DuckDB · daily pipeline | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/job-market-pulse) |
 | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
 | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
+| ❄️ [Snowflake A-Z](https://github.com/evgeniimatveev/Snowflake-A-Z) | 7 hands-on practices · Streams/Tasks · RBAC · native Streamlit · SQLFluff CI | — |
 | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
 | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
 | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
