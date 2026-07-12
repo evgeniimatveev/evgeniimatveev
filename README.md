@@ -176,6 +176,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
+| 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
 | ₿ [Crypto On-Chain Dashboard](https://github.com/evgeniimatveev/crypto-dashboard) | Top 20 coins · Fear & Greed · BTC dominance · DuckDB · daily pipeline | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://crypto-onchain-dashboard.streamlit.app) |
 | 📉 [Tech Layoffs Tracker](https://github.com/evgeniimatveev/layoffs-tracker) | 2,412 events · 747K people · 49 countries · DuckDB · weekly refresh | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://layoffs-tracker-mdndinr8hfct5afvjwvjno.streamlit.app) |
 | 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote +51% · DuckDB · 23 CI tests | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://4cmjubresrab8nk6zhjqbv.streamlit.app/) |
