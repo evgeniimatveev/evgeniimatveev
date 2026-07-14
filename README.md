@@ -262,12 +262,12 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Assistant | Role | Usage |
   |-----------|------|--------|
-   | 🧠 Claude Sonnet 4.6 | **Primary AI Partner** — architecture · code · analytics · docs · review | Primary |
+   | 🧠 Claude Sonnet 5 | **Primary AI Partner** — architecture · code · analytics · docs · review | Primary |
 
    <details>
       <summary>💡 <b>How Claude fits into my workflow</b></summary>
 
-  Claude Sonnet 4.6 is my primary AI engineering partner across all stages of the data & MLOps lifecycle:
+  Claude Sonnet 5 is my primary AI engineering partner across all stages of the data & MLOps lifecycle:
 
   - 🏗️ **Architecture** → pipeline design, schema decisions, project structure
   - 🐍 **Code** → Python scripts, SQL queries, Docker configs, GitHub Actions workflows
