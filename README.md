@@ -131,7 +131,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - ☁️ Cloud Analytics — Azure Databricks, Data Factory, Synapse Analytics
 - 🐍 Python & R for data science workflows
 
-> 🧭 2+ years delivering production data pipelines, live analytics dashboards,
+> 🧭 2.5+ years delivering production data pipelines, live analytics dashboards,
 > and automated MLOps workflows — from raw ingestion to deployed applications
 
 ---
