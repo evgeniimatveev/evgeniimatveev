@@ -34,6 +34,12 @@
 
 > Turning raw data into dashboards, pipelines into insights, and complexity into clarity
 
+<p align="center">
+  <a href="https://evgeniimatveev.github.io/"><img
+    src="https://img.shields.io/badge/%F0%9F%8C%90_Live_Portfolio-evgeniimatveev.github.io-F0A868?style=for-the-badge&labelColor=0B0D12"
+    alt="Live Portfolio"/></a>
+</p>
+
 💡  I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a
      focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
 
@@ -406,7 +412,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     alt="Follow @evgeniimatveev"/></a>&nbsp;&nbsp;
   <a href="https://www.linkedin.com/in/evgenii-matveev-510926276/"><img
     src="https://img.shields.io/badge/Connect%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"
-    alt="Connect on LinkedIn"/></a>
+    alt="Connect on LinkedIn"/></a>&nbsp;&nbsp;
+  <a href="https://evgeniimatveev.github.io/"><img
+    src="https://img.shields.io/badge/%F0%9F%8C%90_Portfolio-F0A868?style=for-the-badge&labelColor=0B0D12"
+    alt="Visit Portfolio"/></a>
 </p>
 
 ---
