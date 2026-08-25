@@ -278,6 +278,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | Assistant | Role | Usage |
   |-----------|------|--------|
    | 🧠 Claude Sonnet 5 | **Primary AI Partner** — architecture · code · analytics · docs · review | Primary |
+   | 🖥️ Claude Code (CLI) | **Agentic Runtime** — full-auto sessions · persistent context · tool-verified changes | Primary |
 
    <details>
       <summary>💡 <b>How Claude fits into my workflow</b></summary>
@@ -289,6 +290,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   - 📊 **Analytics** → data modeling, query optimization, business logic translation
   - 📝 **Documentation** → READMEs, project descriptions, technical write-ups
   - 🔍 **Review** → debugging, code quality, edge case analysis
+  - 🚨 **Production Ops** → live incident triage from real logs/screenshots — root-cause diagnosis, verified fix, deployed and re-checked in-session
 
   > Precision-first · Context-aware · Production-grade output.
 
