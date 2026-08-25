@@ -292,7 +292,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   - 🔍 **Review** → debugging, code quality, edge case analysis
   - 🚨 **Production Ops** → live incident triage from real logs/screenshots — root-cause diagnosis, verified fix, deployed and re-checked in-session
 
-  > Precision-first · Context-aware · Production-grade output.
+  > Precision-first · Context-engineered · Production-grade output.
 
    </details>
   </details>
