@@ -49,7 +49,7 @@
 `SQL` • `Python` • `PostgreSQL` • `DuckDB` • `Docker` • `GitHub Actions` • `MLflow` • `Tableau` • `Power BI`• `Excel`
 
 **📊 Focus**
- Data Engineering • MLOps Automation • Business Intelligence • ETL/ELT Pipelines • Analytics Engineering
+ Data Engineering • MLOps Automation • Business Intelligence • ETL/ELT Pipelines • Agentic AI Engineering
 
 ---
 
@@ -136,6 +136,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - ⚙️ Analytics Engineering · ETL/ELT workflows · Pipeline automation
 - ☁️ Cloud Analytics — Azure Databricks, Data Factory, Synapse Analytics
 - 🐍 Python & R for data science workflows
+- 🤖 Agentic AI Engineering — Claude Code workflows for architecture, debugging & production incident response
 
 > 🧭 2.5+ years delivering production data pipelines, live analytics dashboards,
 > and automated MLOps workflows — from raw ingestion to deployed applications
@@ -177,6 +178,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - Model data for analytics — star schema, dimensional modeling, data contracts
 - Work with cloud analytics stacks (Azure Databricks, Data Factory, Synapse)
 - Turn raw data into decisions — fast, reproducible, and production-grade
+- Debug and ship production fixes with AI-agent tooling — verified against real logs and screenshots, not guesses
 
 --- 
 
