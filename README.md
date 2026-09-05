@@ -37,8 +37,12 @@
 <p align="center">
   <a href="https://evgeniimatveev.github.io/"><img
     src="https://img.shields.io/badge/%F0%9F%8C%90_Live_Portfolio-evgeniimatveev.github.io-F0A868?style=for-the-badge&labelColor=0B0D12"
-    alt="Live Portfolio"/></a>
+    alt="Live Portfolio"/></a>&nbsp;&nbsp;
+  <a href="https://evgeniimatveev.github.io/civics-sql-rag/"><img
+    src="https://img.shields.io/badge/%F0%9F%A6%8E_RAG_Practice_Lab-civics_%C3%97_sql-7C3AED?style=for-the-badge&labelColor=0B0D12"
+    alt="RAG Practice Lab"/></a>
 </p>
+<p align="center"><sub>Two independent RAG builds on two different corpora — the portfolio's own <code>ask --live</code> widget, and a focused practice lab grounded in 128 official USCIS civics questions + real SQL sessions.</sub></p>
 
 💡  I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a
      focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
@@ -184,6 +188,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
+| 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
 | 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
 | 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
 | ₿ [Crypto On-Chain Dashboard](https://github.com/evgeniimatveev/crypto-dashboard) | Top 20 coins · Fear & Greed · BTC dominance · DuckDB · daily pipeline | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://crypto-onchain-dashboard.streamlit.app) |
