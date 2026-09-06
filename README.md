@@ -75,6 +75,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 |------|---------|-------------|
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.5.7-stable-success"> | Banner engine + NLG + JSONL pipeline |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_activity_graph.py">build_activity_graph.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → self-hosted contribution heatmap SVG |
 
 ### ⚙️ CI/CD Workflows:
 
@@ -87,6 +88,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **396** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **346** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **101** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | 05:15 & 17:15 UTC | **new** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
@@ -105,7 +107,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ snake_variant.json     # Active snake color variant (label/color, updated by snake.yml)
 │  ├─ github_contributions.json  # Total contributions this year (GraphQL, via badges_extra.yml)
 │  ├─ github_commits.json    # Commit count this year (GraphQL, via badges_extra.yml)
-│  └─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
+│  ├─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
+│  └─ activity_graph.svg     # Self-hosted contribution heatmap (GraphQL, via activity_graph.yml)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
@@ -126,7 +129,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 🐍 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/snake_variant.json">snake_variant.json</a> ·
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_contributions.json">github_contributions.json</a> ·
 🔨 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_commits.json">github_commits.json</a> ·
-🐛 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_issues.json">github_issues.json</a>
+🐛 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/github_issues.json">github_issues.json</a> ·
+📅 <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/badges/activity_graph.svg">activity_graph.svg</a>
 
 </details>
 
@@ -413,10 +417,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
   </p>
   <p align="center">
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=evgeniimatveev&theme=tokyo-night" width="780" />
+    <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/activity_graph.svg" width="780" alt="Contribution activity heatmap" />
   </p>
   <p align="center">
-    <sub>Daily contributions (last 30 days)</sub>
+    <sub>Contribution activity · last 365 days · self-hosted (GitHub GraphQL → SVG, refreshed daily — no third-party renderer)</sub>
   </p>
 
   </details>
