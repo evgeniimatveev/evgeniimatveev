@@ -75,7 +75,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 |------|---------|-------------|
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.5.7-stable-success"> | Banner engine + NLG + JSONL pipeline |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_activity_graph.py">build_activity_graph.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → self-hosted contribution heatmap SVG |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_activity_graph.py">build_activity_graph.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → self-hosted 30-day trend chart SVG |
 
 ### ⚙️ CI/CD Workflows:
 
@@ -108,7 +108,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ github_contributions.json  # Total contributions this year (GraphQL, via badges_extra.yml)
 │  ├─ github_commits.json    # Commit count this year (GraphQL, via badges_extra.yml)
 │  ├─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
-│  └─ activity_graph.svg     # Self-hosted contribution heatmap (GraphQL, via activity_graph.yml)
+│  └─ activity_graph.svg     # Self-hosted 30-day trend chart (GraphQL, via activity_graph.yml)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
@@ -417,10 +417,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
   </p>
   <p align="center">
-    <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/activity_graph.svg" width="780" alt="Contribution activity heatmap" />
+    <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/activity_graph.svg" width="780" alt="Daily contributions — last 30 days" />
   </p>
   <p align="center">
-    <sub>Contribution activity · last 365 days · self-hosted (GitHub GraphQL → SVG, refreshed daily — no third-party renderer)</sub>
+    <sub>Daily contributions · last 30 days · self-hosted (GitHub GraphQL → SVG, refreshed daily — no third-party renderer)</sub>
   </p>
 
   </details>

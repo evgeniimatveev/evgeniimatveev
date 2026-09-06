@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 """Self-hosted replacement for github-readme-activity-graph.vercel.app.
 
-Fetches the last 365 days of contribution data straight from GitHub's own
-GraphQL API and renders a calendar-heatmap SVG locally — no third-party
-rendering service, so there is nothing external to go down.
+That widget drew a 30-day daily-commits line/area chart — a different view
+from GitHub's own native contribution calendar (which the profile already
+shows further down the page, so duplicating it here would be redundant).
+This fetches the same 30-day window straight from GitHub's own GraphQL API
+and renders the line/area chart locally — no third-party renderer to fail.
 """
 
 from __future__ import annotations
@@ -15,37 +17,40 @@ import datetime as dt
 import urllib.request
 import urllib.error
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 LOGIN = os.getenv("ACTIVITY_GRAPH_LOGIN", "evgeniimatveev")
 TOKEN = os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN")
 OUT_PATH = Path(os.getenv("ACTIVITY_GRAPH_OUT", "badges/activity_graph.svg"))
+WINDOW_DAYS = int(os.getenv("ACTIVITY_GRAPH_WINDOW_DAYS", "30"))
 
-# Sequential ramp: one hue (brand blue), light->dark, monotone lightness.
-# Level 0 = GitHub's own "no contributions" dark tone so it blends with the
-# surrounding dark-mode card instead of looking like a hole.
-LEVEL_COLORS = ["#161b22", "#0d3a66", "#155a99", "#1f7ecc", "#3fa9f5"]
-SURFACE = "#0d1117"
-TEXT_PRIMARY = "#c9d1d9"
-TEXT_MUTED = "#8b949e"
+# Tokyo Night palette — matches the theme already used by the trophies /
+# streak-stats / summary-cards widgets on the same profile page.
+SURFACE = "#1a1b26"
+GRID = "#2a2e42"
+TEXT_PRIMARY = "#c0caf5"
+TEXT_MUTED = "#565f89"
+ACCENT = "#7aa2f7"
+ACCENT_FILL_TOP = "rgba(122,162,247,0.35)"
+ACCENT_FILL_BOTTOM = "rgba(122,162,247,0.0)"
 
-CELL = 11
-GAP = 3
-STEP = CELL + GAP
-LEFT_MARGIN = 28
-TOP_MARGIN = 34
-BOTTOM_MARGIN = 30
-RIGHT_MARGIN = 14
+WIDTH = 784
+HEIGHT = 220
+PAD_LEFT = 34
+PAD_RIGHT = 16
+PAD_TOP = 40
+PAD_BOTTOM = 42
+PLOT_W = WIDTH - PAD_LEFT - PAD_RIGHT
+PLOT_H = HEIGHT - PAD_TOP - PAD_BOTTOM
 
-MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-WEEKDAY_LABELS = {1: "Mon", 3: "Wed", 5: "Fri"}  # Monday=0 .. Sunday=6
+MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 
-def fetch_contribution_days(login: str, token: str) -> List[Dict[str, Any]]:
-    """Query the last 365 days of contributionCalendar via GitHub GraphQL."""
+def fetch_daily_counts(login: str, token: str, window_days: int) -> Tuple[List[Dict[str, Any]], int]:
+    """Query the last `window_days` of contributionCalendar via GitHub GraphQL."""
     to = dt.datetime.now(dt.timezone.utc)
-    frm = to - dt.timedelta(days=365)
+    frm = to - dt.timedelta(days=window_days - 1)
 
     query = """
     query($login: String!, $from: DateTime!, $to: DateTime!) {
@@ -89,113 +94,105 @@ def fetch_contribution_days(login: str, token: str) -> List[Dict[str, Any]]:
         raise RuntimeError(f"GraphQL error: {payload['errors']}")
 
     calendar = payload["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-    weeks = calendar["weeks"]
-    total = calendar["totalContributions"]
-    days = [d for week in weeks for d in week["contributionDays"]]
+    days = [d for week in calendar["weeks"] for d in week["contributionDays"]]
+    days = [d for d in days if frm.date() <= dt.date.fromisoformat(d["date"]) <= to.date()]
+    total = sum(d["contributionCount"] for d in days)
     return days, total
 
 
-def levels_for(days: List[Dict[str, Any]]):
-    """Fixed log-scale buckets (not quantiles): this profile's daily counts are
-    heavily skewed (many single-commit days, occasional 100+ commit bursts from
-    project pushes), so a quantile split collapses into "1 vs everything else".
-    """
-
-    def level(count: int) -> int:
-        if count <= 0:
-            return 0
-        if count == 1:
-            return 1
-        if count <= 4:
-            return 2
-        if count <= 14:
-            return 3
-        return 4
-
-    return level
+def _catmull_rom_to_bezier_path(points: List[Tuple[float, float]]) -> str:
+    """Smooth line through points using Catmull-Rom -> cubic Bezier conversion."""
+    if len(points) < 2:
+        return ""
+    path = [f"M {points[0][0]:.1f} {points[0][1]:.1f}"]
+    for i in range(len(points) - 1):
+        p0 = points[i - 1] if i > 0 else points[i]
+        p1 = points[i]
+        p2 = points[i + 1]
+        p3 = points[i + 2] if i + 2 < len(points) else p2
+        c1x = p1[0] + (p2[0] - p0[0]) / 6
+        c1y = p1[1] + (p2[1] - p0[1]) / 6
+        c2x = p2[0] - (p3[0] - p1[0]) / 6
+        c2y = p2[1] - (p3[1] - p1[1]) / 6
+        path.append(f"C {c1x:.1f} {c1y:.1f} {c2x:.1f} {c2y:.1f} {p2[0]:.1f} {p2[1]:.1f}")
+    return " ".join(path)
 
 
-def build_svg(days: List[Dict[str, Any]], total: int, login: str) -> str:
-    level_fn = levels_for(days)
+def build_svg(days: List[Dict[str, Any]], total: int, login: str, window_days: int) -> str:
+    n = len(days)
+    counts = [d["contributionCount"] for d in days]
+    max_count = max(counts) if counts else 0
+    y_max = max(max_count, 1) * 1.2
 
-    # Group into weeks (Sunday-start columns, matching GitHub's own layout).
-    weeks: List[List[Dict[str, Any]]] = []
-    current_week: List[Dict[str, Any]] = []
-    for d in days:
-        date = dt.date.fromisoformat(d["date"])
-        weekday = (date.weekday() + 1) % 7  # Sunday=0 .. Saturday=6
-        if weekday == 0 and current_week:
-            weeks.append(current_week)
-            current_week = []
-        current_week.append(d)
-    if current_week:
-        weeks.append(current_week)
+    def x_at(i: int) -> float:
+        if n == 1:
+            return PAD_LEFT + PLOT_W / 2
+        return PAD_LEFT + (PLOT_W * i / (n - 1))
 
-    n_weeks = len(weeks)
-    width = LEFT_MARGIN + n_weeks * STEP + RIGHT_MARGIN
-    height = TOP_MARGIN + 7 * STEP + BOTTOM_MARGIN
+    def y_at(count: int) -> float:
+        return PAD_TOP + PLOT_H - (count / y_max) * PLOT_H
+
+    points = [(x_at(i), y_at(c)) for i, c in enumerate(counts)]
+    baseline_y = PAD_TOP + PLOT_H
 
     parts: List[str] = []
     parts.append(
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
-        f'viewBox="0 0 {width} {height}" font-family="-apple-system,BlinkMacSystemFont,'
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" '
+        f'viewBox="0 0 {WIDTH} {HEIGHT}" font-family="-apple-system,BlinkMacSystemFont,'
         f'\'Segoe UI\',Helvetica,Arial,sans-serif">'
     )
-    parts.append(f'<rect width="{width}" height="{height}" fill="{SURFACE}" rx="6"/>')
+    parts.append("<defs><linearGradient id=\"areaFill\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">"
+                  f'<stop offset="0%" stop-color="{ACCENT_FILL_TOP}"/>'
+                  f'<stop offset="100%" stop-color="{ACCENT_FILL_BOTTOM}"/>'
+                  "</linearGradient></defs>")
+    parts.append(f'<rect width="{WIDTH}" height="{HEIGHT}" fill="{SURFACE}" rx="6"/>')
     parts.append(
-        f'<text x="{LEFT_MARGIN}" y="16" font-size="13" font-weight="600" '
-        f'fill="{TEXT_PRIMARY}">{total:,} contributions in the last year</text>'
+        f'<text x="{PAD_LEFT}" y="16" font-size="13" font-weight="600" fill="{TEXT_PRIMARY}">'
+        f'{total} contributions in the last {window_days} days</text>'
     )
 
-    # Month labels: emit a label the first time a week starts a new month.
-    seen_month = None
-    for wi, week in enumerate(weeks):
-        first_day = dt.date.fromisoformat(week[0]["date"])
-        if first_day.month != seen_month:
-            seen_month = first_day.month
-            x = LEFT_MARGIN + wi * STEP
-            parts.append(
-                f'<text x="{x}" y="{TOP_MARGIN - 6}" font-size="10" '
-                f'fill="{TEXT_MUTED}">{MONTH_NAMES[first_day.month - 1]}</text>'
-            )
+    # Horizontal gridlines + y labels (0 / mid / max).
+    for frac, label in ((0.0, "0"), (0.5, str(round(y_max / 2))), (1.0, str(round(y_max)))):
+        gy = PAD_TOP + PLOT_H - frac * PLOT_H
+        parts.append(f'<line x1="{PAD_LEFT}" y1="{gy:.1f}" x2="{WIDTH - PAD_RIGHT}" y2="{gy:.1f}" '
+                      f'stroke="{GRID}" stroke-width="1"/>')
+        parts.append(f'<text x="{PAD_LEFT - 6}" y="{gy + 3:.1f}" font-size="9" fill="{TEXT_MUTED}" '
+                      f'text-anchor="end">{label}</text>')
 
-    # Weekday labels.
-    for wd, label in WEEKDAY_LABELS.items():
-        y = TOP_MARGIN + wd * STEP + CELL - 2
-        parts.append(f'<text x="0" y="{y}" font-size="9" fill="{TEXT_MUTED}">{label}</text>')
+    # Area fill + smoothed line.
+    line_path = _catmull_rom_to_bezier_path(points)
+    if line_path:
+        area_path = (
+            f"{line_path} L {points[-1][0]:.1f} {baseline_y:.1f} "
+            f"L {points[0][0]:.1f} {baseline_y:.1f} Z"
+        )
+        parts.append(f'<path d="{area_path}" fill="url(#areaFill)" stroke="none"/>')
+        parts.append(f'<path d="{line_path}" fill="none" stroke="{ACCENT}" stroke-width="2" '
+                      f'stroke-linecap="round" stroke-linejoin="round"/>')
 
-    # Day cells.
-    for wi, week in enumerate(weeks):
-        for d in week:
-            date = dt.date.fromisoformat(d["date"])
-            weekday = (date.weekday() + 1) % 7
-            count = d["contributionCount"]
-            level = level_fn(count)
-            x = LEFT_MARGIN + wi * STEP
-            y = TOP_MARGIN + weekday * STEP
-            color = LEVEL_COLORS[level]
-            parts.append(
-                f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="2" '
-                f'fill="{color}"><title>{count} contribution{"s" if count != 1 else ""} '
-                f'on {d["date"]}</title></rect>'
-            )
+    # Dots — every point gets a small marker; the peak day gets a bigger one + label.
+    peak_i = max(range(n), key=lambda i: counts[i]) if n else 0
+    for i, (px, py) in enumerate(points):
+        is_peak = i == peak_i and counts[i] > 0
+        r = 4 if is_peak else 2.5
+        parts.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="{r}" fill="{ACCENT}"/>')
+        if is_peak:
+            parts.append(f'<text x="{px:.1f}" y="{py - 8:.1f}" font-size="9" fill="{TEXT_PRIMARY}" '
+                          f'text-anchor="middle" font-weight="600">{counts[i]}</text>')
 
-    # Legend (bottom-right): Less [] [] [] [] [] More
-    legend_y = height - 12
-    legend_label_w = 30
-    swatch_x = width - RIGHT_MARGIN - legend_label_w - len(LEVEL_COLORS) * STEP
-    parts.append(
-        f'<text x="{swatch_x - 6}" y="{legend_y - 2}" font-size="9" fill="{TEXT_MUTED}" '
-        f'text-anchor="end">Less</text>'
-    )
-    for i, color in enumerate(LEVEL_COLORS):
-        x = swatch_x + i * STEP
-        parts.append(f'<rect x="{x}" y="{legend_y - 10}" width="{CELL}" height="{CELL}" rx="2" fill="{color}"/>')
-    more_x = swatch_x + len(LEVEL_COLORS) * STEP + 4
-    parts.append(f'<text x="{more_x}" y="{legend_y - 2}" font-size="9" fill="{TEXT_MUTED}">More</text>')
+    # X-axis date labels — first, last, and every ~5th day in between.
+    label_stride = max(1, n // 6)
+    for i, d in enumerate(days):
+        if i != 0 and i != n - 1 and i % label_stride != 0:
+            continue
+        date = dt.date.fromisoformat(d["date"])
+        label = f"{MONTH_ABBR[date.month - 1]} {date.day}"
+        anchor = "start" if i == 0 else "end" if i == n - 1 else "middle"
+        parts.append(f'<text x="{points[i][0]:.1f}" y="{HEIGHT - PAD_BOTTOM + 12}" font-size="9" '
+                      f'fill="{TEXT_MUTED}" text-anchor="{anchor}">{label}</text>')
 
     parts.append(
-        f'<text x="{LEFT_MARGIN}" y="{legend_y - 2}" font-size="9" fill="{TEXT_MUTED}">'
+        f'<text x="{PAD_LEFT}" y="{HEIGHT - 6}" font-size="9" fill="{TEXT_MUTED}">'
         f'@{login} &#183; self-hosted, updates daily</text>'
     )
 
@@ -207,8 +204,8 @@ def main() -> None:
     if not TOKEN:
         raise SystemExit("GH_TOKEN or GITHUB_TOKEN env var is required")
 
-    days, total = fetch_contribution_days(LOGIN, TOKEN)
-    svg = build_svg(days, total, LOGIN)
+    days, total = fetch_daily_counts(LOGIN, TOKEN, WINDOW_DAYS)
+    svg = build_svg(days, total, LOGIN, WINDOW_DAYS)
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(svg, encoding="utf-8")
