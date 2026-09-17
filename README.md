@@ -309,6 +309,50 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </details>
   <!-- END: COPILOTS -->
 
+  <!-- BEGIN: AI_SYSTEMS_IN_PRODUCTION -->
+  <details>
+    <summary>🛰️ AI Systems in Production</summary>
+
+  ### 🤖 RAG Ask-Widget — Live on This Profile
+
+  An interactive Q&A widget embedded on this page, answering visitor questions about my projects and background in real time — a shipped AI product I designed and deployed end-to-end, not just a tool I use for work.
+
+  | Component | Implementation |
+  |-----------|------|
+  | **Retrieval** | Cloudflare Vectorize — 1024-dim index, cosine similarity, multilingual `bge-m3` embeddings |
+  | **Generation** | Claude (Anthropic API) — grounded, context-injected answers |
+  | **Ingestion** | Cloudflare Queues — async corpus embedding/upsert, dead-letter queue for failed jobs |
+  | **Bot protection** | Cloudflare Turnstile — verified before any rate-limit or generation cost is incurred |
+  | **Rate limiting** | Per-IP + global daily caps via Workers KV — cost-bounded by design |
+  | **Analytics** | Cloudflare D1 — anonymized topic/language classification per question |
+  | **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers — zero always-on infrastructure |
+
+  🔒 Privacy by design: analytics store only a keyword-classified topic bucket and detected language — never the raw question text.
+
+   <details>
+      <summary>🎨 <b>Creative & Content Generation</b></summary>
+
+  Portfolio banner visuals for all 20 project cards were generated with **Gemini (nano banana)**, refined through iterative prompting — concept → test batch → visual QA (composition, palette, icon accuracy) → full rollout. Design/marketing tooling only — engineering work stays on the Claude stack above.
+
+   <details>
+      <summary>🖼️ <b>See the generation process (3 examples)</b></summary>
+
+  <br>
+
+  <img src="assets/banners-demo/mlops_docker.jpg" width="700"/>
+  <p><em>MLOps Docker — real Docker whale icon instead of a generic shield, two-panel layout</em></p>
+
+  <img src="assets/banners-demo/snowflake.jpg" width="700"/>
+  <p><em>Snowflake — single-panel + floating badge layout, brand-accurate snowflake mark</em></p>
+
+  <img src="assets/banners-demo/route_optimization.jpg" width="700"/>
+  <p><em>Route Optimization — three-panel cascading layout, first fully-validated complex composition</em></p>
+
+   </details>
+   </details>
+  </details>
+  <!-- END: AI_SYSTEMS_IN_PRODUCTION -->
+
 ---
 <!-- BEGIN: AUTOMATION -->
 <details>
