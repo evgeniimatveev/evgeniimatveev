@@ -452,14 +452,14 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/trophies.svg" width="800" alt="GitHub Trophy" />
   </p>
   <p align="center">
-    <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight&v=2" width="800" alt="Profile Details" />
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/profile-details?username=evgeniimatveev&theme=tokyonight&v=2" width="800" alt="Profile Details" />
   </p>
   <p align="center">
     <img src="https://streak-stats.demolab.com?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="800" alt="GitHub Streak" />
   </p>
   <p align="center">
-    <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
-    <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
   </p>
   <p align="center">
     <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/activity_graph.svg" width="780" alt="Daily contributions — last 30 days" />
