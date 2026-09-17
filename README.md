@@ -319,13 +319,13 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   | Component | Implementation |
   |-----------|------|
-  | **Retrieval** | Cloudflare Vectorize — 1024-dim index, cosine similarity, multilingual `bge-m3` embeddings |
-  | **Generation** | Claude (Anthropic API) — grounded, context-injected answers |
-  | **Ingestion** | Cloudflare Queues — async corpus embedding/upsert, dead-letter queue for failed jobs |
-  | **Bot protection** | Cloudflare Turnstile — verified before any rate-limit or generation cost is incurred |
-  | **Rate limiting** | Per-IP + global daily caps via Workers KV — cost-bounded by design |
-  | **Analytics** | Cloudflare D1 — anonymized topic/language classification per question |
-  | **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers — zero always-on infrastructure |
+  | 🔎 **Retrieval** | Cloudflare Vectorize — 1024-dim index, cosine similarity, multilingual `bge-m3` embeddings |
+  | 🧠 **Generation** | Claude (Anthropic API) — grounded, context-injected answers |
+  | 📥 **Ingestion** | Cloudflare Queues — async corpus embedding/upsert, dead-letter queue for failed jobs |
+  | 🛡️ **Bot protection** | Cloudflare Turnstile — verified before any rate-limit or generation cost is incurred |
+  | ⏱️ **Rate limiting** | Per-IP + global daily caps via Workers KV — cost-bounded by design |
+  | 📊 **Analytics** | Cloudflare D1 — anonymized topic/language classification per question |
+  | ⚡ **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers — zero always-on infrastructure |
 
   🔒 Privacy by design: analytics store only a keyword-classified topic bucket and detected language — never the raw question text.
 
