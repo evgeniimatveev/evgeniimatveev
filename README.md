@@ -309,6 +309,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </details>
   <!-- END: COPILOTS -->
 
+---
   <!-- BEGIN: AI_SYSTEMS_IN_PRODUCTION -->
   <details>
     <summary>🛰️ AI Systems in Production</summary>
