@@ -40,9 +40,12 @@
     alt="Live Portfolio"/></a>&nbsp;&nbsp;
   <a href="https://evgeniimatveev.github.io/civics-sql-rag/"><img
     src="https://img.shields.io/badge/%F0%9F%A6%8E_RAG_Practice_Lab-civics_%C3%97_sql-7C3AED?style=for-the-badge&labelColor=0B0D12"
-    alt="RAG Practice Lab"/></a>
+    alt="RAG Practice Lab"/></a>&nbsp;&nbsp;
+  <a href="https://evgeniimatveev.github.io/agent-memory/"><img
+    src="https://img.shields.io/badge/%F0%9F%A7%A0_Agent_Memory-mem0_style-2DD4BF?style=for-the-badge&labelColor=0B0D12"
+    alt="Agent Memory Demo"/></a>
 </p>
-<p align="center"><sub>Two independent RAG builds on two different corpora — the portfolio's own <code>ask --live</code> widget, and a focused practice lab grounded in 128 official USCIS civics questions + real SQL sessions.</sub></p>
+<p align="center"><sub>Three independent Cloudflare + Claude builds — the portfolio's own <code>ask --live</code> widget, a focused RAG practice lab grounded in 128 official USCIS civics questions + real SQL sessions, and a self-hosted mem0-style long-term memory API.</sub></p>
 
 💡  I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a
      focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
