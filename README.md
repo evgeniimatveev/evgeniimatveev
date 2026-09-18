@@ -330,6 +330,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | 📊 **Analytics** | Cloudflare D1 — anonymized topic/language classification per question |
   | ⚡ **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers — zero always-on infrastructure |
 
+  🌐 [Live demo →](https://evgeniimatveev.github.io/) · 💻 [Source →](https://github.com/evgeniimatveev/evgeniimatveev.github.io/tree/main/worker)
+
   🔒 Privacy by design: analytics store only a keyword-classified topic bucket and detected language — never the raw question text.
 
   ### 🧠 agent-memory — Self-Hosted Memory Layer for AI Agents
