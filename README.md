@@ -458,8 +458,12 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://github-readme-streak-stats-mu-mocha.vercel.app?user=evgeniimatveev&theme=tokyonight&hide_border=true" width="800" alt="GitHub Streak" />
   </p>
   <p align="center">
-    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/repos-per-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Repo" />
     <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
+  </p>
+  <p align="center">
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Commits" />
   </p>
   <p align="center">
     <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/activity_graph.svg" width="780" alt="Daily contributions — last 30 days" />
