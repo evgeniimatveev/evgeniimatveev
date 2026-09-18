@@ -319,7 +319,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   <details>
     <summary>🛰️ AI Systems in Production</summary>
 
-  ### 🤖 RAG Ask-Widget — Live on This Profile
+  <details>
+    <summary>🤖 <b>RAG Ask-Widget — Live on This Profile</b></summary>
 
   An interactive Q&A widget embedded on this page, answering visitor questions about my projects and background in real time — a shipped AI product I designed and deployed end-to-end, not just a tool I use for work.
 
@@ -337,7 +338,10 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
   🔒 Privacy by design: analytics store only a keyword-classified topic bucket and detected language — never the raw question text.
 
-  ### 🧠 agent-memory — Self-Hosted Memory Layer for AI Agents
+  </details>
+
+  <details>
+    <summary>🧠 <b>agent-memory — Self-Hosted Memory Layer for AI Agents</b></summary>
 
   A mem0/Supermemory-style long-term memory API — extracts atomic facts from raw text, embeds and stores them, then retrieves by relevance, importance and recency, not similarity alone. A standalone shipped AI product (separate repo), built on the same Cloudflare pattern as the ask-widget above, not a wrapper around a third-party memory service.
 
@@ -350,6 +354,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | ⚡ **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers |
 
   🌐 [Live demo →](https://evgeniimatveev.github.io/agent-memory/) · 💻 [Source →](https://github.com/evgeniimatveev/agent-memory)
+
+  </details>
 
    <details>
       <summary>🎨 <b>Creative & Content Generation</b></summary>
