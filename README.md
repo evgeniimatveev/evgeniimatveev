@@ -192,6 +192,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
+| 🧠 [Agent Memory](https://github.com/evgeniimatveev/agent-memory) | Cloudflare Vectorize + Workers AI + D1 + Claude Haiku 4.5 · mem0/Supermemory-style memory API · atomic fact extraction · similarity × importance × recency re-ranking | [🌐 Live](https://evgeniimatveev.github.io/agent-memory/) |
 | 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
 | 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
 | 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
@@ -330,6 +331,20 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   | ⚡ **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers — zero always-on infrastructure |
 
   🔒 Privacy by design: analytics store only a keyword-classified topic bucket and detected language — never the raw question text.
+
+  ### 🧠 agent-memory — Self-Hosted Memory Layer for AI Agents
+
+  A mem0/Supermemory-style long-term memory API — extracts atomic facts from raw text, embeds and stores them, then retrieves by relevance, importance and recency, not similarity alone. A standalone shipped AI product (separate repo), built on the same Cloudflare pattern as the ask-widget above, not a wrapper around a third-party memory service.
+
+  | Component | Implementation |
+  |-----------|------|
+  | 🧠 **Extraction** | Claude Haiku 4.5 — pulls typed, atomic facts (preference/fact/event/correction) with an importance score out of raw text |
+  | 🔎 **Retrieval** | Cloudflare Vectorize — 1024-dim index, cosine similarity, `bge-m3` embeddings |
+  | 🗂️ **Storage** | Cloudflare D1 — structured metadata (type, importance, timestamps) |
+  | ⚖️ **Re-ranking** | `similarity × importance-weight × recency-decay` — an important fact from weeks ago still outranks a trivial fresh one |
+  | ⚡ **Runtime** | Fully serverless, edge-deployed on Cloudflare Workers |
+
+  🌐 [Live demo →](https://evgeniimatveev.github.io/agent-memory/) · 💻 [Source →](https://github.com/evgeniimatveev/agent-memory)
 
    <details>
       <summary>🎨 <b>Creative & Content Generation</b></summary>
