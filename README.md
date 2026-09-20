@@ -295,6 +295,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   |-----------|------|--------|
    | 🧠 Claude Sonnet 5 | **Primary AI Partner** — architecture · code · analytics · docs · review | Primary |
    | 🖥️ Claude Code (CLI) | **Agentic Runtime** — full-auto sessions · persistent context · tool-verified changes | Primary |
+   | 🕵️ OpenAI Codex CLI | **Second Opinion** — blind code review · isolated one-off tasks · breaking stuck-debug loops | On-demand |
 
    <details>
       <summary>💡 <b>How Claude fits into my workflow</b></summary>
@@ -309,6 +310,20 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   - 🚨 **Production Ops** → live incident triage from real logs/screenshots — root-cause diagnosis, verified fix, deployed and re-checked in-session
 
   > Precision-first · Context-engineered · Production-grade output.
+
+   </details>
+
+   <details>
+      <summary>🕵️ <b>How Codex CLI fits into my workflow</b></summary>
+
+  OpenAI Codex CLI is my second opinion — deliberately kept blind to Claude's project context, so it reviews cold instead of just echoing conclusions I've already reached:
+
+  - 🔍 **Blind code review** → reviews a diff/module with zero access to my CLAUDE.md conventions or fix history — catches what a context-loaded reviewer misses
+  - 🌐 **Isolated translation** → one-off conversions (e.g. SQL dialect ports) where the output is easy to verify standalone
+  - 🧯 **Breaking stuck-debug loops** → brought in fresh, with no memory of failed attempts, when the primary agent is stuck re-fixing the same bug
+  - 🌳 **Isolated via `git worktree`** → runs on its own branch in its own directory, never alongside the primary agent in the same working tree, so neither can silently overwrite the other's edits
+
+  > First real find (2026-09-20): a blind Codex review of `route-optimization-vrp`'s OR-Tools segfault-isolation code surfaced two real bugs — a timeout that didn't actually kill a hung worker, and no cap on concurrent solves — that 5 prior fix commits had missed. Verified against the actual code, fixed, and shipped in [PR #1](https://github.com/evgeniimatveev/route-optimization-vrp/pull/1), confirmed clean in production logs post-deploy.
 
    </details>
   </details>
