@@ -504,8 +504,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
     <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/most-commit-language?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Top Languages by Commits" />
   </p>
   <p align="center">
-    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Stats" />
-    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/productive-time?username=evgeniimatveev&theme=tokyonight&v=2" width="400" alt="Commits" />
+    <img src="https://github-profile-summary-cards-murex-one.vercel.app/api/cards/stats?username=evgeniimatveev&theme=tokyonight&v=2" width="500" alt="Stats" />
   </p>
   <p align="center">
     <img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/activity_graph.svg" width="780" alt="Daily contributions — last 30 days" />
