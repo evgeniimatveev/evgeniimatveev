@@ -149,7 +149,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 - 🐍 Python & R for data science workflows
 - 🤖 Agentic AI Engineering — Claude Code workflows for architecture, debugging & production incident response
 
-> 🧭 2.5+ years delivering production data pipelines, live analytics dashboards,
+> 🧭 3+ years delivering production data pipelines, live analytics dashboards,
 > and automated MLOps workflows — from raw ingestion to deployed applications
 
 ---
