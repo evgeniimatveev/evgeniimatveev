@@ -194,6 +194,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
+| 📐 [Tableau LOD Cases](https://github.com/evgeniimatveev/tableau-business-cases) | 4 Tableau LOD case studies · 41 numbers reconciled in DuckDB · 6 gotchas documented · pytest + GitHub Actions CI | [📊 Live](https://public.tableau.com/app/profile/evgenii.matveev/viz/LOD_cohoranalysishmdashboard/Dashboard1) |
 | 🧠 [Agent Memory](https://github.com/evgeniimatveev/agent-memory) | Cloudflare Vectorize + Workers AI + D1 + Claude Haiku 4.5 · mem0/Supermemory-style memory API · atomic fact extraction · similarity × importance × recency re-ranking | [🌐 Live](https://evgeniimatveev.github.io/agent-memory/) |
 | 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
 | 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
