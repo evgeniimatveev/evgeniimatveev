@@ -186,7 +186,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ---
 
 <!-- PROJECTS:START -->
-<p align="center"><img src="badges/projects_panel.svg?v=32616ce5" width="824" alt="Project portfolio: projects, live demos, categories and platforms"/></p>
+<p align="center"><img src="badges/projects_panel.svg?v=8d5e04da" width="824" alt="Project portfolio: projects, live demos, categories and platforms"/></p>
 
 <details>
 <summary><b>🧠 AI & Cloudflare systems</b> <em>(5)</em></summary>
