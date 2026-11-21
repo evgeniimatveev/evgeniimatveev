@@ -6,9 +6,10 @@ Single sources of truth (nothing is typed by hand):
   * schedules / triggers                    -> the cron / push / pull_request lines of .github/workflows/*.yml
   * "README mutations" counter              -> .ci/update_count.txt
 
-Rewrites two README spots (both are no-ops if the content is unchanged):
+Rewrites three README spots (all no-ops if the content is unchanged):
   <!-- CISTATS:START --> ... <!-- CISTATS:END -->   the workflows table
   <!-- CIHEAD:START -->  ... <!-- CIHEAD:END -->    inline "N+ cumulative workflow runs · M+ README mutations"
+  <!-- CIBADGES:START --> ... <!-- CIBADGES:END --> badge rows: live status + cumulative runs + schedule
 
 Env: GH_TOKEN / GITHUB_TOKEN (actions:read), GITHUB_REPOSITORY (default evgeniimatveev/evgeniimatveev).
 Run from the repo root:  python build_ci_stats.py [--dry-run]   (CI: .github/workflows/ci_stats.yml, 03:20 UTC)
@@ -19,6 +20,7 @@ import json
 import os
 import re
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -168,6 +170,37 @@ def table_md(rows) -> str:
     return "\n".join(lines)
 
 
+# badge rows under the snake: (workflow stem, alt text) - the workflows people look at first
+BADGE_ROWS = [("blank", "CI/CD"), ("update_readme", "README updates"), ("next_update_badge", "Badge refresh")]
+
+
+def _static(label: str, message: str, color: str, logo: str = "") -> str:
+    q = urllib.parse.urlencode({"label": label, "message": message, "color": color, "style": "flat",
+                                "cacheSeconds": 3600, **({"logo": logo} if logo else {})})
+    return f'<img src="https://img.shields.io/static/v1?{q.replace("&", "&amp;")}" alt="{label}: {message}"/>'
+
+
+def badges_md(rows) -> str:
+    """Only facts that are true: live workflow status (GitHub), cumulative runs and the real schedule."""
+    by = {r[0]: r for r in rows}
+    base = f"https://github.com/{REPO}/actions/workflows"
+    out = []
+    for stem, alt in BADGE_ROWS:
+        if stem not in by:
+            continue
+        _s, fname, sched, n = by[stem]
+        runs = _static("Runs", f"{n:,}", "brightgreen", "githubactions")
+        when = _static("Schedule", sched, "1f6feb", "githubactions")
+        out.append("\n".join([
+            '<p align="left">',
+            f'  <img src="{base}/{fname}/badge.svg" alt="{alt} status"/>',
+            f"  {runs}",
+            f"  {when}",
+            "</p>",
+        ]))
+    return "\n\n".join(out)
+
+
 def head_text(total: int) -> str:
     text = f"{total // 500 * 500:,}+ cumulative workflow runs"
     if COUNT_FILE.exists():
@@ -197,6 +230,7 @@ def main() -> None:
     md = README.read_text(encoding="utf-8")
     new = sub_block(md, "CISTATS", table_md(rows), inline=False)
     new = sub_block(new, "CIHEAD", head_text(total), inline=True)
+    new = sub_block(new, "CIBADGES", badges_md(rows), inline=False)
     print(f"[ci-stats] {len(rows)} workflows · cumulative total {total:,} · {head_text(total)}")
     for r in rows:
         print(f"  {r[1]:<24} {r[2]:<34} {r[3]:>6,}")
