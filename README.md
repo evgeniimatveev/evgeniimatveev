@@ -26,7 +26,7 @@
 
 ---
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lines=⚙️+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;🔍+SQL+Expert+·+PostgreSQL+·+DuckDB+·+MotherDuck;📈+Tableau+%26+Power+BI+·+Dashboards+That+Drive+Decisions;⚙️+ETL%2FELT+Pipelines+·+Python+·+Pandas+·+Automation;☁️+Azure+Databricks+·+Data+Factory+·+Synapse+Analytics;🐍+Python+·+R+·+Scikit-learn+·+Data+Science+Workflows;🐳+Docker+·+GitHub+Actions+·+CI%2FCD+for+Data+Pipelines;🎯+Turn+Raw+Data+Into+Business+Insights;📊+16%2B+Real-World+Portfolio+Projects;🔄+End-to-End+BI+Solutions+·+From+Data+to+Dashboard;⚡+Data+Storytelling+·+KPIs+·+Executive+Dashboards;🛢️+Advanced+SQL+·+Window+Functions+·+CTEs+·+Optimization;📡+REST+APIs+·+Automated+Analytics+Workflows;🧠+Data+Modeling+·+Star+Schema+·+Dimensional+Thinking;🌊+DuckDB+·+MotherDuck+·+Modern+Data+Stack;🔒+Data+Quality+·+Testing+·+Validated+Pipelines;💼+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lines=%E2%9A%99%EF%B8%8F+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;%F0%9F%94%8D+SQL+Expert+%C2%B7+PostgreSQL+%C2%B7+DuckDB+%C2%B7+MotherDuck;%F0%9F%93%88+Tableau+%26+Power+BI+%C2%B7+Dashboards+That+Drive+Decisions;%E2%9A%99%EF%B8%8F+ETL%2FELT+Pipelines+%C2%B7+Python+%C2%B7+Pandas+%C2%B7+Automation;%E2%98%81%EF%B8%8F+Azure+Databricks+%C2%B7+Data+Factory+%C2%B7+Synapse+Analytics;%F0%9F%90%B3+Docker+%C2%B7+GitHub+Actions+%C2%B7+CI%2FCD+for+Data+Pipelines;%F0%9F%A4%96+Agentic+AI+Engineering+%C2%B7+Claude+Code+%C2%B7+Cloudflare;%F0%9F%93%8A+20%2B+Real-World+Portfolio+Projects;%F0%9F%92%BC+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
 
 ---
 
@@ -47,16 +47,12 @@
 </p>
 <p align="center"><sub>Three independent Cloudflare + Claude builds — the portfolio's own <code>ask --live</code> widget, a focused RAG practice lab grounded in 128 official USCIS civics questions + real SQL sessions, and a self-hosted mem0-style long-term memory API.</sub></p>
 
-💡  I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a
-     focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
+💡 I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
 
 ---
 
 **🛠️ Core Stack**
-`SQL` • `Python` • `PostgreSQL` • `DuckDB` • `Docker` • `GitHub Actions` • `MLflow` • `Tableau` • `Power BI`• `Excel`
-
-**📊 Focus**
- Data Engineering • MLOps Automation • Business Intelligence • ETL/ELT Pipelines • Agentic AI Engineering
+`SQL` • `Python` • `PostgreSQL` • `DuckDB` • `Docker` • `GitHub Actions` • `MLflow` • `Tableau` • `Power BI` • `Excel`
 
 ---
 
@@ -66,11 +62,11 @@
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
 ### ♻️ System Architecture:
-- 🤖 **Banner rotation**: 367 GIFs · natural sorting · cache-busted CDN URLs
+- 🤖 **Banner rotation**: 370+ GIFs · natural sorting · cache-busted CDN URLs
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence
-- ⚙️ **Zero-touch ops**: 5,700+ scheduled runs · 18,200+ total CI events · 377 mutations · idempotent commits
+- ⚙️ **Zero-touch ops**: 23,500+ cumulative workflow runs · 540+ README mutations · idempotent commits
 
 ### 🐍 Core Scripts:
 
@@ -79,19 +75,23 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.5.7-stable-success"> | Banner engine + NLG + JSONL pipeline |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_activity_graph.py">build_activity_graph.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → self-hosted 30-day trend chart SVG |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_repo_board.py">build_repo_board.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → repo-health panel (LED digits + neon border) and categorised repo index |
 
 ### ⚙️ CI/CD Workflows:
 
-| Workflow | Schedule | Runs | Status |
+| Workflow | Schedule | Runs¹ | Status |
 |----------|----------|------|--------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **3,063** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **8,660** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **3,518** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **357** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **396** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **346** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **101** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | 05:15 & 17:15 UTC | **new** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:53 UTC | **5,937** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Hourly (:37) | **9,055** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **6,517** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **449** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **654** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **426** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **182** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | 05:15 & 17:15 UTC | **153** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml">Repo Board</a> | Daily 06:45 UTC | **new** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml/badge.svg"> |
+
+<sub>¹ Cumulative run numbers since each workflow was created. The Actions tab only lists the runs GitHub still retains, so it shows fewer.</sub>
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
@@ -111,7 +111,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ github_contributions.json  # Total contributions this year (GraphQL, via badges_extra.yml)
 │  ├─ github_commits.json    # Commit count this year (GraphQL, via badges_extra.yml)
 │  ├─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
-│  └─ activity_graph.svg     # Self-hosted 30-day trend chart (GraphQL, via activity_graph.yml)
+│  ├─ activity_graph.svg     # Self-hosted 30-day trend chart (GraphQL, via activity_graph.yml)
+│  └─ repo_status.svg        # Animated repo-health panel (GraphQL, via repo_board.yml)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
@@ -141,13 +142,12 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ## 🚀 Engineering Background
 
-**Focus**
-- 📊 Data Analytics & Business Intelligence
-- 🧠 Advanced SQL, Data Modeling & Analytical Thinking
-- ⚙️ Analytics Engineering · ETL/ELT workflows · Pipeline automation
+- 📊 Dashboards that answer real business questions — Data Analytics & BI (Tableau, Power BI)
+- 🧠 Advanced SQL — CTEs, window functions, optimization (not just `SELECT *`) · data modeling: star schema, dimensional modeling, data contracts
+- ⚙️ Analytics Engineering — ETL/ELT pipelines end-to-end (Python, PostgreSQL, DuckDB), fast, reproducible, production-grade
 - ☁️ Cloud Analytics — Azure Databricks, Data Factory, Synapse Analytics
 - 🐍 Python & R for data science workflows
-- 🤖 Agentic AI Engineering — Claude Code workflows for architecture, debugging & production incident response
+- 🤖 Agentic AI Engineering — Claude Code workflows for architecture, debugging & production incident response; fixes verified against real logs and screenshots, not guesses
 
 > 🧭 3+ years delivering production data pipelines, live analytics dashboards,
 > and automated MLOps workflows — from raw ingestion to deployed applications
@@ -155,9 +155,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ---
 
 ### Continuous Learning
-- 🎓 SuperDataScience — Data Analytics, ML & Automation
-- 📘 Udemy — SQL, Tableau, Power BI & Data Projects
-- ☁️ CloudWolf — AWS & Azure fundamentals for data workflows
+- 🎓 Currently: Udemy — Data Engineering · [20 certificates & badges on LinkedIn](https://www.linkedin.com/in/evgenii-matveev-510926276/details/certifications/)
 
 ---
 
@@ -179,18 +177,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 <!-- EXTRA_BADGES:END -->
 
 ---
-
-## 🧠 What I Actually Do
-
-- Build dashboards that answer real business questions (Tableau, Power BI)
-- Write advanced SQL — CTEs, window functions, optimization, not just `SELECT *`
-- Design and automate ETL/ELT pipelines end-to-end (Python, PostgreSQL, DuckDB)
-- Model data for analytics — star schema, dimensional modeling, data contracts
-- Work with cloud analytics stacks (Azure Databricks, Data Factory, Synapse)
-- Turn raw data into decisions — fast, reproducible, and production-grade
-- Debug and ship production fixes with AI-agent tooling — verified against real logs and screenshots, not guesses
-
---- 
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
@@ -221,69 +207,29 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ## ⚙️ Analytics Stack (Production-Level)
 
-### 🛢️ Languages & Databases
+**🛢️ Languages & Databases**  
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white) ![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black) ![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
-![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)
-![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
+**📊 Data & Analytics**  
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge) ![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
 
----
+**📈 BI & Visualization**  
+![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) ![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black) ![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
 
-### 📊 Data & Analytics
+**☁️ Cloud & Data Engineering**  
+![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white) ![Azure Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white) ![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white) ![Azure Synapse](https://img.shields.io/badge/Azure_Synapse-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white) ![Azure Data Lake](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white)
 
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge)
-![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+**🚀 Deployment & Serving**  
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white) ![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black) ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
----
-
-### 📈 BI & Visualization
-
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
-![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
-![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
-
----
-
-### ☁️ Cloud & Data Engineering
-![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white)
-![Azure Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
-![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Azure Synapse](https://img.shields.io/badge/Azure_Synapse-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Azure Data Lake](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white)
-
----
-
-### 🚀 Deployment & Serving
-
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-
----
-
-### ⚙️ Automation & Workflow
-
+**⚙️ Automation & Workflow**  
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
----
+**🐳 Reproducibility & MLOps**  
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white) ![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
 
-### 🐳 Reproducibility & MLOps
-
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
-![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
-
----
-
- ### 🧪 Data Tools
-
-  ![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
+**🧪 Data Tools**  
+![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
 
 ---
 
@@ -375,7 +321,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
    <details>
       <summary>🎨 <b>Creative & Content Generation</b></summary>
 
-  Portfolio banner visuals for all 20 project cards were generated with **Gemini (nano banana)**, refined through iterative prompting — concept → test batch → visual QA (composition, palette, icon accuracy) → full rollout. Design/marketing tooling only — engineering work stays on the Claude stack above.
+  Portfolio banner visuals for all project cards were generated with **Gemini (nano banana)**, refined through iterative prompting — concept → test batch → visual QA (composition, palette, icon accuracy) → full rollout. Design/marketing tooling only — engineering work stays on the Claude stack above.
 
    <details>
       <summary>🖼️ <b>See the generation process (3 examples)</b></summary>
