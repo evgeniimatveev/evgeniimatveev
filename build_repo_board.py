@@ -177,7 +177,7 @@ def _esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
-SW, SH = 784, 152
+SW, SH = 744, 152
 STATUS_CSS = (
     "@keyframes up{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}"
     "@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}"
@@ -209,7 +209,7 @@ STATUS_CSS = (
     ".seg.bad{animation:hue-fill-bad .9s ease-in-out infinite}"
     ".off{opacity:.09}"
 )
-PAD = 22  # room around the panel so the (wide) glow is not clipped by the SVG viewport
+PAD = 40  # room for the glow to fade out fully (halo reaches ~stroke/2 + 3*sigma = 38px), else a faint box shows
 
 # ---- seven-segment ("LED calculator") digits, drawn as polygons: no font needed in an <img> SVG ----
 SEG_W, SEG_H, SEG_T, SEG_GAP, SEG_ADV = 17.0, 28.0, 3.6, 0.9, 22.0
@@ -296,7 +296,7 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
          '<feGaussianBlur stdDeviation="1.5" result="b"/>'
          '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
          '<filter id="halo" x="-20%" y="-120%" width="140%" height="340%">'
-         '<feGaussianBlur stdDeviation="13"/></filter>'
+         '<feGaussianBlur stdDeviation="10"/></filter>'
          '<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">'
          '<stop offset="0" stop-color="#fff" stop-opacity="0"/>'
          '<stop offset="0.5" stop-color="#fff" stop-opacity="0.09"/>'
