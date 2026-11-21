@@ -11,7 +11,7 @@ Rewrites two README spots (both are no-ops if the content is unchanged):
   <!-- CIHEAD:START -->  ... <!-- CIHEAD:END -->    inline "N+ cumulative workflow runs · M+ README mutations"
 
 Env: GH_TOKEN / GITHUB_TOKEN (actions:read), GITHUB_REPOSITORY (default evgeniimatveev/evgeniimatveev).
-Run from the repo root:  python build_ci_stats.py [--dry-run]
+Run from the repo root:  python build_ci_stats.py [--dry-run]   (CI: .github/workflows/ci_stats.yml, 03:20 UTC)
 """
 from __future__ import annotations
 
@@ -39,6 +39,7 @@ NAMES = {
     "badges_extra": "Extra Badges",
     "activity_graph": "Activity Graph",
     "repo_board": "Repo Board",
+    "ci_stats": "CI Stats",
     "codeql": "CodeQL",
 }
 ORDER = list(NAMES)
