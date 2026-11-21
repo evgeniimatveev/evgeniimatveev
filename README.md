@@ -62,7 +62,7 @@
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
 ### ♻️ System Architecture:
-- 🤖 **Banner rotation**: 370+ GIFs · natural sorting · cache-busted CDN URLs
+- 🤖 **Banner rotation**: 360+ GIFs · natural sorting · cache-busted CDN URLs
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence
@@ -85,16 +85,16 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | Workflow | Schedule | Runs¹ | Status |
 |----------|----------|------|--------|
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:53 UTC | **5,937** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Hourly (:37) | **9,055** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **6,520** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Hourly (:37) | **9,056** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **6,523** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily 08:07 UTC | **449** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **654** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **426** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **182** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | Daily 05:15 & 17:15 UTC | **154** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml">Repo Board</a> | Daily 06:45 UTC | **1** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml">Repo Board</a> | Daily 06:45 UTC | **2** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/ci_stats.yml">CI Stats</a> | Daily 03:20 UTC | **2** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/ci_stats.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/codeql.yml">CodeQL</a> | On push/PR · Mon 16:30 UTC | **113** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/codeql.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/codeql.yml">CodeQL</a> | On push/PR · Mon 16:30 UTC | **116** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/codeql.yml/badge.svg"> |
 <!-- CISTATS:END -->
 
 <sub>¹ Cumulative run numbers since each workflow was created. The Actions tab only lists the runs GitHub still retains, so it shows fewer.</sub>
@@ -196,8 +196,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 🧠 [Agent Memory](https://github.com/evgeniimatveev/agent-memory) | Cloudflare Vectorize + Workers AI + D1 + Claude Haiku 4.5 · mem0/Supermemory-style memory API · atomic fact extraction · similarity × importance × recency re-ranking | [🌐 Live](https://evgeniimatveev.github.io/agent-memory/) |
 | 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
 | 🔌 [MCP Data Quality Agent](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 19 MCP tools · 5 databases · Claude AI · natural language analytics | — |
-| 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 20 questions · SQL + Behavioral + Project · Claude API · streaming feedback · SQLite | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://ljtn7jxeawyetzefthttnc.streamlit.app) |
-| 🧠 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
+| 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 35 questions · SQL + Behavioral + Project + Stats · Claude API · streaming feedback · SQLite | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://ljtn7jxeawyetzefthttnc.streamlit.app) |
+| 🦙 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
 
 </details>
 
@@ -225,9 +225,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 📐 [Tableau LOD Cases](https://github.com/evgeniimatveev/tableau-business-cases) | 5 Tableau LOD case studies · 91 numbers reconciled in DuckDB · 8 gotchas documented · pytest + GitHub Actions CI | [📊 Live](https://public.tableau.com/app/profile/evgenii.matveev/viz/LOD_cohoranalysishmdashboard/Dashboard1) |
 | ❄️ [Snowflake A-Z](https://github.com/evgeniimatveev/Snowflake-A-Z) | 11 hands-on practices · Snowpark · Dynamic Tables · RBAC · native Streamlit · SQLFluff CI | — |
 | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
-| 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
+| 🛍️ [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
 | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
-| 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
+| 💼 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
 
 </details>
 
@@ -445,27 +445,25 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
+<!-- CIBADGES:START -->
 <p align="left">
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg" alt="CI/CD Status"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen" alt="Total Runs"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red" alt="Failures"/>
-  <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20CI/CD%20Run&color=blue" alt="Last Run"/>
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg" alt="CI/CD status"/>
+  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=6%2C523&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 6,523"/>
+  <img src="https://img.shields.io/static/v1?label=Schedule&amp;message=On+push%2FPR&amp;color=1f6feb&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Schedule: On push/PR"/>
 </p>
 
 <p align="left">
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg" alt="Update Status"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Total%20Updates&color=yellow" alt="Total Updates"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red" alt="Update Failures"/>
-  <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue" alt="Last Update"/>
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg" alt="README updates status"/>
+  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=5%2C937&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 5,937"/>
+  <img src="https://img.shields.io/static/v1?label=Schedule&amp;message=Daily+12%3A53+UTC&amp;color=1f6feb&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Schedule: Daily 12:53 UTC"/>
 </p>
 
 <p align="left">
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status"/>
-  <img src="https://img.shields.io/badge/Total%20Runs-passing-brightgreen?style=flat&logo=githubactions" alt="Total Runs"/>
-  <img src="https://img.shields.io/badge/Failures-passing-red?style=flat&logo=githubactions" alt="Failures"/>
-  <img src="https://img.shields.io/badge/Cycle-Active-10b981?style=flat&logo=githubactions" alt="Cycle Active"/>
-  <img src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat&logo=clockify" alt="Last Badge Refresh"/>
+  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Badge refresh status"/>
+  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=9%2C056&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 9,056"/>
+  <img src="https://img.shields.io/static/v1?label=Schedule&amp;message=Hourly+%28%3A37%29&amp;color=1f6feb&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Schedule: Hourly (:37)"/>
 </p>
+<!-- CIBADGES:END -->
 
 ---
 
