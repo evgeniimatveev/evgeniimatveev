@@ -185,6 +185,13 @@ STATUS_CSS = (
     ".t{animation:up .7s ease-out both}"
     ".b{transform-box:fill-box;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}"
     ".live{animation:pulse 2s ease-in-out infinite}"
+    # Light segment orbiting the border; healthy = cycles through the palette, failing = red/amber alarm.
+    "@keyframes orbit{to{stroke-dashoffset:-100}}"
+    "@keyframes hue{0%,100%{stroke:#7aa2f7}25%{stroke:#bb9af7}50%{stroke:#7dcfff}75%{stroke:#9ece6a}}"
+    "@keyframes alarm{0%,100%{stroke:#f7768e;opacity:1}50%{stroke:#e0af68;opacity:.35}}"
+    ".edge{fill:none;stroke-linecap:round;stroke-dasharray:22 78;"
+    "animation:orbit 7s linear infinite,hue 14s ease-in-out infinite}"
+    ".edge.alarm{animation:orbit 3s linear infinite,alarm .9s ease-in-out infinite}"
 )
 
 
@@ -212,13 +219,22 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
     week = sum((now - r["pushed"]).days < 7 for r in own)
     stars = sum(r["stars"] for r in own)
     with_ci = len(own) - none
-    tiles = [(str(len(own)), "public repos"), (str(week), "pushed this week"),
+    forks = len(repos) - len(own)
+    tiles = [(str(len(own)), f"own repos (+{forks} forks)" if forks else "own repos"),
+             (str(week), "pushed this week"),
              (f"{ok}/{with_ci}" if with_ci else "—", "CI passing"), (str(stars), "stars")]
+    alarm = bad > 0
+    edge = f'x="1.5" y="1.5" width="{SW - 3}" height="{SH - 3}" rx="6" pathLength="100"'
 
     p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW}" height="{SH}" viewBox="0 0 {SW} {SH}" '
          f'font-family="{FONT}"><style>{STATUS_CSS}</style>',
+         '<defs><filter id="glow" x="-5%" y="-20%" width="110%" height="140%">'
+         '<feGaussianBlur stdDeviation="3"/></filter></defs>',
          f'<rect width="{SW}" height="{SH}" fill="{SURFACE}" rx="6"/>',
-         '<circle class="live" cx="22" cy="21" r="4" fill="#9ece6a"/>',
+         f'<rect x="1.5" y="1.5" width="{SW - 3}" height="{SH - 3}" rx="6" fill="none" stroke="{GRID}"/>',
+         f'<rect class="edge{" alarm" if alarm else ""}" {edge} stroke-width="5" filter="url(#glow)"/>',
+         f'<rect class="edge{" alarm" if alarm else ""}" {edge} stroke-width="2"/>',
+         f'<circle class="live" cx="22" cy="21" r="4" fill="{"#f7768e" if alarm else "#9ece6a"}"/>',
          f'<text x="34" y="25" font-size="11" font-weight="600" fill="{TEXT_PRIMARY}" letter-spacing="1.2">'
          f'REPO HEALTH · LIVE</text>',
          f'<text x="{SW - 16}" y="25" font-size="10" fill="{TEXT_MUTED}" text-anchor="end">'
