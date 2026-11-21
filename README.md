@@ -160,7 +160,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ---
 
 ### Continuous Learning
-- 🎓 Currently: Udemy — Data Engineering · [20 certificates & badges on LinkedIn](https://www.linkedin.com/in/evgenii-matveev-510926276/details/certifications/)
+- 🎓 Currently: Udemy — Data Engineering · [30+ certificates & badges on LinkedIn](https://www.linkedin.com/in/evgenii-matveev-510926276/details/certifications/)
 
 ---
 
