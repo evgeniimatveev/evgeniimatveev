@@ -5,6 +5,7 @@
 #
 # Schedule map (UTC) — clear of every other workflow:
 #   02:00 / 08:00 / 14:00 / 20:00  cache-trophies
+#   03:20                          ci-stats
 #   05:15 / 17:15                  activity-graph
 #   06:45                          repo-board      <- this workflow
 #   10:30                          badges_extra

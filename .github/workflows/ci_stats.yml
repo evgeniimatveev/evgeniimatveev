@@ -1,0 +1,108 @@
+# ci_stats.yml
+# Self-updating CI/CD table: build_ci_stats.py reads the Actions API (run numbers) and the
+# workflow files' own cron lines, then rewrites README markers CISTATS / CIHEAD.
+#
+# Schedule map (UTC) — every writer has its own slot, none within ~15 min of another:
+#   00:30                          snake
+#   02:00 / 08:00 / 14:00 / 20:00  cache-trophies
+#   03:20                          ci-stats          <- this workflow
+#   05:15 / 17:15                  activity-graph
+#   06:45                          repo-board
+#   08:07                          smoke (read-only, separate group)
+#   10:30                          badges_extra
+#   12:53                          update_readme
+#   :37 hourly                     next_update_badge
+# All writers share the concurrency group below, so even a delayed run just queues.
+
+name: CI Stats
+
+on:
+  schedule:
+    - cron: '20 3 * * *'   # 03:20 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read    # run numbers
+
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build-ci-stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout (sparse — README + script + workflow files + counter)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 2
+          persist-credentials: true
+          filter: blob:none
+          sparse-checkout: |
+            README.md
+            build_ci_stats.py
+            .github/workflows
+            .ci
+          sparse-checkout-cone-mode: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Build CI/CD stats table
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build_ci_stats.py
+
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+
+          if git diff --staged --quiet; then
+            echo "No changes — skip commit"
+            exit 0
+          fi
+
+          git commit -m "chore: refresh CI stats table [skip ci]"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "✅ Pushed (attempt $i)"
+              exit 0
+            fi
+            echo "Push failed (attempt $i) — rebasing..."
+            sleep $((i * 3))
+            git fetch --depth=2 origin main
+            git pull --rebase --no-tags origin main
+          done
+
+          echo "❌ Push failed after 3 attempts"
+          exit 1
+
+      - name: Run summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### 📈 CI Stats"
+            echo ""
+            echo "| Key | Value |"
+            echo "|-----|-------|"
+            echo "| Source | Actions API run numbers + workflow cron lines |"
+            echo "| Renderer | self-hosted (build_ci_stats.py) |"
+            echo "| Schedule | \`20 3 * * *\` |"
+            echo "| Concurrency group | \`repo-main-writer\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
