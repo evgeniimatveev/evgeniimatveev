@@ -466,20 +466,20 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="badges/repo_status.svg?v=d25c7a03" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="badges/repo_status.svg?v=0db5155b" width="824" alt="Repo health: repos, CI status and language mix"/></p>
 
 <details open>
 <summary><b>🚀 Production apps & AI systems</b> <em>(15)</em></summary>
 
 | Repo | What it is | Lang | CI | Updated | ⭐ |
 |---|---|---|:-:|---|--:|
+| [**job-market-pulse**](https://github.com/evgeniimatveev/job-market-pulse) | Daily tracking of tech job demand, salaries & remote trends — 10 stacks x 10 US cities. A… | 🐍 Python | ⚪ | today | 8 |
 | [**evgeniimatveev.github.io**](https://github.com/evgeniimatveev/evgeniimatveev.github.io) | Terminal-emulator portfolio site — live uptime across 9 apps, real incident postmortems,… | 🟧 HTML | 🟢 | today | 1 |
 | [**layoffs-tracker**](https://github.com/evgeniimatveev/layoffs-tracker) | Interactive dashboard tracking 2,412 tech layoffs (2020-2025) · DuckDB · Streamlit · layo… | 🐍 Python | ⚪ | today | 3 |
 | [**civics-sql-rag**](https://github.com/evgeniimatveev/civics-sql-rag) | RAG practice lab: Cloudflare Worker + Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5,… | 🟧 HTML | 🟢 | today | 1 |
 | [**agent-memory**](https://github.com/evgeniimatveev/agent-memory) | Self-hosted mem0/Supermemory-style long-term memory layer for AI agents — Cloudflare Vect… | 🟨 JavaScript | 🟢 | today | 1 |
 | [**mlops_ollama_env**](https://github.com/evgeniimatveev/mlops_ollama_env) | Dockerized local LLM inference playground: FastAPI + Ollama + Docker Compose — one comman… | 🐍 Python | 🟢 | today | 8 |
 | [**mlops_project**](https://github.com/evgeniimatveev/mlops_project) | End-to-end MLOps pipeline: XGBoost R²=0.8326 on California Housing. Dual tracking MLflow… | 🐍 Python | 🟢 | today | 7 |
-| [**job-market-pulse**](https://github.com/evgeniimatveev/job-market-pulse) | Daily tracking of tech job demand, salaries & remote trends — 10 stacks x 10 US cities. A… | 🐍 Python | ⚪ | today | 8 |
 | [**route-optimization-vrp**](https://github.com/evgeniimatveev/route-optimization-vrp) | Capacitated Vehicle Routing with Time Windows (CVRPTW) — Google OR-Tools vs. naive neares… | 🐍 Python | 🟢 | 3w ago | 1 |
 | [**cv-logistics-mlops**](https://github.com/evgeniimatveev/cv-logistics-mlops) | Computer vision on logistics: bin item-count prediction via CNN transfer learning, tracke… | 🐍 Python | 🟢 | 3w ago | 1 |
 | [**weather-pipeline**](https://github.com/evgeniimatveev/weather-pipeline) | Live US weather pipeline: Open-Meteo API → DuckDB → Streamlit dashboard · Engineered feat… | 🐍 Python | ⚪ | 3w ago | 7 |
@@ -522,9 +522,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | today | 7 |
 | [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | today | 7 |
 | [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | today | 7 |
-| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | today | 7 |
-| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | today | 7 |
-| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | today | 7 |
+| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | 1d ago | 7 |
+| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | 1d ago | 7 |
+| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | 1d ago | 7 |
 
 </details>
 
