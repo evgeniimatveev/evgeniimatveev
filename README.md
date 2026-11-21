@@ -62,11 +62,11 @@
 This profile is a **self-updating MLOps demo** — a living portfolio showcasing production-grade automation.
 
 ### ♻️ System Architecture:
-- 🤖 **Banner rotation**: 367 GIFs · natural sorting · cache-busted CDN URLs
+- 🤖 **Banner rotation**: 370+ GIFs · natural sorting · cache-busted CDN URLs
 - 🧩 **Dynamic insights**: Context-aware NLG (time/season/DOW algorithms)
 - ⏱️ **Next Update badge**: Shields.io endpoint · HLS gradient · sub-minute precision
 - 📡 **Observability**: JSONL telemetry · heartbeat pings · state persistence
-- ⚙️ **Zero-touch ops**: 5,700+ scheduled runs · 18,200+ total CI events · 540+ mutations · idempotent commits
+- ⚙️ **Zero-touch ops**: 23,500+ cumulative workflow runs · 540+ README mutations · idempotent commits
 
 ### 🐍 Core Scripts:
 
@@ -75,19 +75,23 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/update_readme.py">update_readme.py</a> | <img alt="v7.5.7" src="https://img.shields.io/badge/v7.5.7-stable-success"> | Banner engine + NLG + JSONL pipeline |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_activity_graph.py">build_activity_graph.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → self-hosted 30-day trend chart SVG |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_repo_board.py">build_repo_board.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → repo-health panel (LED digits + neon border) and categorised repo index |
 
 ### ⚙️ CI/CD Workflows:
 
-| Workflow | Schedule | Runs | Status |
+| Workflow | Schedule | Runs¹ | Status |
 |----------|----------|------|--------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:15 UTC | **3,063** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Every 20min | **8,660** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **3,518** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **357** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **396** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **346** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **101** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:53 UTC | **5,937** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Hourly (:37) | **9,055** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **6,517** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily | **449** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **654** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **426** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **182** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | 05:15 & 17:15 UTC | **153** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml">Repo Board</a> | Daily 06:45 UTC | **new** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml/badge.svg"> |
+
+<sub>¹ Cumulative run numbers since each workflow was created. The Actions tab only lists the runs GitHub still retains, so it shows fewer.</sub>
 
 📊 <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions">View all runs →</a>
 
@@ -107,7 +111,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ github_contributions.json  # Total contributions this year (GraphQL, via badges_extra.yml)
 │  ├─ github_commits.json    # Commit count this year (GraphQL, via badges_extra.yml)
 │  ├─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
-│  └─ activity_graph.svg     # Self-hosted 30-day trend chart (GraphQL, via activity_graph.yml)
+│  ├─ activity_graph.svg     # Self-hosted 30-day trend chart (GraphQL, via activity_graph.yml)
+│  └─ repo_status.svg        # Animated repo-health panel (GraphQL, via repo_board.yml)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
