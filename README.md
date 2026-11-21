@@ -26,7 +26,7 @@
 
 ---
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=42&center=true&vCenter=true&width=1500&lines=⚙️+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;🔍+SQL+Expert+·+PostgreSQL+·+DuckDB+·+MotherDuck;📈+Tableau+%26+Power+BI+·+Dashboards+That+Drive+Decisions;⚙️+ETL%2FELT+Pipelines+·+Python+·+Pandas+·+Automation;☁️+Azure+Databricks+·+Data+Factory+·+Synapse+Analytics;🐍+Python+·+R+·+Scikit-learn+·+Data+Science+Workflows;🐳+Docker+·+GitHub+Actions+·+CI%2FCD+for+Data+Pipelines;🎯+Turn+Raw+Data+Into+Business+Insights;📊+16%2B+Real-World+Portfolio+Projects;🔄+End-to-End+BI+Solutions+·+From+Data+to+Dashboard;⚡+Data+Storytelling+·+KPIs+·+Executive+Dashboards;🛢️+Advanced+SQL+·+Window+Functions+·+CTEs+·+Optimization;📡+REST+APIs+·+Automated+Analytics+Workflows;🧠+Data+Modeling+·+Star+Schema+·+Dimensional+Thinking;🌊+DuckDB+·+MotherDuck+·+Modern+Data+Stack;🔒+Data+Quality+·+Testing+·+Validated+Pipelines;💼+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%230078D4&size=34&center=true&vCenter=true&width=1100&lines=%E2%9A%99%EF%B8%8F+Data+%26+MLOps+Engineer+%7C+Analytics+Engineer+%7C+BI+Developer;%F0%9F%94%8D+SQL+%C2%B7+PostgreSQL+%C2%B7+DuckDB+%C2%B7+MotherDuck;%F0%9F%90%8D+Python+%C2%B7+Docker+%C2%B7+GitHub+Actions+%C2%B7+CI%2FCD+for+Data+Pipelines;%F0%9F%A4%96+Agentic+AI+Engineering+%C2%B7+Claude+Code+%C2%B7+Cloudflare;%F0%9F%93%8A+20%2B+Real-World+Portfolio+Projects;%F0%9F%92%BC+Open+to+Data+Engineer+%7C+MLOps+Engineer+%7C+Data+Analyst+Roles)](https://git.io/typing-svg)
 
 ---
 
@@ -47,18 +47,139 @@
 </p>
 <p align="center"><sub>Three independent Cloudflare + Claude builds — the portfolio's own <code>ask --live</code> widget, a focused RAG practice lab grounded in 128 official USCIS civics questions + real SQL sessions, and a self-hosted mem0-style long-term memory API.</sub></p>
 
-💡  I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a
-     focus on Docker, CI/CD automation, DuckDB, and data storytelling that drives real business decisions.
+---
+
+## 💡 About
+
+I build end-to-end data pipelines and MLOps systems — from raw ingestion to production-ready dashboards — with a focus on Docker, CI/CD automation, DuckDB and data storytelling that drives real business decisions.
+
+| Area | Details |
+|---|---|
+| 🛠️&nbsp;**Core&nbsp;stack** | `SQL` · `Python` · `PostgreSQL` · `DuckDB` · `Docker` · `GitHub Actions` · `MLflow` · `Tableau` · `Power BI` · `Excel` |
+| 🎯&nbsp;**Focus** | Data Engineering · MLOps automation · Business Intelligence · ETL/ELT pipelines · Agentic AI engineering (Claude Code) |
+| 🧠&nbsp;**What&nbsp;I&nbsp;do** | Dashboards that answer real business questions · advanced SQL (CTEs, window functions, optimization) · ETL/ELT pipelines (Python, PostgreSQL, DuckDB) · dimensional modeling · production fixes with AI-agent tooling, verified against real logs |
+| ☁️&nbsp;**Cloud** | Azure Databricks, Data Factory, Synapse · Cloudflare (Workers, Vectorize, D1) · Snowflake |
+| 🎓&nbsp;**Learning** | Udemy — Data Engineering (in progress) · [20 certificates & badges on LinkedIn](https://www.linkedin.com/in/evgenii-matveev-510926276/details/certifications/) |
+
+> 🧭 3+ years delivering production data pipelines, live analytics dashboards and automated MLOps workflows.
 
 ---
 
-**🛠️ Core Stack**
-`SQL` • `Python` • `PostgreSQL` • `DuckDB` • `Docker` • `GitHub Actions` • `MLflow` • `Tableau` • `Power BI`• `Excel`
+## 🧭 Learning Journey
 
-**📊 Focus**
- Data Engineering • MLOps Automation • Business Intelligence • ETL/ELT Pipelines • Agentic AI Engineering
+| Stage | What it looks like | Proof |
+|---|---|---|
+| **1 · Foundations** | A–Z practice library — R, Python, SQL (PostgreSQL & MySQL), Excel, Power BI, classic ML & boosting. Each repo: one `main`, numbered sections, CI, charts drawn from its own data. | [13 repos ↓](#-learning-library) |
+| **2 · Portfolio** | 20+ deployed projects: DuckDB / PostgreSQL, Streamlit, dbt, Tableau, MLflow + W&B, GitHub Actions. | [Featured projects ↑](#-featured-projects) |
+| **3 · MLOps & AI** | Cloudflare Workers + Vectorize + D1, RAG, agent memory, MCP servers, Claude Code workflows. | [AI systems ↓](#-under-the-hood) |
 
 ---
+
+## 🚀 Featured Projects
+
+| Project | Highlights | Demo |
+|---------|-----------|------|
+| 📐 [Tableau LOD Cases](https://github.com/evgeniimatveev/tableau-business-cases) | 5 Tableau LOD case studies · 91 numbers reconciled in DuckDB · 8 gotchas documented · pytest + GitHub Actions CI | [📊 Live](https://public.tableau.com/app/profile/evgenii.matveev/viz/LOD_cohoranalysishmdashboard/Dashboard1) |
+| 🧠 [Agent Memory](https://github.com/evgeniimatveev/agent-memory) | Cloudflare Vectorize + Workers AI + D1 + Claude Haiku 4.5 · mem0/Supermemory-style memory API · atomic fact extraction · similarity × importance × recency re-ranking | [🌐 Live](https://evgeniimatveev.github.io/agent-memory/) |
+| 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
+| 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
+| 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
+| 🔌 [MCP Data Quality Agent](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 19 MCP tools · 5 databases · Claude AI · natural language analytics | — |
+| 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
+| 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
+| ₿ [Crypto On-Chain Dashboard](https://github.com/evgeniimatveev/crypto-dashboard) | Top 20 coins · Fear & Greed · BTC dominance · DuckDB · daily pipeline | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://crypto-onchain-dashboard.streamlit.app) |
+| 📉 [Tech Layoffs Tracker](https://github.com/evgeniimatveev/layoffs-tracker) | 2,412 events · 747K people · 49 countries · DuckDB · weekly refresh | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://layoffs-tracker-mdndinr8hfct5afvjwvjno.streamlit.app) |
+| 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote +51% · DuckDB · 23 CI tests | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://4cmjubresrab8nk6zhjqbv.streamlit.app/) |
+| 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best City Score · 7d Forecast · Quality Layer | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://weather-pip-y645txqohstehewa3d3a4w.streamlit.app/) |
+
+<details>
+<summary>📚 <b>All other projects with metrics</b> <em>(10)</em></summary>
+
+| Project | Highlights | Demo |
+|---------|-----------|------|
+| 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 20 questions · SQL + Behavioral + Project · Claude API · streaming feedback · SQLite | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://ljtn7jxeawyetzefthttnc.streamlit.app) |
+| 📈 [Job Market Pulse](https://github.com/evgeniimatveev/job-market-pulse) | 10 stacks · 10 US cities + remote · 110 API calls/day · DuckDB · daily pipeline | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/job-market-pulse) |
+| ❄️ [Snowflake A-Z](https://github.com/evgeniimatveev/Snowflake-A-Z) | 11 hands-on practices · Snowpark · Dynamic Tables · RBAC · native Streamlit · SQLFluff CI | — |
+| 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
+| 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
+| 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
+| 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
+| 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
+| 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
+| 🧠 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
+
+</details>
+
+<sub>Every public repo, with live CI status, is in the <b>Repository Index</b> at the bottom.</sub>
+
+---
+
+## ⚙️ Analytics Stack
+
+**🛢️ Languages & Databases**  
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white) ![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black) ![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
+
+**📊 Data & Analytics**  
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge) ![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+
+**📈 BI & Visualization**  
+![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) ![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black) ![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
+
+**☁️ Cloud & Data Engineering**  
+![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white) ![Azure Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white) ![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white) ![Azure Synapse](https://img.shields.io/badge/Azure_Synapse-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white) ![Azure Data Lake](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
+**🚀 Deployment & Serving**  
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white) ![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black) ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
+**⚙️ Automation & Workflow**  
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+
+**🐳 Reproducibility & MLOps**  
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white) ![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
+
+**🧪 Data Tools**  
+![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
+
+---
+
+<a id="-learning-library"></a>
+
+<details>
+<summary>🎓 <b>Learning Library</b> <em>(13 A–Z practice repos — click a banner)</em></summary>
+
+<p align="center">All restructured to one <code>main</code> with numbered sections, light CI and charts generated from each repo's own datasets.</p>
+
+<table align="center">
+<tr><td><a href="https://github.com/evgeniimatveev/R-Programming-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/R-Programming-A-Z/main/assets/banner.svg" width="400" alt="R-Programming-A-Z"/></a></td><td><a href="https://github.com/evgeniimatveev/Python-Programming-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/Python-Programming-A-Z/main/assets/banner.svg" width="400" alt="Python-Programming-A-Z"/></a></td></tr>
+<tr><td><a href="https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/Python-for-Data-Science-A-Z/main/assets/banner.svg" width="400" alt="Python-for-Data-Science-A-Z"/></a></td><td><a href="https://github.com/evgeniimatveev/Python-Projects"><img src="https://raw.githubusercontent.com/evgeniimatveev/Python-Projects/main/assets/banner.svg" width="400" alt="Python-Projects"/></a></td></tr>
+<tr><td><a href="https://github.com/evgeniimatveev/Feature-Engineering"><img src="https://raw.githubusercontent.com/evgeniimatveev/Feature-Engineering/main/assets/banner.svg" width="400" alt="Feature-Engineering"/></a></td><td><a href="https://github.com/evgeniimatveev/ML-Classics-in-Python"><img src="https://raw.githubusercontent.com/evgeniimatveev/ML-Classics-in-Python/main/assets/banner.svg" width="400" alt="ML-Classics-in-Python"/></a></td></tr>
+<tr><td><a href="https://github.com/evgeniimatveev/ML-Classics-in-R"><img src="https://raw.githubusercontent.com/evgeniimatveev/ML-Classics-in-R/main/assets/banner.svg" width="400" alt="ML-Classics-in-R"/></a></td><td><a href="https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting"><img src="https://raw.githubusercontent.com/evgeniimatveev/Ml-Classics-Level2-Boosting/main/assets/banner.svg" width="400" alt="Ml-Classics-Level2-Boosting"/></a></td></tr>
+<tr><td><a href="https://github.com/evgeniimatveev/Advanced-R-for-Analytics"><img src="https://raw.githubusercontent.com/evgeniimatveev/Advanced-R-for-Analytics/main/assets/banner.svg" width="400" alt="Advanced-R-for-Analytics"/></a></td><td><a href="https://github.com/evgeniimatveev/SQL-Database-Design-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/SQL-Database-Design-A-Z/main/assets/banner.svg" width="400" alt="SQL-Database-Design-A-Z"/></a></td></tr>
+<tr><td><a href="https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z/main/assets/banner.svg" width="400" alt="Advanced-SQL-Data-Management-A-Z"/></a></td><td><a href="https://github.com/evgeniimatveev/EXCEL-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/EXCEL-A-Z/main/assets/banner.svg" width="400" alt="EXCEL-A-Z"/></a></td></tr>
+<tr><td><a href="https://github.com/evgeniimatveev/Power-BI-A-Z"><img src="https://raw.githubusercontent.com/evgeniimatveev/Power-BI-A-Z/main/assets/banner.svg" width="400" alt="Power-BI-A-Z"/></a></td><td></td></tr>
+</table>
+
+</details>
+
+---
+
+<details>
+<summary>🏅 <b>Certificates & badges</b> <em>(20 — all verifiable on LinkedIn)</em></summary>
+
+**Courses (11)** — Azure Data Engineering End-to-end (Udemy) · Data Manipulation in Python: A Pandas Crash Course · Python for Statistical Analysis · Introduction to Feature Engineering · Intro to Git & GitHub · Python 3 Programming: Beginner to Pro · Machine Learning A–Z: AI, Python & R · Machine Learning Level 2 (in Python) · MLOps: From Zero to Hero · AI Engineering Essentials 1 · Tableau LOD Expressions (SuperDataScience)
+
+**Anthropic Academy (9)** — Claude 101 · Claude Code 101 · Introduction to Model Context Protocol · Claude Platform 101 · Introduction to evals · Building effective human-agent teams · Tool use with the Messages API · Model Context Protocol: Advanced topics · Claude Code in action
+
+🔗 [All credentials on LinkedIn →](https://www.linkedin.com/in/evgenii-matveev-510926276/details/certifications/)
+
+</details>
+
+---
+
+<a id="-under-the-hood"></a>
+
+<details>
+<summary>🔧 <b>Under the hood</b> <em>(how this profile runs itself · AI workflow · AI systems in production · automation logs)</em></summary>
 
 <details>
 <summary>⚡ <b>How it works</b> <em>(architecture deep-dive 🔬 for engineers)</em></summary>
@@ -137,156 +258,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 </details>
 
----
-
-## 🚀 Engineering Background
-
-**Focus**
-- 📊 Data Analytics & Business Intelligence
-- 🧠 Advanced SQL, Data Modeling & Analytical Thinking
-- ⚙️ Analytics Engineering · ETL/ELT workflows · Pipeline automation
-- ☁️ Cloud Analytics — Azure Databricks, Data Factory, Synapse Analytics
-- 🐍 Python & R for data science workflows
-- 🤖 Agentic AI Engineering — Claude Code workflows for architecture, debugging & production incident response
-
-> 🧭 3+ years delivering production data pipelines, live analytics dashboards,
-> and automated MLOps workflows — from raw ingestion to deployed applications
-
----
-
-### Continuous Learning
-- 🎓 SuperDataScience — Data Analytics, ML & Automation
-- 📘 Udemy — SQL, Tableau, Power BI & Data Projects
-- ☁️ CloudWolf — AWS & Azure fundamentals for data workflows
-
----
-
-<!-- BADGES:START -->
-<div align="left">
-<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5936" alt="Last Commit"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5936" alt="GitHub Followers"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5936" alt="GitHub Stars"></p>
-<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5936" alt="Total Updates"></p>
-</div>
-<!-- BADGES:END -->
-
-<!-- EXTRA_BADGES:START -->
-<p>
-  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_contributions.json&style=for-the-badge&cacheSeconds=3600" alt="Contributions 2026" />
-  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_commits.json&style=for-the-badge&cacheSeconds=3600" alt="Commits 2026" />
-  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_issues.json&style=for-the-badge&cacheSeconds=3600" alt="Issues 2026" />
-</p>
-<!-- EXTRA_BADGES:END -->
-
----
-
-## 🧠 What I Actually Do
-
-- Build dashboards that answer real business questions (Tableau, Power BI)
-- Write advanced SQL — CTEs, window functions, optimization, not just `SELECT *`
-- Design and automate ETL/ELT pipelines end-to-end (Python, PostgreSQL, DuckDB)
-- Model data for analytics — star schema, dimensional modeling, data contracts
-- Work with cloud analytics stacks (Azure Databricks, Data Factory, Synapse)
-- Turn raw data into decisions — fast, reproducible, and production-grade
-- Debug and ship production fixes with AI-agent tooling — verified against real logs and screenshots, not guesses
-
---- 
-
-| Project | Highlights | Demo |
-|---------|-----------|------|
-| 📐 [Tableau LOD Cases](https://github.com/evgeniimatveev/tableau-business-cases) | 5 Tableau LOD case studies · 91 numbers reconciled in DuckDB · 8 gotchas documented · pytest + GitHub Actions CI | [📊 Live](https://public.tableau.com/app/profile/evgenii.matveev/viz/LOD_cohoranalysishmdashboard/Dashboard1) |
-| 🧠 [Agent Memory](https://github.com/evgeniimatveev/agent-memory) | Cloudflare Vectorize + Workers AI + D1 + Claude Haiku 4.5 · mem0/Supermemory-style memory API · atomic fact extraction · similarity × importance × recency re-ranking | [🌐 Live](https://evgeniimatveev.github.io/agent-memory/) |
-| 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
-| 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
-| 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
-| ₿ [Crypto On-Chain Dashboard](https://github.com/evgeniimatveev/crypto-dashboard) | Top 20 coins · Fear & Greed · BTC dominance · DuckDB · daily pipeline | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://crypto-onchain-dashboard.streamlit.app) |
-| 📉 [Tech Layoffs Tracker](https://github.com/evgeniimatveev/layoffs-tracker) | 2,412 events · 747K people · 49 countries · DuckDB · weekly refresh | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://layoffs-tracker-mdndinr8hfct5afvjwvjno.streamlit.app) |
-| 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote +51% · DuckDB · 23 CI tests | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://4cmjubresrab8nk6zhjqbv.streamlit.app/) |
-| 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best City Score · 7d Forecast · Quality Layer | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://weather-pip-y645txqohstehewa3d3a4w.streamlit.app/) |
-| 🔌 [MCP Data Quality Agent](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 19 MCP tools · 5 databases · Claude AI · natural language analytics | — |
-| 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 20 questions · SQL + Behavioral + Project · Claude API · streaming feedback · SQLite | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://ljtn7jxeawyetzefthttnc.streamlit.app) |
-| 📈 [Job Market Pulse](https://github.com/evgeniimatveev/job-market-pulse) | 10 stacks · 10 US cities + remote · 110 API calls/day · DuckDB · daily pipeline | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/job-market-pulse) |
-| 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
-| 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
-| ❄️ [Snowflake A-Z](https://github.com/evgeniimatveev/Snowflake-A-Z) | 11 hands-on practices · Snowpark · Dynamic Tables · RBAC · native Streamlit · SQLFluff CI | — |
-| 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
-| 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
-| 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
-| 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
-| 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
-| 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
-| 🧠 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
-
----
-
-## ⚙️ Analytics Stack (Production-Level)
-
-### 🛢️ Languages & Databases
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
-![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)
-![MotherDuck](https://img.shields.io/badge/MotherDuck-FFD700?style=for-the-badge&logo=duckdb&logoColor=black)
-
----
-
-### 📊 Data & Analytics
-
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge)
-![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
-
----
-
-### 📈 BI & Visualization
-
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
-![PowerBI](https://img.shields.io/badge/PowerBI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
-![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
-
----
-
-### ☁️ Cloud & Data Engineering
-![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white)
-![Azure Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
-![Azure Data Factory](https://img.shields.io/badge/Azure_Data_Factory-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Azure Synapse](https://img.shields.io/badge/Azure_Synapse-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Azure Data Lake](https://img.shields.io/badge/Azure_Data_Lake_Gen2-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white)
-
----
-
-### 🚀 Deployment & Serving
-
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-
----
-
-### ⚙️ Automation & Workflow
-
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
-
----
-
-### 🐳 Reproducibility & MLOps
-
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
-![Weights_&_Biases](https://img.shields.io/badge/Weights_&_Biases-FFBE00?style=for-the-badge&logo=weightsandbiases&logoColor=black)
-
----
-
- ### 🧪 Data Tools
-
-  ![DBeaver](https://img.shields.io/badge/DBeaver-3f3f3f?style=for-the-badge&logo=dbeaver&logoColor=white)
-
----
-
   <!-- BEGIN: COPILOTS -->
   <details>
     <summary>⚡ AI-Powered Engineering Workflow</summary>
@@ -329,7 +300,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </details>
   <!-- END: COPILOTS -->
 
----
   <!-- BEGIN: AI_SYSTEMS_IN_PRODUCTION -->
   <details>
     <summary>🛰️ AI Systems in Production</summary>
@@ -396,7 +366,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </details>
   <!-- END: AI_SYSTEMS_IN_PRODUCTION -->
 
----
 <!-- BEGIN: AUTOMATION -->
 <details>
   <summary>🤖 Automation Logs</summary>
@@ -434,6 +403,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </details>
 <!-- END: AUTOMATION -->
 
+</details>
+
 ---
 
 ### 🐍 Auto-Rotating GitHub Snake
@@ -446,37 +417,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 <p align="center">
   <sub><em>Night-mode palettes · Daily A–N theme rotation · 14 colors · Fully automated via GitHub Actions</em></sub>
-</p>
-
----
-
- | 📊 Data Analyst              | 🔧 Data Engineer                        | 🤖 MLOps Engineer                    |
-  |-----------------------------|----------------------------------------|--------------------------------------|
-  | SQL · Tableau · Power BI    | PostgreSQL · DuckDB · dbt · Docker     | MLflow · W&B · XGBoost · FastAPI     |
-  | Dashboards → KPIs → Decisions | Raw Data → Pipelines → Production    | Train → Track → Deploy → Monitor     |
-
----
-
-<p align="left">
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg" alt="CI/CD Status"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Total%20Runs&color=brightgreen" alt="Total Runs"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/blank.yml?label=Failures&color=red" alt="Failures"/>
-  <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20CI/CD%20Run&color=blue" alt="Last Run"/>
-</p>
-
-<p align="left">
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg" alt="Update Status"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Total%20Updates&color=yellow" alt="Total Updates"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/evgeniimatveev/evgeniimatveev/update_readme.yml?label=Failures&color=red" alt="Update Failures"/>
-  <img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev/main?label=Last%20Update&color=blue" alt="Last Update"/>
-</p>
-
-<p align="left">
-  <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Next Update Status"/>
-  <img src="https://img.shields.io/badge/Total%20Runs-passing-brightgreen?style=flat&logo=githubactions" alt="Total Runs"/>
-  <img src="https://img.shields.io/badge/Failures-passing-red?style=flat&logo=githubactions" alt="Failures"/>
-  <img src="https://img.shields.io/badge/Cycle-Active-10b981?style=flat&logo=githubactions" alt="Cycle Active"/>
-  <img src="https://img.shields.io/badge/Last%20Badge%20Refresh-today-1f6feb?style=flat&logo=clockify" alt="Last Badge Refresh"/>
 </p>
 
 ---
@@ -514,6 +454,30 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
   </p>
 
   </details>
+
+---
+
+<details>
+<summary>📈 <b>GitHub activity badges</b> <em>(auto-updated)</em></summary>
+
+<!-- BADGES:START -->
+<div align="left">
+<p><img src="https://img.shields.io/github/last-commit/evgeniimatveev/evgeniimatveev?color=red&style=for-the-badge&t=5936" alt="Last Commit"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_followers.json&style=for-the-badge&cacheSeconds=600&t=5936" alt="GitHub Followers"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_stars.json&style=for-the-badge&cacheSeconds=600&t=5936" alt="GitHub Stars"></p>
+<p><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/total_updates.json&style=for-the-badge&cacheSeconds=120&t=5936" alt="Total Updates"></p>
+</div>
+<!-- BADGES:END -->
+
+<!-- EXTRA_BADGES:START -->
+<p>
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_contributions.json&style=for-the-badge&cacheSeconds=3600" alt="Contributions 2026" />
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_commits.json&style=for-the-badge&cacheSeconds=3600" alt="Commits 2026" />
+  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/main/badges/github_issues.json&style=for-the-badge&cacheSeconds=3600" alt="Issues 2026" />
+</p>
+<!-- EXTRA_BADGES:END -->
+
+</details>
 
 ---
 
