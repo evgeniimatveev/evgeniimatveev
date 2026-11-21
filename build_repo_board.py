@@ -185,14 +185,24 @@ STATUS_CSS = (
     ".t{animation:up .7s ease-out both}"
     ".b{transform-box:fill-box;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}"
     ".live{animation:pulse 2s ease-in-out infinite}"
-    # Light segment orbiting the border; healthy = cycles through the palette, failing = red/amber alarm.
-    "@keyframes orbit{to{stroke-dashoffset:-100}}"
-    "@keyframes hue{0%,100%{stroke:#7aa2f7}25%{stroke:#bb9af7}50%{stroke:#7dcfff}75%{stroke:#9ece6a}}"
-    "@keyframes alarm{0%,100%{stroke:#f7768e;opacity:1}50%{stroke:#e0af68;opacity:.35}}"
-    ".edge{fill:none;stroke-linecap:round;stroke-dasharray:22 78;"
-    "animation:orbit 7s linear infinite,hue 14s ease-in-out infinite}"
-    ".edge.alarm{animation:orbit 3s linear infinite,alarm .9s ease-in-out infinite}"
+    # Whole-perimeter neon border drifting through the portfolio site's "chameleon" palette
+    # (amber -> teal -> cobalt -> violet -> wine, hue 30/185/220/270/335, 26 s loop, same
+    # hsl(h 90% 68%) accent) while the glow "breathes". Any failing CI = red/amber + fast blink.
+    "@keyframes hue{0%,100%{stroke:hsl(30,90%,68%)}20%{stroke:hsl(185,90%,68%)}"
+    "40%{stroke:hsl(220,90%,68%)}60%{stroke:hsl(270,90%,68%)}80%{stroke:hsl(335,90%,68%)}}"
+    "@keyframes breathe{0%,100%{opacity:.3}50%{opacity:.95}}"
+    "@keyframes hue-bad{0%,100%{stroke:#f7768e}50%{stroke:#e0af68}}"
+    "@keyframes breathe-bad{0%,100%{opacity:.25}50%{opacity:1}}"
+    ".edge,.glow{fill:none}"
+    ".edge{animation:hue 26s linear infinite}"
+    ".glow{animation:hue 26s linear infinite,breathe 2.6s ease-in-out infinite}"  # 2.6 s = the site's badge-glow
+    # Light sweep across the panel, same 3.4 s rhythm as the site's .ask-badge shine.
+    "@keyframes shine{0%{transform:translateX(-200px) skewX(-25deg)}55%,100%{transform:translateX(900px) skewX(-25deg)}}"
+    ".shine{animation:shine 3.4s ease-in-out infinite}"
+    ".edge.bad{animation:hue-bad .9s ease-in-out infinite}"
+    ".glow.bad{animation:hue-bad .9s ease-in-out infinite,breathe-bad .9s ease-in-out infinite}"
 )
+PAD = 8  # room around the panel so the glow is not clipped by the SVG viewport
 
 
 def _stack(p: List[str], x: float, y: float, w: float, segs: List[Any], delay: float) -> None:
@@ -224,16 +234,22 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
              (str(week), "pushed this week"),
              (f"{ok}/{with_ci}" if with_ci else "—", "CI passing"), (str(stars), "stars")]
     alarm = bad > 0
-    edge = f'x="1.5" y="1.5" width="{SW - 3}" height="{SH - 3}" rx="6" pathLength="100"'
+    edge = f'x="1" y="1" width="{SW - 2}" height="{SH - 2}" rx="8"'
+    bad_cls = " bad" if alarm else ""
 
-    p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW}" height="{SH}" viewBox="0 0 {SW} {SH}" '
-         f'font-family="{FONT}"><style>{STATUS_CSS}</style>',
-         '<defs><filter id="glow" x="-5%" y="-20%" width="110%" height="140%">'
-         '<feGaussianBlur stdDeviation="3"/></filter></defs>',
-         f'<rect width="{SW}" height="{SH}" fill="{SURFACE}" rx="6"/>',
-         f'<rect x="1.5" y="1.5" width="{SW - 3}" height="{SH - 3}" rx="6" fill="none" stroke="{GRID}"/>',
-         f'<rect class="edge{" alarm" if alarm else ""}" {edge} stroke-width="5" filter="url(#glow)"/>',
-         f'<rect class="edge{" alarm" if alarm else ""}" {edge} stroke-width="2"/>',
+    p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW + 2 * PAD}" height="{SH + 2 * PAD}" '
+         f'viewBox="0 0 {SW + 2 * PAD} {SH + 2 * PAD}" font-family="{FONT}"><style>{STATUS_CSS}</style>',
+         '<defs><filter id="glow" x="-10%" y="-40%" width="120%" height="180%">'
+         '<feGaussianBlur stdDeviation="4"/></filter>'
+         '<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">'
+         '<stop offset="0" stop-color="#fff" stop-opacity="0"/>'
+         '<stop offset="0.5" stop-color="#fff" stop-opacity="0.09"/>'
+         '<stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
+         f'<clipPath id="panel"><rect width="{SW}" height="{SH}" rx="8"/></clipPath></defs>',
+         f'<g transform="translate({PAD} {PAD})">',
+         f'<rect width="{SW}" height="{SH}" fill="{SURFACE}" rx="8"/>',
+         f'<rect class="glow{bad_cls}" {edge} stroke-width="7" filter="url(#glow)"/>',
+         f'<rect class="edge{bad_cls}" {edge} stroke-width="1.6"/>',
          f'<circle class="live" cx="22" cy="21" r="4" fill="{"#f7768e" if alarm else "#9ece6a"}"/>',
          f'<text x="34" y="25" font-size="11" font-weight="600" fill="{TEXT_PRIMARY}" letter-spacing="1.2">'
          f'REPO HEALTH · LIVE</text>',
@@ -274,7 +290,9 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
         label = f"{k} {counts[k]}"
         p.append(f'<text x="{cx + 12:.0f}" y="138" font-size="10" fill="{TEXT_SOFT}">{_esc(label)}</text>')
         cx += 24 + len(label) * 5.6
-    p.append("</svg>")
+    p.append(f'<g clip-path="url(#panel)"><rect class="shine" x="0" y="-10" width="150" height="{SH + 20}" '
+             f'fill="url(#sheen)"/></g>')
+    p.append("</g></svg>")
     return "".join(p)
 
 
@@ -283,7 +301,7 @@ def write_status(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "repo_status.svg").write_text(svg, encoding="utf-8")
     v = hashlib.md5(svg.encode()).hexdigest()[:8]  # cache-bust only when content changes
-    return (f'<p align="center"><img src="{RAW_BASE}/repo_status.svg?v={v}" width="784" '
+    return (f'<p align="center"><img src="{RAW_BASE}/repo_status.svg?v={v}" width="{SW + 2 * PAD}" '
             f'alt="Repo health: repos, CI status and language mix"/></p>')
 
 

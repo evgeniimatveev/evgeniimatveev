@@ -520,7 +520,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/repo_status.svg?v=17296799" width="784" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/repo_status.svg?v=91db83e4" width="800" alt="Repo health: repos, CI status and language mix"/></p>
 
 <details open>
 <summary><b>🚀 Production apps & AI systems</b> <em>(15)</em></summary>
