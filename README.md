@@ -76,6 +76,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_next_badge.py">build_next_badge.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | HLS gradient renderer + countdown |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_activity_graph.py">build_activity_graph.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → self-hosted 30-day trend chart SVG |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_repo_board.py">build_repo_board.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | GitHub GraphQL → repo-health panel (LED digits + neon border) and categorised repo index |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_projects.py">build_projects.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | Project table → collapsed categories + animated portfolio panel (numbers derived from the rows) |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/blob/main/build_ci_stats.py">build_ci_stats.py</a> | <img alt="v1.0" src="https://img.shields.io/badge/v1.0-stable-success"> | Actions API + workflow cron lines → this CI/CD table, self-updating |
 
 ### ⚙️ CI/CD Workflows:
@@ -117,7 +118,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 │  ├─ github_commits.json    # Commit count this year (GraphQL, via badges_extra.yml)
 │  ├─ github_issues.json     # Issues opened this year (GraphQL, via badges_extra.yml)
 │  ├─ activity_graph.svg     # Self-hosted 30-day trend chart (GraphQL, via activity_graph.yml)
-│  └─ repo_status.svg        # Animated repo-health panel (GraphQL, via repo_board.yml)
+│  ├─ repo_status.svg        # Animated repo-health panel (GraphQL, via repo_board.yml)
+│  └─ projects_panel.svg     # Animated project-portfolio panel (derived from the project table, via repo_board.yml)
 └─ .ci/
    ├─ heartbeat.log          # GitHub Actions heartbeat ledger (Updated on / Triggered by / Commit SHA / Run ID / Run number)
    └─ update_count.txt       # Monotonic mutation counter (powers the «N mutations shipped» tagline)
@@ -183,30 +185,65 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
+<!-- PROJECTS:START -->
+<p align="center"><img src="badges/projects_panel.svg?v=32616ce5" width="824" alt="Project portfolio: projects, live demos, categories and platforms"/></p>
+
+<details>
+<summary><b>🧠 AI & Cloudflare systems</b> <em>(5)</em></summary>
+
 | Project | Highlights | Demo |
 |---------|-----------|------|
-| 📐 [Tableau LOD Cases](https://github.com/evgeniimatveev/tableau-business-cases) | 5 Tableau LOD case studies · 91 numbers reconciled in DuckDB · 8 gotchas documented · pytest + GitHub Actions CI | [📊 Live](https://public.tableau.com/app/profile/evgenii.matveev/viz/LOD_cohoranalysishmdashboard/Dashboard1) |
 | 🧠 [Agent Memory](https://github.com/evgeniimatveev/agent-memory) | Cloudflare Vectorize + Workers AI + D1 + Claude Haiku 4.5 · mem0/Supermemory-style memory API · atomic fact extraction · similarity × importance × recency re-ranking | [🌐 Live](https://evgeniimatveev.github.io/agent-memory/) |
 | 🦎 [Civics × SQL RAG Lab](https://github.com/evgeniimatveev/civics-sql-rag) | Cloudflare Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5 · 128 official USCIS civics Q&A + real SQL practice sessions · single index, metadata-filtered by mode | [🌐 Live](https://evgeniimatveev.github.io/civics-sql-rag/) |
+| 🔌 [MCP Data Quality Agent](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 19 MCP tools · 5 databases · Claude AI · natural language analytics | — |
+| 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 20 questions · SQL + Behavioral + Project · Claude API · streaming feedback · SQLite | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://ljtn7jxeawyetzefthttnc.streamlit.app) |
+| 🧠 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
+
+</details>
+
+<details>
+<summary><b>📊 Live data apps & dashboards</b> <em>(8)</em></summary>
+
+| Project | Highlights | Demo |
+|---------|-----------|------|
 | 🚚 [Route Optimization VRP](https://github.com/evgeniimatveev/route-optimization-vrp) | CVRPTW · Google OR-Tools · 100% vs 11% on-time · 18.7% distance saved · $82/day saved | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://route-optimization-vrp.streamlit.app) |
-| 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
 | ₿ [Crypto On-Chain Dashboard](https://github.com/evgeniimatveev/crypto-dashboard) | Top 20 coins · Fear & Greed · BTC dominance · DuckDB · daily pipeline | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://crypto-onchain-dashboard.streamlit.app) |
 | 📉 [Tech Layoffs Tracker](https://github.com/evgeniimatveev/layoffs-tracker) | 2,412 events · 747K people · 49 countries · DuckDB · weekly refresh | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://layoffs-tracker-mdndinr8hfct5afvjwvjno.streamlit.app) |
 | 📊 [SO Survey Analytics](https://github.com/evgeniimatveev/so-survey-analytics) | 65K devs · 20 SQL queries · Remote +51% · DuckDB · 23 CI tests | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://4cmjubresrab8nk6zhjqbv.streamlit.app/) |
 | 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best City Score · 7d Forecast · Quality Layer | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://weather-pip-y645txqohstehewa3d3a4w.streamlit.app/) |
-| 🔌 [MCP Data Quality Agent](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 19 MCP tools · 5 databases · Claude AI · natural language analytics | — |
-| 🎓 [Data Interview Coach](https://github.com/evgeniimatveev/interview-coach) | 20 questions · SQL + Behavioral + Project · Claude API · streaming feedback · SQLite | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://ljtn7jxeawyetzefthttnc.streamlit.app) |
 | 📈 [Job Market Pulse](https://github.com/evgeniimatveev/job-market-pulse) | 10 stacks · 10 US cities + remote · 110 API calls/day · DuckDB · daily pipeline | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/job-market-pulse) |
 | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
 | 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
+
+</details>
+
+<details>
+<summary><b>📈 Analytics, BI & SQL</b> <em>(6)</em></summary>
+
+| Project | Highlights | Demo |
+|---------|-----------|------|
+| 📐 [Tableau LOD Cases](https://github.com/evgeniimatveev/tableau-business-cases) | 5 Tableau LOD case studies · 91 numbers reconciled in DuckDB · 8 gotchas documented · pytest + GitHub Actions CI | [📊 Live](https://public.tableau.com/app/profile/evgenii.matveev/viz/LOD_cohoranalysishmdashboard/Dashboard1) |
 | ❄️ [Snowflake A-Z](https://github.com/evgeniimatveev/Snowflake-A-Z) | 11 hands-on practices · Snowpark · Dynamic Tables · RBAC · native Streamlit · SQLFluff CI | — |
 | 🏢 [HR BI Analytics](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 30 employees · 5 depts · Sales $102K avg · Tableau | — |
 | 📊 [Business SQL Analytics](https://github.com/evgeniimatveev/business-sql-analytics) | 2,314 cust · 5K transactions · $2.58M · 59.8% returning | — |
 | 🦆 [NYC 311 DuckDB](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 22,504 records · Bronx 41.5% · DuckDB · MotherDuck | — |
-| 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
 | 🌍 [Remote Job Tracker](https://github.com/evgeniimatveev/remote-job-tracker) | 100 listings · 5% remote · Munich 36% · API→Tableau | — |
+
+</details>
+
+<details>
+<summary><b>🐳 MLOps & pipelines</b> <em>(3)</em></summary>
+
+| Project | Highlights | Demo |
+|---------|-----------|------|
+| 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
+| 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
 | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
-| 🧠 [FastAPI + Ollama Playground](https://github.com/evgeniimatveev/mlops_ollama_env) | Local LLM inference · phi3 · llama3 · deepseek-r1 · streaming API · Docker Compose | — |
+
+</details>
+
+<!-- order: tableau-business-cases,agent-memory,civics-sql-rag,route-optimization-vrp,cv-logistics-mlops,crypto-dashboard,layoffs-tracker,so-survey-analytics,weather-pipeline,mcp-data-quality-agent,interview-coach,job-market-pulse,olist-e-commerce-analytics,uber-driver-analytics,Snowflake-A-Z,hr-bi-analytics-project,business-sql-analytics,nyc-311-duckdb-motherduck-analysis,data-pipeline-etl-project,remote-job-tracker,mlops_project,mlops_ollama_env -->
+<!-- PROJECTS:END -->
 
 ---
 

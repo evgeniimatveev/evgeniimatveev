@@ -1,6 +1,8 @@
 # repo_board.yml
 # Self-hosted "Repo Health Board": one GitHub GraphQL call -> categorised repo
 # table + animated status panel (README block REPOS, badges/repo_status.svg).
+# Second step: build_projects.py regroups the project table into collapsed categories and
+# redraws the Project Portfolio panel (README block PROJECTS, badges/projects_panel.svg).
 # Nothing external to go down.
 #
 # Schedule map (UTC) — clear of every other workflow:
@@ -47,6 +49,7 @@ jobs:
             badges
             README.md
             build_repo_board.py
+            build_projects.py
             .github/workflows/repo_board.yml
           sparse-checkout-cone-mode: true
 
@@ -61,6 +64,12 @@ jobs:
           set -euo pipefail
           python build_repo_board.py
 
+      - name: Build projects panel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build_projects.py
+
       - name: Commit if changed
         shell: bash
         run: |
@@ -74,7 +83,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore: refresh repo board [skip ci]"
+          git commit -m "chore: refresh repo board + projects panel [skip ci]"
 
           for i in 1 2 3; do
             if git push origin HEAD:main; then
