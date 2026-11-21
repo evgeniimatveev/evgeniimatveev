@@ -517,6 +517,86 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
+## 🗂️ Repository Index
+
+<!-- REPOS:START -->
+<p align="center"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/repo_status.svg?v=91db83e4" width="800" alt="Repo health: repos, CI status and language mix"/></p>
+
+<details open>
+<summary><b>🚀 Production apps & AI systems</b> <em>(15)</em></summary>
+
+| Repo | What it is | Lang | CI | Updated | ⭐ |
+|---|---|---|:-:|---|--:|
+| [**evgeniimatveev.github.io**](https://github.com/evgeniimatveev/evgeniimatveev.github.io) | Terminal-emulator portfolio site — live uptime across 9 apps, real incident postmortems,… | 🟧 HTML | 🟢 | today | 1 |
+| [**layoffs-tracker**](https://github.com/evgeniimatveev/layoffs-tracker) | Interactive dashboard tracking 2,412 tech layoffs (2020-2025) · DuckDB · Streamlit · layo… | 🐍 Python | ⚪ | today | 3 |
+| [**civics-sql-rag**](https://github.com/evgeniimatveev/civics-sql-rag) | RAG practice lab: Cloudflare Worker + Vectorize + Workers AI (bge-m3) + Claude Haiku 4.5,… | 🟧 HTML | 🟢 | today | 1 |
+| [**agent-memory**](https://github.com/evgeniimatveev/agent-memory) | Self-hosted mem0/Supermemory-style long-term memory layer for AI agents — Cloudflare Vect… | 🟨 JavaScript | 🟢 | today | 1 |
+| [**mlops_ollama_env**](https://github.com/evgeniimatveev/mlops_ollama_env) | Dockerized local LLM inference playground: FastAPI + Ollama + Docker Compose — one comman… | 🐍 Python | 🟢 | today | 8 |
+| [**mlops_project**](https://github.com/evgeniimatveev/mlops_project) | End-to-end MLOps pipeline: XGBoost R²=0.8326 on California Housing. Dual tracking MLflow… | 🐍 Python | 🟢 | today | 7 |
+| [**job-market-pulse**](https://github.com/evgeniimatveev/job-market-pulse) | Daily tracking of tech job demand, salaries & remote trends — 10 stacks x 10 US cities. A… | 🐍 Python | ⚪ | today | 8 |
+| [**route-optimization-vrp**](https://github.com/evgeniimatveev/route-optimization-vrp) | Capacitated Vehicle Routing with Time Windows (CVRPTW) — Google OR-Tools vs. naive neares… | 🐍 Python | 🟢 | 3w ago | 1 |
+| [**cv-logistics-mlops**](https://github.com/evgeniimatveev/cv-logistics-mlops) | Computer vision on logistics: bin item-count prediction via CNN transfer learning, tracke… | 🐍 Python | 🟢 | 3w ago | 1 |
+| [**weather-pipeline**](https://github.com/evgeniimatveev/weather-pipeline) | Live US weather pipeline: Open-Meteo API → DuckDB → Streamlit dashboard · Engineered feat… | 🐍 Python | ⚪ | 3w ago | 7 |
+| [**interview-coach**](https://github.com/evgeniimatveev/interview-coach) | AI-powered interview coach for Data Analyst / AE roles. 35 questions: SQL, Behavioral, Pr… | 🐍 Python | ⚪ | 3w ago | 8 |
+| [**uber-driver-analytics**](https://github.com/evgeniimatveev/uber-driver-analytics) | Personal Uber driver analytics — 3,448 trips, $70K gross, 3 years of LA data. PostgreSQL… | 🐍 Python | ⚪ | 3w ago | 7 |
+| [**crypto-dashboard**](https://github.com/evgeniimatveev/crypto-dashboard) | Crypto On-Chain Dashboard — CoinGecko + Fear&Greed → DuckDB → Streamlit · Daily refresh v… | 🐍 Python | ⚪ | 3w ago | 3 |
+| [**so-survey-analytics**](https://github.com/evgeniimatveev/so-survey-analytics) | 65K developers · 20 SQL queries · DuckDB + Streamlit · Remote devs earn 51% more | 🐍 Python | 🟢 | 3w ago | 8 |
+| [**mcp-data-quality-agent**](https://github.com/evgeniimatveev/mcp-data-quality-agent) | MCP server giving Claude read-only access to 5 databases — 20 data quality tools, natural… | 🐍 Python | 🟢 | 3w ago | 7 |
+
+</details>
+
+<details>
+<summary><b>📊 Analytics, BI & data engineering</b> <em>(8)</em></summary>
+
+| Repo | What it is | Lang | CI | Updated | ⭐ |
+|---|---|---|:-:|---|--:|
+| [**Snowflake-A-Z**](https://github.com/evgeniimatveev/Snowflake-A-Z) | Hands-on Snowflake practice: SQL basics, S3 ingestion, Time Travel/Clone, CSV upload, Str… | 🐍 Python | 🟢 | today | 1 |
+| [**business-sql-analytics**](https://github.com/evgeniimatveev/business-sql-analytics) | Retail analytics pipeline: 2,314 customers · 5,000 transactions · $2.58M revenue. Postgre… | 🐍 Python | 🟢 | today | 7 |
+| [**hr-bi-analytics-project**](https://github.com/evgeniimatveev/hr-bi-analytics-project) | HR analytics pipeline: 30 employees · 5 departments · $58K–$135K salary range. PostgreSQL… | 🐍 Python | 🟢 | today | 8 |
+| [**remote-job-tracker**](https://github.com/evgeniimatveev/remote-job-tracker) | ETL pipeline on 100 German tech job listings via Arbeitnow API. Key finding: only 5% trul… | 🐍 Python | 🟢 | today | 7 |
+| [**nyc-311-duckdb-motherduck-analysis**](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | ELT pipeline on 22,504 real NYC 311 elevator complaints. DuckDB + MotherDuck + Docker + P… | 🐍 Python | 🟢 | today | 6 |
+| [**data-pipeline-etl-project**](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Production-grade ETL pipeline: Faker → Python → PostgreSQL → Docker. SQL quality enforced… | 🐍 Python | 🟢 | today | 7 |
+| [**tableau-business-cases**](https://github.com/evgeniimatveev/tableau-business-cases) | Tableau LOD expressions (FIXED, parameters, cohort, % of total) with every number reconci… | 🐍 Python | 🟢 | 6d ago | 1 |
+| [**olist-e-commerce-analytics**](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | Brazilian e-commerce analytics — 100K+ orders, $13.2M revenue. dbt + DuckDB + Streamlit +… | 🐍 Python | 🟢 | 3w ago | 7 |
+
+</details>
+
+<details>
+<summary><b>🎓 A–Z learning repos</b> <em>(13)</em></summary>
+
+| Repo | What it is | Lang | CI | Updated | ⭐ |
+|---|---|---|:-:|---|--:|
+| [**EXCEL-A-Z**](https://github.com/evgeniimatveev/EXCEL-A-Z) | Excel analytics: pivot tables, pivot charts, 8 real-world case studies (social media, spo… | — | 🟢 | today | 7 |
+| [**Power-BI-A-Z**](https://github.com/evgeniimatveev/Power-BI-A-Z) | Power BI from scratch: bar charts, time series, geographic maps, scatterplots, full dashb… | 📄 CSV | 🟢 | today | 7 |
+| [**Python-Projects**](https://github.com/evgeniimatveev/Python-Projects) | Python project collection across branches: ML forecasting, NLP sentiment, CV (YOLOv5/Medi… | 🐍 Python | 🟢 | today | 7 |
+| [**SQL-Database-Design-A-Z**](https://github.com/evgeniimatveev/SQL-Database-Design-A-Z) | SQL database design in PostgreSQL: normalization (1NF→3NF), ERD diagrams, subqueries, win… | 🛢️ SQL | 🟢 | today | 7 |
+| [**Advanced-SQL-Data-Management-A-Z**](https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z) | Advanced SQL in MySQL 8.0: window functions, pivot tables, regex, stored procedures, empl… | 🛢️ SQL | 🟢 | today | 7 |
+| [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | ML fundamentals in Python: data preprocessing, regression, classification, clustering, Ap… | 🐍 Python | 🟢 | today | 7 |
+| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | today | 7 |
+| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | today | 7 |
+| [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | today | 7 |
+| [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | today | 7 |
+| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | today | 7 |
+| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | today | 7 |
+| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | today | 7 |
+
+</details>
+
+<details>
+<summary><b>🧩 Self-hosted widgets & forks</b> <em>(2)</em></summary>
+
+| Repo | What it is | Lang | CI | Updated | ⭐ |
+|---|---|---|:-:|---|--:|
+| [**snk**](https://github.com/evgeniimatveev/snk) <sub>fork</sub> | 🟩⬜ Generates a snake game from a github user contributions graph and output a screen capt… | 🔷 TypeScript | ⚪ | 3w ago | 7 |
+| [**github-profile-trophy**](https://github.com/evgeniimatveev/github-profile-trophy) <sub>fork</sub> | 🏆 Add dynamically generated GitHub Stat Trophies  on your readme | 🔷 TypeScript | ⚪ | 2mo ago | 6 |
+
+</details>
+
+<p align="center"><sub>Generated from the GitHub GraphQL API by <code>build_repo_board.py</code> · CI = default-branch check status · refreshed daily · no third-party renderer</sub></p>
+<!-- REPOS:END -->
+
+---
+
 <p align="center">
   <a href="https://github.com/evgeniimatveev"><img
     src="https://img.shields.io/badge/Follow%20%40evgeniimatveev-181717?style=for-the-badge&logo=github&logoColor=white"
