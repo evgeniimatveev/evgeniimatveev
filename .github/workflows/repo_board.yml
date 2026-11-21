@@ -1,0 +1,105 @@
+# repo_board.yml
+# Self-hosted "Repo Health Board": one GitHub GraphQL call -> categorised repo
+# table (README block REPOS) + 6 featured-repo cards (README block FEATURED,
+# badges/featured_*.svg). Nothing external to go down.
+#
+# Schedule map (UTC) — clear of every other workflow:
+#   02:00 / 08:00 / 14:00 / 20:00  cache-trophies
+#   05:15 / 17:15                  activity-graph
+#   06:45                          repo-board      <- this workflow
+#   10:30                          badges_extra
+#   12:15                          update_readme   <- anchor, untouched
+#   00:30                          snake
+#   :37 hourly                     next_update_badge (same concurrency group -> queues safely)
+
+name: Repo Board
+
+on:
+  schedule:
+    - cron: '45 6 * * *'   # 06:45 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build-repo-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout (sparse — README + badges + script only)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 2
+          persist-credentials: true
+          filter: blob:none
+          sparse-checkout: |
+            badges
+            README.md
+            build_repo_board.py
+            .github/workflows/repo_board.yml
+          sparse-checkout-cone-mode: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Build repo board
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build_repo_board.py
+
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md badges/
+
+          if git diff --staged --quiet; then
+            echo "No changes — skip commit"
+            exit 0
+          fi
+
+          git commit -m "chore: refresh repo board [skip ci]"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "✅ Pushed (attempt $i)"
+              exit 0
+            fi
+            echo "Push failed (attempt $i) — rebasing..."
+            sleep $((i * 3))
+            git fetch --depth=2 origin main
+            git pull --rebase --no-tags origin main
+          done
+
+          echo "❌ Push failed after 3 attempts"
+          exit 1
+
+      - name: Run summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### 🗂️ Repo Board"
+            echo ""
+            echo "| Key | Value |"
+            echo "|-----|-------|"
+            echo "| Source | GitHub GraphQL repositories + statusCheckRollup |"
+            echo "| Renderer | self-hosted (build_repo_board.py) |"
+            echo "| Schedule | \`45 6 * * *\` |"
+            echo "| Concurrency group | \`repo-main-writer\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
