@@ -14,12 +14,15 @@ as ordinary table rows. This script (stdlib only, idempotent):
 To add a project: paste a new row anywhere inside the block and run the script (the daily
 repo_board workflow does it too). A row it has not seen before counts as the newest one.
 
-Style: PROJECTS_STYLE=chameleon (site palette, glowing contour) | phosphor (retro CRT terminal).
+Style: PROJECTS_STYLE=chameleon (site palette, glowing contour) | phosphor (retro CRT terminal)
+       | radar (sweeping radar, one blip per project) | splitflap (airport departure board)
+       | synthwave (neon sunset grid) | blueprint (engineering drawing).
 """
 
 from __future__ import annotations
 
 import hashlib
+import math
 import os
 import re
 from pathlib import Path
@@ -32,7 +35,7 @@ from build_repo_board import (  # same palette, LED digits and bar helper as the
 
 README = Path(os.getenv("PROJECTS_README", "README.md"))
 OUT_DIR = Path(os.getenv("PROJECTS_OUT", "badges"))
-STYLE = os.getenv("PROJECTS_STYLE", "phosphor")
+STYLE = os.getenv("PROJECTS_STYLE", "radar")
 ASSET_BASE = "badges"
 
 # key -> (heading, short label, colour in the panel bar)
@@ -126,7 +129,8 @@ def stats(ordered: List[Row]) -> Dict[str, object]:
         if r.platform:
             plats[r.platform] = plats.get(r.platform, 0) + 1
     cats = {k: sum(r.cat == k for r in ordered) for k in CATS}
-    return {"n": len(ordered), "live": len(live), "plats": plats, "cats": cats,
+    items = [{"cat": r.cat, "live": bool(r.demo), "plat": r.platform} for r in ordered]
+    return {"n": len(ordered), "live": len(live), "plats": plats, "cats": cats, "items": items,
             "newest": re.sub(r"\s+", " ", ordered[0].name).strip() if ordered else "—"}
 
 
@@ -155,7 +159,7 @@ PHOSPHOR_CAT = {"ai": "#39ff88", "apps": "#7dffd0", "bi": "#ffb000", "mlops": "#
 
 
 def _bar_block(p: List[str], x: float, half: float, title: str, segs: List[tuple], delay: float,
-               text_col: str, muted: str) -> None:
+               text_col: str, muted: str, gap: float = 24.0, cw: float = 5.6) -> None:
     p.append(f'<text x="{x:.0f}" y="104" font-size="9.5" fill="{muted}" letter-spacing="1">{title}</text>')
     _stack(p, x, 109, half, [(c, col) for _l, c, col in segs], delay)
     cx = x
@@ -163,10 +167,10 @@ def _bar_block(p: List[str], x: float, half: float, title: str, segs: List[tuple
         p.append(f'<circle cx="{cx + 4:.0f}" cy="135" r="3.5" fill="{col}"/>')
         text = f"{label} {c}"
         p.append(f'<text x="{cx + 12:.0f}" y="138" font-size="10" fill="{text_col}">{_esc(text)}</text>')
-        cx += 24 + len(text) * 5.6
+        cx += gap + len(text) * cw
 
 
-def build_svg(st: Dict[str, object], style: str) -> str:
+def build_svg_classic(st: Dict[str, object], style: str) -> str:
     phos = style == "phosphor"
     surface = "#0a1410" if phos else SURFACE
     muted = "#4f8a66" if phos else TEXT_MUTED
@@ -239,6 +243,342 @@ def build_svg(st: Dict[str, object], style: str) -> str:
                  f'fill="url(#sheen)"/></g>')
     p.append("</g></svg>")
     return "".join(p)
+
+
+# ----------------------------------------------------------------- extra themes ---
+# Every theme returns a complete SVG for the same SW x SH panel (+PAD for glow). Only <svg> + CSS
+# animations, no fonts shipped, no scripts - renders inside the README's <img>.
+MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,'Courier New',monospace"
+SHORT = {"ai": "AI & Cloudflare", "apps": "Live data apps", "bi": "Analytics, BI & SQL", "mlops": "MLOps & pipelines"}
+BASE_CSS = (
+    "@keyframes up{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}"
+    "@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}"
+    "@keyframes breathe{0%,100%{opacity:.3}50%{opacity:.95}}"
+    ".t{animation:up .7s ease-out both}"
+    ".b{transform-box:fill-box;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}"
+    ".off{opacity:.09}"
+)
+SEGGLOW = ('<filter id="segglow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.5" result="b"/>'
+           '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>')
+GLOW6 = '<filter id="glow" x="-15%" y="-80%" width="130%" height="260%"><feGaussianBlur stdDeviation="6"/></filter>'
+HALO10 = '<filter id="halo" x="-20%" y="-120%" width="140%" height="340%"><feGaussianBlur stdDeviation="10"/></filter>'
+
+
+def _open(font: str, css: str, defs: str, bg: str, rx: int) -> List[str]:
+    return [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW + 2 * PAD}" height="{SH + 2 * PAD}" '
+            f'viewBox="0 0 {SW + 2 * PAD} {SH + 2 * PAD}" font-family="{font}"><style>{css}</style>'
+            f'<defs>{defs}<clipPath id="panel"><rect width="{SW}" height="{SH}" rx="{rx}"/></clipPath></defs>',
+            f'<g transform="translate({PAD} {PAD})">',
+            f'<rect width="{SW}" height="{SH}" fill="{bg}" rx="{rx}"/>']
+
+
+def _tile_list(st: Dict[str, object]) -> List[tuple]:
+    return [(str(st["n"]), "projects"), (str(st["live"]), "live demos"),
+            (str(st["cats"]["ai"]), "AI & cloud systems"),  # type: ignore[index]
+            (str(len(st["plats"])), "demo platforms")]  # type: ignore[arg-type]
+
+
+def _cat_segs(st: Dict[str, object], colors: Dict[str, str]) -> List[tuple]:
+    return [(CATS[k][1], v, colors[k]) for k, v in st["cats"].items() if v]  # type: ignore[union-attr]
+
+
+def _plat_segs(st: Dict[str, object], colors: List[str]) -> List[tuple]:
+    out, i = [], 0
+    for _h, (lab, _c) in PLATFORMS.items():
+        if lab in st["plats"]:  # type: ignore[operator]
+            out.append((lab, st["plats"][lab], colors[i % len(colors)]))  # type: ignore[index]
+            i += 1
+    return out
+
+
+def _title(p: List[str], x: float, st: Dict[str, object], color: str, muted: str, extra: str = "") -> None:
+    p.append(f'<text x="{x:.0f}" y="25" font-size="11" font-weight="600" fill="{color}" letter-spacing="1.4">'
+             f'PROJECT PORTFOLIO</text>')
+    p.append(f'<text x="{SW - 16}" y="25" font-size="10" fill="{muted}" text-anchor="end">'
+             f'{extra}newest: {_esc(str(st["newest"]))}</text>')
+
+
+def _pt(cx: float, cy: float, r: float, deg: float) -> tuple:
+    a = math.radians(deg)
+    return cx + r * math.cos(a), cy + r * math.sin(a)
+
+
+# ---- 1. RADAR: one blip per project, a sweep lights them up as it passes ----------------------
+RADAR_T = 7.0
+QUAD = {"ai": 270.0, "apps": 0.0, "bi": 90.0, "mlops": 180.0}  # quadrant start angle (clockwise from +x)
+
+
+def build_radar(st: Dict[str, object]) -> str:
+    cx, cy, R = 84.0, 76.0, 62.0
+    teal, muted, soft, primary = "#5ef0ff", "#58798d", "#a4c4d6", "#d9f6ff"
+    css = (BASE_CSS
+           + "@keyframes spin{to{transform:rotate(360deg)}}"
+           "@keyframes ping{0%,6%{opacity:1}100%{opacity:.22}}"
+           "@keyframes pingl{0%,6%{opacity:1}100%{opacity:.6}}"
+           ".sweep{transform-box:fill-box;transform-origin:50% 50%;animation:spin " + str(RADAR_T) + "s linear infinite}"
+           ".bl{opacity:.22;animation:ping " + str(RADAR_T) + "s linear infinite}"
+           ".bl.lv{opacity:.6;animation-name:pingl}"
+           ".seg{fill:" + teal + "}")
+    p = _open(FONT, css, SEGGLOW + GLOW6, "#0b141c", 8)
+    p.append(f'<rect x=".5" y=".5" width="{SW - 1}" height="{SH - 1}" rx="8" fill="none" stroke="#1d3a4a"/>')
+    ring = "#1b3342"
+    for rr in (R, R * 2 / 3, R / 3):
+        p.append(f'<circle cx="{cx}" cy="{cy}" r="{rr:.1f}" fill="none" stroke="{ring}" stroke-width=".9"/>')
+    p.append(f'<line x1="{cx - R}" y1="{cy}" x2="{cx + R}" y2="{cy}" stroke="{ring}" stroke-width=".9"/>'
+             f'<line x1="{cx}" y1="{cy - R}" x2="{cx}" y2="{cy + R}" stroke="{ring}" stroke-width=".9"/>')
+    for deg in range(0, 360, 30):
+        x1, y1 = _pt(cx, cy, R, deg)
+        x2, y2 = _pt(cx, cy, R + 4, deg)
+        p.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{teal}" opacity=".35"/>')
+    p.append(f'<circle cx="{cx}" cy="{cy}" r="{R}" fill="none" stroke="{teal}" stroke-width="1" opacity=".5"/>')
+    # sweep: three trailing wedges (fading trail) + a bright leading edge; the invisible circle fixes the rotation centre
+    sweep = ['<g class="sweep" style="animation-delay:0s"><circle cx="%s" cy="%s" r="%s" fill="none" stroke="none"/>' % (cx, cy, R)]
+    for w, op in ((70, 0.06), (40, 0.08), (16, 0.12)):
+        x0, y0 = _pt(cx, cy, R, -w)
+        x1, y1 = _pt(cx, cy, R, 0)
+        sweep.append(f'<path d="M{cx},{cy} L{x0:.1f},{y0:.1f} A{R},{R} 0 0 1 {x1:.1f},{y1:.1f} Z" fill="{teal}" opacity="{op}"/>')
+    sweep.append(f'<line x1="{cx}" y1="{cy}" x2="{cx + R}" y2="{cy}" stroke="{teal}" stroke-width="1.4"/></g>')
+    p.append("".join(sweep))
+    # one blip per project, placed in its category's quadrant; lit when the sweep reaches its angle
+    items = st["items"]  # type: ignore[assignment]
+    for key, start in QUAD.items():
+        grp = [it for it in items if it["cat"] == key]  # type: ignore[index]
+        col = CATS[key][2]
+        for i, it in enumerate(grp):
+            deg = start + (i + 0.5) / len(grp) * 90.0
+            rad = R * (0.34 + 0.56 * (((i * 7) + len(key) * 3) % 10) / 10.0)
+            x, y = _pt(cx, cy, rad, deg)
+            delay = deg / 360.0 * RADAR_T
+            if it["live"]:  # type: ignore[index]
+                p.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6.5" fill="{col}" opacity=".18"/>'
+                         f'<circle class="bl lv" cx="{x:.1f}" cy="{y:.1f}" r="3.2" fill="{col}" '
+                         f'filter="url(#segglow)" style="animation-delay:{delay:.2f}s"/>')
+            else:
+                p.append(f'<circle class="bl" cx="{x:.1f}" cy="{y:.1f}" r="2.1" fill="{col}" '
+                         f'style="animation-delay:{delay:.2f}s"/>')
+    p.append(f'<circle cx="{cx}" cy="{cy}" r="2" fill="{teal}"/>')
+
+    x0 = 170.0
+    wr = SW - x0 - 16
+    _title(p, x0, st, primary, muted)
+    tw = wr / 4
+    for i, (num, label) in enumerate(_tile_list(st)):
+        x = x0 + i * tw
+        p.append(f'<g class="t" style="animation-delay:{i * 0.12:.2f}s">{seven_seg(x, 38, num, False)}'
+                 f'<text x="{x:.0f}" y="82" font-size="10.5" fill="{muted}">{_esc(label)}</text></g>')
+    half = (wr - 16) / 2
+    cols = {k: CATS[k][2] for k in CATS}
+    _bar_block(p, x0, half, "BY CATEGORY", _cat_segs(st, cols), 0.5, soft, muted, 18, 5.0)
+    _bar_block(p, x0 + half + 16, half, "LIVE DEMOS ON", _plat_segs(st, [c for _l, (_n, c) in PLATFORMS.items()]),
+               0.7, soft, muted, 18, 5.0)
+    p.append("</g></svg>")
+    return "".join(p)
+
+
+# ---- 2. SPLIT-FLAP: airport departure board, digits flip through 0..n on load and every 16 s ------
+FLAP_S, FLAP_LOOP = 0.07, 16.0
+
+
+def _flap_css() -> str:
+    s = FLAP_S / FLAP_LOOP * 100.0
+    out = []
+    for k in range(10):
+        a, b = k * s, (k + 1) * s
+        out.append("@keyframes sk%d{0%%,%.3f%%{opacity:0}%.3f%%,%.3f%%{opacity:1}%.3f%%,100%%{opacity:0}}"
+                   % (k, a, a + 0.001, b, b + 0.001))
+        out.append("@keyframes sf%d{0%%,%.3f%%{opacity:0}%.3f%%,100%%{opacity:1}}" % (k, a, a + 0.001))
+    return "".join(out)
+
+
+def build_splitflap(st: Dict[str, object]) -> str:
+    amber, cream, muted, soft, green = "#ffb000", "#f3e3c0", "#8c7a55", "#d8c79c", "#7dff9c"
+    css = (BASE_CSS + _flap_css()
+           + ".fd{animation-duration:" + str(FLAP_LOOP) + "s;animation-iteration-count:infinite;"
+           "animation-fill-mode:both;animation-timing-function:linear;opacity:0}")
+    p = _open(MONO, css, "", "#12100c", 6)
+    p.append(f'<rect x=".5" y=".5" width="{SW - 1}" height="{SH - 1}" rx="6" fill="none" stroke="#3a3326"/>')
+    p.append(f'<text x="16" y="22" font-size="11" font-weight="700" fill="{amber}" letter-spacing="2">PROJECT PORTFOLIO</text>')
+    p.append(f'<text x="{SW - 16}" y="22" font-size="10" fill="{muted}" text-anchor="end">newest: {_esc(str(st["newest"]))}</text>')
+    cw, ch, gap, y0 = 30.0, 44.0, 4.0, 30.0
+    tw = (SW - 32) / 4
+    cell = 0
+    for i, (num, label) in enumerate(_tile_list(st)):
+        gx = 16 + i * tw
+        for j, c in enumerate(num.zfill(2)):
+            x = gx + j * (cw + gap)
+            d = int(c)
+            p.append(f'<rect x="{x}" y="{y0}" width="{cw}" height="{ch / 2}" rx="3" fill="#2a2620"/>'
+                     f'<rect x="{x}" y="{y0 + ch / 2}" width="{cw}" height="{ch / 2}" rx="3" fill="#1d1a15"/>')
+            delay = cell * 0.14
+            for k in range(d + 1):
+                name = f"sf{d}" if k == d else f"sk{k}"
+                p.append(f'<text class="fd" x="{x + cw / 2}" y="{y0 + ch * 0.72:.1f}" font-size="34" font-weight="700" '
+                         f'text-anchor="middle" fill="{cream}" style="animation-name:{name};animation-delay:{delay:.2f}s">{k}</text>')
+            p.append(f'<rect x="{x}" y="{y0 + ch / 2 - 0.7}" width="{cw}" height="1.4" fill="#090806"/>'
+                     f'<circle cx="{x + 1.6}" cy="{y0 + ch / 2}" r="1.4" fill="#090806"/>'
+                     f'<circle cx="{x + cw - 1.6}" cy="{y0 + ch / 2}" r="1.4" fill="#090806"/>')
+            cell += 1
+        p.append(f'<text x="{gx:.0f}" y="90" font-size="10" fill="{muted}" letter-spacing=".6">{_esc(label.upper())}</text>')
+    # departure rows: categories on the left, demo platforms on the right
+    items = st["items"]  # type: ignore[assignment]
+    cat_cols = {"ai": amber, "apps": cream, "bi": "#ff7b3a", "mlops": green}
+    nmax = max(st["cats"].values()) or 1  # type: ignore[union-attr]
+    for r, (k, n) in enumerate(st["cats"].items()):  # type: ignore[union-attr]
+        y = 106 + r * 12
+        live = sum(1 for it in items if it["cat"] == k and it["live"])  # type: ignore[index]
+        p.append(f'<text x="16" y="{y}" font-size="9.5" fill="{soft}">{_esc(SHORT[k])}</text>'
+                 f'<rect x="150" y="{y - 6}" width="{n / nmax * 130:.0f}" height="5" rx="1" fill="{cat_cols[k]}"/>'
+                 f'<text x="292" y="{y}" font-size="9.5" fill="{cream}" text-anchor="end">{n:02d}</text>'
+                 f'<text x="366" y="{y}" font-size="9" fill="{green if live else muted}" text-anchor="end">'
+                 f'{"LIVE %d/%d" % (live, n) if live else "REPO ONLY"}</text>')
+    plats = list(st["plats"].items())  # type: ignore[union-attr]
+    pmax = max([c for _l, c in plats] or [1])
+    for r, (lab, c) in enumerate(plats):
+        y = 106 + r * 12
+        p.append(f'<text x="386" y="{y}" font-size="9.5" fill="{soft}">{_esc(lab.upper())}</text>'
+                 f'<rect x="490" y="{y - 6}" width="{c / pmax * 130:.0f}" height="5" rx="1" fill="{list(cat_cols.values())[r % 4]}"/>'
+                 f'<text x="660" y="{y}" font-size="9.5" fill="{cream}" text-anchor="end">{c:02d}</text>'
+                 f'<text x="728" y="{y}" font-size="9" fill="{green}" text-anchor="end">ON AIR</text>')
+    p.append("</g></svg>")
+    return "".join(p)
+
+
+# ---- 3. SYNTHWAVE: neon sunset, scrolling perspective grid, hot-pink LED digits -----------------
+def build_synthwave(st: Dict[str, object]) -> str:
+    pink, cyan, violet, gold = "#ff4fd8", "#3df5ff", "#a77bff", "#ffd23f"
+    primary, soft, muted = "#f6d6ff", "#d9b8ff", "#9a7cc4"
+    css = (BASE_CSS + "@keyframes gm{to{transform:translateY(12px)}}"
+           ".gm{animation:gm 1.6s linear infinite}"
+           ".glow{fill:none;animation:breathe 3.2s ease-in-out infinite}.edge{fill:none}"
+           ".seg{fill:" + pink + "}")
+    stripes = "".join(f'<rect x="590" y="{y}" width="140" height="{h}" fill="#000"/>'
+                      for y, h in ((66, 2), (73, 3), (80, 4), (88, 5)))
+    defs = (SEGGLOW + GLOW6 + HALO10
+            + '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#170a35"/>'
+              '<stop offset=".7" stop-color="#2d0d52"/><stop offset="1" stop-color="#0c0720"/></linearGradient>'
+              f'<linearGradient id="neon" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{pink}"/>'
+              f'<stop offset=".5" stop-color="{violet}"/><stop offset="1" stop-color="{cyan}"/></linearGradient>'
+              f'<linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{gold}"/>'
+              f'<stop offset="1" stop-color="{pink}"/></linearGradient>'
+              f'<mask id="sunm" maskUnits="userSpaceOnUse" x="590" y="20" width="140" height="100">'
+              f'<rect x="590" y="20" width="140" height="100" fill="#fff"/>{stripes}</mask>'
+              '<clipPath id="above"><rect width="%d" height="94"/></clipPath>'
+              '<clipPath id="below"><rect y="94" width="%d" height="%d"/></clipPath>' % (SW, SW, SH - 94))
+    p = _open(FONT, css, defs, "url(#sky)", 8)
+    p.append('<g clip-path="url(#above)"><g mask="url(#sunm)">'
+             '<circle cx="660" cy="66" r="36" fill="url(#sun)" opacity=".9"/></g></g>')
+    grid = [f'<g clip-path="url(#below)" opacity=".3"><g class="gm">']
+    for k in range(-1, 5):
+        grid.append(f'<line x1="0" y1="{94 + 12 * k}" x2="{SW}" y2="{94 + 12 * k}" stroke="{pink}" stroke-width=".8"/>')
+    grid.append("</g>")
+    for i in range(-14, 15):
+        grid.append(f'<line x1="{SW / 2 + i * 14:.0f}" y1="94" x2="{SW / 2 + i * 62:.0f}" y2="{SH}" stroke="{pink}" stroke-width=".8"/>')
+    grid.append("</g>")
+    p.append("".join(grid))
+    p.append(f'<line x1="0" y1="94" x2="{SW}" y2="94" stroke="{pink}" stroke-width=".8" opacity=".6"/>')
+    edge = f'x="1" y="1" width="{SW - 2}" height="{SH - 2}" rx="8" stroke="url(#neon)"'
+    p.append(f'<rect class="glow" {edge} stroke-width="16" filter="url(#halo)"/>')
+    p.append(f'<rect class="glow" {edge} stroke-width="9" filter="url(#glow)"/>')
+    p.append(f'<rect class="edge" {edge} stroke-width="1.6"/>')
+    _title(p, 16, st, primary, soft)
+    tw = (576 - 16) / 4
+    for i, (num, label) in enumerate(_tile_list(st)):
+        x = 16 + i * tw
+        p.append(f'<g class="t" style="animation-delay:{i * 0.12:.2f}s">{seven_seg(x, 38, num, False)}'
+                 f'<text x="{x:.0f}" y="82" font-size="10.5" fill="{muted}">{_esc(label)}</text></g>')
+    half = (560 - 16) / 2
+    cc = {"ai": pink, "apps": cyan, "bi": gold, "mlops": violet}
+    _bar_block(p, 16, half, "BY CATEGORY", _cat_segs(st, cc), 0.5, primary, muted)
+    _bar_block(p, 16 + half + 16, half, "LIVE DEMOS ON", _plat_segs(st, [pink, cyan, gold, violet]), 0.7, primary, muted)
+    p.append("</g></svg>")
+    return "".join(p)
+
+
+# ---- 4. BLUEPRINT: engineering drawing - grid paper, dimension lines, hatched bars, lines draw in ---
+def _hatch_bar(p: List[str], x: float, w: float, segs: List[tuple], delay: float) -> None:
+    total = sum(c for _l, c, _p, _col in segs) or 1
+    p.append(f'<g class="b" style="animation-delay:{delay}s">')
+    cx = x
+    for _l, c, pid, col in segs:
+        sw = c / total * w
+        p.append(f'<rect x="{cx:.1f}" y="109" width="{sw:.1f}" height="9" fill="url(#{pid})" stroke="{col}" stroke-width=".9"/>')
+        cx += sw
+    p.append("</g>")
+
+
+def _hatch_legend(p: List[str], x: float, segs: List[tuple], soft: str) -> None:
+    cx = x
+    for label, c, pid, col in segs:
+        text = f"{label} {c}"
+        p.append(f'<rect x="{cx:.0f}" y="127" width="12" height="9" fill="url(#{pid})" stroke="{col}" stroke-width=".9"/>'
+                 f'<text x="{cx + 17:.0f}" y="135" font-size="10" fill="{soft}">{_esc(text)}</text>')
+        cx += 17 + len(text) * 5.4 + 14
+
+
+def build_blueprint(st: Dict[str, object]) -> str:
+    ink, soft, muted, paper = "#e6f5ff", "#b9dcf2", "#7fb2d9", "#0c2b4d"
+    hatch_cols = ["#7fd8ff", "#ffffff", "#ffe27a", "#8dffb0"]
+    css = (BASE_CSS + "@keyframes dash{to{stroke-dashoffset:0}}"
+           ".dr{fill:none;stroke-dasharray:1;stroke-dashoffset:1;animation:dash 2.2s ease-out forwards}"
+           ".seg{fill:" + ink + "}")
+    pats = ""
+    for i, (rot, kind) in enumerate(((45, "l"), (-45, "l"), (0, "l"), (0, "d"))):
+        col = hatch_cols[i]
+        body = (f'<line x1="0" y1="0" x2="0" y2="4" stroke="{col}" stroke-width="1.1"/>' if kind == "l"
+                else f'<circle cx="2" cy="2" r=".9" fill="{col}"/>')
+        pats += (f'<pattern id="h{i}" width="4" height="4" patternUnits="userSpaceOnUse" '
+                 f'patternTransform="rotate({rot})">{body}</pattern>')
+    defs = (SEGGLOW + pats
+            + '<pattern id="gm" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M8 0H0V8" fill="none" '
+              'stroke="#5aa3d6" stroke-width=".4" opacity=".28"/></pattern>'
+              '<pattern id="gM" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" '
+              'stroke="#5aa3d6" stroke-width=".7" opacity=".4"/></pattern>')
+    p = _open(FONT, css, defs, paper, 4)
+    p.append(f'<rect width="{SW}" height="{SH}" rx="4" fill="url(#gm)"/><rect width="{SW}" height="{SH}" rx="4" fill="url(#gM)"/>')
+    p.append(f'<rect x="2.5" y="2.5" width="{SW - 5}" height="{SH - 5}" fill="none" stroke="{muted}" stroke-width=".6" opacity=".6"/>')
+    p.append(f'<rect class="dr" pathLength="1" x="7" y="7" width="{SW - 14}" height="{SH - 14}" stroke="{ink}" '
+             f'stroke-width="1.3" style="animation-delay:0s"/>')
+    for (mx, my) in ((7, 7), (SW - 7, 7), (7, SH - 7), (SW - 7, SH - 7)):  # drafting registration marks
+        p.append(f'<circle cx="{mx}" cy="{my}" r="4.5" fill="{paper}" stroke="{ink}" stroke-width=".8"/>'
+                 f'<path d="M{mx - 7},{my} H{mx + 7} M{mx},{my - 7} V{my + 7}" stroke="{ink}" stroke-width=".6"/>')
+    p.append(f'<text x="22" y="27" font-size="11" font-weight="600" fill="{ink}" letter-spacing="1.4">PROJECT PORTFOLIO</text>')
+    p.append(f'<text x="{SW - 22}" y="27" font-size="10" fill="{muted}" text-anchor="end">'
+             f'REV {st["n"]} · newest: {_esc(str(st["newest"]))}</text>')
+    tw = (SW - 44) / 4
+    for i, (num, label) in enumerate(_tile_list(st)):
+        x = 22 + i * tw
+        x2 = x + tw - 30
+        mid = (x + x2) / 2
+        tw_txt = len(label) * 5.6 + 10
+        p.append(f'<g class="t" style="animation-delay:{i * 0.12:.2f}s">{seven_seg(x, 38, num, False)}</g>')
+        p.append(f'<path class="dr" pathLength="1" d="M{x:.1f},88 H{x2:.1f} M{x:.1f},83 V93 M{x2:.1f},83 V93" '
+                 f'stroke="{soft}" stroke-width=".9" style="animation-delay:{0.4 + i * 0.25:.2f}s"/>')
+        p.append(f'<rect x="{mid - tw_txt / 2:.1f}" y="82" width="{tw_txt:.1f}" height="13" fill="{paper}"/>'
+                 f'<text x="{mid:.1f}" y="91.5" font-size="10" fill="{soft}" text-anchor="middle">{_esc(label)}</text>')
+    half = (SW - 44 - 16) / 2
+    cat_p = {k: (f"h{i}", hatch_cols[i]) for i, k in enumerate(CATS)}
+    cs = [(CATS[k][1], v, cat_p[k][0], cat_p[k][1]) for k, v in st["cats"].items() if v]  # type: ignore[union-attr]
+    ps = []
+    for i, (_h, (lab, _c)) in enumerate(PLATFORMS.items()):
+        if lab in st["plats"]:  # type: ignore[operator]
+            ps.append((lab, st["plats"][lab], f"h{i % 4}", hatch_cols[i % 4]))  # type: ignore[index]
+    p.append(f'<text x="22" y="104" font-size="9.5" fill="{muted}" letter-spacing="1">BY CATEGORY</text>')
+    _hatch_bar(p, 22, half, cs, 0.5)
+    _hatch_legend(p, 22, cs, soft)
+    x2 = 22 + half + 16
+    p.append(f'<text x="{x2:.0f}" y="104" font-size="9.5" fill="{muted}" letter-spacing="1">LIVE DEMOS ON</text>')
+    _hatch_bar(p, x2, half, ps, 0.7)
+    _hatch_legend(p, x2, ps, soft)
+    p.append("</g></svg>")
+    return "".join(p)
+
+
+STYLES = {"radar": build_radar, "splitflap": build_splitflap, "synthwave": build_synthwave, "blueprint": build_blueprint}
+
+
+def build_svg(st: Dict[str, object], style: str) -> str:
+    fn = STYLES.get(style)
+    return fn(st) if fn else build_svg_classic(st, style)
 
 
 # ----------------------------------------------------------------- main ---
