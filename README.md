@@ -506,7 +506,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="badges/repo_status.svg?v=f60e6439" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="badges/repo_status.svg?v=27250a9d" width="824" alt="Repo health: repos, CI status and language mix"/></p>
 
 <details open>
 <summary><b>🚀 Production apps & AI systems</b> <em>(15)</em></summary>
@@ -527,7 +527,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | [**uber-driver-analytics**](https://github.com/evgeniimatveev/uber-driver-analytics) | Personal Uber driver analytics — 3,448 trips, $70K gross, 3 years of LA data. PostgreSQL… | 🐍 Python | ⚪ | 3w ago | 7 |
 | [**crypto-dashboard**](https://github.com/evgeniimatveev/crypto-dashboard) | Crypto On-Chain Dashboard — CoinGecko + Fear&Greed → DuckDB → Streamlit · Daily refresh v… | 🐍 Python | ⚪ | 3w ago | 3 |
 | [**so-survey-analytics**](https://github.com/evgeniimatveev/so-survey-analytics) | 65K developers · 20 SQL queries · DuckDB + Streamlit · Remote devs earn 51% more | 🐍 Python | 🟢 | 3w ago | 8 |
-| [**mcp-data-quality-agent**](https://github.com/evgeniimatveev/mcp-data-quality-agent) | MCP server giving Claude read-only access to 5 databases — 20 data quality tools, natural… | 🐍 Python | 🟢 | 3w ago | 7 |
+| [**mcp-data-quality-agent**](https://github.com/evgeniimatveev/mcp-data-quality-agent) | MCP server giving Claude read-only access to 5 databases — 19 data quality tools, natural… | 🐍 Python | 🟢 | 3w ago | 7 |
 
 </details>
 
@@ -558,8 +558,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | [**SQL-Database-Design-A-Z**](https://github.com/evgeniimatveev/SQL-Database-Design-A-Z) | SQL database design in PostgreSQL: normalization (1NF→3NF), ERD diagrams, subqueries, win… | 🛢️ SQL | 🟢 | today | 7 |
 | [**Advanced-SQL-Data-Management-A-Z**](https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z) | Advanced SQL in MySQL 8.0: window functions, pivot tables, regex, stored procedures, empl… | 🛢️ SQL | 🟢 | today | 7 |
 | [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | ML fundamentals in Python: data preprocessing, regression, classification, clustering, Ap… | 🐍 Python | 🟢 | today | 7 |
-| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | today | 7 |
-| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | today | 7 |
+| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | 1d ago | 7 |
+| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | 1d ago | 7 |
 | [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | 1d ago | 7 |
 | [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | 1d ago | 7 |
 | [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | 1d ago | 7 |
