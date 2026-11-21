@@ -30,9 +30,9 @@ LOGIN = os.getenv("REPO_BOARD_LOGIN", "evgeniimatveev")
 TOKEN = os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN")
 README = Path(os.getenv("REPO_BOARD_README", "README.md"))
 OUT_DIR = Path(os.getenv("REPO_BOARD_OUT", "badges"))
-# Git ref the README images are served from; only overridden to preview a branch.
-REF = os.getenv("REPO_BOARD_REF", "main")
-RAW_BASE = f"https://raw.githubusercontent.com/{LOGIN}/{LOGIN}/{REF}/badges"
+# Image paths are relative to the README (like ./dist/snake.svg), so the same README renders
+# correctly on a PR branch (preview) and on main - no per-branch absolute URLs to fix up.
+ASSET_BASE = "badges"
 
 # The profile repo itself is the page you are reading - not listed.
 EXCLUDE = {LOGIN}
@@ -201,8 +201,59 @@ STATUS_CSS = (
     ".shine{animation:shine 3.4s ease-in-out infinite}"
     ".edge.bad{animation:hue-bad .9s ease-in-out infinite}"
     ".glow.bad{animation:hue-bad .9s ease-in-out infinite,breathe-bad .9s ease-in-out infinite}"
+    # Seven-segment digits ride the very same palette/phase as the border (fill instead of stroke).
+    "@keyframes hue-fill{0%,100%{fill:hsl(30,90%,68%)}20%{fill:hsl(185,90%,68%)}"
+    "40%{fill:hsl(220,90%,68%)}60%{fill:hsl(270,90%,68%)}80%{fill:hsl(335,90%,68%)}}"
+    "@keyframes hue-fill-bad{0%,100%{fill:#f7768e}50%{fill:#e0af68}}"
+    ".seg{animation:hue-fill 26s linear infinite}"
+    ".seg.bad{animation:hue-fill-bad .9s ease-in-out infinite}"
+    ".off{opacity:.09}"
 )
-PAD = 8  # room around the panel so the glow is not clipped by the SVG viewport
+PAD = 22  # room around the panel so the (wide) glow is not clipped by the SVG viewport
+
+# ---- seven-segment ("LED calculator") digits, drawn as polygons: no font needed in an <img> SVG ----
+SEG_W, SEG_H, SEG_T, SEG_GAP, SEG_ADV = 17.0, 28.0, 3.6, 0.9, 22.0
+SEG_MAP = {"0": "abcdef", "1": "bc", "2": "abdeg", "3": "abcdg", "4": "bcfg",
+           "5": "acdfg", "6": "acdefg", "7": "abc", "8": "abcdefg", "9": "abcdfg", "-": "g"}
+
+
+def _hex(pts: List[Any], ox: float, oy: float) -> str:
+    return " ".join(f"{ox + px:.2f},{oy + py:.2f}" for px, py in pts)
+
+
+def _seg_polys() -> Dict[str, List[Any]]:
+    w, h, t, g = SEG_W, SEG_H, SEG_T, SEG_GAP
+    def horiz(yc: float) -> List[Any]:
+        x0, x1 = t / 2 + g, w - t / 2 - g
+        return [(x0, yc), (x0 + t / 2, yc - t / 2), (x1 - t / 2, yc - t / 2),
+                (x1, yc), (x1 - t / 2, yc + t / 2), (x0 + t / 2, yc + t / 2)]
+    def vert(xc: float, y0: float, y1: float) -> List[Any]:
+        return [(xc, y0), (xc + t / 2, y0 + t / 2), (xc + t / 2, y1 - t / 2),
+                (xc, y1), (xc - t / 2, y1 - t / 2), (xc - t / 2, y0 + t / 2)]
+    up0, up1, lo0, lo1 = t / 2 + g, h / 2 - g, h / 2 + g, h - t / 2 - g
+    return {"a": horiz(t / 2), "g": horiz(h / 2), "d": horiz(h - t / 2),
+            "f": vert(t / 2, up0, up1), "b": vert(w - t / 2, up0, up1),
+            "e": vert(t / 2, lo0, lo1), "c": vert(w - t / 2, lo0, lo1)}
+
+
+def seven_seg(x: float, y: float, text: str, bad: bool) -> str:
+    """Render `text` (digits, '-', '/') as a glowing LED readout whose top-left is (x, y).
+    Unlit segments stay faintly visible ('ghost 8'), exactly like a real display."""
+    polys, cls = _seg_polys(), "seg bad" if bad else "seg"
+    out, cx = [], x
+    for ch in text:
+        if ch == "/":
+            t, h = SEG_T, SEG_H
+            out.append(f'<polygon class="{cls}" points="{_hex([(0, h), (t, h), (t + 8, 0), (8, 0)], cx + 1, y)}"/>')
+            cx += 15
+            continue
+        lit = SEG_MAP.get(ch, "")
+        for name, pts in polys.items():
+            off = "" if name in lit else " off"
+            out.append(f'<polygon class="{cls}{off}" points="{_hex(pts, cx, y)}"/>')
+        cx += SEG_ADV
+    return '<g filter="url(#segglow)">' + "".join(out) + "</g>"
+
 
 
 def _stack(p: List[str], x: float, y: float, w: float, segs: List[Any], delay: float) -> None:
@@ -239,8 +290,13 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
 
     p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW + 2 * PAD}" height="{SH + 2 * PAD}" '
          f'viewBox="0 0 {SW + 2 * PAD} {SH + 2 * PAD}" font-family="{FONT}"><style>{STATUS_CSS}</style>',
-         '<defs><filter id="glow" x="-10%" y="-40%" width="120%" height="180%">'
-         '<feGaussianBlur stdDeviation="4"/></filter>'
+         '<defs><filter id="glow" x="-15%" y="-80%" width="130%" height="260%">'
+         '<feGaussianBlur stdDeviation="6"/></filter>'
+         '<filter id="segglow" x="-20%" y="-20%" width="140%" height="140%">'
+         '<feGaussianBlur stdDeviation="1.5" result="b"/>'
+         '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+         '<filter id="halo" x="-20%" y="-120%" width="140%" height="340%">'
+         '<feGaussianBlur stdDeviation="13"/></filter>'
          '<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">'
          '<stop offset="0" stop-color="#fff" stop-opacity="0"/>'
          '<stop offset="0.5" stop-color="#fff" stop-opacity="0.09"/>'
@@ -248,7 +304,8 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
          f'<clipPath id="panel"><rect width="{SW}" height="{SH}" rx="8"/></clipPath></defs>',
          f'<g transform="translate({PAD} {PAD})">',
          f'<rect width="{SW}" height="{SH}" fill="{SURFACE}" rx="8"/>',
-         f'<rect class="glow{bad_cls}" {edge} stroke-width="7" filter="url(#glow)"/>',
+         f'<rect class="glow{bad_cls}" {edge} stroke-width="16" filter="url(#halo)"/>',   # wide outer halo
+         f'<rect class="glow{bad_cls}" {edge} stroke-width="9" filter="url(#glow)"/>',    # tight bright glow
          f'<rect class="edge{bad_cls}" {edge} stroke-width="1.6"/>',
          f'<circle class="live" cx="22" cy="21" r="4" fill="{"#f7768e" if alarm else "#9ece6a"}"/>',
          f'<text x="34" y="25" font-size="11" font-weight="600" fill="{TEXT_PRIMARY}" letter-spacing="1.2">'
@@ -259,7 +316,7 @@ def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
     for i, (num, label) in enumerate(tiles):
         x = 16 + i * tw
         p.append(f'<g class="t" style="animation-delay:{i * 0.12:.2f}s">'
-                 f'<text x="{x:.0f}" y="66" font-size="30" font-weight="700" fill="{ACCENT}">{num}</text>'
+                 + seven_seg(x, 38, num if num != "—" else "-", alarm) +
                  f'<text x="{x:.0f}" y="82" font-size="10.5" fill="{TEXT_MUTED}">{label}</text></g>')
 
     half = (SW - 48) / 2
@@ -301,7 +358,7 @@ def write_status(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "repo_status.svg").write_text(svg, encoding="utf-8")
     v = hashlib.md5(svg.encode()).hexdigest()[:8]  # cache-bust only when content changes
-    return (f'<p align="center"><img src="{RAW_BASE}/repo_status.svg?v={v}" width="{SW + 2 * PAD}" '
+    return (f'<p align="center"><img src="{ASSET_BASE}/repo_status.svg?v={v}" width="{SW + 2 * PAD}" '
             f'alt="Repo health: repos, CI status and language mix"/></p>')
 
 
