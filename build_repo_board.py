@@ -39,7 +39,7 @@ EXCLUDE = {LOGIN}
 
 # Tracks, in display order: key -> (heading, open-by-default).
 TRACKS = {
-    "prod": ("🚀 Production apps & AI systems", True),
+    "prod": ("🚀 Production apps & AI systems", False),
     "bi": ("📊 Analytics, BI & data engineering", False),
     "learn": ("🎓 A–Z learning repos", False),
     "infra": ("🧩 Self-hosted widgets & forks", False),
