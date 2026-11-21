@@ -1,0 +1,98 @@
+# repo_table.yml
+# Rebuilds the colour-coded "all repositories" table in README.md from the
+# GitHub API. Colour = emoji squares (GitHub strips CSS from README tables).
+#
+# Schedule: 06:45 UTC daily — clear of every other workflow
+#   (02/08/14/20:00 trophies · 05:15/17:15 activity · 10:30 badges_extra ·
+#    12:15 update_readme · 00:30 snake · :37 hourly next_update_badge)
+
+name: Repo Table
+
+on:
+  schedule:
+    - cron: '45 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-main-writer
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build-repo-table:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout (sparse — README + script only)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 2
+          persist-credentials: true
+          filter: blob:none
+          sparse-checkout: |
+            README.md
+            build_repo_table.py
+            .github/workflows/repo_table.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Build repo table
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build_repo_table.py
+
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+
+          if git diff --staged --quiet; then
+            echo "No changes — skip commit"
+            exit 0
+          fi
+
+          git commit -m "chore: refresh repo table [skip ci]"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "✅ Pushed (attempt $i)"
+              exit 0
+            fi
+            echo "Push failed (attempt $i) — rebasing..."
+            sleep $((i * 3))
+            git fetch --depth=2 origin main
+            git pull --rebase --no-tags origin main
+          done
+
+          echo "❌ Push failed after 3 attempts"
+          exit 1
+
+      - name: Run summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### 🗂️ Repo Table"
+            echo ""
+            echo "| Key | Value |"
+            echo "|-----|-------|"
+            echo "| Source | GitHub REST API (public repos) |"
+            echo "| Output | README.md between REPOS markers |"
+            echo "| Schedule | \`45 6 * * *\` |"
+            echo "| Concurrency group | \`repo-main-writer\` |"
+          } >> "$GITHUB_STEP_SUMMARY"

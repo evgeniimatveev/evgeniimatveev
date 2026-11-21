@@ -517,6 +517,57 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 ---
 
+## 🗂️ All Repositories
+
+<!-- REPOS:START -->
+<p align="center"><b>37 repositories</b> — auto-generated daily from the GitHub API</p>
+
+| Repository | Category | Language | Updated | About |
+|:--|:--|:--|:--|:--|
+| [**layoffs-tracker**](https://github.com/evgeniimatveev/layoffs-tracker) | 🟧 Analytics & BI | 🟦 Python | 🟢 2026-11-21 | Interactive dashboard tracking 2,412 tech layoffs (2020-2025) · DuckD… |
+| [**business-sql-analytics**](https://github.com/evgeniimatveev/business-sql-analytics) | 🟧 Analytics & BI | 🟦 Python | 🟢 2026-11-21 | Retail analytics pipeline: 2,314 customers · 5,000 transactions · $2.… |
+| [**hr-bi-analytics-project**](https://github.com/evgeniimatveev/hr-bi-analytics-project) | 🟧 Analytics & BI | 🟦 Python | 🟢 2026-11-21 | HR analytics pipeline: 30 employees · 5 departments · $58K–$135K sala… |
+| [**remote-job-tracker**](https://github.com/evgeniimatveev/remote-job-tracker) | 🟧 Analytics & BI | 🟦 Python | 🟢 2026-11-21 | ETL pipeline on 100 German tech job listings via Arbeitnow API. Key f… |
+| [**nyc-311-duckdb-motherduck-analysis**](https://github.com/evgeniimatveev/nyc-311-duckdb-motherduck-analysis) | 🟧 Analytics & BI | 🟦 Python | 🟢 2026-11-21 | ELT pipeline on 22,504 real NYC 311 elevator complaints. DuckDB + Mot… |
+| [**tableau-business-cases**](https://github.com/evgeniimatveev/tableau-business-cases) | 🟧 Analytics & BI | 🟦 Python | 🟢 2026-11-14 | Tableau LOD expressions (FIXED, parameters, cohort, % of total) with… |
+| [**olist-e-commerce-analytics**](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | 🟧 Analytics & BI | 🟦 Python | 🟡 2026-10-30 | Brazilian e-commerce analytics — 100K+ orders, $13.2M revenue. dbt +… |
+| [**uber-driver-analytics**](https://github.com/evgeniimatveev/uber-driver-analytics) | 🟧 Analytics & BI | 🟦 Python | 🟡 2026-10-30 | Personal Uber driver analytics — 3,448 trips, $70K gross, 3 years of… |
+| [**crypto-dashboard**](https://github.com/evgeniimatveev/crypto-dashboard) | 🟧 Analytics & BI | 🟦 Python | 🟡 2026-10-30 | Crypto On-Chain Dashboard — CoinGecko + Fear&Greed → DuckDB → Streaml… |
+| [**so-survey-analytics**](https://github.com/evgeniimatveev/so-survey-analytics) | 🟧 Analytics & BI | 🟦 Python | 🟡 2026-10-30 | 65K developers · 20 SQL queries · DuckDB + Streamlit · Remote devs ea… |
+| [**civics-sql-rag**](https://github.com/evgeniimatveev/civics-sql-rag) | 🟩 MLOps & AI | 🟥 HTML | 🟢 2026-11-21 | RAG practice lab: Cloudflare Worker + Vectorize + Workers AI (bge-m3)… |
+| [**agent-memory**](https://github.com/evgeniimatveev/agent-memory) | 🟩 MLOps & AI | 🟥 JavaScript | 🟢 2026-11-21 | Self-hosted mem0/Supermemory-style long-term memory layer for AI agen… |
+| [**mlops_ollama_env**](https://github.com/evgeniimatveev/mlops_ollama_env) | 🟩 MLOps & AI | 🟦 Python | 🟢 2026-11-21 | Dockerized local LLM inference playground: FastAPI + Ollama + Docker… |
+| [**mlops_project**](https://github.com/evgeniimatveev/mlops_project) | 🟩 MLOps & AI | 🟦 Python | 🟢 2026-11-21 | End-to-end MLOps pipeline: XGBoost R²=0.8326 on California Housing. D… |
+| [**route-optimization-vrp**](https://github.com/evgeniimatveev/route-optimization-vrp) | 🟩 MLOps & AI | 🟦 Python | 🟡 2026-10-30 | Capacitated Vehicle Routing with Time Windows (CVRPTW) — Google OR-To… |
+| [**cv-logistics-mlops**](https://github.com/evgeniimatveev/cv-logistics-mlops) | 🟩 MLOps & AI | 🟦 Python | 🟡 2026-10-30 | Computer vision on logistics: bin item-count prediction via CNN trans… |
+| [**interview-coach**](https://github.com/evgeniimatveev/interview-coach) | 🟩 MLOps & AI | 🟦 Python | 🟡 2026-10-30 | AI-powered interview coach for Data Analyst / AE roles. 35 questions:… |
+| [**mcp-data-quality-agent**](https://github.com/evgeniimatveev/mcp-data-quality-agent) | 🟩 MLOps & AI | 🟦 Python | 🟡 2026-10-30 | MCP server giving Claude read-only access to 5 databases — 20 data qu… |
+| [**data-pipeline-etl-project**](https://github.com/evgeniimatveev/data-pipeline-etl-project) | 🟨 Data Pipelines | 🟦 Python | 🟢 2026-11-21 | Production-grade ETL pipeline: Faker → Python → PostgreSQL → Docker.… |
+| [**job-market-pulse**](https://github.com/evgeniimatveev/job-market-pulse) | 🟨 Data Pipelines | 🟦 Python | 🟢 2026-11-20 | Daily tracking of tech job demand, salaries & remote trends — 10 stac… |
+| [**weather-pipeline**](https://github.com/evgeniimatveev/weather-pipeline) | 🟨 Data Pipelines | 🟦 Python | 🟡 2026-10-30 | Live US weather pipeline: Open-Meteo API → DuckDB → Streamlit dashboa… |
+| [**EXCEL-A-Z**](https://github.com/evgeniimatveev/EXCEL-A-Z) | 🟦 Learning A-Z | ⬜ — | 🟢 2026-11-21 | Excel analytics: pivot tables, pivot charts, 8 real-world case studie… |
+| [**Power-BI-A-Z**](https://github.com/evgeniimatveev/Power-BI-A-Z) | 🟦 Learning A-Z | ⬜ CSV | 🟢 2026-11-21 | Power BI from scratch: bar charts, time series, geographic maps, scat… |
+| [**Python-Projects**](https://github.com/evgeniimatveev/Python-Projects) | 🟦 Learning A-Z | 🟦 Python | 🟢 2026-11-21 | Python project collection across branches: ML forecasting, NLP sentim… |
+| [**SQL-Database-Design-A-Z**](https://github.com/evgeniimatveev/SQL-Database-Design-A-Z) | 🟦 Learning A-Z | 🟨 SQL | 🟢 2026-11-21 | SQL database design in PostgreSQL: normalization (1NF→3NF), ERD diagr… |
+| [**Advanced-SQL-Data-Management-A-Z**](https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z) | 🟦 Learning A-Z | 🟨 SQL | 🟢 2026-11-21 | Advanced SQL in MySQL 8.0: window functions, pivot tables, regex, sto… |
+| [**Snowflake-A-Z**](https://github.com/evgeniimatveev/Snowflake-A-Z) | 🟦 Learning A-Z | 🟦 Python | 🟢 2026-11-21 | Hands-on Snowflake practice: SQL basics, S3 ingestion, Time Travel/Cl… |
+| [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | 🟦 Learning A-Z | 🟦 Python | 🟢 2026-11-20 | ML fundamentals in Python: data preprocessing, regression, classifica… |
+| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | 🟦 Learning A-Z | 🟦 Python | 🟢 2026-11-20 | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — reg… |
+| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | 🟦 Learning A-Z | 🟪 R | 🟢 2026-11-20 | ML fundamentals in R: data preprocessing, regression, classification,… |
+| [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | 🟦 Learning A-Z | 🟪 R | 🟢 2026-11-20 | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapp… |
+| [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | 🟦 Learning A-Z | 🟦 Python | 🟢 2026-11-20 | Python for data science: NumPy matrices, Pandas DataFrames, data visu… |
+| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | 🟦 Learning A-Z | 🟧 Jupyter Notebook | 🟢 2026-11-20 | End-to-end feature engineering: data cleaning, transformations (log/p… |
+| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | 🟦 Learning A-Z | 🟦 Python | 🟢 2026-11-20 | Python fundamentals A-Z: variables, control flow, functions, file han… |
+| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | 🟦 Learning A-Z | 🟪 R | 🟢 2026-11-20 | R programming A-Z: variables, vectors, matrices, data frames, ggplot2… |
+| [**evgeniimatveev**](https://github.com/evgeniimatveev/evgeniimatveev) | 🟪 Profile & Site | 🟦 Python | 🟢 2026-11-21 | Self-updating MLOps profile: 5,700+ CI runs · auto-rotating banners ·… |
+| [**evgeniimatveev.github.io**](https://github.com/evgeniimatveev/evgeniimatveev.github.io) | 🟪 Profile & Site | 🟥 HTML | 🟢 2026-11-21 | Terminal-emulator portfolio site — live uptime across 9 apps, real in… |
+
+<sub>🟧 Analytics & BI (10) · 🟩 MLOps & AI (8) · 🟨 Data Pipelines (3) · 🟦 Learning A-Z (14) · 🟪 Profile & Site (2)</sub><br>
+<sub>Updated: 🟢 ≤ 7 days · 🟡 ≤ 30 days · 🟠 ≤ 90 days · 🔴 older</sub>
+<!-- REPOS:END -->
+
+---
+
 <p align="center">
   <a href="https://github.com/evgeniimatveev"><img
     src="https://img.shields.io/badge/Follow%20%40evgeniimatveev-181717?style=for-the-badge&logo=github&logoColor=white"
