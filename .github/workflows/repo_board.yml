@@ -1,7 +1,7 @@
 # repo_board.yml
 # Self-hosted "Repo Health Board": one GitHub GraphQL call -> categorised repo
-# table (README block REPOS) + 6 featured-repo cards (README block FEATURED,
-# badges/featured_*.svg). Nothing external to go down.
+# table + animated status panel (README block REPOS, badges/repo_status.svg).
+# Nothing external to go down.
 #
 # Schedule map (UTC) — clear of every other workflow:
 #   02:00 / 08:00 / 14:00 / 20:00  cache-trophies

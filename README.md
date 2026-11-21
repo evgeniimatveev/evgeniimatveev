@@ -520,7 +520,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><b>38 public repos</b> · 🟢 30 passing · 🔴 0 failing · 🟡 0 running · ⚪ 8 no CI · ⭐ 219 stars</p>
+<p align="center"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/repo_status.svg?v=7443a56b" width="784" alt="Repo health: repos, CI status and language mix"/></p>
 
 <details open>
 <summary><b>🚀 Production apps & AI systems</b> <em>(15)</em></summary>
@@ -610,11 +610,3 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </p>
 
 ---
-
-<!-- FEATURED:START -->
-<h3 align="center">⭐ Featured repositories</h3>
-<table align="center">
-<tr><td><a href="https://github.com/evgeniimatveev/route-optimization-vrp"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/featured_1.svg?v=9665b04b" width="380" alt="route-optimization-vrp"/></a></td><td><a href="https://github.com/evgeniimatveev/agent-memory"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/featured_2.svg?v=0b7bcb32" width="380" alt="agent-memory"/></a></td><td><a href="https://github.com/evgeniimatveev/civics-sql-rag"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/featured_3.svg?v=aecea2a1" width="380" alt="civics-sql-rag"/></a></td></tr>
-<tr><td><a href="https://github.com/evgeniimatveev/tableau-business-cases"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/featured_4.svg?v=84dbb1d9" width="380" alt="tableau-business-cases"/></a></td><td><a href="https://github.com/evgeniimatveev/olist-e-commerce-analytics"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/featured_5.svg?v=33bdba36" width="380" alt="olist-e-commerce-analytics"/></a></td><td><a href="https://github.com/evgeniimatveev/cv-logistics-mlops"><img src="https://raw.githubusercontent.com/evgeniimatveev/evgeniimatveev/feat/repo-board-list/badges/featured_6.svg?v=a29ece44" width="380" alt="cv-logistics-mlops"/></a></td></tr>
-</table>
-<!-- FEATURED:END -->

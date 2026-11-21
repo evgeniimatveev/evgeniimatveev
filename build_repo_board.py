@@ -7,8 +7,8 @@ produces:
 
   * a categorised, collapsible table of every public repo with language,
     CI status, last-push age and stars  -> README block REPOS
-  * six featured-repo cards (self-drawn Tokyo Night SVGs, 3x2 grid)
-                                         -> README block FEATURED + badges/
+  * an animated status panel (repos / weekly pushes / CI health bar /
+    language bar), self-drawn Tokyo Night SVG -> badges/repo_status.svg
 
 Same architecture as build_activity_graph.py: stdlib only, idempotent
 (re-running with unchanged data produces a byte-identical README/SVGs, so
@@ -36,16 +36,6 @@ RAW_BASE = f"https://raw.githubusercontent.com/{LOGIN}/{LOGIN}/{REF}/badges"
 
 # The profile repo itself is the page you are reading - not listed.
 EXCLUDE = {LOGIN}
-
-# Featured cards (bottom of the README), in display order.
-FEATURED = [
-    "route-optimization-vrp",
-    "agent-memory",
-    "civics-sql-rag",
-    "tableau-business-cases",
-    "olist-e-commerce-analytics",
-    "cv-logistics-mlops",
-]
 
 # Tracks, in display order: key -> (heading, open-by-default).
 TRACKS = {
@@ -157,17 +147,8 @@ def _cell(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
 
-def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
-    ok = sum(r["ci"] == "SUCCESS" for r in repos)
-    bad = sum(r["ci"] in ("FAILURE", "ERROR") for r in repos)
-    pend = sum(r["ci"] in ("PENDING", "EXPECTED") for r in repos)
-    none = len(repos) - ok - bad - pend
-    stars = sum(r["stars"] for r in repos)
-    lines = [
-        f'<p align="center"><b>{len(repos)} public repos</b> · 🟢 {ok} passing · '
-        f'🔴 {bad} failing · 🟡 {pend} running · ⚪ {none} no CI · ⭐ {stars} stars</p>',
-        "",
-    ]
+def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime, status_html: str) -> str:
+    lines = [status_html, ""]
     for key, (heading, is_open) in TRACKS.items():
         group = [r for r in repos if track_of(r) == key]
         if not group:
@@ -191,67 +172,103 @@ def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
     return "\n".join(lines)
 
 
-# ---------------------------------------------------------- featured SVG ---
+# ------------------------------------------------------------ status SVG ---
 def _esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
-def _wrap(text: str, width: int, max_lines: int) -> List[str]:
-    words, lines, cur = text.split(), [], ""
-    for w in words:
-        if len(cur) + len(w) + (1 if cur else 0) <= width:
-            cur = f"{cur} {w}".strip()
-        else:
-            lines.append(cur)
-            cur = w
-    if cur:
-        lines.append(cur)
-    if len(lines) > max_lines:
-        lines = lines[:max_lines]
-        lines[-1] = lines[-1][: width - 1].rstrip() + "…"
-    return lines
+SW, SH = 784, 152
+STATUS_CSS = (
+    "@keyframes up{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}"
+    "@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}"
+    "@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}"
+    ".t{animation:up .7s ease-out both}"
+    ".b{transform-box:fill-box;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}"
+    ".live{animation:pulse 2s ease-in-out infinite}"
+)
 
 
-def build_card_svg(r: Dict[str, Any], now: dt.datetime) -> str:
-    w, h = 380, 132
-    ci = r["ci"]
-    ci_label = {"SUCCESS": "passing", "FAILURE": "failing", "ERROR": "failing",
-                "PENDING": "running", "EXPECTED": "running"}.get(ci, "no CI")
-    p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
-         f'font-family="{FONT}">',
-         f'<rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="8" fill="{SURFACE}" stroke="{GRID}"/>',
-         f'<text x="16" y="29" font-size="15" font-weight="700" fill="{ACCENT}">{_esc(r["name"])}</text>']
-    for i, line in enumerate(_wrap(r["desc"] or "No description yet.", 56, 3)):
-        p.append(f'<text x="16" y="{52 + i * 16}" font-size="11.5" fill="{TEXT_SOFT}">{_esc(line)}</text>')
-    y = h - 16
-    p.append(f'<circle cx="21" cy="{y - 4}" r="5" fill="{r["lang_color"]}"/>')
-    p.append(f'<text x="31" y="{y}" font-size="11" fill="{TEXT_MUTED}">{_esc(r["lang"] or "—")}</text>')
-    p.append(f'<text x="118" y="{y}" font-size="11" fill="{TEXT_MUTED}">★ {r["stars"]}</text>')
-    p.append(f'<circle cx="168" cy="{y - 4}" r="4" fill="{CI_COLOR.get(ci, TEXT_MUTED)}"/>')
-    p.append(f'<text x="177" y="{y}" font-size="11" fill="{TEXT_MUTED}">{ci_label}</text>')
-    p.append(f'<text x="{w - 16}" y="{y}" font-size="11" fill="{TEXT_MUTED}" text-anchor="end">'
-             f'updated {age(r["pushed"], now)}</text>')
+def _stack(p: List[str], x: float, y: float, w: float, segs: List[Any], delay: float) -> None:
+    """Stacked horizontal bar; segs = [(count, colour)]. Grows in from the left."""
+    total = sum(c for c, _ in segs) or 1
+    p.append(f'<rect x="{x}" y="{y}" width="{w}" height="8" rx="4" fill="{GRID}"/>')
+    p.append(f'<g class="b" style="animation-delay:{delay}s"><clipPath id="c{int(x)}">'
+             f'<rect x="{x}" y="{y}" width="{w}" height="8" rx="4"/></clipPath><g clip-path="url(#c{int(x)})">')
+    cx = x
+    for c, col in segs:
+        sw = c / total * w
+        p.append(f'<rect x="{cx:.1f}" y="{y}" width="{sw + 0.5:.1f}" height="8" fill="{col}"/>')
+        cx += sw
+    p.append("</g></g>")
+
+
+def build_status_svg(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
+    own = [r for r in repos if not r["fork"]]
+    ci = [r["ci"] for r in own]
+    ok = sum(c == "SUCCESS" for c in ci)
+    bad = sum(c in ("FAILURE", "ERROR") for c in ci)
+    run = sum(c in ("PENDING", "EXPECTED") for c in ci)
+    none = len(own) - ok - bad - run
+    week = sum((now - r["pushed"]).days < 7 for r in own)
+    stars = sum(r["stars"] for r in own)
+    with_ci = len(own) - none
+    tiles = [(str(len(own)), "public repos"), (str(week), "pushed this week"),
+             (f"{ok}/{with_ci}" if with_ci else "—", "CI passing"), (str(stars), "stars")]
+
+    p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW}" height="{SH}" viewBox="0 0 {SW} {SH}" '
+         f'font-family="{FONT}"><style>{STATUS_CSS}</style>',
+         f'<rect width="{SW}" height="{SH}" fill="{SURFACE}" rx="6"/>',
+         '<circle class="live" cx="22" cy="21" r="4" fill="#9ece6a"/>',
+         f'<text x="34" y="25" font-size="11" font-weight="600" fill="{TEXT_PRIMARY}" letter-spacing="1.2">'
+         f'REPO HEALTH · LIVE</text>',
+         f'<text x="{SW - 16}" y="25" font-size="10" fill="{TEXT_MUTED}" text-anchor="end">'
+         f'synced {now.strftime("%Y-%m-%d %H:%M")} UTC</text>']
+    tw = (SW - 32) / len(tiles)
+    for i, (num, label) in enumerate(tiles):
+        x = 16 + i * tw
+        p.append(f'<g class="t" style="animation-delay:{i * 0.12:.2f}s">'
+                 f'<text x="{x:.0f}" y="66" font-size="30" font-weight="700" fill="{ACCENT}">{num}</text>'
+                 f'<text x="{x:.0f}" y="82" font-size="10.5" fill="{TEXT_MUTED}">{label}</text></g>')
+
+    half = (SW - 48) / 2
+    lx, rx = 16, 32 + half
+    p.append(f'<text x="{lx}" y="104" font-size="9.5" fill="{TEXT_MUTED}" letter-spacing="1">CI HEALTH</text>')
+    _stack(p, lx, 109, half, [(ok, CI_COLOR["SUCCESS"]), (run, CI_COLOR["PENDING"]),
+                              (bad, CI_COLOR["FAILURE"]), (none, GRID)], 0.5)
+    parts = [(ok, "passing"), (run, "running"), (bad, "failing"), (none, "no CI")]
+    p.append(f'<text x="{lx}" y="138" font-size="10" fill="{TEXT_SOFT}">'
+             + " · ".join(f"{c} {n}" for c, n in parts if c) + "</text>")
+
+    counts: Dict[str, int] = {}
+    colors: Dict[str, str] = {}
+    for r in own:
+        if r["lang"]:
+            counts[r["lang"]] = counts.get(r["lang"], 0) + 1
+            colors[r["lang"]] = r["lang_color"]
+    top = sorted(counts, key=lambda k: -counts[k])[:4]
+    segs = [(counts[k], colors[k]) for k in top]
+    rest = sum(counts.values()) - sum(counts[k] for k in top)
+    if rest:
+        segs.append((rest, TEXT_MUTED))
+    p.append(f'<text x="{rx}" y="104" font-size="9.5" fill="{TEXT_MUTED}" letter-spacing="1">LANGUAGES</text>')
+    _stack(p, rx, 109, half, segs, 0.7)
+    cx = rx
+    for k in top:
+        p.append(f'<circle cx="{cx + 4:.0f}" cy="135" r="3.5" fill="{colors[k]}"/>')
+        label = f"{k} {counts[k]}"
+        p.append(f'<text x="{cx + 12:.0f}" y="138" font-size="10" fill="{TEXT_SOFT}">{_esc(label)}</text>')
+        cx += 24 + len(label) * 5.6
     p.append("</svg>")
     return "".join(p)
 
 
-def write_featured(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
-    by_name = {r["name"]: r for r in repos}
-    cells = []
-    for i, name in enumerate(FEATURED, 1):
-        r = by_name.get(name)
-        if r is None:
-            raise SystemExit(f"featured repo not found: {name}")
-        svg = build_card_svg(r, now)
-        path = OUT_DIR / f"featured_{i}.svg"
-        OUT_DIR.mkdir(parents=True, exist_ok=True)
-        path.write_text(svg, encoding="utf-8")
-        v = hashlib.md5(svg.encode()).hexdigest()[:8]  # cache-bust only when content changes
-        cells.append(f'<td><a href="{r["url"]}"><img src="{RAW_BASE}/featured_{i}.svg?v={v}" '
-                     f'width="380" alt="{_esc(name)}"/></a></td>')
-    rows = ["<tr>" + "".join(cells[i:i + 3]) + "</tr>" for i in range(0, len(cells), 3)]
-    return ('<h3 align="center">⭐ Featured repositories</h3>\n'
-            '<table align="center">\n' + "\n".join(rows) + "\n</table>")
+def write_status(repos: List[Dict[str, Any]], now: dt.datetime) -> str:
+    svg = build_status_svg(repos, now)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    (OUT_DIR / "repo_status.svg").write_text(svg, encoding="utf-8")
+    v = hashlib.md5(svg.encode()).hexdigest()[:8]  # cache-bust only when content changes
+    return (f'<p align="center"><img src="{RAW_BASE}/repo_status.svg?v={v}" width="784" '
+            f'alt="Repo health: repos, CI status and language mix"/></p>')
 
 
 # ----------------------------------------------------------------- main ---
@@ -269,10 +286,9 @@ def main() -> None:
     repos = fetch_repos(LOGIN, TOKEN)
 
     md = README.read_text(encoding="utf-8")
-    md = replace_block(md, "REPOS", build_board_md(repos, now))
-    md = replace_block(md, "FEATURED", write_featured(repos, now))
+    md = replace_block(md, "REPOS", build_board_md(repos, now, write_status(repos, now)))
     README.write_text(md, encoding="utf-8")
-    print(f"[repo-board] {len(repos)} repos, {len(FEATURED)} featured cards")
+    print(f"[repo-board] {len(repos)} repos")
 
 
 if __name__ == "__main__":
