@@ -32,7 +32,7 @@ from build_repo_board import (  # same palette, LED digits and bar helper as the
 
 README = Path(os.getenv("PROJECTS_README", "README.md"))
 OUT_DIR = Path(os.getenv("PROJECTS_OUT", "badges"))
-STYLE = os.getenv("PROJECTS_STYLE", "chameleon")
+STYLE = os.getenv("PROJECTS_STYLE", "phosphor")
 ASSET_BASE = "badges"
 
 # key -> (heading, short label, colour in the panel bar)
