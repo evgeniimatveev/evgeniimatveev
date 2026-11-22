@@ -242,6 +242,8 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 </details>
 
+<p align="center"><sub>+ 16 more repos (A&ndash;Z learning, forks, portfolio site) are in the <b>Repository Index</b> below &middot; every repo appears once</sub></p>
+
 <!-- order: tableau-business-cases,agent-memory,civics-sql-rag,route-optimization-vrp,cv-logistics-mlops,crypto-dashboard,layoffs-tracker,so-survey-analytics,weather-pipeline,mcp-data-quality-agent,interview-coach,job-market-pulse,olist-e-commerce-analytics,uber-driver-analytics,Snowflake-A-Z,hr-bi-analytics-project,business-sql-analytics,nyc-311-duckdb-motherduck-analysis,data-pipeline-etl-project,remote-job-tracker,mlops_project,mlops_ollama_env -->
 <!-- PROJECTS:END -->
 
@@ -506,7 +508,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="badges/repo_status.svg?v=263fb862" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="badges/repo_status.svg?v=2345e1e5" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+
+<p align="center"><sub><b>36 own repos</b> = <b>22</b> featured projects in <b>Project Portfolio</b> above + <b>14</b> listed here (+ 2 forks) &middot; every repo appears once</sub></p>
 
 <details open>
 <summary><b>🌐 Portfolio site & other live systems</b> <em>(1)</em></summary>
@@ -547,8 +551,6 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | [**github-profile-trophy**](https://github.com/evgeniimatveev/github-profile-trophy) <sub>fork</sub> | 🏆 Add dynamically generated GitHub Stat Trophies  on your readme | 🔷 TypeScript | ⚪ | 2mo ago | 6 |
 
 </details>
-
-<p align="center"><sub>22 more repos, with highlights and live demos, are in <b>Project Portfolio</b> above - each project is listed once.</sub></p>
 
 <p align="center"><sub>Generated from the GitHub GraphQL API by <code>build_repo_board.py</code> · CI = default-branch check status · refreshed daily · no third-party renderer</sub></p>
 <!-- REPOS:END -->

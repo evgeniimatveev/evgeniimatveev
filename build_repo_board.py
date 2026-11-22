@@ -160,6 +160,12 @@ def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime, status_html: s
                    skip: set = frozenset()) -> str:
     lines = [status_html, ""]
     listed = [r for r in repos if r["name"] not in skip]
+    if skip:
+        own = [r for r in repos if not r["fork"]]
+        feat = sum(1 for r in own if r["name"] in skip)
+        lines += [f'<p align="center"><sub><b>{len(own)} own repos</b> = <b>{feat}</b> featured projects in '
+                  f'<b>Project Portfolio</b> above + <b>{len(own) - feat}</b> listed here '
+                  f'(+ {len(repos) - len(own)} forks) &middot; every repo appears once</sub></p>', ""]
     for key, (heading, is_open) in TRACKS.items():
         group = [r for r in listed if track_of(r) == key]
         if not group:
@@ -177,10 +183,6 @@ def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime, status_html: s
                 f'| [**{r["name"]}**]({r["url"]}){fork} | {_cell(r["desc"], 90) or "—"} | {lang} | '
                 f'{CI_EMOJI.get(r["ci"], "⚪")} | {age(r["pushed"], now)} | {r["stars"]} |')
         lines += ["", "</details>", ""]
-    if skip:
-        lines.append(f'<p align="center"><sub>{len(skip)} more repos, with highlights and live demos, '
-                     'are in <b>Project Portfolio</b> above - each project is listed once.</sub></p>')
-        lines.append("")
     lines.append('<p align="center"><sub>Generated from the GitHub GraphQL API by '
                  '<code>build_repo_board.py</code> · CI = default-branch check status · '
                  'refreshed daily · no third-party renderer</sub></p>')
