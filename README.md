@@ -508,7 +508,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="badges/repo_status.svg?v=2345e1e5" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="badges/repo_status.svg?v=abaedb99" width="824" alt="Repo health: repos, CI status and language mix"/></p>
 
 <p align="center"><sub><b>36 own repos</b> = <b>22</b> featured projects in <b>Project Portfolio</b> above + <b>14</b> listed here (+ 2 forks) &middot; every repo appears once</sub></p>
 
