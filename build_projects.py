@@ -129,7 +129,8 @@ def stats(ordered: List[Row]) -> Dict[str, object]:
         if r.platform:
             plats[r.platform] = plats.get(r.platform, 0) + 1
     cats = {k: sum(r.cat == k for r in ordered) for k in CATS}
-    items = [{"cat": r.cat, "live": bool(r.demo), "plat": r.platform} for r in ordered]
+    items = [{"cat": r.cat, "live": bool(r.demo), "plat": r.platform, "newest": i == 0}
+             for i, r in enumerate(ordered)]
     return {"n": len(ordered), "live": len(live), "plats": plats, "cats": cats, "items": items,
             "newest": re.sub(r"\s+", " ", ordered[0].name).strip() if ordered else "—"}
 
@@ -306,6 +307,7 @@ def _pt(cx: float, cy: float, r: float, deg: float) -> tuple:
 # ---- 1. RADAR: one blip per project, a sweep lights them up as it passes ----------------------
 RADAR_T = 7.0
 QUAD = {"ai": 270.0, "apps": 0.0, "bi": 90.0, "mlops": 180.0}  # quadrant start angle (clockwise from +x)
+SHORT_TAG = {"ai": "AI", "apps": "APPS", "bi": "BI", "mlops": "MLOPS"}
 
 
 def build_radar(st: Dict[str, object]) -> str:
@@ -318,9 +320,19 @@ def build_radar(st: Dict[str, object]) -> str:
            ".sweep{transform-box:fill-box;transform-origin:50% 50%;animation:spin " + str(RADAR_T) + "s linear infinite}"
            ".bl{opacity:.22;animation:ping " + str(RADAR_T) + "s linear infinite}"
            ".bl.lv{opacity:.6;animation-name:pingl}"
+           "@keyframes rip{0%{transform:scale(.5);opacity:.75}55%,100%{transform:scale(2.4);opacity:0}}"
+           "@keyframes rglow{0%,100%{opacity:.16}50%{opacity:.55}}"
+           "@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}"
+           ".rp{fill:none;opacity:0;transform-box:fill-box;transform-origin:50% 50%;animation:rip " + str(RADAR_T) + "s ease-out infinite}"
+           ".lock{fill:none;transform-box:fill-box;transform-origin:50% 50%;animation:spin 5s linear infinite}"
+           ".rg{fill:none;stroke:" + teal + ";animation:rglow 4s ease-in-out infinite}"
+           ".cur{animation:blink 1.2s steps(1) infinite}"
            ".seg{fill:" + teal + "}")
-    p = _open(FONT, css, SEGGLOW + GLOW6, "#0b141c", 8)
-    p.append(f'<rect x=".5" y=".5" width="{SW - 1}" height="{SH - 1}" rx="8" fill="none" stroke="#1d3a4a"/>')
+    p = _open(FONT, css, SEGGLOW + GLOW6 + HALO10, "#0b141c", 8)
+    edge = f'x="1" y="1" width="{SW - 2}" height="{SH - 2}" rx="8"'
+    p.append(f'<rect class="rg" {edge} stroke-width="14" filter="url(#halo)"/>'
+             f'<rect class="rg" {edge} stroke-width="7" filter="url(#glow)" style="animation-delay:-1s"/>'
+             f'<rect {edge} fill="none" stroke="{teal}" stroke-width="1.1" opacity=".55"/>')
     ring = "#1b3342"
     for rr in (R, R * 2 / 3, R / 3):
         p.append(f'<circle cx="{cx}" cy="{cy}" r="{rr:.1f}" fill="none" stroke="{ring}" stroke-width=".9"/>')
@@ -337,8 +349,15 @@ def build_radar(st: Dict[str, object]) -> str:
         x0, y0 = _pt(cx, cy, R, -w)
         x1, y1 = _pt(cx, cy, R, 0)
         sweep.append(f'<path d="M{cx},{cy} L{x0:.1f},{y0:.1f} A{R},{R} 0 0 1 {x1:.1f},{y1:.1f} Z" fill="{teal}" opacity="{op}"/>')
-    sweep.append(f'<line x1="{cx}" y1="{cy}" x2="{cx + R}" y2="{cy}" stroke="{teal}" stroke-width="1.4"/></g>')
+    sweep.append(f'<line x1="{cx}" y1="{cy}" x2="{cx + R}" y2="{cy}" stroke="{teal}" stroke-width="4" opacity=".55" '
+                 f'filter="url(#glow)"/>'
+                 f'<line x1="{cx}" y1="{cy}" x2="{cx + R}" y2="{cy}" stroke="#d9fbff" stroke-width="1.3"/></g>')
     p.append("".join(sweep))
+    # sector labels in the four corners of the dial
+    for key, (lx, ly, anc) in {"ai": (cx + 50, cy - 50, "start"), "apps": (cx + 50, cy + 56, "start"),
+                               "bi": (cx - 42, cy + 56, "end"), "mlops": (cx - 42, cy - 50, "end")}.items():
+        p.append(f'<text x="{lx:.0f}" y="{ly:.0f}" font-size="8" font-weight="600" letter-spacing=".8" '
+                 f'fill="{CATS[key][2]}" text-anchor="{anc}" opacity=".85">{SHORT_TAG[key]}</text>')
     # one blip per project, placed in its category's quadrant; lit when the sweep reaches its angle
     items = st["items"]  # type: ignore[assignment]
     for key, start in QUAD.items():
@@ -351,16 +370,23 @@ def build_radar(st: Dict[str, object]) -> str:
             delay = deg / 360.0 * RADAR_T
             if it["live"]:  # type: ignore[index]
                 p.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6.5" fill="{col}" opacity=".18"/>'
+                         f'<circle class="rp" cx="{x:.1f}" cy="{y:.1f}" r="5" stroke="{col}" stroke-width="1" '
+                         f'style="animation-delay:{delay:.2f}s"/>'
                          f'<circle class="bl lv" cx="{x:.1f}" cy="{y:.1f}" r="3.2" fill="{col}" '
                          f'filter="url(#segglow)" style="animation-delay:{delay:.2f}s"/>')
             else:
                 p.append(f'<circle class="bl" cx="{x:.1f}" cy="{y:.1f}" r="2.1" fill="{col}" '
                          f'style="animation-delay:{delay:.2f}s"/>')
+            if it["newest"]:  # type: ignore[index]  # lock-on reticle around the newest project
+                p.append(f'<circle class="lock" cx="{x:.1f}" cy="{y:.1f}" r="9" stroke="#d9fbff" stroke-width="1.1" '
+                         f'stroke-dasharray="5 6.5"/>'
+                         f'<circle cx="{x:.1f}" cy="{y:.1f}" r="1.4" fill="#ffffff"/>')
     p.append(f'<circle cx="{cx}" cy="{cy}" r="2" fill="{teal}"/>')
 
     x0 = 170.0
     wr = SW - x0 - 16
-    _title(p, x0, st, primary, muted)
+    _title(p, x0, st, primary, muted, f'<tspan fill="{teal}">◎ </tspan>')
+    p.append(f'<text class="cur" x="{x0 + 150:.0f}" y="25" font-size="8.5" fill="{teal}" letter-spacing="1.2">● SCANNING</text>')
     tw = wr / 4
     for i, (num, label) in enumerate(_tile_list(st)):
         x = x0 + i * tw
