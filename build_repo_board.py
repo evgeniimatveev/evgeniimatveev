@@ -39,8 +39,8 @@ EXCLUDE = {LOGIN}
 
 # Tracks, in display order: key -> (heading, open-by-default).
 TRACKS = {
-    "prod": ("🚀 Production apps & AI systems", True),
-    "bi": ("📊 Analytics, BI & data engineering", False),
+    "prod": ("🌐 Portfolio site & other live systems", True),
+    "bi": ("📊 Analytics & data engineering", False),
     "learn": ("🎓 A–Z learning repos", False),
     "infra": ("🧩 Self-hosted widgets & forks", False),
 }
@@ -63,6 +63,9 @@ TRACK_OF = {
     "snk": "infra", "github-profile-trophy": "infra",
     "github-readme-streak-stats": "infra", "github-profile-summary-cards": "infra",
 }
+# Repos already showcased in the README's Project Portfolio block (<!-- order: a,b,c -->) are NOT
+# repeated in the index below: every project appears once. The health panel still counts them all.
+ORDER_RE = re.compile(r"<!-- order: ([^>]*?) -->")
 DEFAULT_TRACK = "learn"  # anything unlisted is a learning/practice repo
 
 # Language -> emoji marker (markdown cannot colour text; emoji is the portable option).
@@ -147,10 +150,24 @@ def _cell(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
 
-def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime, status_html: str) -> str:
+def showcased(readme: str) -> set:
+    m = re.search(r"<!-- PROJECTS:START -->(.*?)<!-- PROJECTS:END -->", readme, re.S)
+    o = ORDER_RE.search(m.group(1)) if m else None
+    return {x.strip() for x in o.group(1).split(",") if x.strip()} if o else set()
+
+
+def build_board_md(repos: List[Dict[str, Any]], now: dt.datetime, status_html: str,
+                   skip: set = frozenset()) -> str:
     lines = [status_html, ""]
+    listed = [r for r in repos if r["name"] not in skip]
+    if skip:
+        own = [r for r in repos if not r["fork"]]
+        feat = sum(1 for r in own if r["name"] in skip)
+        lines += [f'<p align="center"><sub><b>{len(own)} own repos</b> = <b>{feat}</b> featured projects in '
+                  f'<b>Project Portfolio</b> above + <b>{len(own) - feat}</b> listed here '
+                  f'(+ {len(repos) - len(own)} forks) &middot; every repo appears once</sub></p>', ""]
     for key, (heading, is_open) in TRACKS.items():
-        group = [r for r in repos if track_of(r) == key]
+        group = [r for r in listed if track_of(r) == key]
         if not group:
             continue
         group.sort(key=lambda r: r["pushed"], reverse=True)
@@ -377,8 +394,8 @@ def main() -> None:
     repos = fetch_repos(LOGIN, TOKEN)
 
     md = README.read_text(encoding="utf-8")
-    md = replace_block(md, "REPOS", build_board_md(repos, now, write_status(repos, now)))
-    README.write_text(md, encoding="utf-8")
+    md = replace_block(md, "REPOS", build_board_md(repos, now, write_status(repos, now), showcased(md)))
+    README.write_text(md, encoding="utf-8", newline="\n")
     print(f"[repo-board] {len(repos)} repos")
 
 

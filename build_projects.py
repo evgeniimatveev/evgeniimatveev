@@ -109,7 +109,7 @@ def global_order(rows: List[Row], saved: List[str]) -> List[Row]:
     return fresh + [by[s] for s in saved if s in by]
 
 
-def build_block(ordered: List[Row], img_html: str) -> str:
+def build_block(ordered: List[Row], img_html: str, more: int = 0) -> str:
     parts = [img_html, ""]
     for key, (heading, _short, _c) in CATS.items():
         rows = [r for r in ordered if r.cat == key]
@@ -117,6 +117,9 @@ def build_block(ordered: List[Row], img_html: str) -> str:
             continue
         parts += [f"<details>\n<summary><b>{heading}</b> <em>({len(rows)})</em></summary>", "",
                   HEAD, "|---------|-----------|------|"] + [r.line for r in rows] + ["", "</details>", ""]
+    if more:
+        parts += [f'<p align="center"><sub>+ {more} more repos (A&ndash;Z learning, forks, portfolio site) '
+                  'are in the <b>Repository Index</b> below &middot; every repo appears once</sub></p>', ""]
     parts.append(f"<!-- order: {','.join(r.slug for r in ordered)} -->")
     return "\n".join(parts)
 
@@ -632,7 +635,9 @@ def main() -> None:
     v = hashlib.md5(svg.encode()).hexdigest()[:8]
     img = (f'<p align="center"><img src="{ASSET_BASE}/projects_panel.svg?v={v}" width="{SW + 2 * PAD}" '
            f'alt="Project portfolio: projects, live demos, categories and platforms"/></p>')
-    new = pat.sub(lambda mm: f"{mm.group(1)}\n{build_block(ordered, img)}\n{mm.group(3)}", text, count=1)
+    idx = re.search(r"<!-- REPOS:START -->(.*?)<!-- REPOS:END -->", text, re.S)
+    more = len(re.findall(r"^\| \[\*\*", idx.group(1), re.M)) if idx else 0  # repos listed in the index
+    new = pat.sub(lambda mm: f"{mm.group(1)}\n{build_block(ordered, img, more)}\n{mm.group(3)}", text, count=1)
     print(f"[projects] style={STYLE} · {st['n']} projects · {st['live']} live · {len(st['plats'])} platforms · "  # type: ignore[arg-type]
           f"cats={st['cats']} · newest={st['newest']}")
     if new != text:
