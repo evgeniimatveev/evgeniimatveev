@@ -213,7 +213,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | 🌍 [Global Weather Pipeline](https://github.com/evgeniimatveev/weather-pipeline) | 20 cities · 6 continents · Best City Score · 7d Forecast · Quality Layer | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://weather-pip-y645txqohstehewa3d3a4w.streamlit.app/) |
 | 📈 [Job Market Pulse](https://github.com/evgeniimatveev/job-market-pulse) | 10 stacks · 10 US cities + remote · 110 API calls/day · DuckDB · daily pipeline | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/job-market-pulse) |
 | 🛒 [Olist Analytics](https://github.com/evgeniimatveev/olist-e-commerce-analytics) | dbt · 54 tests · $13.2M · 96K orders | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/olist-analytics) |
-| 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [🤗 Live](https://huggingface.co/spaces/evgeniimatveevusa/uber-driver-analytics) |
+| 🚗 [Uber Driver Analytics](https://github.com/evgeniimatveev/uber-driver-analytics) | 3,448 trips · $70K gross · 98.9% rating | [![Streamlit](https://img.shields.io/badge/Live-FF4B4B?logo=streamlit&logoColor=white&style=flat)](https://uber-driver-analytics.streamlit.app) |
 
 </details>
 
