@@ -186,7 +186,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ---
 
 <!-- PROJECTS:START -->
-<p align="center"><img src="badges/projects_panel.svg?v=90901760" width="824" alt="Project portfolio: projects, live demos, categories and platforms"/></p>
+<p align="center"><img src="badges/projects_panel.svg?v=24ab6bdb" width="824" alt="Project portfolio: projects, live demos, categories and platforms"/></p>
 
 <details>
 <summary><b>🧠 AI & Cloudflare systems</b> <em>(5)</em></summary>
@@ -509,9 +509,9 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="badges/repo_status.svg?v=4d03261b" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="badges/repo_status.svg?v=15091374" width="824" alt="Repo health: repos, CI status and language mix"/></p>
 
-<p align="center"><sub><b>36 own repos</b> = <b>22</b> featured projects in <b>Project Portfolio</b> above + <b>14</b> listed here (+ 2 forks) &middot; every repo appears once</sub></p>
+<p align="center"><sub><b>37 own repos</b> = <b>23</b> featured projects in <b>Project Portfolio</b> above + <b>14</b> listed here (+ 2 forks) &middot; every repo appears once</sub></p>
 
 <details open>
 <summary><b>🌐 Portfolio site & other live systems</b> <em>(1)</em></summary>
@@ -532,14 +532,14 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 | [**Python-Projects**](https://github.com/evgeniimatveev/Python-Projects) | Python project collection across branches: ML forecasting, NLP sentiment, CV (YOLOv5/Medi… | 🐍 Python | 🟢 | 2d ago | 7 |
 | [**SQL-Database-Design-A-Z**](https://github.com/evgeniimatveev/SQL-Database-Design-A-Z) | SQL database design in PostgreSQL: normalization (1NF→3NF), ERD diagrams, subqueries, win… | 🛢️ SQL | 🟢 | 2d ago | 7 |
 | [**Advanced-SQL-Data-Management-A-Z**](https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z) | Advanced SQL in MySQL 8.0: window functions, pivot tables, regex, stored procedures, empl… | 🛢️ SQL | 🟢 | 2d ago | 7 |
-| [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | ML fundamentals in Python: data preprocessing, regression, classification, clustering, Ap… | 🐍 Python | 🟢 | 2d ago | 7 |
-| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | 2d ago | 7 |
-| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | 2d ago | 7 |
-| [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | 2d ago | 7 |
-| [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | 2d ago | 7 |
-| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | 2d ago | 7 |
-| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | 2d ago | 7 |
-| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | 2d ago | 7 |
+| [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | ML fundamentals in Python: data preprocessing, regression, classification, clustering, Ap… | 🐍 Python | 🟢 | 3d ago | 7 |
+| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | 3d ago | 7 |
+| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | 3d ago | 7 |
+| [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | 3d ago | 7 |
+| [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | 3d ago | 7 |
+| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | 3d ago | 7 |
+| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | 3d ago | 7 |
+| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | 3d ago | 7 |
 
 </details>
 
