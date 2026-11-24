@@ -18,8 +18,15 @@ name: CI Stats
 
 on:
   schedule:
-    - cron: '20 3 * * *'   # 03:20 UTC
+    - cron: '20 3 * * *'   # 03:20 UTC (GitHub may delay scheduled runs by hours)
   workflow_dispatch:
+  # Refresh right after the README updater finishes, so the "Runs" count of that workflow is
+  # never a day behind the "RUN #N" shown elsewhere in the README. The name must match the
+  # updater's `name:` exactly: if its version suffix changes, update it here too (the daily
+  # schedule above is the fallback).
+  workflow_run:
+    workflows: ["Auto Update README v7.5.7"]
+    types: [completed]
 
 permissions:
   contents: write
