@@ -54,6 +54,7 @@ CAT_OF = {
     "tableau-business-cases": "bi", "hr-bi-analytics-project": "bi", "business-sql-analytics": "bi",
     "nyc-311-duckdb-motherduck-analysis": "bi", "remote-job-tracker": "bi", "Snowflake-A-Z": "bi",
     "cv-logistics-mlops": "mlops", "mlops_project": "mlops", "data-pipeline-etl-project": "mlops",
+    "neon-data-diff": "mlops",
 }
 DEFAULT_CAT = "apps"
 

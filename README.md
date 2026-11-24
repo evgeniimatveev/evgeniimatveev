@@ -232,10 +232,11 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 </details>
 
 <details>
-<summary><b>🐳 MLOps & pipelines</b> <em>(3)</em></summary>
+<summary><b>🐳 MLOps & pipelines</b> <em>(4)</em></summary>
 
 | Project | Highlights | Demo |
 |---------|-----------|------|
+| 🔍 [Neon Data Diff](https://github.com/evgeniimatveev/neon-data-diff) | GitHub Action · dbt base vs PR code on a copy-on-write Neon branch · SQL data diff · sticky PR comment · 25 tests · Postgres 16/17 CI | [🌐 Live](https://evgeniimatveev.github.io/neon-data-diff/) |
 | 📦 [CV Logistics MLOps](https://github.com/evgeniimatveev/cv-logistics-mlops) | ResNet18 transfer learning · MLflow + W&B · val_mae 0.755 · weekly automated retraining | — |
 | 🔄 [ETL Pipeline](https://github.com/evgeniimatveev/data-pipeline-etl-project) | Faker → PostgreSQL · SQLFluff CI · Docker | — |
 | 🤖 [MLOps Project](https://github.com/evgeniimatveev/mlops_project) | R²=0.8326 · RMSE $46K · MLflow + W&B · 729 GridSearch | — |
@@ -244,7 +245,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 <p align="center"><sub>+ 16 more repos (A&ndash;Z learning, forks, portfolio site) are in the <b>Repository Index</b> below &middot; every repo appears once</sub></p>
 
-<!-- order: tableau-business-cases,agent-memory,civics-sql-rag,route-optimization-vrp,cv-logistics-mlops,crypto-dashboard,layoffs-tracker,so-survey-analytics,weather-pipeline,mcp-data-quality-agent,interview-coach,job-market-pulse,olist-e-commerce-analytics,uber-driver-analytics,Snowflake-A-Z,hr-bi-analytics-project,business-sql-analytics,nyc-311-duckdb-motherduck-analysis,data-pipeline-etl-project,remote-job-tracker,mlops_project,mlops_ollama_env -->
+<!-- order: neon-data-diff,tableau-business-cases,agent-memory,civics-sql-rag,route-optimization-vrp,cv-logistics-mlops,crypto-dashboard,layoffs-tracker,so-survey-analytics,weather-pipeline,mcp-data-quality-agent,interview-coach,job-market-pulse,olist-e-commerce-analytics,uber-driver-analytics,Snowflake-A-Z,hr-bi-analytics-project,business-sql-analytics,nyc-311-duckdb-motherduck-analysis,data-pipeline-etl-project,remote-job-tracker,mlops_project,mlops_ollama_env -->
 <!-- PROJECTS:END -->
 
 ---
