@@ -84,16 +84,16 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 <!-- CISTATS:START -->
 | Workflow | Schedule | Runs¹ | Status |
 |----------|----------|------|--------|
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:53 UTC | **5,941** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Hourly (:37) | **9,067** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml">Auto Update README</a> | Daily 12:53 UTC | **5,942** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml">Next Update Badge</a> | Hourly (:37) | **9,068** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml">CI/CD Pipeline</a> | On push/PR | **6,541** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/blank.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily 08:07 UTC | **453** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml">Smoke Tests</a> | Daily 08:07 UTC | **454** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/smoke.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml">Cache GitHub Trophies</a> | Every 6h | **661** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/cache_trophies.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml">Generate Snake</a> | Daily 00:30 UTC | **430** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/snake.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **185** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | Daily 05:15 & 17:15 UTC | **160** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml">Repo Board</a> | Daily 06:45 UTC | **9** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml/badge.svg"> |
-| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/ci_stats.yml">CI Stats</a> | Daily 03:20 UTC | **9** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/ci_stats.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml">Extra Badges</a> | Daily 10:30 UTC | **186** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/badges_extra.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml">Activity Graph</a> | Daily 05:15 & 17:15 UTC | **161** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/activity_graph.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml">Repo Board</a> | Daily 06:45 UTC | **10** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/repo_board.yml/badge.svg"> |
+| <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/ci_stats.yml">CI Stats</a> | Daily 03:20 UTC | **10** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/ci_stats.yml/badge.svg"> |
 | <a href="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/codeql.yml">CodeQL</a> | On push/PR · Mon 16:30 UTC | **131** | <img alt="status" src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/codeql.yml/badge.svg"> |
 <!-- CISTATS:END -->
 
@@ -457,13 +457,13 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 <p align="left">
   <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/update_readme.yml/badge.svg" alt="README updates status"/>
-  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=5%2C941&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 5,941"/>
+  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=5%2C942&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 5,942"/>
   <img src="https://img.shields.io/static/v1?label=Schedule&amp;message=Daily+12%3A53+UTC&amp;color=1f6feb&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Schedule: Daily 12:53 UTC"/>
 </p>
 
 <p align="left">
   <img src="https://github.com/evgeniimatveev/evgeniimatveev/actions/workflows/next_update_badge.yml/badge.svg" alt="Badge refresh status"/>
-  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=9%2C067&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 9,067"/>
+  <img src="https://img.shields.io/static/v1?label=Runs&amp;message=9%2C068&amp;color=brightgreen&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Runs: 9,068"/>
   <img src="https://img.shields.io/static/v1?label=Schedule&amp;message=Hourly+%28%3A37%29&amp;color=1f6feb&amp;style=flat&amp;cacheSeconds=3600&amp;logo=githubactions" alt="Schedule: Hourly (:37)"/>
 </p>
 <!-- CIBADGES:END -->
