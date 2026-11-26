@@ -509,7 +509,7 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 ## 🗂️ Repository Index
 
 <!-- REPOS:START -->
-<p align="center"><img src="badges/repo_status.svg?v=e71bf232" width="824" alt="Repo health: repos, CI status and language mix"/></p>
+<p align="center"><img src="badges/repo_status.svg?v=06a5c7e6" width="824" alt="Repo health: repos, CI status and language mix"/></p>
 
 <p align="center"><sub><b>37 own repos</b> = <b>23</b> featured projects in <b>Project Portfolio</b> above + <b>14</b> listed here (+ 2 forks) &middot; every repo appears once</sub></p>
 
@@ -527,19 +527,19 @@ This profile is a **self-updating MLOps demo** — a living portfolio showcasing
 
 | Repo | What it is | Lang | CI | Updated | ⭐ |
 |---|---|---|:-:|---|--:|
-| [**EXCEL-A-Z**](https://github.com/evgeniimatveev/EXCEL-A-Z) | Excel analytics: pivot tables, pivot charts, 8 real-world case studies (social media, spo… | — | 🟢 | 4d ago | 7 |
-| [**Power-BI-A-Z**](https://github.com/evgeniimatveev/Power-BI-A-Z) | Power BI from scratch: bar charts, time series, geographic maps, scatterplots, full dashb… | 📄 CSV | 🟢 | 4d ago | 7 |
-| [**Python-Projects**](https://github.com/evgeniimatveev/Python-Projects) | Python project collection across branches: ML forecasting, NLP sentiment, CV (YOLOv5/Medi… | 🐍 Python | 🟢 | 4d ago | 7 |
-| [**SQL-Database-Design-A-Z**](https://github.com/evgeniimatveev/SQL-Database-Design-A-Z) | SQL database design in PostgreSQL: normalization (1NF→3NF), ERD diagrams, subqueries, win… | 🛢️ SQL | 🟢 | 4d ago | 7 |
-| [**Advanced-SQL-Data-Management-A-Z**](https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z) | Advanced SQL in MySQL 8.0: window functions, pivot tables, regex, stored procedures, empl… | 🛢️ SQL | 🟢 | 4d ago | 7 |
-| [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | ML fundamentals in Python: data preprocessing, regression, classification, clustering, Ap… | 🐍 Python | 🟢 | 4d ago | 7 |
-| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | 4d ago | 7 |
-| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | 4d ago | 7 |
-| [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | 4d ago | 7 |
-| [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | 4d ago | 7 |
-| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | 4d ago | 7 |
-| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | 4d ago | 7 |
-| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | 4d ago | 7 |
+| [**EXCEL-A-Z**](https://github.com/evgeniimatveev/EXCEL-A-Z) | Excel analytics: pivot tables, pivot charts, 8 real-world case studies (social media, spo… | — | 🟢 | 5d ago | 7 |
+| [**Power-BI-A-Z**](https://github.com/evgeniimatveev/Power-BI-A-Z) | Power BI from scratch: bar charts, time series, geographic maps, scatterplots, full dashb… | 📄 CSV | 🟢 | 5d ago | 7 |
+| [**Python-Projects**](https://github.com/evgeniimatveev/Python-Projects) | Python project collection across branches: ML forecasting, NLP sentiment, CV (YOLOv5/Medi… | 🐍 Python | 🟢 | 5d ago | 7 |
+| [**SQL-Database-Design-A-Z**](https://github.com/evgeniimatveev/SQL-Database-Design-A-Z) | SQL database design in PostgreSQL: normalization (1NF→3NF), ERD diagrams, subqueries, win… | 🛢️ SQL | 🟢 | 5d ago | 7 |
+| [**Advanced-SQL-Data-Management-A-Z**](https://github.com/evgeniimatveev/Advanced-SQL-Data-Management-A-Z) | Advanced SQL in MySQL 8.0: window functions, pivot tables, regex, stored procedures, empl… | 🛢️ SQL | 🟢 | 5d ago | 7 |
+| [**ML-Classics-in-Python**](https://github.com/evgeniimatveev/ML-Classics-in-Python) | ML fundamentals in Python: data preprocessing, regression, classification, clustering, Ap… | 🐍 Python | 🟢 | 5d ago | 7 |
+| [**Ml-Classics-Level2-Boosting**](https://github.com/evgeniimatveev/Ml-Classics-Level2-Boosting) | Advanced ML with gradient boosting: XGBoost, LightGBM, CatBoost — regression, classificat… | 🐍 Python | 🟢 | 5d ago | 7 |
+| [**ML-Classics-in-R**](https://github.com/evgeniimatveev/ML-Classics-in-R) | ML fundamentals in R: data preprocessing, regression, classification, clustering, associa… | 📈 R | 🟢 | 5d ago | 7 |
+| [**Advanced-R-for-Analytics**](https://github.com/evgeniimatveev/Advanced-R-for-Analytics) | Advanced R analytics: data cleaning, NA imputation, apply/lapply/sapply, time-series visu… | 📈 R | 🟢 | 5d ago | 7 |
+| [**Python-for-Data-Science-A-Z**](https://github.com/evgeniimatveev/Python-for-Data-Science-A-Z) | Python for data science: NumPy matrices, Pandas DataFrames, data visualization, real-worl… | 🐍 Python | 🟢 | 5d ago | 7 |
+| [**Feature-Engineering**](https://github.com/evgeniimatveev/Feature-Engineering) | End-to-end feature engineering: data cleaning, transformations (log/power/scaling/encodin… | 📓 Jupyter Notebook | 🟢 | 5d ago | 7 |
+| [**Python-Programming-A-Z**](https://github.com/evgeniimatveev/Python-Programming-A-Z) | Python fundamentals A-Z: variables, control flow, functions, file handling, NumPy, Pandas… | 🐍 Python | 🟢 | 5d ago | 7 |
+| [**R-Programming-A-Z**](https://github.com/evgeniimatveev/R-Programming-A-Z) | R programming A-Z: variables, vectors, matrices, data frames, ggplot2 layers and themes.… | 📈 R | 🟢 | 5d ago | 7 |
 
 </details>
 
